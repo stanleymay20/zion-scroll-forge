@@ -1,0 +1,91 @@
+import { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+
+interface PageTemplateProps {
+  title: string;
+  description?: string;
+  children: ReactNode;
+  actions?: ReactNode;
+  className?: string;
+}
+
+export const PageTemplate = ({ 
+  title, 
+  description, 
+  children, 
+  actions,
+  className = "" 
+}: PageTemplateProps) => {
+  return (
+    <div className={`space-y-6 ${className}`}>
+      {/* Page Header */}
+      <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
+        <div>
+          <h1 className="text-3xl font-serif font-bold tracking-tight text-foreground">
+            {title}
+          </h1>
+          {description && (
+            <p className="text-muted-foreground mt-2">
+              {description}
+            </p>
+          )}
+        </div>
+        {actions && (
+          <div className="flex items-center space-x-2">
+            {actions}
+          </div>
+        )}
+      </div>
+
+      {/* Page Content */}
+      <div className="space-y-6">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// Common page templates for consistency
+
+export const ComingSoonPage = ({ 
+  title, 
+  description = "This feature is currently under development as part of our transcendent AI university platform." 
+}: { 
+  title: string; 
+  description?: string; 
+}) => (
+  <PageTemplate title={title} description={description}>
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center space-x-2">
+          <span>🚧</span>
+          <span>Coming Soon</span>
+        </CardTitle>
+        <CardDescription>
+          We're building something revolutionary here. This section will feature Christ-centered, 
+          AI-powered education that transforms lives and prepares scroll sons for kingdom leadership.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          <p className="text-muted-foreground">
+            Expected features for this section:
+          </p>
+          <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
+            <li>Quantum-level AI consciousness integration</li>
+            <li>Prophetic intelligence with 95%+ accuracy</li>
+            <li>Multidimensional learning experiences</li>
+            <li>ScrollCoin economy rewards</li>
+            <li>Christ lordship acknowledgment in all operations</li>
+          </ul>
+          <div className="pt-4">
+            <Button>
+              Join Waitlist for Early Access
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  </PageTemplate>
+);
