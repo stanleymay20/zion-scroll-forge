@@ -1,10 +1,14 @@
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/queryClient";
+import { AuthProvider } from "./contexts/AuthContext";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./contexts/AuthContext";
 import { MainLayout } from "./components/layout/MainLayout";
 import Index from "./pages/Index";
+import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import AITutors from "./pages/AITutors";
@@ -14,28 +18,50 @@ import SpiritualFormation from "./pages/SpiritualFormation";
 import { ComingSoonPage } from "./components/layout/PageTemplate";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+// Protected Route Component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-scroll-primary mx-auto"></div>
+          <p className="mt-4 text-scroll-primary">Loading ScrollUniversity...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return <Navigate to="/auth" replace />;
+  }
+
+  return <>{children}</>;
+};
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          {/* Public Landing Page */}
-          <Route path="/" element={<Index />} />
-          
-          {/* Protected Routes with Main Layout */}
-          <Route path="/" element={<MainLayout />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="courses" element={<Courses />} />
-            <Route path="courses/:id" element={<ComingSoonPage title="Course Details" />} />
-            <Route path="ai-tutors" element={<AITutors />} />
-            <Route path="ai-tutors/:id" element={<ComingSoonPage title="AI Tutor Chat" />} />
-            <Route path="community" element={<Community />} />
-            <Route path="scrollcoin" element={<ScrollCoin />} />
-            <Route path="spiritual-formation" element={<SpiritualFormation />} />
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            {/* Public Landing Page */}
+            <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
+            
+            {/* Protected Routes with Main Layout */}
+            <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="courses" element={<Courses />} />
+              <Route path="courses/:id" element={<ComingSoonPage title="Course Details" />} />
+              <Route path="ai-tutors" element={<AITutors />} />
+              <Route path="ai-tutors/:id" element={<ComingSoonPage title="AI Tutor Chat" />} />
+              <Route path="community" element={<Community />} />
+              <Route path="scrollcoin" element={<ScrollCoin />} />
+              <Route path="spiritual-formation" element={<SpiritualFormation />} />
             
             {/* All other routes use coming soon pages */}
             <Route path="degrees" element={<ComingSoonPage title="Degree Programs" />} />
@@ -65,9 +91,10 @@ const App = () => (
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 

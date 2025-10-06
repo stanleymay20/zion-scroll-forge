@@ -8,13 +8,9 @@ import {
   TrendingUp, Calendar, Bell, Star 
 } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const quickStats = [
-  { label: "Courses Enrolled", value: "12", change: "+2 this month", icon: Book },
-  { label: "ScrollCoins Earned", value: "1,247", change: "+89 this week", icon: Coins },
-  { label: "Prayer Requests", value: "34", change: "5 answered", icon: Heart },
-  { label: "Community Rank", value: "#127", change: "↑ 15 positions", icon: Trophy },
-];
+import { useDashboard } from "@/hooks/useDashboard";
+import { useUserEnrollments } from "@/hooks/useCourses";
+import { useAcknowledgeLordship } from "@/hooks/useSpiritual";
 
 const recentActivity = [
   { type: "course", title: "Completed: Prophetic Intelligence Module 3", time: "2 hours ago", icon: Book },
@@ -31,6 +27,27 @@ const upcomingEvents = [
 ];
 
 export default function Dashboard() {
+  const { data: dashboardData, isLoading } = useDashboard();
+  const { data: enrollments } = useUserEnrollments();
+  const acknowledgeLordship = useAcknowledgeLordship();
+
+  if (isLoading || !dashboardData) {
+    return (
+      <PageTemplate title="Loading..." description="">
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-scroll-primary mx-auto"></div>
+        </div>
+      </PageTemplate>
+    );
+  }
+
+  const quickStats = [
+    { label: "Courses Enrolled", value: String(dashboardData.courses_enrolled), change: "+2 this month", icon: Book },
+    { label: "ScrollCoins Earned", value: String(Math.round(dashboardData.balance)), change: "+89 this week", icon: Coins },
+    { label: "Prayer Requests", value: String(dashboardData.total_prayers), change: `${dashboardData.prayers_answered} answered`, icon: Heart },
+    { label: "Community Rank", value: "#127", change: "↑ 15 positions", icon: Trophy },
+  ];
+
   return (
     <PageTemplate 
       title="Welcome back, Faithful Scholar"
@@ -41,10 +58,12 @@ export default function Dashboard() {
             <Calendar className="h-4 w-4 mr-2" />
             View Schedule
           </Button>
-          <Button>
-            <Heart className="h-4 w-4 mr-2" />
-            Submit Prayer Request
-          </Button>
+          <Link to="/spiritual-formation">
+            <Button>
+              <Heart className="h-4 w-4 mr-2" />
+              Submit Prayer Request
+            </Button>
+          </Link>
         </div>
       }
     >
@@ -61,8 +80,13 @@ export default function Dashboard() {
             "Jesus Christ is Lord over my studies, my calling, and my future. 
             All knowledge and wisdom flow from Him."
           </p>
-          <Button size="sm" className="mt-3">
-            ✓ Acknowledged for Today
+          <Button 
+            size="sm" 
+            className="mt-3"
+            onClick={() => acknowledgeLordship.mutate(undefined)}
+            disabled={acknowledgeLordship.isPending}
+          >
+            {acknowledgeLordship.isPending ? 'Acknowledging...' : '✓ Acknowledge Christ as Lord'}
           </Button>
         </CardContent>
       </Card>
@@ -97,34 +121,35 @@ export default function Dashboard() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Prophetic Intelligence</span>
-                  <span className="text-sm text-muted-foreground">78%</span>
+              {enrollments && enrollments.length > 0 ? (
+                <>
+                  {enrollments.slice(0, 3).map((enrollment: any) => (
+                    <div key={enrollment.id} className="space-y-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">{enrollment.courses.title}</span>
+                        <span className="text-sm text-muted-foreground">{enrollment.progress}%</span>
+                      </div>
+                      <Progress value={enrollment.progress} className="h-2" />
+                    </div>
+                  ))}
+                  <div className="pt-4">
+                    <Link to="/courses">
+                      <Button className="w-full">
+                        Continue Learning
+                      </Button>
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <div className="text-center py-4">
+                  <p className="text-muted-foreground mb-4">You haven't enrolled in any courses yet</p>
+                  <Link to="/courses">
+                    <Button>
+                      Explore Courses
+                    </Button>
+                  </Link>
                 </div>
-                <Progress value={78} className="h-2" />
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">ScrollMedicine Fundamentals</span>
-                  <span className="text-sm text-muted-foreground">45%</span>
-                </div>
-                <Progress value={45} className="h-2" />
-              </div>
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium">Kingdom Economics</span>
-                  <span className="text-sm text-muted-foreground">62%</span>
-                </div>
-                <Progress value={62} className="h-2" />
-              </div>
-              <div className="pt-4">
-                <Link to="/courses">
-                  <Button className="w-full">
-                    Continue Learning
-                  </Button>
-                </Link>
-              </div>
+              )}
             </CardContent>
           </Card>
 
