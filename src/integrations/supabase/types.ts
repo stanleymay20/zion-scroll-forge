@@ -14,13 +14,351 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      course_modules: {
+        Row: {
+          content: Json | null
+          course_id: string | null
+          created_at: string | null
+          id: string
+          order_index: number | null
+          title: string
+        }
+        Insert: {
+          content?: Json | null
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          order_index?: number | null
+          title: string
+        }
+        Update: {
+          content?: Json | null
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          order_index?: number | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_modules_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      courses: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          duration: string | null
+          faculty: string | null
+          id: string
+          level: string | null
+          price: number | null
+          rating: number | null
+          students: number | null
+          tags: string[] | null
+          title: string
+          xr_enabled: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          duration?: string | null
+          faculty?: string | null
+          id?: string
+          level?: string | null
+          price?: number | null
+          rating?: number | null
+          students?: number | null
+          tags?: string[] | null
+          title: string
+          xr_enabled?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          duration?: string | null
+          faculty?: string | null
+          id?: string
+          level?: string | null
+          price?: number | null
+          rating?: number | null
+          students?: number | null
+          tags?: string[] | null
+          title?: string
+          xr_enabled?: boolean | null
+        }
+        Relationships: []
+      }
+      enrollments: {
+        Row: {
+          course_id: string | null
+          created_at: string | null
+          id: string
+          progress: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          progress?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          progress?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enrollments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enrollments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enrollments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      prayer_journal: {
+        Row: {
+          created_at: string | null
+          id: string
+          request: string
+          status: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          request: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          request?: string
+          status?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prayer_journal_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prayer_journal_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          academic_profile: Json | null
+          created_at: string | null
+          email: string | null
+          id: string
+          role: string | null
+          scrollcoin_balance: number | null
+          spiritual_profile: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          academic_profile?: Json | null
+          created_at?: string | null
+          email?: string | null
+          id: string
+          role?: string | null
+          scrollcoin_balance?: number | null
+          spiritual_profile?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          academic_profile?: Json | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          role?: string | null
+          scrollcoin_balance?: number | null
+          spiritual_profile?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      prophetic_checkins: {
+        Row: {
+          acknowledged_lordship: boolean | null
+          created_at: string | null
+          id: string
+          note: string | null
+          user_id: string | null
+        }
+        Insert: {
+          acknowledged_lordship?: boolean | null
+          created_at?: string | null
+          id?: string
+          note?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          acknowledged_lordship?: boolean | null
+          created_at?: string | null
+          id?: string
+          note?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prophetic_checkins_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prophetic_checkins_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          description: string | null
+          id: string
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      wallets: {
+        Row: {
+          balance: number | null
+          id: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          balance?: number | null
+          id?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          balance?: number | null
+          id?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wallets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "wallets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
     }
     Views: {
-      [_ in never]: never
+      v_user_dashboard: {
+        Row: {
+          avg_progress: number | null
+          balance: number | null
+          courses_enrolled: number | null
+          email: string | null
+          prayers_answered: number | null
+          total_prayers: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      earn_scrollcoin: {
+        Args: { p_amount: number; p_desc: string; p_user_id: string }
+        Returns: undefined
+      }
+      spend_scrollcoin: {
+        Args: { p_amount: number; p_desc: string; p_user_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
