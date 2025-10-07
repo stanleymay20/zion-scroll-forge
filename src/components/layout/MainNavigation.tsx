@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { 
   Home, Book, Users, Coins, GraduationCap, Brain, Microscope, 
   Trophy, Briefcase, Search, MessageSquare, Heart, Settings,
-  ChevronDown, ChevronRight
+  ChevronDown, ChevronRight, BarChart3
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -30,6 +30,7 @@ const navigationSections: NavSection[] = [
     icon: Home,
     items: [
       { label: "Home Dashboard", href: "/dashboard", icon: Home },
+      { label: "Analytics", href: "/analytics", icon: BarChart3 },
       { label: "My Profile", href: "/profile", icon: Users },
       { label: "Settings", href: "/settings", icon: Settings },
     ]

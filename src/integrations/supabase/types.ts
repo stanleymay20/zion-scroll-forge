@@ -14,6 +14,64 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_conversations: {
+        Row: {
+          context_summary: string | null
+          created_at: string | null
+          faculty: string
+          id: string
+          learning_insights: Json | null
+          messages: Json | null
+          subject: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          context_summary?: string | null
+          created_at?: string | null
+          faculty: string
+          id?: string
+          learning_insights?: Json | null
+          messages?: Json | null
+          subject?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          context_summary?: string | null
+          created_at?: string | null
+          faculty?: string
+          id?: string
+          learning_insights?: Json | null
+          messages?: Json | null
+          subject?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_conversations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "ai_conversations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       course_modules: {
         Row: {
           content: Json | null
@@ -149,6 +207,13 @@ export type Database = {
             foreignKeyName: "enrollments_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "enrollments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "v_user_dashboard"
             referencedColumns: ["user_id"]
           },
@@ -177,6 +242,128 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      intervention_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string | null
+          id: string
+          message: string
+          recommendations: Json | null
+          resolved_at: string | null
+          severity: string | null
+          status: string | null
+          user_id: string | null
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string | null
+          id?: string
+          message: string
+          recommendations?: Json | null
+          resolved_at?: string | null
+          severity?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string | null
+          id?: string
+          message?: string
+          recommendations?: Json | null
+          resolved_at?: string | null
+          severity?: string | null
+          status?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "intervention_alerts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "intervention_alerts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "intervention_alerts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      learning_patterns: {
+        Row: {
+          areas_for_growth: Json | null
+          comprehension_level: string | null
+          created_at: string | null
+          engagement_score: number | null
+          faculty: string
+          id: string
+          last_assessed: string | null
+          learning_style: Json | null
+          preferred_pace: string | null
+          strengths: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          areas_for_growth?: Json | null
+          comprehension_level?: string | null
+          created_at?: string | null
+          engagement_score?: number | null
+          faculty: string
+          id?: string
+          last_assessed?: string | null
+          learning_style?: Json | null
+          preferred_pace?: string | null
+          strengths?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          areas_for_growth?: Json | null
+          comprehension_level?: string | null
+          created_at?: string | null
+          engagement_score?: number | null
+          faculty?: string
+          id?: string
+          last_assessed?: string | null
+          learning_style?: Json | null
+          preferred_pace?: string | null
+          strengths?: Json | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_patterns_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "learning_patterns_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "learning_patterns_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       prayer_journal: {
         Row: {
@@ -210,6 +397,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prayer_journal_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "prayer_journal_user_id_fkey"
@@ -282,6 +476,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "prophetic_checkins_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "prophetic_checkins_user_id_fkey"
@@ -373,6 +574,64 @@ export type Database = {
         }
         Relationships: []
       }
+      spiritual_assessments: {
+        Row: {
+          assessment_type: string
+          calling_insights: Json | null
+          confidence_score: number | null
+          created_at: string | null
+          growth_areas: Json | null
+          id: string
+          scripture_references: Json | null
+          spiritual_gifts: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          assessment_type: string
+          calling_insights?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          growth_areas?: Json | null
+          id?: string
+          scripture_references?: Json | null
+          spiritual_gifts?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          assessment_type?: string
+          calling_insights?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          growth_areas?: Json | null
+          id?: string
+          scripture_references?: Json | null
+          spiritual_gifts?: Json | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spiritual_assessments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "spiritual_assessments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "spiritual_assessments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       transactions: {
         Row: {
           amount: number
@@ -405,6 +664,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
           },
           {
             foreignKeyName: "transactions_user_id_fkey"
@@ -449,6 +715,13 @@ export type Database = {
             foreignKeyName: "wallets_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: true
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "wallets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
             referencedRelation: "v_user_dashboard"
             referencedColumns: ["user_id"]
           },
@@ -469,11 +742,35 @@ export type Database = {
         }
         Relationships: []
       }
+      v_faculty_analytics: {
+        Row: {
+          avg_completion: number | null
+          avg_engagement: number | null
+          faculty: string | null
+          total_courses: number | null
+          total_students: number | null
+        }
+        Relationships: []
+      }
       v_scroll_analytics_daily: {
         Row: {
           day: string | null
           event_type: string | null
           total: number | null
+        }
+        Relationships: []
+      }
+      v_student_analytics: {
+        Row: {
+          active_alerts: number | null
+          ai_interactions: number | null
+          avg_progress: number | null
+          email: string | null
+          engagement_score: number | null
+          enrolled_courses: number | null
+          prayer_count: number | null
+          spiritual_assessments: number | null
+          user_id: string | null
         }
         Relationships: []
       }
