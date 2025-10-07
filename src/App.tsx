@@ -15,6 +15,7 @@ import AITutors from "./pages/AITutors";
 import Community from "./pages/Community";
 import ScrollCoin from "./pages/ScrollCoin";
 import SpiritualFormation from "./pages/SpiritualFormation";
+import Analytics from "./pages/Analytics";
 import { ComingSoonPage } from "./components/layout/PageTemplate";
 import NotFound from "./pages/NotFound";
 
@@ -62,6 +63,7 @@ const App = () => (
               <Route path="community" element={<Community />} />
               <Route path="scrollcoin" element={<ScrollCoin />} />
               <Route path="spiritual-formation" element={<SpiritualFormation />} />
+              <Route path="analytics" element={<Analytics />} />
             
             {/* All other routes use coming soon pages */}
             <Route path="degrees" element={<ComingSoonPage title="Degree Programs" />} />
