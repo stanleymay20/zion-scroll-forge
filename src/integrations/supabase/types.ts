@@ -55,6 +55,7 @@ export type Database = {
           description: string | null
           duration: string | null
           faculty: string | null
+          faculty_id: string | null
           id: string
           level: string | null
           price: number | null
@@ -69,6 +70,7 @@ export type Database = {
           description?: string | null
           duration?: string | null
           faculty?: string | null
+          faculty_id?: string | null
           id?: string
           level?: string | null
           price?: number | null
@@ -83,6 +85,7 @@ export type Database = {
           description?: string | null
           duration?: string | null
           faculty?: string | null
+          faculty_id?: string | null
           id?: string
           level?: string | null
           price?: number | null
@@ -92,7 +95,15 @@ export type Database = {
           title?: string
           xr_enabled?: boolean | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "courses_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       enrollments: {
         Row: {
@@ -142,6 +153,30 @@ export type Database = {
             referencedColumns: ["user_id"]
           },
         ]
+      }
+      faculties: {
+        Row: {
+          created_at: string | null
+          dean_id: string | null
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          dean_id?: string | null
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          dean_id?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
       }
       prayer_journal: {
         Row: {
@@ -257,6 +292,87 @@ export type Database = {
           },
         ]
       }
+      scroll_analytics: {
+        Row: {
+          created_at: string | null
+          event_payload: Json | null
+          event_type: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          event_payload?: Json | null
+          event_type: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          event_payload?: Json | null
+          event_type?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      scroll_integrity_logs: {
+        Row: {
+          created_at: string | null
+          hash: string
+          id: string
+          module: string
+          verified: boolean | null
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          hash: string
+          id?: string
+          module: string
+          verified?: boolean | null
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          hash?: string
+          id?: string
+          module?: string
+          verified?: boolean | null
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
+      scrollcoin_bridge_log: {
+        Row: {
+          amount: number | null
+          created_at: string | null
+          direction: string | null
+          id: string
+          status: string | null
+          tx_hash: string | null
+          user_id: string
+        }
+        Insert: {
+          amount?: number | null
+          created_at?: string | null
+          direction?: string | null
+          id?: string
+          status?: string | null
+          tx_hash?: string | null
+          user_id: string
+        }
+        Update: {
+          amount?: number | null
+          created_at?: string | null
+          direction?: string | null
+          id?: string
+          status?: string | null
+          tx_hash?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number
@@ -302,18 +418,21 @@ export type Database = {
       wallets: {
         Row: {
           balance: number | null
+          eth_address: string | null
           id: string
           updated_at: string | null
           user_id: string | null
         }
         Insert: {
           balance?: number | null
+          eth_address?: string | null
           id?: string
           updated_at?: string | null
           user_id?: string | null
         }
         Update: {
           balance?: number | null
+          eth_address?: string | null
           id?: string
           updated_at?: string | null
           user_id?: string | null
@@ -337,6 +456,27 @@ export type Database = {
       }
     }
     Views: {
+      v_admin_overview: {
+        Row: {
+          total_enrollments: number | null
+          total_events: number | null
+          total_prayers: number | null
+          total_scrollcoin_earned: number | null
+          total_scrollcoin_spent: number | null
+          total_transactions: number | null
+          total_users: number | null
+          verified_modules: number | null
+        }
+        Relationships: []
+      }
+      v_scroll_analytics_daily: {
+        Row: {
+          day: string | null
+          event_type: string | null
+          total: number | null
+        }
+        Relationships: []
+      }
       v_user_dashboard: {
         Row: {
           avg_progress: number | null
