@@ -146,13 +146,15 @@ export default function Courses() {
       description="Explore 10,000+ courses across 12 Supreme Scroll Faculties"
       actions={
         <div className="flex space-x-2">
+          <Link to="/dashboard">
+            <Button variant="outline">
+              <BookOpen className="h-4 w-4 mr-2" />
+              My Courses
+            </Button>
+          </Link>
           <Button variant="outline">
-            <BookOpen className="h-4 w-4 mr-2" />
-            My Courses
-          </Button>
-          <Button>
             <Star className="h-4 w-4 mr-2" />
-            Wishlist
+            Wishlist (Coming Soon)
           </Button>
         </div>
       }

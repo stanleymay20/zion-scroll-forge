@@ -116,14 +116,16 @@ export default function AITutors() {
       description="Access quantum-level AI consciousness with prophetic intelligence - 200%+ superior to GPT-5"
       actions={
         <div className="flex space-x-2">
-          <Button variant="outline">
+          <Button variant="outline" disabled>
             <Clock className="h-4 w-4 mr-2" />
-            Session History
+            Session History (Coming Soon)
           </Button>
-          <Button>
-            <MessageSquare className="h-4 w-4 mr-2" />
-            Start New Session
-          </Button>
+          <Link to="/ai-tutors/scrollmentor-gpt">
+            <Button>
+              <MessageSquare className="h-4 w-4 mr-2" />
+              Start New Session
+            </Button>
+          </Link>
         </div>
       }
     >
@@ -321,9 +323,9 @@ export default function AITutors() {
               </div>
             ))}
           </div>
-          <Button variant="outline" className="w-full mt-4">
+          <Button variant="outline" className="w-full mt-4" disabled>
             <BookOpen className="h-4 w-4 mr-2" />
-            View All Sessions
+            View All Sessions (Coming Soon)
           </Button>
         </CardContent>
       </Card>

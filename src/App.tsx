@@ -11,10 +11,14 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
+import CourseDetail from "./pages/CourseDetail";
 import AITutors from "./pages/AITutors";
+import AITutorChat from "./pages/AITutorChat";
 import Community from "./pages/Community";
 import ScrollCoin from "./pages/ScrollCoin";
+import Wallet from "./pages/Wallet";
 import SpiritualFormation from "./pages/SpiritualFormation";
+import PrayerRequests from "./pages/PrayerRequests";
 import Analytics from "./pages/Analytics";
 import { ComingSoonPage } from "./components/layout/PageTemplate";
 import NotFound from "./pages/NotFound";
@@ -57,12 +61,14 @@ const App = () => (
             <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="courses" element={<Courses />} />
-              <Route path="courses/:id" element={<ComingSoonPage title="Course Details" />} />
+              <Route path="courses/:courseId" element={<CourseDetail />} />
               <Route path="ai-tutors" element={<AITutors />} />
-              <Route path="ai-tutors/:id" element={<ComingSoonPage title="AI Tutor Chat" />} />
+              <Route path="ai-tutors/:tutorId" element={<AITutorChat />} />
               <Route path="community" element={<Community />} />
               <Route path="scrollcoin" element={<ScrollCoin />} />
+              <Route path="wallet" element={<Wallet />} />
               <Route path="spiritual-formation" element={<SpiritualFormation />} />
+              <Route path="prayer-requests" element={<PrayerRequests />} />
               <Route path="analytics" element={<Analytics />} />
             
             {/* All other routes use coming soon pages */}
