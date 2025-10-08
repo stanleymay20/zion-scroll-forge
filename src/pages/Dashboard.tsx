@@ -54,10 +54,12 @@ export default function Dashboard() {
       description="Continue your transformative journey in Christ-centered education"
       actions={
         <div className="flex space-x-2">
-          <Button variant="outline">
-            <Calendar className="h-4 w-4 mr-2" />
-            View Schedule
-          </Button>
+          <Link to="/spiritual-formation">
+            <Button variant="outline">
+              <Calendar className="h-4 w-4 mr-2" />
+              View Schedule
+            </Button>
+          </Link>
           <Link to="/spiritual-formation">
             <Button>
               <Heart className="h-4 w-4 mr-2" />
@@ -217,10 +219,12 @@ export default function Dashboard() {
                   </div>
                 ))}
               </div>
-              <Button variant="outline" size="sm" className="w-full mt-4">
-                <Calendar className="h-4 w-4 mr-2" />
-                View Full Calendar
-              </Button>
+              <Link to="/spiritual-formation">
+                <Button variant="outline" size="sm" className="w-full mt-4">
+                  <Calendar className="h-4 w-4 mr-2" />
+                  View Full Calendar
+                </Button>
+              </Link>
             </CardContent>
           </Card>
 

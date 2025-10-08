@@ -146,13 +146,13 @@ export default function ScrollCoin() {
       description="Revolutionary blockchain-based economy for kingdom education"
       actions={
         <div className="flex space-x-2">
-          <Button variant="outline">
+          <Button variant="outline" disabled>
             <Send className="h-4 w-4 mr-2" />
-            Send ScrollCoins
+            Send ScrollCoins (Coming Soon)
           </Button>
-          <Button>
+          <Button disabled>
             <ShoppingCart className="h-4 w-4 mr-2" />
-            Visit Marketplace
+            Visit Marketplace (Coming Soon)
           </Button>
         </div>
       }

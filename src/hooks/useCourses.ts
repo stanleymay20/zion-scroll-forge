@@ -1,16 +1,34 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { listCourses, enrollInCourse, getUserEnrollments, Course } from '@/services/courses';
+import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { underChrist } from '@/lib/lordship';
 
-export const useCourses = (params?: {
-  search?: string;
-  faculty?: string;
-  level?: string;
-}) => {
-  return useQuery<Course[]>({
-    queryKey: ['courses', params],
-    queryFn: async () => await listCourses(params),
+export const useUserEnrollments = () => {
+  const { user } = useAuth();
+
+  return useQuery({
+    queryKey: ['enrollments', user?.id],
+    queryFn: async () => {
+      console.info('✝️ Jesus Christ is Lord over this operation');
+      const { data, error } = await supabase
+        .from('enrollments')
+        .select(`
+          *,
+          courses (
+            id,
+            title,
+            faculty,
+            description
+          )
+        `)
+        .eq('user_id', user!.id)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user,
   });
 };
 
@@ -20,31 +38,33 @@ export const useEnrollInCourse = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (courseId: string) => await enrollInCourse(user!.id, courseId),
+    mutationFn: async (courseId: string) => {
+      console.info('✝️ Jesus Christ is Lord over this operation');
+      const { error } = await supabase
+        .from('enrollments')
+        .insert({
+          user_id: user!.id,
+          course_id: courseId,
+          progress: 0
+        });
+
+      if (error) throw error;
+      return { success: true };
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['enrollments'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
       toast({
-        title: 'Enrollment successful',
-        description: 'You have been enrolled in the course!',
+        title: '✝️ Enrolled Successfully',
+        description: 'You have been enrolled in the course. Christ leads your learning journey.',
       });
     },
     onError: (error: any) => {
       toast({
-        title: 'Enrollment failed',
-        description: error.message,
+        title: 'Enrollment Failed',
+        description: error.message || 'Failed to enroll in course. Christ remains Lord.',
         variant: 'destructive',
       });
     },
-  });
-};
-
-export const useUserEnrollments = () => {
-  const { user } = useAuth();
-
-  return useQuery({
-    queryKey: ['enrollments', user?.id],
-    queryFn: async () => await getUserEnrollments(user!.id),
-    enabled: !!user,
   });
 };

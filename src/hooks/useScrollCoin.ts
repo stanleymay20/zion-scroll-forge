@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getWallet, earnScrollCoin, spendScrollCoin } from '@/services/scrollcoin';
+import { supabase } from '@/integrations/supabase/client';
+import { earnScrollCoin, spendScrollCoin } from '@/services/scrollcoin';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 
@@ -8,7 +9,27 @@ export const useWallet = () => {
 
   return useQuery({
     queryKey: ['wallet', user?.id],
-    queryFn: () => getWallet(user!.id),
+    queryFn: async () => {
+      console.info('✝️ Jesus Christ is Lord over this operation');
+      const { data: wallet, error: walletError } = await supabase
+        .from('wallets')
+        .select('*')
+        .eq('user_id', user!.id)
+        .single();
+
+      if (walletError) throw walletError;
+
+      const { data: transactions, error: txError } = await supabase
+        .from('transactions')
+        .select('*')
+        .eq('user_id', user!.id)
+        .order('created_at', { ascending: false })
+        .limit(20);
+
+      if (txError) throw txError;
+
+      return { wallet, transactions: transactions || [] };
+    },
     enabled: !!user,
   });
 };

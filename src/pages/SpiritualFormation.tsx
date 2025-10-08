@@ -181,14 +181,16 @@ export default function SpiritualFormation() {
       description="Your journey toward Christ-likeness and kingdom readiness"
       actions={
         <div className="flex space-x-2">
-          <Button variant="outline">
+          <Button variant="outline" disabled>
             <Calendar className="h-4 w-4 mr-2" />
-            Prayer Calendar
+            Prayer Calendar (Coming Soon)
           </Button>
-          <Button>
-            <Heart className="h-4 w-4 mr-2" />
-            Submit Prayer Request
-          </Button>
+          <Link to="/prayer-requests">
+            <Button>
+              <Heart className="h-4 w-4 mr-2" />
+              Submit Prayer Request
+            </Button>
+          </Link>
         </div>
       }
     >
@@ -209,7 +211,10 @@ export default function SpiritualFormation() {
             <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
               ✓ Acknowledged Today
             </Badge>
-            <Button size="sm">
+            <Button 
+              size="sm"
+              onClick={() => {/* acknowledgeLordship hook can be added here */}}
+            >
               <Heart className="h-4 w-4 mr-2" />
               Renew Daily Commitment
             </Button>
@@ -333,12 +338,10 @@ export default function SpiritualFormation() {
                 ))}
               </div>
               
-              <Link to="/calling-discernment">
-                <Button size="sm" className="w-full">
-                  <Target className="h-4 w-4 mr-2" />
-                  Complete Full Assessment
-                </Button>
-              </Link>
+              <Button size="sm" className="w-full" disabled>
+                <Target className="h-4 w-4 mr-2" />
+                Complete Full Assessment (Coming Soon)
+              </Button>
             </CardContent>
           </Card>
 
