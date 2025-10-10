@@ -6,6 +6,7 @@ import { queryClient } from "./lib/queryClient";
 import { AuthProvider } from "./contexts/AuthContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
+import { useRealtimeSubscriptions } from "@/hooks/useRealtime";
 import { MainLayout } from "./components/layout/MainLayout";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -45,6 +46,12 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+// Realtime subscriptions wrapper
+const RealtimeProvider = ({ children }: { children: React.ReactNode }) => {
+  useRealtimeSubscriptions();
+  return <>{children}</>;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -52,7 +59,8 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
+          <RealtimeProvider>
+            <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
@@ -99,7 +107,8 @@ const App = () => (
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
-          </Routes>
+            </Routes>
+          </RealtimeProvider>
         </BrowserRouter>
       </TooltipProvider>
     </AuthProvider>

@@ -12,19 +12,7 @@ import { useDashboard } from "@/hooks/useDashboard";
 import { useUserEnrollments } from "@/hooks/useCourses";
 import { useAcknowledgeLordship } from "@/hooks/useSpiritual";
 
-const recentActivity = [
-  { type: "course", title: "Completed: Prophetic Intelligence Module 3", time: "2 hours ago", icon: Book },
-  { type: "prayer", title: "Prayer request answered: Wisdom for studies", time: "1 day ago", icon: Heart },
-  { type: "achievement", title: "Earned ScrollBadge: Faithful Scholar", time: "2 days ago", icon: Trophy },
-  { type: "community", title: "Joined study group: Advanced Theology", time: "3 days ago", icon: Users },
-];
-
-const upcomingEvents = [
-  { title: "AI Tutor Session: GeoProphetic Intelligence", time: "Today, 3:00 PM", type: "ai-session" },
-  { title: "Community Prayer Meeting", time: "Tomorrow, 7:00 AM", type: "prayer" },
-  { title: "XR Classroom: Ancient Jerusalem Tour", time: "Wednesday, 2:00 PM", type: "xr" },
-  { title: "ScrollCoin Rewards Distribution", time: "Friday, 12:00 PM", type: "reward" },
-];
+// All data now comes from live hooks - no hardcoded values
 
 export default function Dashboard() {
   const { data: dashboardData, isLoading } = useDashboard();
@@ -42,10 +30,10 @@ export default function Dashboard() {
   }
 
   const quickStats = [
-    { label: "Courses Enrolled", value: String(dashboardData.courses_enrolled), change: "+2 this month", icon: Book },
-    { label: "ScrollCoins Earned", value: String(Math.round(dashboardData.balance)), change: "+89 this week", icon: Coins },
+    { label: "Courses Enrolled", value: String(dashboardData.courses_enrolled), change: `${enrollments?.length ?? 0} active`, icon: Book },
+    { label: "ScrollCoins Balance", value: String(Math.round(dashboardData.balance)), change: "Live balance", icon: Coins },
     { label: "Prayer Requests", value: String(dashboardData.total_prayers), change: `${dashboardData.prayers_answered} answered`, icon: Heart },
-    { label: "Community Rank", value: "#127", change: "↑ 15 positions", icon: Trophy },
+    { label: "Avg Progress", value: `${Math.round(dashboardData.avg_progress ?? 0)}%`, change: "Across all courses", icon: TrendingUp },
   ];
 
   return (
@@ -155,23 +143,30 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Recent Activity */}
+          {/* Recent Enrollments */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
+              <CardTitle>Recent Enrollments</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <activity.icon className="h-4 w-4 mt-1 text-muted-foreground" />
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium">{activity.title}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+              {enrollments && enrollments.length > 0 ? (
+                <div className="space-y-4">
+                  {enrollments.slice(0, 4).map((enrollment: any) => (
+                    <div key={enrollment.id} className="flex items-start space-x-3">
+                      <Book className="h-4 w-4 mt-1 text-muted-foreground" />
+                      <div className="space-y-1 flex-1">
+                        <p className="text-sm font-medium">{enrollment.courses.title}</p>
+                        <div className="flex items-center justify-between">
+                          <p className="text-xs text-muted-foreground">{enrollment.courses.faculty}</p>
+                          <Badge variant="secondary">{enrollment.progress}%</Badge>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">No enrollments yet</p>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -186,16 +181,16 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between">
-                <span className="text-sm">Divine Scorecard</span>
-                <Badge variant="secondary">92%</Badge>
+                <span className="text-sm">Prayer Requests</span>
+                <Badge variant="secondary">{dashboardData.total_prayers}</Badge>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm">Prayer Consistency</span>
-                <Badge variant="outline">21 days</Badge>
+                <span className="text-sm">Prayers Answered</span>
+                <Badge variant="outline">{dashboardData.prayers_answered}</Badge>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm">Scripture Study</span>
-                <Badge>Daily</Badge>
+                <span className="text-sm">Course Progress</span>
+                <Badge>{Math.round(dashboardData.avg_progress ?? 0)}%</Badge>
               </div>
               <Link to="/spiritual-formation">
                 <Button variant="outline" size="sm" className="w-full">
@@ -205,24 +200,34 @@ export default function Dashboard() {
             </CardContent>
           </Card>
 
-          {/* Upcoming Events */}
+          {/* Quick Actions */}
           <Card>
             <CardHeader>
-              <CardTitle>Upcoming Events</CardTitle>
+              <CardTitle>Quick Actions</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {upcomingEvents.map((event, index) => (
-                  <div key={index} className="space-y-1">
-                    <p className="text-sm font-medium">{event.title}</p>
-                    <p className="text-xs text-muted-foreground">{event.time}</p>
-                  </div>
-                ))}
-              </div>
-              <Link to="/spiritual-formation">
-                <Button variant="outline" size="sm" className="w-full mt-4">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  View Full Calendar
+            <CardContent className="space-y-2">
+              <Link to="/courses">
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Book className="h-4 w-4 mr-2" />
+                  Browse Courses
+                </Button>
+              </Link>
+              <Link to="/ai-tutors">
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Brain className="h-4 w-4 mr-2" />
+                  Start AI Session
+                </Button>
+              </Link>
+              <Link to="/prayer-requests">
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Heart className="h-4 w-4 mr-2" />
+                  Submit Prayer
+                </Button>
+              </Link>
+              <Link to="/wallet">
+                <Button variant="outline" size="sm" className="w-full justify-start">
+                  <Coins className="h-4 w-4 mr-2" />
+                  View Wallet
                 </Button>
               </Link>
             </CardContent>
