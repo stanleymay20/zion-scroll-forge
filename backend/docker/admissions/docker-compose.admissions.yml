@@ -1,0 +1,230 @@
+version: '3.8'
+
+services:
+  # Admissions API Service
+  admissions-api:
+    build:
+      context: ../..
+      dockerfile: docker/admissions/Dockerfile
+    container_name: scroll-admissions-api
+    environment:
+      - NODE_ENV=production
+      - PORT=3002
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@admissions-db:5432/scroll_admissions
+      - REDIS_HOST=admissions-redis
+      - REDIS_PORT=6379
+      - REDIS_ADMISSIONS_DB=2
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMISSIONS_SERVICE_KEY=${ADMISSIONS_SERVICE_KEY}
+    ports:
+      - "3002:3002"
+    depends_on:
+      - admissions-db
+      - admissions-redis
+    volumes:
+      - admissions-uploads:/app/uploads
+      - admissions-logs:/app/logs
+    networks:
+      - admissions-network
+      - scroll-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+
+  # Admissions Database
+  admissions-db:
+    image: postgres:15-alpine
+    container_name: scroll-admissions-db
+    environment:
+      - POSTGRES_DB=scroll_admissions
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8 --lc-collate=C --lc-ctype=C
+    ports:
+      - "5433:5432"
+    volumes:
+      - admissions-db-data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - admissions-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+
+  # Admissions Redis Cache
+  admissions-redis:
+    image: redis:7-alpine
+    container_name: scroll-admissions-redis
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+    ports:
+      - "6380:6379"
+    volumes:
+      - admissions-redis-data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - admissions-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.25'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+
+  # Document Processing Service
+  admissions-document-processor:
+    build:
+      context: ../..
+      dockerfile: docker/admissions/Dockerfile.document-processor
+    container_name: scroll-admissions-document-processor
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=admissions-redis
+      - REDIS_PORT=6379
+      - REDIS_ADMISSIONS_DB=2
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@admissions-db:5432/scroll_admissions
+      - DOCUMENT_STORAGE_PATH=/app/documents
+      - MAX_DOCUMENT_SIZE=50MB
+    volumes:
+      - admissions-documents:/app/documents
+      - admissions-logs:/app/logs
+    depends_on:
+      - admissions-db
+      - admissions-redis
+    networks:
+      - admissions-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.25'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+
+  # Assessment Processing Service
+  admissions-assessment-processor:
+    build:
+      context: ../..
+      dockerfile: docker/admissions/Dockerfile.assessment-processor
+    container_name: scroll-admissions-assessment-processor
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=admissions-redis
+      - REDIS_PORT=6379
+      - REDIS_ADMISSIONS_DB=2
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@admissions-db:5432/scroll_admissions
+      - AI_ASSESSMENT_API_KEY=${AI_ASSESSMENT_API_KEY}
+    depends_on:
+      - admissions-db
+      - admissions-redis
+    volumes:
+      - admissions-logs:/app/logs
+    networks:
+      - admissions-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: '0.5'
+        reservations:
+          memory: 512M
+          cpus: '0.25'
+
+  # Interview Coordination Service
+  admissions-interview-coordinator:
+    build:
+      context: ../..
+      dockerfile: docker/admissions/Dockerfile.interview-coordinator
+    container_name: scroll-admissions-interview-coordinator
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=admissions-redis
+      - REDIS_PORT=6379
+      - REDIS_ADMISSIONS_DB=2
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@admissions-db:5432/scroll_admissions
+      - VIDEO_CONFERENCE_API_KEY=${VIDEO_CONFERENCE_API_KEY}
+      - CALENDAR_INTEGRATION_KEY=${CALENDAR_INTEGRATION_KEY}
+    depends_on:
+      - admissions-db
+      - admissions-redis
+    volumes:
+      - admissions-logs:/app/logs
+    networks:
+      - admissions-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.25'
+        reservations:
+          memory: 256M
+          cpus: '0.1'
+
+  # Notification Service
+  admissions-notification-service:
+    build:
+      context: ../..
+      dockerfile: docker/admissions/Dockerfile.notification-service
+    container_name: scroll-admissions-notification-service
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=admissions-redis
+      - REDIS_PORT=6379
+      - REDIS_ADMISSIONS_DB=2
+      - EMAIL_SERVICE_API_KEY=${EMAIL_SERVICE_API_KEY}
+      - SMS_SERVICE_API_KEY=${SMS_SERVICE_API_KEY}
+      - PUSH_NOTIFICATION_KEY=${PUSH_NOTIFICATION_KEY}
+    depends_on:
+      - admissions-redis
+    volumes:
+      - admissions-logs:/app/logs
+    networks:
+      - admissions-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.1'
+        reservations:
+          memory: 128M
+          cpus: '0.05'
+
+volumes:
+  admissions-db-data:
+    driver: local
+  admissions-redis-data:
+    driver: local
+  admissions-uploads:
+    driver: local
+  admissions-documents:
+    driver: local
+  admissions-logs:
+    driver: local
+
+networks:
+  admissions-network:
+    driver: bridge
+    internal: false
+  scroll-network:
+    external: true
