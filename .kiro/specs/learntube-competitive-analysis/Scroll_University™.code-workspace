@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../.."
+		},
+		{
+			"path": "../../../../../Downloads/Compressed/zion-scroll-forge-main/zion-scroll-forge-main"
+		}
+	],
+	"settings": {
+		"typescript.autoClosingTags": false
+	}
+}

@@ -1,4 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { PageTemplate } from "@/components/layout/PageTemplate";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,51 +8,74 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   ArrowLeft, Play, Clock, Users, Star, BookOpen, 
-  CheckCircle, Lock, Trophy, Loader2 
+  CheckCircle, Lock, Trophy, Loader2, AlertCircle,
+  FileText, MessageSquare, Award, Heart
 } from "lucide-react";
 import { useEnrollInCourse, useUserEnrollments } from "@/hooks/useCourses";
+import { getCourseDetail } from "@/services/courses";
+import { useAuth } from "@/contexts/AuthContext";
 import { useMemo } from "react";
 
 export default function CourseDetail() {
   const { courseId } = useParams();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const enrollMutation = useEnrollInCourse();
   const { data: enrollments } = useUserEnrollments();
 
-  // Mock course data - in real app would fetch from API
-  const course = {
-    id: courseId,
-    title: "Prophetic Intelligence Fundamentals",
-    faculty: "GeoProphetic Intelligence",
-    instructor: "Dr. Samuel Scroll",
-    duration: "8 weeks",
-    students: 2847,
-    rating: 4.9,
-    level: "Beginner",
-    price: 250,
-    description: "Master the art of receiving and interpreting divine insights for global transformation. This comprehensive course covers prophetic principles, discernment skills, and practical application.",
-    modules: [
-      { id: 1, title: "Introduction to Prophetic Intelligence", duration: "45 min", locked: false },
-      { id: 2, title: "Hearing God's Voice", duration: "60 min", locked: false },
-      { id: 3, title: "Discernment & Interpretation", duration: "75 min", locked: false },
-      { id: 4, title: "Prophetic Accuracy & Validation", duration: "90 min", locked: true },
-      { id: 5, title: "Corporate Prophetic Ministry", duration: "60 min", locked: true },
-    ]
-  };
+  // Fetch comprehensive course details
+  const { data: courseData, isLoading, error } = useQuery({
+    queryKey: ['course-detail', courseId],
+    queryFn: () => getCourseDetail(courseId!, user?.id),
+    enabled: !!courseId && !!user?.id
+  });
 
   const enrollment = useMemo(() => 
-    enrollments?.find((e: any) => e.course_id === courseId),
-    [enrollments, courseId]
+    enrollments?.find((e: any) => e.course_id === courseId) || courseData?.enrollment,
+    [enrollments, courseId, courseData?.enrollment]
   );
 
   const handleEnroll = async () => {
     await enrollMutation.mutateAsync(courseId!);
   };
 
+  const handleStartLearning = () => {
+    navigate(`/courses/${courseId}/learn`);
+  };
+
+  if (isLoading) {
+    return (
+      <PageTemplate title="Loading..." description="">
+        <div className="flex justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </PageTemplate>
+    );
+  }
+
+  if (error || !courseData) {
+    return (
+      <PageTemplate title="Course Not Found" description="">
+        <div className="text-center py-12">
+          <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+          <p className="text-lg text-muted-foreground mb-4">
+            {error ? 'Failed to load course details' : 'Course not found'}
+          </p>
+          <Button onClick={() => navigate("/courses")}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Courses
+          </Button>
+        </div>
+      </PageTemplate>
+    );
+  }
+
+  const { course, modules } = courseData;
+
   return (
     <PageTemplate
       title={course.title}
-      description={course.faculty}
+      description={course.faculty || 'ScrollUniversity Course'}
       actions={
         <Button variant="outline" onClick={() => navigate("/courses")}>
           <ArrowLeft className="h-4 w-4 mr-2" />
@@ -79,6 +103,11 @@ export default function CourseDetail() {
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
                   <span className="text-sm font-medium">{course.rating}</span>
                 </div>
+                {course.xr_enabled && (
+                  <Badge variant="outline" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+                    XR Enabled
+                  </Badge>
+                )}
               </div>
             </CardHeader>
           </Card>
@@ -101,9 +130,10 @@ export default function CourseDetail() {
           )}
 
           <Tabs defaultValue="curriculum" className="w-full">
-            <TabsList>
+            <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="curriculum">Curriculum</TabsTrigger>
               <TabsTrigger value="instructor">Instructor</TabsTrigger>
+              <TabsTrigger value="spiritual">Spiritual Focus</TabsTrigger>
               <TabsTrigger value="reviews">Reviews</TabsTrigger>
             </TabsList>
             
@@ -111,47 +141,74 @@ export default function CourseDetail() {
               <Card>
                 <CardHeader>
                   <CardTitle>Course Modules</CardTitle>
+                  <CardDescription>
+                    Comprehensive learning modules with lectures, assessments, and practical applications
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {course.modules.map((module) => (
+                    {modules.map((module, index) => (
                       <div 
                         key={module.id} 
-                        className="flex items-center justify-between p-3 border rounded-lg"
+                        className="border rounded-lg p-4 space-y-3"
                       >
-                        <div className="flex items-center space-x-3 flex-1">
-                          <div className="p-2 bg-primary/10 rounded-full">
-                            {module.locked ? (
-                              <Lock className="h-4 w-4 text-muted-foreground" />
-                            ) : (
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-3 flex-1">
+                            <div className="p-2 bg-primary/10 rounded-full">
                               <BookOpen className="h-4 w-4 text-primary" />
-                            )}
-                          </div>
-                          <div>
-                            <p className="font-medium">{module.title}</p>
-                            <p className="text-sm text-muted-foreground">
-                              <Clock className="h-3 w-3 inline mr-1" />
-                              {module.duration}
-                            </p>
+                            </div>
+                            <div>
+                              <p className="font-medium">{module.title}</p>
+                              <p className="text-sm text-muted-foreground">
+                                {module.description}
+                              </p>
+                              <div className="flex items-center space-x-4 mt-1">
+                                <span className="text-xs text-muted-foreground">
+                                  <Clock className="h-3 w-3 inline mr-1" />
+                                  {module.estimated_duration} minutes
+                                </span>
+                                <span className="text-xs text-muted-foreground">
+                                  Module {index + 1}
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <Button 
-                          size="sm" 
-                          disabled={module.locked || !enrollment}
-                          variant={module.locked ? "outline" : "default"}
-                        >
-                          {module.locked ? (
-                            <>
-                              <Lock className="h-4 w-4 mr-2" />
-                              Locked
-                            </>
-                          ) : (
-                            <>
-                              <Play className="h-4 w-4 mr-2" />
-                              Start
-                            </>
-                          )}
-                        </Button>
+
+                        {/* Module Content Overview */}
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                          <div className="flex items-center space-x-2">
+                            <Play className="h-4 w-4 text-blue-500" />
+                            <span>Lectures</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <FileText className="h-4 w-4 text-green-500" />
+                            <span>Notes & Resources</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <CheckCircle className="h-4 w-4 text-orange-500" />
+                            <span>Assessments</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <MessageSquare className="h-4 w-4 text-purple-500" />
+                            <span>Discussion</span>
+                          </div>
+                        </div>
+
+                        {/* Learning Objectives */}
+                        {module.learning_objectives && module.learning_objectives.length > 0 && (
+                          <div className="bg-muted/50 rounded-lg p-3">
+                            <h4 className="font-medium text-sm mb-2">Learning Objectives:</h4>
+                            <ul className="space-y-1">
+                              {module.learning_objectives.map((objective, objIndex) => (
+                                <li key={objIndex} className="text-sm flex items-start space-x-2">
+                                  <CheckCircle className="h-3 w-3 text-primary mt-0.5 flex-shrink-0" />
+                                  <span>{objective}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -167,7 +224,7 @@ export default function CourseDetail() {
                 <CardContent>
                   <div className="space-y-4">
                     <div>
-                      <h3 className="font-semibold text-lg">{course.instructor}</h3>
+                      <h3 className="font-semibold text-lg">Dr. Samuel Scroll</h3>
                       <p className="text-sm text-muted-foreground">
                         Dean of {course.faculty}
                       </p>
@@ -178,6 +235,87 @@ export default function CourseDetail() {
                       thousands of students globally and has documented accuracy rates of 95%+ 
                       in prophetic ministry.
                     </p>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div>
+                        <p className="font-medium">Experience</p>
+                        <p className="text-muted-foreground">20+ years</p>
+                      </div>
+                      <div>
+                        <p className="font-medium">Students Trained</p>
+                        <p className="text-muted-foreground">10,000+</p>
+                      </div>
+                      <div>
+                        <p className="font-medium">Accuracy Rate</p>
+                        <p className="text-muted-foreground">95%+</p>
+                      </div>
+                      <div>
+                        <p className="font-medium">Specialization</p>
+                        <p className="text-muted-foreground">Prophetic Intelligence</p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="spiritual">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <Heart className="h-5 w-5 text-primary" />
+                    <span>Spiritual Formation Focus</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <h4 className="font-medium mb-2">Kingdom Focus</h4>
+                      <p className="text-sm text-muted-foreground">
+                        This course is designed to advance God's Kingdom through developing prophetic intelligence 
+                        that serves the body of Christ and impacts nations.
+                      </p>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-medium mb-2">Character Development</h4>
+                      <div className="flex flex-wrap gap-2">
+                        <Badge variant="outline">Humility</Badge>
+                        <Badge variant="outline">Discernment</Badge>
+                        <Badge variant="outline">Faithfulness</Badge>
+                        <Badge variant="outline">Wisdom</Badge>
+                        <Badge variant="outline">Love</Badge>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-medium mb-2">Ministry Application</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Students will learn to operate in prophetic ministry with accuracy, love, and 
+                        accountability, serving local churches and global missions.
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-medium mb-2">Spiritual Disciplines</h4>
+                      <ul className="space-y-1 text-sm">
+                        <li className="flex items-center space-x-2">
+                          <CheckCircle className="h-3 w-3 text-primary" />
+                          <span>Daily prayer and intercession</span>
+                        </li>
+                        <li className="flex items-center space-x-2">
+                          <CheckCircle className="h-3 w-3 text-primary" />
+                          <span>Scripture meditation and study</span>
+                        </li>
+                        <li className="flex items-center space-x-2">
+                          <CheckCircle className="h-3 w-3 text-primary" />
+                          <span>Prophetic journaling</span>
+                        </li>
+                        <li className="flex items-center space-x-2">
+                          <CheckCircle className="h-3 w-3 text-primary" />
+                          <span>Community accountability</span>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -189,9 +327,12 @@ export default function CourseDetail() {
                   <CardTitle>Student Reviews</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground">
-                    Reviews coming soon...
-                  </p>
+                  <div className="text-center py-8">
+                    <Star className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                    <p className="text-muted-foreground">
+                      Student reviews will be available after course launch
+                    </p>
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -205,23 +346,31 @@ export default function CourseDetail() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Price</span>
-                  <span className="text-2xl font-bold text-primary">{course.price} SC</span>
+                  <span className="text-2xl font-bold text-primary">
+                    {Math.round((course.price_cents || course.price * 100) / 100)} SC
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Duration</span>
-                  <span className="font-medium">{course.duration}</span>
+                  <span className="font-medium">{course.duration || '8 weeks'}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Students</span>
-                  <span className="font-medium">{course.students.toLocaleString()}</span>
+                  <span className="font-medium">
+                    {(course.students_count || course.students || 0).toLocaleString()}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Level</span>
                   <span className="font-medium">{course.level}</span>
                 </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Modules</span>
+                  <span className="font-medium">{modules.length}</span>
+                </div>
 
                 {enrollment ? (
-                  <Button className="w-full" onClick={() => navigate(`/courses/${courseId}/learn`)}>
+                  <Button className="w-full" onClick={handleStartLearning}>
                     <Play className="h-4 w-4 mr-2" />
                     Continue Learning
                   </Button>
@@ -270,7 +419,47 @@ export default function CourseDetail() {
                   <CheckCircle className="h-4 w-4 text-primary mt-0.5" />
                   <span>Validate prophetic accuracy</span>
                 </li>
+                <li className="flex items-start space-x-2">
+                  <CheckCircle className="h-4 w-4 text-primary mt-0.5" />
+                  <span>Minister with love and accountability</span>
+                </li>
               </ul>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-sm">Course Features</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center space-x-2">
+                  <Play className="h-4 w-4 text-blue-500" />
+                  <span>HD Video Lectures</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <FileText className="h-4 w-4 text-green-500" />
+                  <span>Downloadable Resources</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MessageSquare className="h-4 w-4 text-purple-500" />
+                  <span>Community Discussion</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Award className="h-4 w-4 text-orange-500" />
+                  <span>ScrollBadge Certificate</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Heart className="h-4 w-4 text-red-500" />
+                  <span>Spiritual Formation</span>
+                </div>
+                {course.xr_enabled && (
+                  <div className="flex items-center space-x-2">
+                    <div className="h-4 w-4 bg-gradient-to-r from-purple-500 to-pink-500 rounded" />
+                    <span>XR Immersive Experience</span>
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
         </div>

@@ -1,0 +1,1981 @@
+// ScrollUniversity Database Schema
+// "We establish this database not in the wisdom of Babylon, but by the breath of the Spirit"
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Core User Management
+model User {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  username          String   @unique
+  passwordHash      String
+  firstName         String
+  lastName          String
+  location          String?
+  phoneNumber       String?
+  dateOfBirth       DateTime?
+  
+  // Portal-specific fields
+  scrollCoinWallet  String?  @unique @map("scroll_coin_wallet")
+  preferredLanguage String   @default("en") @map("preferred_language")
+  timeZone          String   @default("UTC") @map("time_zone")
+  scrollNodeId      String?  @map("scroll_node_id")
+  avatarUrl         String?  @map("avatar_url")
+  bio               String?
+  
+  // Spiritual Formation Tracking
+  scrollCalling     String?
+  spiritualGifts    String[]
+  kingdomVision     String?
+  scrollAlignment   Float    @default(0.0)
+  
+  // Academic Status
+  role              UserRole @default(STUDENT)
+  enrollmentStatus  EnrollmentStatus @default(ACTIVE)
+  academicLevel     AcademicLevel @default(SCROLL_OPEN)
+  
+  // ScrollCoin Integration
+  scrollCoinBalance Float    @default(0.0)
+  workTradeCredits  Float    @default(0.0)
+  
+  // Timestamps
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  lastLoginAt       DateTime?
+  
+  // Relations
+  enrollments       Enrollment[]
+  payments          Payment[]
+  scrollCoinTransactions ScrollCoinTransaction[]
+  researchPapers    ResearchPaper[]
+  certifications    Certification[]
+  mentorships       Mentorship[]
+  scrollBadges      ScrollBadge[]
+  publicBadgeProfile PublicBadgeProfile?
+  
+  // ScrollAccreditation System Relations
+  scrollTranscripts ScrollTranscript[]
+  facultyAvatars    FacultyAvatar[]
+  blockchainCredentials BlockchainCredential[]
+  
+  // ScrollAdmissions System Relations
+  applications      Application[]
+  
+  // Portal-specific Relations
+  portalEnrollments PortalEnrollment[]
+  aiTutorSessions   AITutorSession[]
+  coordinatedNodes  ScrollNode[]
+  createdScholarships Scholarship[] @relation("ScholarshipCreator")
+  scholarshipApplications ScholarshipApplication[]
+  reviewedApplications ScholarshipApplication[] @relation("ApplicationReviewer")
+  instructedXRClasses XRClassroom[]
+  xrParticipations  XRClassroomParticipant[]
+  facultyMemberships FacultyMember[]
+  userPreferences   UserPreferences?
+  portalAnalytics   PortalAnalytics[]
+  
+  @@map("users")
+}
+
+enum UserRole {
+  STUDENT
+  FACULTY
+  ADMIN
+  SCROLL_ELDER
+  PROPHET
+  CHANCELLOR
+  ADMISSIONS_OFFICER
+  ADMISSIONS_COMMITTEE
+  INTERVIEWER
+  SPIRITUAL_EVALUATOR
+  ACADEMIC_ASSESSOR
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  SUSPENDED
+  GRADUATED
+  WITHDRAWN
+}
+
+enum AcademicLevel {
+  SCROLL_OPEN
+  SCROLL_STARTER
+  SCROLL_DEGREE
+  SCROLL_DOCTORATE
+  SCROLL_SCHOLARSHIP
+}
+
+// Course and Curriculum Management
+model Faculty {
+  id          String @id @default(cuid())
+  name        String
+  description String
+  icon        String?
+  isActive    Boolean @default(true)
+  
+  courses     Course[]
+  portalCourses PortalCourse[]
+  facultyMembers FacultyMember[]
+  
+  @@map("faculties")
+}
+
+model Course {
+  id              String   @id @default(cuid())
+  title           String
+  description     String
+  syllabus        String?
+  difficulty      Difficulty
+  duration        Int      // in hours
+  scrollXPReward  Int      @default(10)
+  scrollCoinCost  Float    @default(0.0)
+  
+  // Course Content
+  videoUrl        String?
+  materials       String[] // JSON array of material URLs
+  prerequisites   String[] // Course IDs
+  
+  // Faculty Assignment
+  facultyId       String
+  faculty         Faculty  @relation(fields: [facultyId], references: [id])
+  
+  // Status
+  isActive        Boolean  @default(true)
+  publishedAt     DateTime?
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  enrollments     Enrollment[]
+  assignments     Assignment[]
+  scrollBadges    ScrollBadge[]
+  
+  @@map("courses")
+}
+
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  PROPHETIC
+}
+
+// Enrollment and Progress Tracking
+model Enrollment {
+  id              String   @id @default(cuid())
+  userId          String
+  courseId        String
+  
+  // Progress Tracking
+  progress        Float    @default(0.0) // 0-100%
+  scrollXPEarned  Int      @default(0)
+  currentModule   Int      @default(1)
+  
+  // Status
+  status          EnrollmentStatus @default(ACTIVE)
+  startedAt       DateTime @default(now())
+  completedAt     DateTime?
+  
+  // Relations
+  user            User     @relation(fields: [userId], references: [id])
+  course          Course   @relation(fields: [courseId], references: [id])
+  submissions     Submission[]
+  
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+// Assignment and Assessment System
+model Assignment {
+  id              String   @id @default(cuid())
+  courseId        String
+  title           String
+  description     String
+  type            AssignmentType
+  maxPoints       Int      @default(100)
+  dueDate         DateTime?
+  
+  // ScrollDefense Integration
+  requiresDefense Boolean  @default(false)
+  defenseWeight   Float    @default(0.0)
+  
+  // Relations
+  course          Course   @relation(fields: [courseId], references: [id])
+  submissions     Submission[]
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("assignments")
+}
+
+enum AssignmentType {
+  QUIZ
+  ESSAY
+  PROJECT
+  SCROLL_MISSION
+  SCROLL_DEFENSE
+  LAB_WORK
+}
+
+model Submission {
+  id              String   @id @default(cuid())
+  enrollmentId    String
+  assignmentId    String
+  
+  // Submission Content
+  content         String
+  attachments     String[] // File URLs
+  
+  // Grading
+  score           Float?
+  feedback        String?
+  gradedAt        DateTime?
+  gradedBy        String? // AI or human grader ID
+  
+  // Scroll Assessment
+  scrollAlignment Float?   // Prophetic alignment score
+  kingdomImpact   Float?   // Real-world impact measurement
+  
+  // Status
+  status          SubmissionStatus @default(SUBMITTED)
+  submittedAt     DateTime @default(now())
+  
+  // Relations
+  enrollment      Enrollment @relation(fields: [enrollmentId], references: [id])
+  assignment      Assignment @relation(fields: [assignmentId], references: [id])
+  
+  @@map("submissions")
+}
+
+enum SubmissionStatus {
+  DRAFT
+  SUBMITTED
+  GRADED
+  RETURNED
+}
+
+// Payment and Tuition System
+model Payment {
+  id              String   @id @default(cuid())
+  userId          String
+  amount          Float
+  currency        String   @default("USD")
+  
+  // Payment Method
+  method          PaymentMethod
+  stripePaymentId String?
+  scrollCoinTxId  String?
+  cryptoTxHash    String?
+  
+  // Payment Details
+  description     String
+  status          PaymentStatus @default(PENDING)
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  processedAt     DateTime?
+  
+  // Relations
+  user            User     @relation(fields: [userId], references: [id])
+  
+  @@map("payments")
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  SCROLL_COIN
+  CRYPTOCURRENCY
+  WORK_TRADE
+  SCHOLARSHIP
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+// ScrollCoin Integration
+model ScrollCoinTransaction {
+  id              String   @id @default(cuid())
+  userId          String
+  amount          Float
+  type            TransactionType
+  description     String
+  
+  // Blockchain Integration
+  blockchainTxId  String?
+  blockNumber     Int?
+  
+  // Activity Tracking
+  activityType    ScrollCoinActivity?
+  relatedEntityId String? // Course ID, Research ID, etc.
+  
+  createdAt       DateTime @default(now())
+  
+  // Relations
+  user            User     @relation(fields: [userId], references: [id])
+  
+  @@map("scroll_coin_transactions")
+}
+
+enum TransactionType {
+  EARNED
+  SPENT
+  TRANSFERRED
+  BONUS
+}
+
+enum ScrollCoinActivity {
+  DAILY_XP_STREAK
+  COURSE_COMPLETION
+  RESEARCH_PUBLICATION
+  MENTORING
+  TRANSLATION
+  TOOL_BUILDING
+  MISSION_SERVICE
+}
+
+// Research and Publication System
+model ResearchPaper {
+  id              String   @id @default(cuid())
+  authorId        String
+  title           String
+  abstract        String
+  content         String
+  
+  // Publication Details
+  doi             String?  @unique
+  orcidId         String?
+  publishedAt     DateTime?
+  peerReviewed    Boolean  @default(false)
+  
+  // Scroll Validation
+  propheticScore  Float?   // Prophet-verified accuracy
+  kingdomRelevance Float?  // Kingdom impact measurement
+  scrollAlignment Float?   // Alignment with scroll principles
+  
+  // Status
+  status          PublicationStatus @default(DRAFT)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  author          User     @relation(fields: [authorId], references: [id])
+  
+  @@map("research_papers")
+}
+
+enum PublicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  PUBLISHED
+  REJECTED
+}
+
+// Certification and Degrees
+model Certification {
+  id              String   @id @default(cuid())
+  userId          String
+  type            CertificationType
+  title           String
+  description     String
+  
+  // ScrollSeal Integration
+  scrollSealId    String   @unique
+  heavenLedgerId  String?  // Blockchain certificate ID
+  
+  // Validation
+  issuedBy        String   // Faculty or AI system
+  validatedBy     String?  // ScrollWitness Elder ID
+  
+  // Timestamps
+  issuedAt        DateTime @default(now())
+  expiresAt       DateTime?
+  
+  // Relations
+  user            User     @relation(fields: [userId], references: [id])
+  
+  @@map("certifications")
+}
+
+enum CertificationType {
+  COURSE_COMPLETION
+  DIPLOMA
+  BACHELOR_DEGREE
+  MASTER_DEGREE
+  DOCTORATE
+  DSGEI
+  SCROLL_FELLOWSHIP
+}
+
+// Mentorship System
+model Mentorship {
+  id              String   @id @default(cuid())
+  menteeId        String
+  mentorType      MentorType
+  mentorId        String?  // Human mentor ID
+  aiMentorName    String?  // AI mentor identifier
+  
+  // Mentorship Details
+  focus           String   // Area of mentorship
+  status          MentorshipStatus @default(ACTIVE)
+  
+  // Progress Tracking
+  sessionsCount   Int      @default(0)
+  lastSessionAt   DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  mentee          User     @relation(fields: [menteeId], references: [id])
+  
+  @@map("mentorships")
+}
+
+enum MentorType {
+  AI_MENTOR
+  HUMAN_MENTOR
+  SCROLL_ELDER
+  PROPHET_GUIDE
+}
+
+enum MentorshipStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  TERMINATED
+}
+
+// ScrollBadge NFT System
+model ScrollBadge {
+  id                String   @id @default(cuid())
+  tokenId           String   @unique
+  courseId          String?
+  studentId         String
+  badgeType         BadgeType
+  
+  // Badge Content
+  name              String
+  description       String
+  imageUrl          String
+  animationUrl      String?
+  
+  // Verification Data
+  verificationHash  String   @unique
+  blockchainTxHash  String?
+  ipfsMetadataHash  String?
+  
+  // Achievement Data
+  competencies      Json     // Array of skills acquired
+  spiritualGrowth   Json     // Spiritual formation metrics
+  finalGrade        Float?
+  completionDate    DateTime?
+  
+  // Status
+  isRevoked         Boolean  @default(false)
+  revokedReason     String?
+  revokedAt         DateTime?
+  
+  // Timestamps
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Relations
+  student           User     @relation(fields: [studentId], references: [id])
+  course            Course?  @relation(fields: [courseId], references: [id])
+  verifications     BadgeVerification[]
+  
+  @@map("scroll_badges")
+}
+
+enum BadgeType {
+  COURSE_COMPLETION
+  SKILL_MASTERY
+  SPIRITUAL_MILESTONE
+  PROPHETIC_ACHIEVEMENT
+  KINGDOM_IMPACT
+  SCROLL_CERTIFICATION
+}
+
+model BadgeVerification {
+  id                String   @id @default(cuid())
+  badgeId           String
+  verificationId    String   @unique
+  
+  // Verification Results
+  isValid           Boolean
+  badgeExists       Boolean
+  ownershipVerified Boolean
+  courseCompleted   Boolean
+  skillsValidated   Boolean
+  blockchainConfirmed Boolean
+  
+  // Verification Details
+  verifiedBy        String   // System or user ID
+  verificationMethod String  // 'blockchain', 'database', 'hybrid'
+  errors            String[] // Array of error messages if any
+  
+  // Timestamps
+  verifiedAt        DateTime @default(now())
+  
+  // Relations
+  badge             ScrollBadge @relation(fields: [badgeId], references: [id])
+  
+  @@map("badge_verifications")
+}
+
+model PublicBadgeProfile {
+  id                String   @id @default(cuid())
+  profileId         String   @unique
+  studentId         String   @unique
+  
+  // Profile Settings
+  isPublic          Boolean  @default(true)
+  displayName       String
+  profileImage      String?
+  
+  // Shareable Data
+  shareUrl          String   @unique
+  qrCodeUrl         String
+  embedCode         String?
+  
+  // Statistics
+  totalBadges       Int      @default(0)
+  coursesCompleted  Int      @default(0)
+  skillsMastered    String[] // Array of skill names
+  
+  // Timestamps
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  lastViewedAt      DateTime?
+  
+  // Relations
+  student           User     @relation(fields: [studentId], references: [id])
+  
+  @@map("public_badge_profiles")
+}
+
+// ============================================================================
+// SCROLLACCREDITATION SYSTEM MODELS
+// "By the Spirit of Truth, we establish accreditation that honors both 
+// divine revelation and empirical excellence"
+// ============================================================================
+
+// Institution Accreditation Management
+model AccreditationRecord {
+  id                    String   @id @default(cuid())
+  institutionId         String
+  applicationDate       DateTime @default(now())
+  status                AccreditationStatus @default(SUBMITTED)
+  
+  // Validation Components
+  revelationAssessment  Json     @default("{}")
+  empiricalValidation   Json     @default("{}")
+  impactAssessment      Json     @default("{}")
+  scrollSealValidation  Json     @default("{}")
+  
+  // Validation Team
+  propheticValidators   Json     @default("[]")
+  dataScienceValidators Json     @default("[]")
+  
+  // Results
+  accreditationDecision Json     @default("{}")
+  certificateHash       String?
+  validityPeriod        Json     @default("{}")
+  
+  // Audit Trail
+  validationHistory     Json     @default("[]")
+  renewalHistory        Json     @default("[]")
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  scrollTranscripts     ScrollTranscript[]
+  facultyAvatars        FacultyAvatar[]
+  researchProjects      ResearchProject[]
+  
+  @@map("accreditation_records")
+}
+
+enum AccreditationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  PROPHETIC_VALIDATION
+  DATA_SCIENCE_VALIDATION
+  JOINT_VALIDATION
+  APPROVED
+  REJECTED
+  RENEWAL_REQUIRED
+  REVOKED
+}
+
+// ScrollXP Transcript and Credential System
+model ScrollTranscript {
+  id                    String   @id @default(cuid())
+  studentId             String
+  institutionId         String
+  accreditationId       String
+  
+  // Academic Performance
+  gpa                   Float
+  creditHours           Int
+  courses               Json     @default("[]")
+  
+  // ScrollUniversity Metrics
+  scrollXP              Int      @default(0)
+  innovationScore       Json     @default("{}")
+  propheticDefense      Json     @default("{}")
+  communityImpact       Json     @default("{}")
+  
+  // Blockchain Credentials (JSON for backward compatibility)
+  blockchainCredentialsJson Json     @default("[]")
+  verificationHashes    String[]
+  
+  // Portfolio and Achievements
+  researchPublications  Json     @default("[]")
+  projects              Json     @default("[]")
+  certifications        Json     @default("[]")
+  
+  // Timestamps
+  issuedAt              DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  student               User     @relation(fields: [studentId], references: [id])
+  accreditation         AccreditationRecord @relation(fields: [accreditationId], references: [id])
+  blockchainCredentials BlockchainCredential[]
+  
+  @@map("scroll_transcripts")
+}
+
+// AI Faculty Avatar and Cloning System
+model FacultyAvatar {
+  id                    String   @id @default(cuid())
+  facultyId             String
+  institutionId         String
+  accreditationId       String
+  
+  // Avatar Configuration
+  avatarType            AvatarType @default(AI_GENERATED)
+  specialization        String
+  knowledgeDomains      Json     @default("[]")
+  
+  // Training Data
+  trainingContent       Json     @default("[]")
+  voiceModel            Json     @default("{}")
+  personalityProfile    Json     @default("{}")
+  
+  // Capabilities
+  supportedLanguages    Json     @default("[]")
+  interactionModes      Json     @default("[]")
+  availabilitySchedule  Json     @default("{}")
+  
+  // Performance Metrics
+  studentInteractions   Json     @default("[]")
+  satisfactionRatings   Json     @default("[]")
+  learningOutcomes      Json     @default("[]")
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  faculty               User     @relation(fields: [facultyId], references: [id])
+  accreditation         AccreditationRecord @relation(fields: [accreditationId], references: [id])
+  
+  @@map("faculty_avatars")
+}
+
+enum AvatarType {
+  REAL
+  AI_GENERATED
+  HYBRID
+}
+
+// AutoResearch Engine and Publication System
+model ResearchProject {
+  id                    String   @id @default(cuid())
+  teamId                String
+  institutionId         String
+  accreditationId       String?
+  
+  // Project Details
+  title                 String
+  researchProblem       Json
+  methodology           Json     @default("{}")
+  
+  // Data Sources
+  realWorldDataSources  Json     @default("[]")
+  propheticInsights     Json     @default("[]")
+  
+  // Analysis and Results
+  gptAnalysisResults    Json     @default("[]")
+  statisticalAnalysis   Json     @default("{}")
+  findings              Json     @default("{}")
+  
+  // Publication
+  publications          Json     @default("[]")
+  citationMetrics       Json     @default("{}")
+  impactMetrics         Json     @default("{}")
+  
+  // Status
+  status                ResearchStatus @default(ACTIVE)
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  accreditation         AccreditationRecord? @relation(fields: [accreditationId], references: [id])
+  
+  @@map("research_projects")
+}
+
+enum ResearchStatus {
+  ACTIVE
+  COMPLETED
+  PUBLISHED
+  ARCHIVED
+}
+
+// ScrollPact Employer Network and Partnership Platform
+model EmployerPartnership {
+  id                    String   @id @default(cuid())
+  organizationName      String
+  partnershipType       PartnershipType
+  
+  // Organization Details
+  industry              String?
+  organizationSize      String?
+  locations             Json     @default("[]")
+  
+  // Hiring and Collaboration
+  talentRequirements    Json     @default("[]")
+  activeProjects        Json     @default("[]")
+  hiredGraduates        Json     @default("[]")
+  
+  // Access and Benefits
+  researchAccess        Json     @default("{}")
+  techInsightsAccess    Json     @default("{}")
+  networkingOpportunities Json   @default("[]")
+  
+  // Performance Metrics
+  hiringSuccessMetrics  Json     @default("{}")
+  partnershipSatisfaction Json   @default("{}")
+  renewalHistory        Json     @default("[]")
+  
+  // Timestamps
+  partnershipStartDate  DateTime @default(now())
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@map("employer_partnerships")
+}
+
+enum PartnershipType {
+  NGO
+  STARTUP
+  GOVERNMENT
+  MULTINATIONAL
+  ACADEMIC
+  NONPROFIT
+}
+
+// Blockchain Credential Verification System
+model BlockchainCredential {
+  id                    String   @id @default(cuid())
+  studentId             String
+  transcriptId          String?
+  credentialType        CredentialType
+  
+  // Blockchain Data
+  blockchainHash        String   @unique
+  smartContractAddress  String?
+  verificationUrl       String?
+  
+  // Credential Details
+  issueDate             DateTime @default(now())
+  expiryDate            DateTime?
+  status                CredentialStatus @default(ACTIVE)
+  metadata              Json     @default("{}")
+  
+  // IPFS Integration
+  ipfsHash              String?
+  documentUrl           String?
+  
+  // Relations
+  student               User     @relation(fields: [studentId], references: [id])
+  transcript            ScrollTranscript? @relation(fields: [transcriptId], references: [id])
+  
+  @@map("blockchain_credentials")
+}
+
+enum CredentialType {
+  SCROLL_TRANSCRIPT
+  DSGEI_DEGREE
+  B_SCROLL_CERTIFICATION
+  COURSE_COMPLETION
+  RESEARCH_PUBLICATION
+  INNOVATION_CERTIFICATE
+}
+
+enum CredentialStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+  SUSPENDED
+}
+
+// ============================================================================
+// SCROLLUNIVERSITYPORTAL SYSTEM MODELS
+// "We establish this portal not in the wisdom of Babylon, but by the breath of the Spirit"
+// Portal-specific models for the ScrollUniversity web and mobile platform
+// ============================================================================
+
+// Portal Courses (integration with ScrollCourseSpec)
+model PortalCourse {
+  portalCourseId    String   @id @default(uuid()) @map("portal_course_id")
+  courseSpecId      String   @map("course_spec_id") // Reference to ScrollCourseSpec
+  facultyId         String?  @map("faculty_id")
+  title             String
+  description       String?
+  level             String   @default("Introductory")
+  durationWeeks     Int      @default(4) @map("duration_weeks")
+  xpReward          Int      @default(100) @map("xp_reward")
+  scrollCoinCost    Float    @default(0.00) @map("scroll_coin_cost")
+  prerequisites     String[] // Array of course IDs
+  featured          Boolean  @default(false)
+  enrollmentOpen    Boolean  @default(true) @map("enrollment_open")
+  enrollmentCount   Int      @default(0) @map("enrollment_count")
+  rating            Float    @default(0.00)
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  faculty           Faculty? @relation(fields: [facultyId], references: [id])
+  enrollments       PortalEnrollment[]
+  aiTutorSessions   AITutorSession[]
+  xrClassrooms      XRClassroom[]
+  
+  @@map("portal_courses")
+}
+
+// Portal Enrollments (enhanced from existing enrollments)
+model PortalEnrollment {
+  enrollmentId        String    @id @default(uuid()) @map("enrollment_id")
+  userId              String    @map("user_id")
+  portalCourseId      String    @map("portal_course_id")
+  enrollmentDate      DateTime  @default(now()) @map("enrollment_date")
+  completionDate      DateTime? @map("completion_date")
+  progressPercentage  Float     @default(0.00) @map("progress_percentage")
+  xpEarned            Int       @default(0) @map("xp_earned")
+  scrollCoinsEarned   Float     @default(0.00) @map("scroll_coins_earned")
+  currentLessonId     String?   @map("current_lesson_id")
+  status              String    @default("active")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  
+  // Relations
+  user                User         @relation(fields: [userId], references: [id])
+  portalCourse        PortalCourse @relation(fields: [portalCourseId], references: [portalCourseId])
+  
+  @@unique([userId, portalCourseId])
+  @@map("portal_enrollments")
+}
+
+// AI Tutor Sessions
+model AITutorSession {
+  sessionId           String    @id @default(uuid()) @map("session_id")
+  userId              String    @map("user_id")
+  portalCourseId      String?   @map("portal_course_id")
+  tutorType           String    @map("tutor_type") // ScrollMentorGPT, FacultyAI, GeneralAI
+  facultyContext      String?   @map("faculty_context")
+  sessionData         Json      @default("{}") @map("session_data")
+  conversationHistory Json      @default("[]") @map("conversation_history")
+  startedAt           DateTime  @default(now()) @map("started_at")
+  endedAt             DateTime? @map("ended_at")
+  satisfactionRating  Int?      @map("satisfaction_rating")
+  status              String    @default("active")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  
+  // Relations
+  user                User          @relation(fields: [userId], references: [id])
+  portalCourse        PortalCourse? @relation(fields: [portalCourseId], references: [portalCourseId])
+  
+  @@map("ai_tutor_sessions")
+}
+
+// ScrollNodes Management
+model ScrollNode {
+  nodeId              String    @id @default(uuid()) @map("node_id")
+  name                String
+  location            String?
+  country             String?
+  coordinatorId       String?   @map("coordinator_id")
+  status              String    @default("active")
+  syncEnabled         Boolean   @default(true) @map("sync_enabled")
+  nodeType            String    @default("standard") @map("node_type") // standard, rural, urban, mobile
+  connectivityLevel   String    @default("high") @map("connectivity_level") // high, medium, low, offline
+  lastSyncAt          DateTime? @map("last_sync_at")
+  configuration       Json      @default("{}") 
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  
+  // Relations
+  coordinator         User?     @relation(fields: [coordinatorId], references: [id])
+  
+  @@map("scroll_nodes")
+}
+
+// Scholarships and Financial Aid
+model Scholarship {
+  scholarshipId       String    @id @default(uuid()) @map("scholarship_id")
+  name                String
+  description         String?
+  amount              Float?
+  currency            String    @default("ScrollCoin")
+  scholarshipType     String    @default("merit") @map("scholarship_type") // merit, need, prophetic, workstudy
+  eligibilityCriteria Json      @default("{}") @map("eligibility_criteria")
+  applicationDeadline DateTime? @map("application_deadline")
+  maxRecipients       Int?      @map("max_recipients")
+  currentRecipients   Int       @default(0) @map("current_recipients")
+  isActive            Boolean   @default(true) @map("is_active")
+  createdBy           String?   @map("created_by")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  
+  // Relations
+  creator             User?                    @relation("ScholarshipCreator", fields: [createdBy], references: [id])
+  applications        ScholarshipApplication[]
+  
+  @@map("scholarships")
+}
+
+// Scholarship Applications
+model ScholarshipApplication {
+  applicationId       String    @id @default(uuid()) @map("application_id")
+  scholarshipId       String    @map("scholarship_id")
+  userId              String    @map("user_id")
+  applicationData     Json      @default("{}") @map("application_data")
+  status              String    @default("submitted") // submitted, under_review, approved, rejected
+  appliedAt           DateTime  @default(now()) @map("applied_at")
+  reviewedAt          DateTime? @map("reviewed_at")
+  reviewedBy          String?   @map("reviewed_by")
+  decisionReason      String?   @map("decision_reason")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  
+  // Relations
+  scholarship         Scholarship @relation(fields: [scholarshipId], references: [scholarshipId])
+  user                User        @relation(fields: [userId], references: [id])
+  reviewer            User?       @relation("ApplicationReviewer", fields: [reviewedBy], references: [id])
+  
+  @@unique([scholarshipId, userId])
+  @@map("scholarship_applications")
+}
+
+// XR Classrooms Integration
+model XRClassroom {
+  classroomId         String    @id @default(uuid()) @map("classroom_id")
+  portalCourseId      String    @map("portal_course_id")
+  sessionName         String    @map("session_name")
+  description         String?
+  instructorId        String?   @map("instructor_id")
+  scheduledTime       DateTime  @map("scheduled_time")
+  durationMinutes     Int       @default(60) @map("duration_minutes")
+  maxParticipants     Int       @default(30) @map("max_participants")
+  currentParticipants Int       @default(0) @map("current_participants")
+  xrEnvironmentId     String?   @map("xr_environment_id")
+  recordingEnabled    Boolean   @default(true) @map("recording_enabled")
+  recordingUrl        String?   @map("recording_url")
+  status              String    @default("scheduled") // scheduled, live, completed, cancelled
+  accessRequirements  Json      @default("{}") @map("access_requirements")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  
+  // Relations
+  portalCourse        PortalCourse @relation(fields: [portalCourseId], references: [portalCourseId])
+  instructor          User?        @relation(fields: [instructorId], references: [id])
+  participants        XRClassroomParticipant[]
+  
+  @@map("xr_classrooms")
+}
+
+// XR Classroom Participants
+model XRClassroomParticipant {
+  participantId       String    @id @default(uuid()) @map("participant_id")
+  classroomId         String    @map("classroom_id")
+  userId              String    @map("user_id")
+  joinedAt            DateTime? @map("joined_at")
+  leftAt              DateTime? @map("left_at")
+  participationScore  Float?    @map("participation_score")
+  interactionData     Json      @default("{}") @map("interaction_data")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  
+  // Relations
+  classroom           XRClassroom @relation(fields: [classroomId], references: [classroomId])
+  user                User        @relation(fields: [userId], references: [id])
+  
+  @@unique([classroomId, userId])
+  @@map("xr_classroom_participants")
+}
+
+// Faculty Members (enhanced from existing users)
+model FacultyMember {
+  memberId            String    @id @default(uuid()) @map("member_id")
+  userId              String    @map("user_id")
+  facultyId           String    @map("faculty_id")
+  title               String?
+  specializations     String[]
+  bio                 String?
+  officeHours         Json      @default("{}") @map("office_hours")
+  aiDeanIntegration   Boolean   @default(false) @map("ai_dean_integration")
+  isActive            Boolean   @default(true) @map("is_active")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  
+  // Relations
+  user                User    @relation(fields: [userId], references: [id])
+  faculty             Faculty @relation(fields: [facultyId], references: [id])
+  
+  @@unique([userId, facultyId])
+  @@map("faculty_members")
+}
+
+// User Preferences and Settings
+model UserPreferences {
+  preferenceId        String   @id @default(uuid()) @map("preference_id")
+  userId              String   @unique @map("user_id")
+  theme               String   @default("light") // light, dark, auto
+  notifications       Json     @default("{\"email\": true, \"push\": true, \"sms\": false}")
+  privacySettings     Json     @default("{\"profile_public\": true, \"progress_public\": false}") @map("privacy_settings")
+  learningPreferences Json     @default("{}") @map("learning_preferences")
+  accessibilitySettings Json   @default("{}") @map("accessibility_settings")
+  createdAt           DateTime @default(now()) @map("created_at")
+  updatedAt           DateTime @updatedAt @map("updated_at")
+  
+  // Relations
+  user                User     @relation(fields: [userId], references: [id])
+  
+  @@map("user_preferences")
+}
+
+// Portal Analytics and Metrics
+model PortalAnalytics {
+  analyticsId         String   @id @default(uuid()) @map("analytics_id")
+  userId              String   @map("user_id")
+  eventType           String   @map("event_type")
+  eventData           Json     @default("{}") @map("event_data")
+  sessionId           String?  @map("session_id")
+  ipAddress           String?  @map("ip_address")
+  userAgent           String?  @map("user_agent")
+  timestamp           DateTime @default(now())
+  createdAt           DateTime @default(now()) @map("created_at")
+  
+  // Relations
+  user                User     @relation(fields: [userId], references: [id])
+  
+  @@map("portal_analytics")
+}
+
+
+
+// ============================================================================
+// SCROLLADMISSIONS SYSTEM MODELS
+// "Many are called, but few are chosen" - Matthew 22:14
+// Divine admissions process that assesses the complete person
+// ============================================================================
+
+// Application Management
+model Application {
+  id                    String   @id @default(cuid())
+  applicantId           String
+  submissionDate        DateTime @default(now())
+  status                ApplicationStatus @default(SUBMITTED)
+  programApplied        ProgramType
+  intendedStartDate     DateTime
+  
+  // Application Components
+  personalStatement     String?
+  academicHistory       Json     @default("[]")
+  spiritualTestimony    String?
+  characterReferences   Json     @default("[]")
+  documents             Json     @default("[]")
+  
+  // Assessment Results
+  eligibilityResult     Json?
+  spiritualEvaluation   Json?
+  academicEvaluation    Json?
+  interviewResults      Json     @default("[]")
+  
+  // Decision Information
+  admissionDecision     AdmissionDecisionType?
+  decisionDate          DateTime?
+  decisionReasoning     Json?
+  enrollmentDeadline    DateTime?
+  
+  // Timeline Tracking
+  applicationTimeline   Json     @default("[]")
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  applicant             User     @relation(fields: [applicantId], references: [id])
+  eligibilityAssessment EligibilityAssessment?
+  spiritualEvaluations  SpiritualEvaluation[]
+  academicEvaluations   AcademicEvaluation[]
+  interviewRecords      InterviewRecord[]
+  admissionDecisions    AdmissionDecision[]
+  
+  @@map("applications")
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ASSESSMENT_PENDING
+  INTERVIEW_SCHEDULED
+  DECISION_PENDING
+  ACCEPTED
+  REJECTED
+  WAITLISTED
+  DEFERRED
+  WITHDRAWN
+}
+
+enum ProgramType {
+  SCROLL_OPEN
+  SCROLL_STARTER
+  SCROLL_DEGREE
+  SCROLL_DOCTORATE
+  SCROLL_SCHOLARSHIP
+  DSGEI_PROGRAM
+}
+
+enum AdmissionDecisionType {
+  ACCEPTED
+  REJECTED
+  WAITLISTED
+  DEFERRED
+  CONDITIONAL_ACCEPTANCE
+}
+
+// Eligibility Assessment System
+model EligibilityAssessment {
+  id                    String   @id @default(cuid())
+  applicationId         String   @unique
+  
+  // Basic Requirements
+  basicRequirements     Json     @default("{}")
+  academicPrerequisites Json     @default("{}")
+  languageProficiency   Json     @default("{}")
+  technicalRequirements Json     @default("{}")
+  
+  // Accessibility and Compliance
+  accessibilityNeeds    Json     @default("{}")
+  globalCompliance      Json     @default("{}")
+  
+  // Overall Assessment
+  overallEligibility    EligibilityStatus
+  assessmentNotes       String?
+  
+  // Timestamps
+  assessedAt            DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  application           Application @relation(fields: [applicationId], references: [id])
+  
+  @@map("eligibility_assessments")
+}
+
+enum EligibilityStatus {
+  ELIGIBLE
+  CONDITIONALLY_ELIGIBLE
+  INELIGIBLE
+  PENDING_REVIEW
+}
+
+// Spiritual Evaluation Module
+model SpiritualEvaluation {
+  id                    String   @id @default(cuid())
+  applicationId         String
+  evaluatorId           String?
+  evaluatorType         EvaluatorType @default(AI_ASSESSMENT)
+  
+  // Testimony Assessment
+  personalTestimony     Json     @default("{}")
+  spiritualMaturity     MaturityLevel
+  characterTraits       Json     @default("[]")
+  ministryExperience    Json     @default("[]")
+  
+  // Calling and Alignment
+  callingClarity        Json     @default("{}")
+  scrollAlignment       Float    @default(0.0)
+  kingdomVision         String?
+  
+  // Recommendations
+  spiritualRecommendations Json  @default("[]")
+  propheticInput        Json?
+  elderReview           Json?
+  
+  // Assessment Scores
+  authenticityScore     Float?
+  clarityScore          Float?
+  depthScore            Float?
+  transformationScore   Float?
+  kingdomFocusScore     Float?
+  overallScore          Float?
+  
+  // Timestamps
+  evaluatedAt           DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  application           Application @relation(fields: [applicationId], references: [id])
+  
+  @@map("spiritual_evaluations")
+}
+
+enum EvaluatorType {
+  AI_ASSESSMENT
+  HUMAN_EVALUATOR
+  SCROLL_ELDER
+  PROPHET_REVIEW
+  COMMITTEE_REVIEW
+}
+
+enum MaturityLevel {
+  SEEKER
+  NEW_BELIEVER
+  GROWING
+  MATURE
+  ELDER
+  PROPHET
+}
+
+// Academic Assessment Engine
+model AcademicEvaluation {
+  id                    String   @id @default(cuid())
+  applicationId         String
+  evaluatorId           String?
+  
+  // Previous Education
+  previousEducation     Json     @default("[]")
+  academicPerformance   Json     @default("{}")
+  
+  // Skills Assessment
+  coreSkills            Json     @default("[]")
+  learningPotential     Float?
+  intellectualCapacity  Json     @default("{}")
+  
+  // Recommendations
+  recommendedLevel      AcademicLevel
+  supportNeeds          Json     @default("[]")
+  remedialRequirements  Json     @default("[]")
+  
+  // Assessment Scores
+  academicReadiness     Float?
+  skillProficiency      Json     @default("{}")
+  potentialScore        Float?
+  
+  // Timestamps
+  evaluatedAt           DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  application           Application @relation(fields: [applicationId], references: [id])
+  
+  @@map("academic_evaluations")
+}
+
+// Interview Coordination System
+model InterviewRecord {
+  id                    String   @id @default(cuid())
+  applicationId         String
+  interviewType         InterviewType
+  scheduledDate         DateTime
+  interviewerId         String?
+  interviewerName       String?
+  
+  // Interview Configuration
+  format                InterviewFormat
+  duration              Int      // in minutes
+  platform              String?  // Zoom, Teams, etc.
+  meetingUrl            String?
+  
+  // Interview Assessment
+  communicationScore    Float?
+  spiritualMaturityScore Float?
+  academicReadinessScore Float?
+  characterScore        Float?
+  motivationScore       Float?
+  culturalFitScore      Float?
+  
+  // Overall Evaluation
+  overallRecommendation RecommendationType?
+  interviewNotes        String?
+  followUpRequired      Boolean  @default(false)
+  
+  // Recording and Documentation
+  recordingUrl          String?
+  transcriptUrl         String?
+  
+  // Status
+  status                InterviewStatus @default(SCHEDULED)
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  conductedAt           DateTime?
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  application           Application @relation(fields: [applicationId], references: [id])
+  
+  @@map("interview_records")
+}
+
+enum InterviewType {
+  INITIAL_SCREENING
+  ACADEMIC_ASSESSMENT
+  SPIRITUAL_EVALUATION
+  CHARACTER_INTERVIEW
+  FINAL_INTERVIEW
+  COMMITTEE_INTERVIEW
+}
+
+enum InterviewFormat {
+  VIDEO_CONFERENCE
+  PHONE_CALL
+  IN_PERSON
+  ASYNCHRONOUS_VIDEO
+}
+
+enum RecommendationType {
+  STRONG_RECOMMEND
+  RECOMMEND
+  NEUTRAL
+  NOT_RECOMMEND
+  STRONG_NOT_RECOMMEND
+}
+
+enum InterviewStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  RESCHEDULED
+  NO_SHOW
+}
+
+// Decision Management System
+model AdmissionDecision {
+  id                    String   @id @default(cuid())
+  applicationId         String
+  decision              AdmissionDecisionType
+  decisionDate          DateTime @default(now())
+  
+  // Decision Makers
+  decisionMakers        Json     @default("[]")
+  committeeVotes        Json?
+  
+  // Decision Reasoning
+  strengths             Json     @default("[]")
+  concerns              Json     @default("[]")
+  recommendations       Json     @default("[]")
+  overallAssessment     String?
+  futureConsiderations  Json     @default("[]")
+  
+  // Conditions and Requirements
+  admissionConditions   Json     @default("[]")
+  enrollmentDeadline    DateTime?
+  
+  // Appeal Information
+  appealEligible        Boolean  @default(true)
+  appealDeadline        DateTime?
+  
+  // Next Steps
+  nextSteps             Json     @default("[]")
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  application           Application @relation(fields: [applicationId], references: [id])
+  appealRecords         AppealRecord[]
+  
+  @@map("admission_decisions")
+}
+
+// Appeal Processing System
+model AppealRecord {
+  id                    String   @id @default(cuid())
+  decisionId            String
+  appealReason          String
+  supportingDocuments   Json     @default("[]")
+  
+  // Appeal Review
+  reviewStatus          AppealStatus @default(SUBMITTED)
+  reviewNotes           String?
+  reviewDecision        AdmissionDecisionType?
+  
+  // Timestamps
+  submittedAt           DateTime @default(now())
+  reviewedAt            DateTime?
+  
+  // Relations
+  decision              AdmissionDecision @relation(fields: [decisionId], references: [id])
+  
+  @@map("appeal_records")
+}
+
+enum AppealStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  DENIED
+}
+
+// ============================================================================
+// COMPETITIVE ANALYSIS SYSTEM MODELS
+// "Know your enemy and know yourself" - Sun Tzu
+// Strategic competitive intelligence for market positioning
+// ============================================================================
+
+// Competitive Analysis Core
+model CompetitiveAnalysisRecord {
+  id                    String   @id @default(cuid())
+  analysisDate          DateTime @default(now())
+  version               String   @default("1.0")
+  
+  // Platform Profiles
+  scrollUniversityProfile Json   @default("{}")
+  competitorProfiles    Json     @default("[]")
+  
+  // Comparison Results
+  featureComparisonMatrix Json   @default("{}")
+  marketAnalysis        Json     @default("{}")
+  strategicRecommendations Json  @default("[]")
+  
+  // Analysis Metadata
+  dataSourcesUsed       Json     @default("[]")
+  reliabilityScore      Float    @default(0.0)
+  lastUpdated           DateTime @updatedAt
+  
+  // Relations
+  researchData          CompetitiveResearchData[]
+  platformComparisons   PlatformComparison[]
+  
+  @@map("competitive_analysis_records")
+}
+
+// Research Data Collection
+model CompetitiveResearchData {
+  id                    String   @id @default(cuid())
+  analysisId            String?
+  
+  // Data Classification
+  source                ResearchSourceType
+  platform              PlatformType
+  dataType              ResearchDataCategory
+  
+  // Content
+  title                 String
+  content               String
+  rawData               Json     @default("{}")
+  
+  // Metadata
+  url                   String?
+  author                String?
+  publicationDate       DateTime?
+  
+  // Quality Metrics
+  credibilityScore      Float    @default(0.0)
+  biasLevel             BiasLevel @default(MEDIUM)
+  dataFreshness         FreshnessLevel @default(RECENT)
+  verificationStatus    VerificationStatus @default(UNVERIFIED)
+  reliability           Float    @default(0.0)
+  
+  // Timestamps
+  collectedAt           DateTime @default(now())
+  lastValidated         DateTime?
+  
+  // Relations
+  analysis              CompetitiveAnalysisRecord? @relation(fields: [analysisId], references: [id])
+  
+  @@map("competitive_research_data")
+}
+
+enum ResearchSourceType {
+  INTERNAL
+  PUBLIC_WEBSITE
+  MARKET_RESEARCH
+  USER_FEEDBACK
+  COMPETITOR_ANALYSIS
+  INDUSTRY_REPORTS
+  SOCIAL_MEDIA
+  PRESS_RELEASES
+  ACADEMIC_PAPERS
+  PATENT_FILINGS
+}
+
+enum PlatformType {
+  SCROLLUNIVERSITY
+  LEARNTUBE_AI
+  COURSERA
+  UDEMY
+  KHAN_ACADEMY
+  EDTECH_COMPETITOR
+  OTHER
+}
+
+enum ResearchDataCategory {
+  FEATURE
+  PRICING
+  USER_EXPERIENCE
+  MARKET_POSITION
+  TECHNICAL_ARCHITECTURE
+  USER_REVIEWS
+  PERFORMANCE_METRICS
+  PARTNERSHIP_ANNOUNCEMENTS
+  FINANCIAL_DATA
+  STRATEGIC_INITIATIVES
+}
+
+enum BiasLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum FreshnessLevel {
+  CURRENT
+  RECENT
+  OUTDATED
+}
+
+enum VerificationStatus {
+  VERIFIED
+  PENDING
+  UNVERIFIED
+  DISPUTED
+}
+
+// Platform Feature Comparison
+model PlatformComparison {
+  id                    String   @id @default(cuid())
+  analysisId            String
+  
+  // Comparison Details
+  comparisonCategory    ComparisonCategory
+  scrollUniversityData  Json     @default("{}")
+  competitorData        Json     @default("{}")
+  
+  // Scoring
+  scrollUniversityScore Float    @default(0.0)
+  competitorScore       Float    @default(0.0)
+  advantageLevel        AdvantageLevel @default(NEUTRAL)
+  
+  // Analysis
+  keyDifferentiators    Json     @default("[]")
+  competitiveAdvantage  String?
+  strategicImportance   ImportanceLevel @default(MODERATE)
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  analysis              CompetitiveAnalysisRecord @relation(fields: [analysisId], references: [id])
+  
+  @@map("platform_comparisons")
+}
+
+enum ComparisonCategory {
+  CORE_EDUCATION
+  AI_CAPABILITIES
+  COMMUNITY_FEATURES
+  SPIRITUAL_FORMATION
+  BLOCKCHAIN_INTEGRATION
+  GLOBAL_ACCESSIBILITY
+  ASSESSMENT_EVALUATION
+  CONTENT_DELIVERY
+  CREDENTIALING
+  UNIQUE_DIFFERENTIATORS
+  PRICING_MODEL
+  USER_EXPERIENCE
+  TECHNICAL_ARCHITECTURE
+  MARKET_POSITIONING
+}
+
+enum AdvantageLevel {
+  SIGNIFICANT_ADVANTAGE
+  MODERATE_ADVANTAGE
+  SLIGHT_ADVANTAGE
+  NEUTRAL
+  SLIGHT_DISADVANTAGE
+  MODERATE_DISADVANTAGE
+  SIGNIFICANT_DISADVANTAGE
+}
+
+enum ImportanceLevel {
+  CRITICAL
+  IMPORTANT
+  MODERATE
+  LOW
+}
+
+// Strategic Recommendations
+model StrategicRecommendation {
+  id                    String   @id @default(cuid())
+  analysisId            String?
+  
+  // Recommendation Details
+  category              RecommendationCategory
+  priority              PriorityLevel
+  title                 String
+  description           String
+  rationale             String
+  
+  // Implementation
+  timeline              String
+  expectedImpact        String
+  requiredResources     Json     @default("[]")
+  successMetrics        Json     @default("[]")
+  risks                 Json     @default("[]")
+  
+  // Status Tracking
+  status                RecommendationStatus @default(PROPOSED)
+  implementationNotes   String?
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  analysis              CompetitiveAnalysis? @relation(fields: [analysisId], references: [id])
+  
+  @@map("strategic_recommendations")
+}
+
+enum RecommendationCategory {
+  FEATURE_DEVELOPMENT
+  MARKET_POSITIONING
+  COMPETITIVE_RESPONSE
+  INNOVATION
+  PARTNERSHIP
+  PRICING_STRATEGY
+  USER_EXPERIENCE
+  TECHNOLOGY_ADVANCEMENT
+}
+
+enum PriorityLevel {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+enum RecommendationStatus {
+  PROPOSED
+  APPROVED
+  IN_PROGRESS
+  COMPLETED
+  REJECTED
+  ON_HOLD
+}
+
+
+
+// Waitlist Management
+model WaitlistEntry {
+  id                    String   @id @default(cuid())
+  applicationId         String   @unique
+  programType           ProgramType
+  position              Int
+  priority              WaitlistPriority @default(STANDARD)
+  
+  // Waitlist Information
+  estimatedAdmissionDate DateTime?
+  probabilityScore      Float?
+  
+  // Communication
+  lastContactDate       DateTime?
+  responseDeadline      DateTime?
+  
+  // Status
+  status                WaitlistStatus @default(ACTIVE)
+  
+  // Timestamps
+  addedAt               DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@map("waitlist_entries")
+}
+
+enum WaitlistPriority {
+  HIGH
+  STANDARD
+  LOW
+}
+
+enum WaitlistStatus {
+  ACTIVE
+  OFFERED_ADMISSION
+  DECLINED
+  EXPIRED
+  REMOVED
+}
+
+// Document Verification and Fraud Prevention
+model DocumentVerification {
+  id                    String   @id @default(cuid())
+  applicationId         String
+  documentType          DocumentType
+  documentUrl           String
+  
+  // Verification Results
+  isAuthentic           Boolean?
+  verificationMethod    String?
+  verificationScore     Float?
+  fraudRiskLevel        FraudRiskLevel?
+  
+  // Verification Details
+  verifiedBy            String?  // System or person ID
+  verificationNotes     String?
+  flaggedIssues         Json     @default("[]")
+  
+  // Timestamps
+  uploadedAt            DateTime @default(now())
+  verifiedAt            DateTime?
+  updatedAt             DateTime @updatedAt
+  
+  @@map("document_verifications")
+}
+
+enum DocumentType {
+  TRANSCRIPT
+  DIPLOMA
+  CERTIFICATE
+  IDENTITY_DOCUMENT
+  RECOMMENDATION_LETTER
+  PORTFOLIO
+  ESSAY
+  PERSONAL_STATEMENT
+}
+
+enum FraudRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+// Admissions Analytics and Reporting
+model AdmissionsAnalytics {
+  id                    String   @id @default(cuid())
+  reportDate            DateTime @default(now())
+  reportType            AnalyticsReportType
+  
+  // Application Metrics
+  totalApplications     Int      @default(0)
+  acceptanceRate        Float?
+  yieldRate             Float?
+  
+  // Demographic Data
+  demographicBreakdown  Json     @default("{}")
+  geographicDistribution Json    @default("{}")
+  
+  // Assessment Metrics
+  averageScores         Json     @default("{}")
+  assessmentTrends      Json     @default("{}")
+  
+  // Performance Indicators
+  processEfficiency     Json     @default("{}")
+  bottleneckAnalysis    Json     @default("{}")
+  
+  // Predictive Analytics
+  enrollmentForecast    Json?
+  successPredictions    Json?
+  
+  // Report Data
+  reportData            Json     @default("{}")
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  
+  @@map("admissions_analytics")
+}
+
+enum AnalyticsReportType {
+  DAILY_SUMMARY
+  WEEKLY_REPORT
+  MONTHLY_ANALYSIS
+  QUARTERLY_REVIEW
+  ANNUAL_REPORT
+  CUSTOM_REPORT
+}
+
+// Admissions System Configuration
+model AdmissionsConfiguration {
+  id                    String   @id @default(cuid())
+  configKey             String   @unique
+  configValue           Json
+  description           String?
+  
+  // Configuration Metadata
+  category              ConfigCategory
+  isActive              Boolean  @default(true)
+  
+  // Timestamps
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  @@map("admissions_configuration")
+}
+
+enum ConfigCategory {
+  APPLICATION_SETTINGS
+  ASSESSMENT_CRITERIA
+  INTERVIEW_CONFIGURATION
+  DECISION_PARAMETERS
+  NOTIFICATION_SETTINGS
+  SYSTEM_PARAMETERS
+}
+
+// ============================================================================
+// COMPETITIVE ANALYSIS SYSTEM
+// "By wisdom a house is built, and through understanding it is established" - Proverbs 24:3
+// ============================================================================
+
+// Competitive Analysis System Models
+model CompetitiveAnalysis {
+  id                        String   @id @default(cuid())
+  analysisDate              DateTime @map("analysis_date")
+  scrollUniversityData      String   @map("scroll_university_data")
+  learntubeAiData          String   @map("learntube_ai_data")
+  comparisonMatrix         String   @map("comparison_matrix")
+  marketAnalysis           String   @map("market_analysis")
+  strategicRecommendations String   @map("strategic_recommendations")
+  version                  String   @default("1.0.0")
+  createdAt                DateTime @default(now()) @map("created_at")
+  updatedAt                DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  featureComparisons       FeatureComparison[]
+  recommendations          StrategicRecommendation[]
+  marketOpportunities      MarketOpportunity[]
+
+  @@map("competitive_analyses")
+}
+
+model ResearchData {
+  id                   String   @id @default(cuid())
+  source               String
+  platform             String
+  dataType             String   @map("data_type")
+  content              String
+  reliability          Float    @default(0.5)
+  verificationStatus   String   @default("pending") @map("verification_status")
+  spiritualAlignment   Boolean? @map("spiritual_alignment")
+  tags                 String   @default("[]")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  @@map("research_data")
+}
+
+model PlatformProfile {
+  id               String   @id @default(cuid())
+  platformName     String   @map("platform_name")
+  architectureData String   @map("architecture_data")
+  featuresData     String   @map("features_data")
+  marketData       String   @map("market_data")
+  strengths        String   @default("[]")
+  weaknesses       String   @default("[]")
+  lastAnalyzed     DateTime @map("last_analyzed")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("platform_profiles")
+}
+
+model FeatureComparison {
+  id                          String   @id @default(cuid())
+  analysisId                  String   @map("analysis_id")
+  featureName                 String   @map("feature_name")
+  category                    String
+  scrollUniversityAvailability String   @map("scroll_university_availability")
+  learntubeAiAvailability     String   @map("learntube_ai_availability")
+  competitiveAdvantage        String   @map("competitive_advantage")
+  strategicImportance         String   @map("strategic_importance")
+  spiritualAlignment          Boolean  @default(false) @map("spiritual_alignment")
+  kingdomPurpose              Boolean  @default(false) @map("kingdom_purpose")
+  createdAt                   DateTime @default(now()) @map("created_at")
+  updatedAt                   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  analysis                    CompetitiveAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+
+  @@map("feature_comparisons")
+}
+
+
+
+model MarketOpportunity {
+  id                    String   @id @default(cuid())
+  analysisId            String   @map("analysis_id")
+  name                  String
+  description           String
+  marketSize            Int      @map("market_size")
+  timeline              String
+  requiredCapabilities  String   @default("[]") @map("required_capabilities")
+  spiritualAlignment    Boolean  @default(false) @map("spiritual_alignment")
+  kingdomImpact         Boolean  @default(false) @map("kingdom_impact")
+  priorityScore         Float    @default(0.5) @map("priority_score")
+  createdAt             DateTime @default(now()) @map("created_at")
+  updatedAt             DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  analysis              CompetitiveAnalysis @relation(fields: [analysisId], references: [id], onDelete: Cascade)
+
+  @@map("market_opportunities")
+}
+
+model IntelligenceSource {
+  id                      String    @id @default(cuid())
+  name                    String
+  type                    String
+  url                     String?
+  reliabilityScore        Float     @default(0.5) @map("reliability_score")
+  lastAccessed            DateTime? @map("last_accessed")
+  accessFrequency         String    @default("weekly") @map("access_frequency")
+  spiritualFilterRequired Boolean   @default(false) @map("spiritual_filter_required")
+  active                  Boolean   @default(true)
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+
+  @@map("intelligence_sources")
+}
+

@@ -1,0 +1,1920 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="271" failures="267" errors="0" time="40.542">
+  <testsuite name="PredictiveAnalyticsService" errors="0" failures="25" skipped="0" timestamp="2025-09-16T09:20:27" time="28.001" tests="25">
+    <testcase classname="PredictiveAnalyticsService › buildAdmissionSuccessModel" name="should build admission success predictive model successfully" time="0.07">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › buildAdmissionSuccessModel" name="should handle empty historical data gracefully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › buildAdmissionSuccessModel" name="should throw error when model building fails" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › predictAdmissionSuccess" name="should predict admission success for high-quality applicant" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › predictAdmissionSuccess" name="should predict admission success for low-quality applicant" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › predictAdmissionSuccess" name="should throw error when applicant not found" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › predictAdmissionSuccess" name="should throw error when model not available" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › predictYieldRates" name="should predict yield rates for all programs" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › predictYieldRates" name="should predict yield rate for specific program" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › predictYieldRates" name="should handle programs with no historical data" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › generateEnrollmentForecast" name="should generate enrollment forecast for specified period" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › generateEnrollmentForecast" name="should calculate resource requirements correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › generateProcessImprovementRecommendations" name="should generate process improvement recommendations for all areas" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › generateProcessImprovementRecommendations" name="should prioritize recommendations by predicted improvement" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › generateProcessImprovementRecommendations" name="should include specific recommendations for each process area" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › generateQualityAssuranceRecommendations" name="should generate quality assurance recommendations for all areas" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › generateQualityAssuranceRecommendations" name="should calculate quality gaps correctly" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › generateQualityAssuranceRecommendations" name="should include implementation plans with phases" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › Error Handling" name="should handle database connection errors gracefully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › Error Handling" name="should handle invalid applicant IDs" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › Error Handling" name="should handle missing model data" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › Model Performance" name="should track model accuracy over time" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › Model Performance" name="should validate feature importance weights" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › Integration Tests" name="should integrate prediction with analytics service" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="PredictiveAnalyticsService › Integration Tests" name="should handle end-to-end workflow for process improvement" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="InterviewScheduler" errors="0" failures="18" skipped="0" timestamp="2025-09-16T09:20:27" time="28.426" tests="18">
+    <testcase classname="InterviewScheduler › scheduleInterview" name="should successfully schedule an interview" time="0.12">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewScheduler › scheduleInterview" name="should throw error when no available slots" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewScheduler › findAvailableSlot" name="should find available slot when interviewer is free" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewScheduler › findAvailableSlot" name="should return unavailable when all slots are booked" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewScheduler › rescheduleInterview" name="should successfully reschedule an interview" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewerMatcher › findBestMatch" name="should find best interviewer match" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewerMatcher › findBestMatch" name="should throw error when no eligible interviewers" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewerMatcher › findMultipleMatches" name="should find multiple interviewer matches" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewFormatSelector › recommendFormat" name="should recommend video conference for good tech access" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewFormatSelector › recommendFormat" name="should recommend phone for poor tech access" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewFormatSelector › recommendFormat" name="should recommend in-person for final interviews" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewFormatSelector › generatePreparationGuide" name="should generate comprehensive preparation guide" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewReminderManager › scheduleReminders" name="should schedule all reminders for an interview" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewReminderManager › processConfirmation" name="should process confirmation response" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewReminderManager › processConfirmation" name="should handle reschedule request" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewCoordinationService › coordinateInterview" name="should coordinate complete interview process" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewCoordinationService › rescheduleInterview" name="should reschedule interview successfully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewCoordinationService › healthCheck" name="should return healthy status" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="StudentProfileIntegrationService" errors="0" failures="8" skipped="0" timestamp="2025-09-16T09:20:39" time="16.057" tests="8">
+    <testcase classname="StudentProfileIntegrationService › createStudentProfile" name="should create student profile for accepted application" time="0.096">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="StudentProfileIntegrationService › createStudentProfile" name="should throw error for non-accepted application" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="StudentProfileIntegrationService › initializeEnrollment" name="should initialize enrollment for accepted application" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="StudentProfileIntegrationService › transferAcademicRecords" name="should transfer academic records successfully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="StudentProfileIntegrationService › coordinateCourseRegistration" name="should coordinate course registration successfully" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="StudentProfileIntegrationService › completeStudentIntegration" name="should complete full student integration process" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="StudentProfileIntegrationService › getIntegrationStatus" name="should return integration status correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="StudentProfileIntegrationService › getIntegrationStatus" name="should return incomplete status when integration is partial" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Calling Discernment and Scroll Alignment Assessment" errors="0" failures="12" skipped="0" timestamp="2025-09-16T09:20:34" time="21.51" tests="12">
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Ministry Calling Identification and Clarity Assessment" name="should assess calling clarity from testimony" time="0.161">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Ministry Calling Identification and Clarity Assessment" name="should identify prophetic calling type" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Ministry Calling Identification and Clarity Assessment" name="should generate calling evidence summary" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Scroll Alignment Evaluation and Scoring" name="should evaluate kingdom mindset alignment" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Scroll Alignment Evaluation and Scoring" name="should assess prophetic education openness" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Scroll Alignment Evaluation and Scoring" name="should generate alignment evidence" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Spiritual Recommendation Generation and Validation" name="should generate comprehensive recommendations" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Spiritual Recommendation Generation and Validation" name="should validate recommendations consistency" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Prophetic Input Integration and Elder Review Coordination" name="should integrate prophetic input into assessment" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Prophetic Input Integration and Elder Review Coordination" name="should coordinate elder review process" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Prophetic Input Integration and Elder Review Coordination" name="should verify prophetic input authenticity" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment Assessment › Integration Testing - Complete Workflow" name="should complete full calling discernment and alignment assessment workflow" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Enrollment Management and Appeal Processing" errors="0" failures="22" skipped="0" timestamp="2025-09-16T09:20:27" time="28.25" tests="22">
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentManager › createEnrollmentConfirmation" name="should create enrollment confirmation for accepted application" time="0.035">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentManager › createEnrollmentConfirmation" name="should throw error for non-accepted application" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentManager › confirmEnrollment" name="should confirm enrollment before deadline" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentManager › confirmEnrollment" name="should throw error after deadline" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentManager › processDepositPayment" name="should process sufficient deposit payment" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentManager › processDepositPayment" name="should throw error for insufficient deposit" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentManager › checkEnrollmentDeadlines" name="should identify expired enrollments" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › AppealProcessor › submitAppeal" name="should submit appeal for rejected application" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › AppealProcessor › submitAppeal" name="should throw error for accepted application" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › AppealProcessor › processAppealDecision" name="should process appeal decision to overturn" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › AppealProcessor › submitReviewerRecommendation" name="should submit reviewer recommendation" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › WaitlistManager › addToWaitlist" name="should add application to waitlist" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › WaitlistManager › addToWaitlist" name="should throw error for non-waitlisted application" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › WaitlistManager › offerAdmissionFromWaitlist" name="should offer admission from waitlist" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › WaitlistManager › getWaitlistStatistics" name="should calculate waitlist statistics" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentCapacityMonitor › getCurrentCapacity" name="should calculate current capacity metrics" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentCapacityMonitor › checkCapacityAlerts" name="should generate capacity alerts" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentCapacityMonitor › getEnrollmentProjection" name="should generate enrollment projection" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › EnrollmentCapacityMonitor › updateCapacityLimit" name="should update capacity limit and check alerts" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › Integration Tests" name="should handle complete enrollment workflow" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › Integration Tests" name="should handle complete appeal workflow" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment Management and Appeal Processing › Integration Tests" name="should handle waitlist to enrollment workflow" time="0.007">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="DocumentVerificationService" errors="0" failures="22" skipped="0" timestamp="2025-09-16T09:20:27" time="28.522" tests="22">
+    <testcase classname="DocumentVerificationService › verifyDocumentAuthenticity" name="should verify authentic document successfully" time="0.043">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="DocumentVerificationService › verifyDocumentAuthenticity" name="should detect fraudulent document" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="DocumentVerificationService › verifyDocumentAuthenticity" name="should handle document verification errors gracefully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="DocumentVerificationService › verifyIdentity" name="should verify identity successfully with matching documents" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="DocumentVerificationService › verifyIdentity" name="should flag identity verification with mismatched information" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="DocumentVerificationService › monitorSuspiciousActivity" name="should detect rapid multiple submissions" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="DocumentVerificationService › monitorSuspiciousActivity" name="should detect duplicate documents" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FraudDetectionService › analyzeFraudRisk" name="should analyze fraud risk and return low risk for legitimate applicant" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FraudDetectionService › analyzeFraudRisk" name="should detect high fraud risk for suspicious applicant" time="0.002">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FraudDetectionService › analyzeFraudRisk" name="should handle network analysis in fraud detection" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="IdentityVerificationService › verifyIdentity" name="should perform comprehensive identity verification" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="IdentityVerificationService › verifyIdentity" name="should fail verification with inconsistent documents" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="SuspiciousActivityMonitoringService › monitorUserActivity" name="should monitor user activity and detect no suspicious behavior" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="SuspiciousActivityMonitoringService › monitorUserActivity" name="should detect and process rapid submissions" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="SuspiciousActivityMonitoringService › monitorUserActivity" name="should detect behavioral anomalies" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="SuspiciousActivityMonitoringService › monitorUserActivity" name="should detect suspicious network activity" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="SuspiciousActivityMonitoringService › getSuspiciousActivities" name="should retrieve suspicious activities for an applicant" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="SuspiciousActivityMonitoringService › getMonitoringAlerts" name="should retrieve monitoring alerts" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="SuspiciousActivityMonitoringService › getMonitoringAlerts" name="should filter alerts by status" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="SuspiciousActivityMonitoringService › acknowledgeAlert" name="should acknowledge a monitoring alert" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Integration Tests" name="should integrate document verification with fraud detection" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Integration Tests" name="should integrate identity verification with suspicious activity monitoring" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Spiritual Evaluation Module - Task 4.1" errors="0" failures="13" skipped="4" timestamp="2025-09-16T09:20:27" time="28.297" tests="17">
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Personal Testimony Assessment" name="should assess authentic personal testimony with high scores" time="0.024">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Personal Testimony Assessment" name="should identify generic testimony with lower scores" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Personal Testimony Assessment" name="should validate testimony authenticity and flag concerns" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Personal Testimony Assessment" name="should provide recommendations for testimony improvement" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Spiritual Maturity Evaluation" name="should evaluate spiritual maturity across multiple dimensions" time="0.072">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Spiritual Maturity Evaluation" name="should identify new believer maturity level for recent conversion" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Character Trait Assessment" name="should assess character traits from testimony and references" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Character Trait Assessment" name="should evaluate comprehensive character profile" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Character Trait Assessment" name="should identify character development needs" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Ministry Experience Validation" name="should validate authentic ministry experience" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Ministry Experience Validation" name="should flag suspicious ministry claims" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Ministry Experience Validation" name="should create comprehensive ministry experience profile" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Comprehensive Spiritual Evaluation Integration" name="should create complete spiritual evaluation for application" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Comprehensive Spiritual Evaluation Integration" name="should handle application not found error" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Cross-validation and Consistency Checks" name="should cross-validate testimony with character references" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Cross-validation and Consistency Checks" name="should identify inconsistencies between testimony and references" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Spiritual Evaluation Module - Task 4.1 › Cross-validation and Consistency Checks" name="should cross-validate ministry experience with references" time="0">
+      <skipped/>
+    </testcase>
+  </testsuite>
+  <testsuite name="Security Monitoring and Compliance System" errors="0" failures="16" skipped="0" timestamp="2025-09-16T09:20:31" time="23.696" tests="16">
+    <testcase classname="Security Monitoring and Compliance System › SecurityMonitoringService" name="should log security events successfully" time="0.033">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › SecurityMonitoringService" name="should retrieve security events with filters" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › SecurityMonitoringService" name="should generate security metrics" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › AuditTrailService" name="should log audit events successfully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › AuditTrailService" name="should generate compliance report" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › DataProtectionService" name="should encrypt and decrypt sensitive data" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › DataProtectionService" name="should process data subject requests" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › DataProtectionService" name="should generate privacy compliance report" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › AccessControlService" name="should check user access permissions" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › AccessControlService" name="should deny access for insufficient permissions" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › SecurityIncidentResponseService" name="should report security incidents" time="0.002">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › SecurityIncidentResponseService" name="should generate incident metrics" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › SecurityComplianceService" name="should generate comprehensive compliance report" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › SecurityComplianceService" name="should provide actionable recommendations" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › Integration Tests" name="should handle security event escalation workflow" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Security Monitoring and Compliance System › Integration Tests" name="should maintain audit trail for all security operations" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Academic Assessment System" errors="0" failures="18" skipped="0" timestamp="2025-09-16T09:20:27" time="28.574" tests="18">
+    <testcase classname="Academic Assessment System › AcademicEvaluator" name="should evaluate academic performance successfully" time="0.055">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › AcademicEvaluator" name="should calculate overall GPA correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › AcademicEvaluator" name="should assess all core skills" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › AcademicEvaluator" name="should determine appropriate academic level" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › AcademicEvaluator" name="should identify support needs for low-performing skills" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › AcademicEvaluator" name="should handle missing application data gracefully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › SkillAssessor" name="should assess core skills successfully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › SkillAssessor" name="should generate appropriate skill tests" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › SkillAssessor" name="should provide development plans for each skill" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › SkillAssessor" name="should adjust scores based on application data" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › PotentialAnalyzer" name="should analyze learning potential successfully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › PotentialAnalyzer" name="should calculate potential scores correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › PotentialAnalyzer" name="should identify success predictors" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › IntellectualReadinessAssessor" name="should assess intellectual readiness successfully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › IntellectualReadinessAssessor" name="should determine appropriate readiness level" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › IntellectualReadinessAssessor" name="should generate appropriate recommendations for low readiness" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › Integration Tests" name="should complete full academic assessment workflow" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Academic Assessment System › Integration Tests" name="should handle database storage correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Credential Validation and Support Needs Assessment" errors="0" failures="25" skipped="0" timestamp="2025-09-16T09:20:27" time="28.665" tests="25">
+    <testcase classname="Credential Validation and Support Needs Assessment › CredentialValidator" name="should validate credentials successfully" time="0.045">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › CredentialValidator" name="should validate education records correctly" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › CredentialValidator" name="should validate professional certifications" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › CredentialValidator" name="should assess international credentials" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › CredentialValidator" name="should perform authenticity assessment" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › CredentialValidator" name="should determine overall validation status" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › CredentialValidator" name="should generate appropriate validation notes" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › CredentialValidator" name="should handle missing application gracefully" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should assess support needs successfully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should identify academic support needs" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should identify learning support needs" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should identify accessibility support needs" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should identify technical support needs" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should identify financial support needs" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should identify cultural support needs" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should determine remedial requirements" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should create accommodation plan" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should determine appropriate support priority" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should estimate support costs accurately" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should recommend appropriate services" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should create monitoring plan" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should handle high-priority support needs" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › SupportNeedsAssessor" name="should handle missing application gracefully" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › Integration Tests" name="should complete full credential validation and support needs workflow" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Credential Validation and Support Needs Assessment › Integration Tests" name="should handle database storage correctly" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="InterviewEvaluator" errors="0" failures="27" skipped="0" timestamp="2025-09-16T09:20:27" time="28.36" tests="27">
+    <testcase classname="InterviewEvaluator › createEvaluationForm" name="should create evaluation form for spiritual evaluation" time="0.035">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewEvaluator › createEvaluationForm" name="should create evaluation form for academic assessment" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewEvaluator › createEvaluationForm" name="should have proper rubric levels" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewEvaluator › submitEvaluation" name="should successfully submit complete evaluation" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewEvaluator › submitEvaluation" name="should validate evaluation completeness" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewEvaluator › submitEvaluation" name="should validate score ranges" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewEvaluator › generateEvaluationReport" name="should generate comprehensive evaluation report" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="VideoConferenceManager › createSession" name="should create video conference session" time="0.003">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="VideoConferenceManager › createSession" name="should handle different platforms" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="VideoConferenceManager › startSession" name="should start video conference session" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="VideoConferenceManager › startSession" name="should handle session not found" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="VideoConferenceManager › getTechnicalRequirements" name="should return Zoom requirements" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="VideoConferenceManager › getTechnicalRequirements" name="should return Teams requirements" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="VideoConferenceManager › testConnection" name="should return connection quality assessment" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewAssessmentProcessor › processAssessment" name="should process comprehensive assessment" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewAssessmentProcessor › processAssessment" name="should handle missing video session" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewAssessmentProcessor › generateAssessmentReport" name="should generate comprehensive assessment report" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="InterviewAssessmentProcessor › compareWithBenchmarks" name="should compare assessment with benchmarks" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FollowUpInterviewCoordinator › generateFollowUpRecommendations" name="should generate recommendations for low scores" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FollowUpInterviewCoordinator › generateFollowUpRecommendations" name="should generate recommendations for concerns" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FollowUpInterviewCoordinator › generateFollowUpRecommendations" name="should generate final confirmation for strong recommendations" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FollowUpInterviewCoordinator › scheduleFollowUpInterviews" name="should schedule follow-up interviews based on recommendations" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FollowUpInterviewCoordinator › scheduleFollowUpInterviews" name="should prioritize urgent recommendations first" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FollowUpInterviewCoordinator › coordinateCommitteeReview" name="should coordinate standard committee review" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FollowUpInterviewCoordinator › coordinateCommitteeReview" name="should coordinate expedited committee review" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FollowUpInterviewCoordinator › coordinateCommitteeReview" name="should coordinate comprehensive committee review" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="FollowUpInterviewCoordinator › completeFollowUpInterview" name="should complete follow-up interview and check for additional needs" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="ScrollBadge System Validation" errors="0" failures="5" skipped="0" timestamp="2025-09-16T09:20:56" time="8.452" tests="5">
+    <testcase classname="ScrollBadge System Validation" name="should validate badge types" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="ScrollBadge System Validation" name="should validate skill levels" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="ScrollBadge System Validation" name="should validate spiritual formation metrics structure" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="ScrollBadge System Validation" name="should validate badge metadata structure" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="ScrollBadge System Validation" name="should validate verification hash generation" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="EligibilityChecker" errors="0" failures="10" skipped="0" timestamp="2025-09-16T09:20:55" time="9.358" tests="10">
+    <testcase classname="EligibilityChecker › assessEligibility" name="should assess eligibility successfully for a qualified applicant" time="0.003">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="EligibilityChecker › assessEligibility" name="should handle missing application" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="EligibilityChecker › assessEligibility" name="should mark as ineligible for underage applicant" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="EligibilityChecker › assessEligibility" name="should mark as conditional for insufficient spiritual foundation" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="EligibilityChecker › assessEligibility" name="should handle missing education data" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="EligibilityChecker › assessEligibility" name="should check character references requirement" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="EligibilityChecker › getEligibilityAssessment" name="should retrieve existing assessment" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="EligibilityChecker › getEligibilityAssessment" name="should return null for non-existent assessment" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="EligibilityChecker › age calculation" name="should calculate age correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="EligibilityChecker › age calculation" name="should handle birthday not yet occurred this year" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="ScrollCoin Economy Foundation" errors="0" failures="7" skipped="0" timestamp="2025-09-16T09:20:55" time="9.179" tests="7">
+    <testcase classname="ScrollCoin Economy Foundation › ScrollCoinService" name="should be a singleton" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="ScrollCoin Economy Foundation › ScrollCoinService" name="should have correct reward configuration" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="ScrollCoin Economy Foundation › BlockchainService" name="should be a singleton" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="ScrollCoin Economy Foundation › BlockchainService" name="should get network status" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="ScrollCoin Economy Foundation › RewardMechanismService" name="should be a singleton" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="ScrollCoin Economy Foundation › RewardMechanismService" name="should not award for low scores" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="ScrollCoin Economy Foundation › Basic Functionality" name="services should initialize without errors" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Enrollment and Appeal Integration Tests" errors="0" failures="10" skipped="0" timestamp="2025-09-16T09:20:55" time="9.42" tests="10">
+    <testcase classname="Enrollment and Appeal Integration Tests › EnrollmentManager Core Functionality" name="should create enrollment confirmation for accepted application" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment and Appeal Integration Tests › EnrollmentManager Core Functionality" name="should process deposit payment correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment and Appeal Integration Tests › AppealProcessor Core Functionality" name="should submit appeal for rejected application" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment and Appeal Integration Tests › AppealProcessor Core Functionality" name="should process appeal decision correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment and Appeal Integration Tests › WaitlistManager Core Functionality" name="should add application to waitlist" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment and Appeal Integration Tests › WaitlistManager Core Functionality" name="should offer admission from waitlist" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment and Appeal Integration Tests › EnrollmentCapacityMonitor Core Functionality" name="should calculate current capacity metrics" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment and Appeal Integration Tests › EnrollmentCapacityMonitor Core Functionality" name="should update capacity limits" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment and Appeal Integration Tests › Integration Workflows" name="should handle complete enrollment workflow" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Enrollment and Appeal Integration Tests › Integration Workflows" name="should handle waitlist to enrollment workflow" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="AccessibilityAssessmentService" errors="0" failures="15" skipped="0" timestamp="2025-09-16T09:20:55" time="9.476" tests="15">
+    <testcase classname="AccessibilityAssessmentService › assessAccessibilityNeeds" name="should assess accessibility needs successfully" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="AccessibilityAssessmentService › assessAccessibilityNeeds" name="should handle application with no accessibility needs" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="AccessibilityAssessmentService › assessAccessibilityNeeds" name="should categorize visual disability correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="AccessibilityAssessmentService › assessAccessibilityNeeds" name="should calculate total cost correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="AccessibilityAssessmentService › evaluateSpecialCircumstances" name="should evaluate medical emergency correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="AccessibilityAssessmentService › evaluateSpecialCircumstances" name="should evaluate financial hardship correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="GlobalComplianceChecker › assessGlobalCompliance" name="should assess EU applicant compliance correctly" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="GlobalComplianceChecker › assessGlobalCompliance" name="should assess US minor applicant correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="GlobalComplianceChecker › assessGlobalCompliance" name="should identify international student requirements" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="GlobalComplianceChecker › assessGlobalCompliance" name="should assess data protection compliance" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="GlobalComplianceChecker › assessGlobalCompliance" name="should calculate compliance costs correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="GlobalComplianceChecker › assessGlobalCompliance" name="should generate appropriate recommendations" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="GlobalComplianceChecker › processEligibilityAppeal" name="should process appeal correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="GlobalComplianceChecker › credential recognition assessment" name="should require credential recognition for international students" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="GlobalComplianceChecker › credential recognition assessment" name="should not require credential recognition for domestic students" time="0.003">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Calling Discernment and Scroll Alignment - Simple Tests" errors="0" failures="5" skipped="0" timestamp="2025-09-16T09:20:55" time="9.33" tests="5">
+    <testcase classname="Calling Discernment and Scroll Alignment - Simple Tests" name="CallingDiscerner should identify teaching calling" time="0.045">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment - Simple Tests" name="ScrollAlignmentEvaluator should assess kingdom mindset" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment - Simple Tests" name="SpiritualRecommendationGenerator should generate recommendations" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment - Simple Tests" name="PropheticInputIntegrator should integrate prophetic input" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Calling Discernment and Scroll Alignment - Simple Tests" name="Complete workflow integration should work" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+  <testsuite name="Document Verification and Fraud Detection Services" errors="0" failures="9" skipped="0" timestamp="2025-09-16T09:20:55" time="9.308" tests="9">
+    <testcase classname="Document Verification and Fraud Detection Services › DocumentVerificationService" name="should be instantiated correctly" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Document Verification and Fraud Detection Services › DocumentVerificationService" name="should have required methods" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Document Verification and Fraud Detection Services › FraudDetectionService" name="should be instantiated correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Document Verification and Fraud Detection Services › FraudDetectionService" name="should have required methods" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Document Verification and Fraud Detection Services › IdentityVerificationService" name="should be instantiated correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Document Verification and Fraud Detection Services › IdentityVerificationService" name="should have required methods" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Document Verification and Fraud Detection Services › SuspiciousActivityMonitoringService" name="should be instantiated correctly" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Document Verification and Fraud Detection Services › SuspiciousActivityMonitoringService" name="should have required methods" time="0">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+    <testcase classname="Document Verification and Fraud Detection Services › Integration" name="should create all services without errors" time="0.001">
+      <failure>PrismaClientInitializationError: Authentication failed against database server at `localhost`, the provided database credentials for `postgres` are not valid.
+
+Please make sure to provide valid database credentials for the database server at `localhost`.
+    at t (C:\Users\stanl\Projects\Scroll_University™\node_modules\@prisma\client\runtime\library.js:112:2488)
+    at Object.&lt;anonymous&gt; (C:\Users\stanl\Projects\Scroll_University™\backend\src\__tests__\setup.ts:53:3)</failure>
+    </testcase>
+  </testsuite>
+</testsuites>
