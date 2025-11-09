@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import scrollLogo from "@/assets/scroll-university-logo.png";
+import { NotificationDropdown } from "./NotificationDropdown";
 
 interface NavSection {
   title: string;
@@ -149,7 +150,7 @@ export const MainNavigation = () => {
   return (
     <div className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-background border-r border-border flex-col">
       {/* Logo Header */}
-      <div className="p-4 border-b border-border">
+      <div className="p-4 border-b border-border flex items-center justify-between">
         <Link to="/dashboard" className="flex items-center space-x-2">
           <img src={scrollLogo} alt="ScrollUniversity Logo" className="h-8 w-8" />
           <div>
@@ -157,6 +158,7 @@ export const MainNavigation = () => {
             <p className="text-xs text-muted-foreground font-sans">Veritas et Sapientia</p>
           </div>
         </Link>
+        <NotificationDropdown />
       </div>
 
       {/* Navigation */}

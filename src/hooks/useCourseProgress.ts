@@ -66,60 +66,101 @@ export const useCompleteModule = (courseId: string) => {
 
   return useMutation({
     mutationFn: underChrist(async ({ moduleId, quizScore }: { moduleId: string; quizScore?: number }) => {
-      // Get current enrollment
-      const { data: enrollment } = await supabase
-        .from('enrollments')
-        .select('*')
-        .eq('course_id', courseId)
-        .eq('user_id', user?.id)
-        .single();
+      if (!user?.id) throw new Error('Not authenticated');
 
-      if (!enrollment) throw new Error('Not enrolled in course');
+      // Record module completion
+      const { error: progressError } = await supabase
+        .from('learning_progress')
+        .upsert({
+          user_id: user.id,
+          module_id: moduleId,
+          completed: true,
+          quiz_score: quizScore,
+          updated_at: new Date().toISOString()
+        });
 
-      // Get total modules
-      const { data: modules } = await supabase
+      if (progressError) throw progressError;
+
+      // Award ScrollCoins
+      const { error: coinError } = await supabase.rpc('earn_scrollcoin', {
+        p_user_id: user.id,
+        p_amount: 50,
+        p_desc: 'Module completion reward'
+      });
+
+      if (coinError) throw coinError;
+
+      // Update enrollment progress
+      const { data: allModules } = await supabase
         .from('course_modules')
         .select('id')
-        .eq('course_id', courseId)
-        .order('order_index');
+        .eq('course_id', courseId);
 
-      const totalModules = modules?.length || 1;
-      
-      // Calculate new progress (simple: each module = equal weight)
-      const currentProgress = enrollment.progress || 0;
-      const progressIncrement = (100 / totalModules);
-      const newProgress = Math.min(100, currentProgress + progressIncrement);
+      const { data: completedModules } = await supabase
+        .from('learning_progress')
+        .select('module_id')
+        .eq('user_id', user.id)
+        .eq('completed', true);
 
-      // Update enrollment
-      const { error } = await supabase
+      const progress = allModules && completedModules 
+        ? (completedModules.length / allModules.length) * 100 
+        : 0;
+
+      const { error: enrollmentError } = await supabase
         .from('enrollments')
-        .update({
-          progress: newProgress,
+        .update({ 
+          progress,
           updated_at: new Date().toISOString()
         })
-        .eq('id', enrollment.id);
+        .eq('course_id', courseId)
+        .eq('user_id', user.id);
 
-      if (error) throw error;
+      if (enrollmentError) throw enrollmentError;
 
-      // Award ScrollCoins for completion
-      if (quizScore && quizScore >= 70) {
-        await supabase.rpc('earn_scrollcoin', {
-          p_user_id: user?.id,
-          p_amount: 10,
-          p_desc: `Completed module with ${quizScore}% score`
+      // Update user stats
+      const { data: userStats } = await supabase
+        .from('user_stats')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (!userStats) {
+        await supabase.from('user_stats').insert({
+          user_id: user.id,
+          total_xp: 25,
+          total_scrollcoins: 50,
+          courses_completed: progress === 100 ? 1 : 0,
+          current_streak: 1,
+          longest_streak: 1,
+          last_activity_date: new Date().toISOString().split('T')[0],
         });
+      } else {
+        const newCoursesCompleted = progress === 100 
+          ? userStats.courses_completed + 1 
+          : userStats.courses_completed;
+
+        await supabase.from('user_stats').update({
+          total_xp: userStats.total_xp + 25,
+          total_scrollcoins: userStats.total_scrollcoins + 50,
+          courses_completed: newCoursesCompleted,
+          last_activity_date: new Date().toISOString().split('T')[0],
+        }).eq('user_id', user.id);
       }
 
-      return { newProgress, moduleId };
+      // Check for new achievements
+      await supabase.functions.invoke('check-achievements', {
+        body: { userId: user.id },
+      });
+
+      return { progress };
     }),
-    onSuccess: ({ newProgress }) => {
-      queryClient.invalidateQueries({ queryKey: ['course-progress', courseId] });
-      queryClient.invalidateQueries({ queryKey: ['enrollments'] });
-      queryClient.invalidateQueries({ queryKey: ['dashboard'] });
-      queryClient.invalidateQueries({ queryKey: ['wallet'] });
-      
-      toast.success('Module completed!', {
-        description: `Course progress: ${Math.round(newProgress)}%`
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['course-progress'] });
+      queryClient.invalidateQueries({ queryKey: ['user-enrollments'] });
+      queryClient.invalidateQueries({ queryKey: ['user_stats'] });
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+      toast.success('Module completed! 🎉', {
+        description: 'You earned 50 ScrollCoins!',
       });
     },
     onError: (error: Error) => {

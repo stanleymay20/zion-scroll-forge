@@ -26,7 +26,9 @@ import PrayerRequests from "./pages/PrayerRequests";
 import Analytics from "./pages/Analytics";
 import Transcript from "./pages/Transcript";
 import StudyGroups from "./pages/StudyGroups";
+import StudyGroupChat from "./pages/StudyGroupChat";
 import Achievements from "./pages/Achievements";
+import AdminDashboard from "./pages/AdminDashboard";
 import { ComingSoonPage } from "./components/layout/PageTemplate";
 import NotFound from "./pages/NotFound";
 
@@ -99,7 +101,9 @@ const App = () => (
               <Route path="analytics" element={<Analytics />} />
               <Route path="transcript" element={<Transcript />} />
               <Route path="study-groups" element={<StudyGroups />} />
+              <Route path="study-groups/:groupId" element={<StudyGroupChat />} />
               <Route path="achievements" element={<Achievements />} />
+              <Route path="admin" element={<AdminDashboard />} />
             
             {/* All other routes use coming soon pages */}
             <Route path="degrees" element={<ComingSoonPage title="Degree Programs" />} />
