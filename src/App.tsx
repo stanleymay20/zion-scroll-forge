@@ -21,6 +21,7 @@ import QuizPage from "./pages/QuizPage";
 import AITutors from "./pages/AITutors";
 import AITutorChat from "./pages/AITutorChat";
 import Community from "./pages/Community";
+import Assessments from "./pages/Assessments";
 import ScrollCoin from "./pages/ScrollCoin";
 import Wallet from "./pages/Wallet";
 import SpiritualFormation from "./pages/SpiritualFormation";
@@ -132,7 +133,7 @@ const App = () => (
             <Route path="settings" element={<SettingsPage />} />
             
             {/* All other routes use coming soon pages */}
-            <Route path="assessments" element={<ComingSoonPage title="Assessments" />} />
+            <Route path="assessments" element={<Assessments />} />
             <Route path="divine-scorecard" element={<ComingSoonPage title="Divine Scorecard" />} />
             <Route path="prophetic-checkins" element={<ComingSoonPage title="Prophetic Check-ins" />} />
             <Route path="calling-discernment" element={<ComingSoonPage title="Calling Discernment" />} />
