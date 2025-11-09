@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { BookOpen, Crown, Heart, Star } from "lucide-react";
 
 export const HeroSection = () => {
@@ -41,14 +42,18 @@ export const HeroSection = () => {
 
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <Button variant="divine" size="lg" className="text-lg px-8 py-6 font-sans">
-            <BookOpen className="w-5 h-5 mr-2" />
-            Explore 10,000+ Courses
-          </Button>
-          <Button variant="sacred" size="lg" className="text-lg px-8 py-6 font-sans">
-            <Heart className="w-5 h-5 mr-2" />
-            Begin Spiritual Formation
-          </Button>
+          <Link to="/courses">
+            <Button variant="divine" size="lg" className="text-lg px-8 py-6 font-sans">
+              <BookOpen className="w-5 h-5 mr-2" />
+              Explore 10,000+ Courses
+            </Button>
+          </Link>
+          <Link to="/auth?tab=signup&redirect=/spiritual-formation">
+            <Button variant="sacred" size="lg" className="text-lg px-8 py-6 font-sans">
+              <Heart className="w-5 h-5 mr-2" />
+              Begin Spiritual Formation
+            </Button>
+          </Link>
         </div>
 
         {/* Key Features Cards */}

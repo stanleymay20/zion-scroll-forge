@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 
 export default function Auth() {
+  const [searchParams] = useSearchParams();
+  const initialTab = (searchParams.get('tab') === 'signup' ? 'signup' : 'signin') as 'signin' | 'signup';
+  const redirect = searchParams.get('redirect') || '/dashboard';
+  
+  const [tab, setTab] = useState<'signin' | 'signup'>(initialTab);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -19,7 +24,7 @@ export default function Auth() {
     setLoading(true);
     try {
       await signIn(email, password);
-      navigate('/dashboard');
+      navigate(redirect);
     } catch (error) {
       console.error('Sign in error:', error);
     } finally {
@@ -34,7 +39,7 @@ export default function Auth() {
       await signUp(email, password);
       // After successful signup, sign them in
       await signIn(email, password);
-      navigate('/dashboard');
+      navigate(redirect);
     } catch (error) {
       console.error('Sign up error:', error);
     } finally {
@@ -50,7 +55,7 @@ export default function Auth() {
           <CardDescription>Christ-Centered Education for Kingdom Leaders</CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs defaultValue="signin" className="w-full">
+          <Tabs value={tab} onValueChange={(v) => setTab(v as 'signin' | 'signup')} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>

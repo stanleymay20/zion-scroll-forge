@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { 
   Brain, 
   Cross, 
@@ -131,8 +132,8 @@ export const FacultiesSection = () => {
                   <Badge variant="outline" className="text-xs font-sans border-divine-gold/30 text-divine-gold">
                     {faculty.specialization}
                   </Badge>
-                  <Button variant="ghost" size="sm" className="text-xs font-sans">
-                    Explore →
+                  <Button asChild variant="ghost" size="sm" className="text-xs font-sans">
+                    <Link to="/courses">Explore →</Link>
                   </Button>
                 </div>
               </CardContent>
@@ -141,10 +142,12 @@ export const FacultiesSection = () => {
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="divine" size="lg" className="font-sans">
-            <Cross className="w-5 h-5 mr-2" />
-            View All Faculties & 10,000+ Courses
-          </Button>
+          <Link to="/courses">
+            <Button variant="divine" size="lg" className="font-sans">
+              <Cross className="w-5 h-5 mr-2" />
+              View All Faculties & 10,000+ Courses
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
