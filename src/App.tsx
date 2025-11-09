@@ -1,3 +1,4 @@
+import React, { Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,6 +9,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import { useRealtimeSubscriptions } from "@/hooks/useRealtime";
 import { MainLayout } from "./components/layout/MainLayout";
+import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
@@ -47,6 +49,17 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <div className="text-center">
+      <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
+      <p className="text-muted-foreground">Loading ScrollUniversity...</p>
+      <p className="text-xs text-muted-foreground mt-2">✝️ Jesus Christ is Lord</p>
+    </div>
+  </div>
+);
+
 // Realtime subscriptions wrapper
 const RealtimeProvider = ({ children }: { children: React.ReactNode }) => {
   useRealtimeSubscriptions();
@@ -61,7 +74,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <RealtimeProvider>
-            <Routes>
+            <Suspense fallback={<LoadingFallback />}>
+              <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
@@ -109,7 +123,8 @@ const App = () => (
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
-            </Routes>
+              </Routes>
+            </Suspense>
           </RealtimeProvider>
         </BrowserRouter>
       </TooltipProvider>
