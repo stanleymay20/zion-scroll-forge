@@ -72,6 +72,44 @@ export type Database = {
           },
         ]
       }
+      course_certificates: {
+        Row: {
+          certificate_url: string | null
+          completion_date: string | null
+          course_id: string
+          created_at: string | null
+          id: string
+          scroll_badge_earned: boolean | null
+          user_id: string
+        }
+        Insert: {
+          certificate_url?: string | null
+          completion_date?: string | null
+          course_id: string
+          created_at?: string | null
+          id?: string
+          scroll_badge_earned?: boolean | null
+          user_id: string
+        }
+        Update: {
+          certificate_url?: string | null
+          completion_date?: string | null
+          course_id?: string
+          created_at?: string | null
+          id?: string
+          scroll_badge_earned?: boolean | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_certificates_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_modules: {
         Row: {
           content: Json | null
@@ -405,6 +443,47 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "learning_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      module_notes: {
+        Row: {
+          application_notes: string | null
+          created_at: string | null
+          id: string
+          module_id: string
+          notes: string | null
+          scripture_connections: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          application_notes?: string | null
+          created_at?: string | null
+          id?: string
+          module_id: string
+          notes?: string | null
+          scripture_connections?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          application_notes?: string | null
+          created_at?: string | null
+          id?: string
+          module_id?: string
+          notes?: string | null
+          scripture_connections?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "module_notes_module_id_fkey"
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "course_modules"

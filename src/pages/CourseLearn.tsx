@@ -12,12 +12,14 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import {
   ArrowLeft, ArrowRight, CheckCircle2, PlayCircle, FileText,
-  BookOpen, Trophy, Loader2, AlertCircle, MessageSquare, Download
+  BookOpen, Trophy, Loader2, AlertCircle, MessageSquare, Download, Award
 } from 'lucide-react';
 import { getCourseDetail } from '@/services/courses';
 import { useAuth } from '@/contexts/AuthContext';
 import { useCourseProgress, useCompleteModule } from '@/hooks/useCourseProgress';
 import { toast } from 'sonner';
+import { ModuleNotes } from '@/components/course/ModuleNotes';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function CourseLearn() {
   const { courseId } = useParams();
@@ -124,9 +126,40 @@ export default function CourseLearn() {
       setTimeout(handleNextModule, 1000);
     } else {
       toast.success('🎉 Course Completed!', {
-        description: 'Congratulations on completing this course!'
+        description: 'Generating your certificate...'
       });
+      // Generate certificate
+      await checkAndGenerateCertificate();
+    }
+  };
+
+  const checkAndGenerateCertificate = async () => {
+    if (!user || !courseId) return;
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-certificate', {
+        body: { courseId, userId: user.id },
+      });
+      
+      if (error) throw error;
+      
+      if (data?.html) {
+        // Open certificate in new window
+        const win = window.open();
+        if (win) {
+          win.document.write(data.html);
+          toast.success('Certificate generated!', {
+            description: 'Your certificate has been opened in a new window.'
+          });
+        }
+      }
+      
       setTimeout(() => navigate(`/courses/${courseId}`), 2000);
+    } catch (error) {
+      console.error('Error generating certificate:', error);
+      toast.error('Certificate generation failed', {
+        description: 'Your progress has been saved.'
+      });
     }
   };
 
@@ -425,6 +458,9 @@ export default function CourseLearn() {
               </Card>
             </TabsContent>
           </Tabs>
+
+          {/* Student Notes */}
+          <ModuleNotes moduleId={currentModule.id} userId={user?.id} />
 
           {/* Navigation */}
           <Card>
