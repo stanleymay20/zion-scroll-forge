@@ -29,6 +29,11 @@ import StudyGroups from "./pages/StudyGroups";
 import StudyGroupChat from "./pages/StudyGroupChat";
 import Achievements from "./pages/Achievements";
 import AdminDashboard from "./pages/AdminDashboard";
+import Apply from "./pages/Apply";
+import FacultyDashboard from "./pages/FacultyDashboard";
+import Gradebook from "./pages/Gradebook";
+import AdmissionsReview from "./pages/AdmissionsReview";
+import AlumniPortal from "./pages/AlumniPortal";
 import { ComingSoonPage } from "./components/layout/PageTemplate";
 import NotFound from "./pages/NotFound";
 
@@ -104,6 +109,11 @@ const App = () => (
               <Route path="study-groups/:groupId" element={<StudyGroupChat />} />
               <Route path="achievements" element={<Achievements />} />
               <Route path="admin" element={<AdminDashboard />} />
+              <Route path="apply" element={<Apply />} />
+              <Route path="faculty" element={<FacultyDashboard />} />
+              <Route path="faculty/gradebook/:courseId" element={<Gradebook />} />
+              <Route path="admin/admissions" element={<AdmissionsReview />} />
+              <Route path="alumni" element={<AlumniPortal />} />
             
             {/* All other routes use coming soon pages */}
             <Route path="degrees" element={<ComingSoonPage title="Degree Programs" />} />
