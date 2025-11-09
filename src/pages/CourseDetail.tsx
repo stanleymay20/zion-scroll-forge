@@ -12,7 +12,7 @@ import {
   FileText, MessageSquare, Award, Heart
 } from "lucide-react";
 import { useEnrollInCourse, useUserEnrollments } from "@/hooks/useCourses";
-import { getCourseDetail } from "@/services/courses";
+import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMemo } from "react";
 import { CourseReviews } from "@/components/course/CourseReviews";
@@ -26,8 +26,21 @@ export default function CourseDetail() {
 
   const { data: courseData, isLoading, error } = useQuery({
     queryKey: ['course-detail', courseId],
-    queryFn: async () => await getCourseDetail(courseId!, user?.id),
-    enabled: !!courseId && !!user?.id
+    queryFn: async () => {
+      const { data: course, error: courseError } = await supabase
+        .from('courses')
+        .select('*, course_modules(*, learning_materials(*))')
+        .eq('id', courseId!)
+        .single();
+      
+      if (courseError) throw courseError;
+      
+      return { 
+        course, 
+        modules: course.course_modules || [] 
+      };
+    },
+    enabled: !!courseId
   });
 
   const enrollment = useMemo(() => 
@@ -159,15 +172,15 @@ export default function CourseDetail() {
                             </div>
                             <div>
                               <p className="font-medium">{module.title}</p>
-                              {module.content?.summary && (
+                              {(module.content as any)?.summary && (
                                 <p className="text-sm text-muted-foreground mt-1">
-                                  {module.content.summary}
+                                  {(module.content as any).summary}
                                 </p>
                               )}
                               <div className="flex items-center space-x-4 mt-2">
                                 <span className="text-xs text-muted-foreground">
                                   <Clock className="h-3 w-3 inline mr-1" />
-                                  {module.content?.duration_minutes || 45} minutes
+                                  {(module.content as any)?.duration_minutes || 45} minutes
                                 </span>
                                 <span className="text-xs text-muted-foreground">
                                   Module {index + 1}
@@ -185,36 +198,39 @@ export default function CourseDetail() {
                           </Button>
                         </div>
 
-                        {/* Module Content Overview */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                          <div className="flex items-center space-x-2">
-                            <Play className="h-4 w-4 text-blue-500" />
-                            <span>Lectures</span>
+                        {/* Learning Materials */}
+                        {module.learning_materials && module.learning_materials.length > 0 && (
+                          <div className="space-y-2">
+                            <h4 className="font-medium text-sm">Materials:</h4>
+                            {module.learning_materials.map((material: any) => (
+                              <div key={material.id} className="flex items-center justify-between p-2 bg-muted/30 rounded">
+                                <div className="flex items-center space-x-2">
+                                  {material.kind === 'pdf' && <FileText className="h-4 w-4 text-red-500" />}
+                                  {material.kind === 'video' && <Play className="h-4 w-4 text-blue-500" />}
+                                  {material.kind === 'link' && <FileText className="h-4 w-4 text-green-500" />}
+                                  <span className="text-sm">{material.title}</span>
+                                </div>
+                                {material.url && (
+                                  <a
+                                    href={material.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs text-primary hover:underline"
+                                  >
+                                    Open
+                                  </a>
+                                )}
+                              </div>
+                            ))}
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <FileText className="h-4 w-4 text-green-500" />
-                            <span>Resources</span>
-                          </div>
-                          {module.content?.has_quiz && (
-                            <div className="flex items-center space-x-2">
-                              <CheckCircle className="h-4 w-4 text-orange-500" />
-                              <span>Quiz</span>
-                            </div>
-                          )}
-                          {module.content?.has_pdf && (
-                            <div className="flex items-center space-x-2">
-                              <FileText className="h-4 w-4 text-purple-500" />
-                              <span>PDF Download</span>
-                            </div>
-                          )}
-                        </div>
+                        )}
 
                         {/* Learning Objectives */}
-                        {module.content?.learning_objectives && module.content.learning_objectives.length > 0 && (
+                        {(module.content as any)?.learning_objectives && (module.content as any).learning_objectives.length > 0 && (
                           <div className="bg-muted/50 rounded-lg p-3">
                             <h4 className="font-medium text-sm mb-2">Learning Objectives:</h4>
                             <ul className="space-y-1">
-                              {module.content.learning_objectives.map((objective: string, objIndex: number) => (
+                              {(module.content as any).learning_objectives.map((objective: string, objIndex: number) => (
                                 <li key={objIndex} className="text-sm flex items-start space-x-2">
                                   <CheckCircle className="h-3 w-3 text-primary mt-0.5 flex-shrink-0" />
                                   <span>{objective}</span>
@@ -368,7 +384,7 @@ export default function CourseDetail() {
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">Price</span>
                   <span className="text-2xl font-bold text-primary">
-                    {Math.round((course.price_cents || course.price * 100) / 100)} SC
+                    {Math.round(course.price || 0)} SC
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
@@ -378,7 +394,7 @@ export default function CourseDetail() {
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-muted-foreground">Students</span>
                   <span className="font-medium">
-                    {(course.students_count || course.students || 0).toLocaleString()}
+                    {(course.students || 0).toLocaleString()}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
