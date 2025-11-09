@@ -38,17 +38,24 @@ export interface CourseModule {
   title: string;
   description?: string;
   order_index: number;
-  learning_objectives: string[];
-  spiritual_alignment: SpiritualAlignment;
-  estimated_duration: number; // in minutes
-  prerequisites: string[];
+  content?: {
+    summary?: string;
+    duration_minutes?: number;
+    learning_objectives?: string[];
+    has_quiz?: boolean;
+    has_pdf?: boolean;
+  };
+  learning_objectives?: string[];
+  spiritual_alignment?: SpiritualAlignment;
+  estimated_duration?: number; // in minutes
+  prerequisites?: string[];
   lectures?: Lecture[];
   assessments?: Assessment[];
   assignments?: Assignment[];
   discussion_forums?: DiscussionForum[];
   resources?: CourseResource[];
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Lecture {
