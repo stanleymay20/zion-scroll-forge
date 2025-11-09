@@ -111,6 +111,36 @@ export type Database = {
           },
         ]
       }
+      ai_tutors: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          is_online: boolean | null
+          name: string
+          specialty: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_online?: boolean | null
+          name: string
+          specialty: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          is_online?: boolean | null
+          name?: string
+          specialty?: string
+        }
+        Relationships: []
+      }
       assignments: {
         Row: {
           course_id: string | null
@@ -172,6 +202,38 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "course_modules"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_posts: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -370,6 +432,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      degree_programs: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          duration: string | null
+          faculty: string | null
+          id: string
+          level: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          duration?: string | null
+          faculty?: string | null
+          id?: string
+          level?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          duration?: string | null
+          faculty?: string | null
+          id?: string
+          level?: string | null
+          title?: string
+        }
+        Relationships: []
       }
       enrollments: {
         Row: {
@@ -827,6 +919,80 @@ export type Database = {
           },
         ]
       }
+      module_progress: {
+        Row: {
+          completed: boolean | null
+          completed_at: string | null
+          course_id: string | null
+          id: string
+          module_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          completed?: boolean | null
+          completed_at?: string | null
+          course_id?: string | null
+          id?: string
+          module_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          completed_at?: string | null
+          course_id?: string | null
+          id?: string
+          module_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "module_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      post_comments: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          post_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "post_comments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       prayer_journal: {
         Row: {
           created_at: string | null
@@ -884,6 +1050,7 @@ export type Database = {
           id: string
           role: string | null
           scrollcoin_balance: number | null
+          scrollcoins: number | null
           spiritual_profile: Json | null
           updated_at: string | null
         }
@@ -894,6 +1061,7 @@ export type Database = {
           id: string
           role?: string | null
           scrollcoin_balance?: number | null
+          scrollcoins?: number | null
           spiritual_profile?: Json | null
           updated_at?: string | null
         }
@@ -904,6 +1072,7 @@ export type Database = {
           id?: string
           role?: string | null
           scrollcoin_balance?: number | null
+          scrollcoins?: number | null
           spiritual_profile?: Json | null
           updated_at?: string | null
         }
@@ -1010,6 +1179,97 @@ export type Database = {
             referencedColumns: ["assignment_id"]
           },
         ]
+      }
+      quiz_submissions: {
+        Row: {
+          course_id: string | null
+          id: string
+          module_id: string | null
+          score: number | null
+          submitted_at: string | null
+          total: number | null
+          user_id: string | null
+        }
+        Insert: {
+          course_id?: string | null
+          id?: string
+          module_id?: string | null
+          score?: number | null
+          submitted_at?: string | null
+          total?: number | null
+          user_id?: string | null
+        }
+        Update: {
+          course_id?: string | null
+          id?: string
+          module_id?: string | null
+          score?: number | null
+          submitted_at?: string | null
+          total?: number | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_submissions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      reward_ledger: {
+        Row: {
+          amount: number
+          created_at: string | null
+          event_type: string
+          id: string
+          meta: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          event_type: string
+          id?: string
+          meta?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          event_type?: string
+          id?: string
+          meta?: Json | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reward_ledger_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      reward_rules: {
+        Row: {
+          base_amount: number
+          extra: Json | null
+          key: string
+        }
+        Insert: {
+          base_amount: number
+          extra?: Json | null
+          key: string
+        }
+        Update: {
+          base_amount?: number
+          extra?: Json | null
+          key?: string
+        }
+        Relationships: []
       }
       rubric_criteria: {
         Row: {
@@ -1185,6 +1445,44 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      spiritual_metrics: {
+        Row: {
+          divine_score: number | null
+          id: string
+          ministry_readiness: number | null
+          prayer_streak: number | null
+          scripture_progress: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          divine_score?: number | null
+          id?: string
+          ministry_readiness?: number | null
+          prayer_streak?: number | null
+          scripture_progress?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          divine_score?: number | null
+          id?: string
+          ministry_readiness?: number | null
+          prayer_streak?: number | null
+          scripture_progress?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "spiritual_metrics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
           },
         ]
@@ -1685,6 +1983,33 @@ export type Database = {
           },
         ]
       }
+      virtual_labs: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          difficulty_level: string | null
+          id: string
+          resources_url: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          difficulty_level?: string | null
+          id?: string
+          resources_url?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          difficulty_level?: string | null
+          id?: string
+          resources_url?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       wallets: {
         Row: {
           balance: number | null
@@ -1730,6 +2055,33 @@ export type Database = {
             referencedColumns: ["user_id"]
           },
         ]
+      }
+      xr_classrooms: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          media_url: string | null
+          scheduled_time: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          media_url?: string | null
+          scheduled_time?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          media_url?: string | null
+          scheduled_time?: string | null
+          title?: string
+        }
+        Relationships: []
       }
     }
     Views: {
@@ -1896,6 +2248,24 @@ export type Database = {
       }
     }
     Functions: {
+      award_by_rule: {
+        Args: {
+          p_event: string
+          p_meta?: Json
+          p_user: string
+          p_value?: number
+        }
+        Returns: undefined
+      }
+      award_scrollcoins: {
+        Args: {
+          p_amount: number
+          p_event: string
+          p_meta?: Json
+          p_user: string
+        }
+        Returns: undefined
+      }
       earn_scrollcoin: {
         Args: { p_amount: number; p_desc: string; p_user_id: string }
         Returns: undefined

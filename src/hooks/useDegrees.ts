@@ -35,6 +35,9 @@ export async function getDegreeProgram(degreeId: string) {
 export const useDegreePrograms = () =>
   useQuery({ queryKey: ["degrees"], queryFn: getDegreePrograms });
 
+// Alias for convenience
+export const useDegrees = useDegreePrograms;
+
 export const useDegreeProgram = (degreeId: string) =>
   useQuery({ 
     queryKey: ["degree", degreeId], 
