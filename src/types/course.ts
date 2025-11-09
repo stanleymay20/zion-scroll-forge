@@ -38,6 +38,15 @@ export interface CourseModule {
   title: string;
   description?: string;
   order_index: number;
+  content_md?: string;
+  material_url?: string;
+  quiz_data?: Array<{
+    question: string;
+    options: string[];
+    correct: string;
+    explanation?: string;
+  }>;
+  duration_minutes?: number;
   content?: {
     summary?: string;
     duration_minutes?: number;

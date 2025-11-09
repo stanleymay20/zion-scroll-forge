@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import ReactMarkdown from 'react-markdown';
 import { PageTemplate } from '@/components/layout/PageTemplate';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import {
   ArrowLeft, ArrowRight, CheckCircle2, PlayCircle, FileText,
-  BookOpen, Trophy, Loader2, AlertCircle, MessageSquare
+  BookOpen, Trophy, Loader2, AlertCircle, MessageSquare, Download
 } from 'lucide-react';
 import { getCourseDetail } from '@/services/courses';
 import { useAuth } from '@/contexts/AuthContext';
@@ -88,17 +89,17 @@ export default function CourseLearn() {
   };
 
   const handleQuizSubmit = async () => {
-    const quiz = currentModule.content?.quiz;
-    if (!quiz?.questions) return;
+    const quiz = currentModule.quiz_data;
+    if (!quiz || !Array.isArray(quiz) || quiz.length === 0) return;
 
     let correct = 0;
-    quiz.questions.forEach((q: any, index: number) => {
+    quiz.forEach((q: any, index: number) => {
       if (quizAnswers[`q${index}`] === q.correct) {
         correct++;
       }
     });
 
-    const score = Math.round((correct / quiz.questions.length) * 100);
+    const score = Math.round((correct / quiz.length) * 100);
     setQuizScore(score);
     setQuizSubmitted(true);
 
@@ -130,7 +131,7 @@ export default function CourseLearn() {
   };
 
   const canCompleteModule = () => {
-    if (!currentModule.content?.quiz) return true;
+    if (!currentModule.quiz_data || !Array.isArray(currentModule.quiz_data) || currentModule.quiz_data.length === 0) return true;
     return quizSubmitted && quizScore !== null && quizScore >= 70;
   };
 
@@ -235,26 +236,16 @@ export default function CourseLearn() {
             <TabsContent value="lecture" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Video Lecture</CardTitle>
+                  <CardTitle>Module Content</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  {currentModule.content?.video_url ? (
-                    <div className="aspect-video bg-muted rounded-lg flex items-center justify-center">
-                      <iframe
-                        src={currentModule.content.video_url}
-                        className="w-full h-full rounded-lg"
-                        allowFullScreen
-                        title={currentModule.title}
-                      />
-                    </div>
+                <CardContent className="prose prose-sm max-w-none dark:prose-invert">
+                  {currentModule.content_md ? (
+                    <ReactMarkdown>{currentModule.content_md}</ReactMarkdown>
                   ) : (
-                    <div className="aspect-video bg-muted rounded-lg flex flex-col items-center justify-center p-8">
-                      <PlayCircle className="h-16 w-16 text-muted-foreground mb-4" />
-                      <p className="text-center text-muted-foreground mb-2">
-                        Video lecture coming soon
-                      </p>
-                      <p className="text-sm text-center text-muted-foreground">
-                        In the meantime, review the materials and complete the quiz to progress
+                    <div className="text-center py-8">
+                      <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+                      <p className="text-muted-foreground">
+                        Module content coming soon
                       </p>
                     </div>
                   )}
@@ -287,25 +278,34 @@ export default function CourseLearn() {
                   <CardDescription>Downloadable resources and reading materials</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {currentModule.content?.materials ? (
-                    <div className="space-y-3">
-                      {currentModule.content.materials.map((material: any, idx: number) => (
-                        <div
-                          key={idx}
-                          className="flex items-center justify-between p-4 border rounded-lg"
-                        >
-                          <div className="flex items-center space-x-3">
-                            <FileText className="h-5 w-5 text-primary" />
-                            <div>
-                              <p className="font-medium">{material.title}</p>
-                              <p className="text-sm text-muted-foreground">{material.type}</p>
-                            </div>
+                  {currentModule.material_url ? (
+                    <div className="border rounded-lg p-6 bg-muted/50">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-4">
+                          <div className="p-3 bg-primary/10 rounded-lg">
+                            <FileText className="h-8 w-8 text-primary" />
                           </div>
-                          <Button variant="outline" size="sm">
-                            Download
-                          </Button>
+                          <div>
+                            <p className="font-semibold text-lg">{currentModule.title}</p>
+                            <p className="text-sm text-muted-foreground">
+                              Complete module workbook • PDF Format
+                            </p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {currentModule.duration_minutes || 45} minutes reading time
+                            </p>
+                          </div>
                         </div>
-                      ))}
+                        <Button asChild size="lg">
+                          <a
+                            href={currentModule.material_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Download className="h-4 w-4 mr-2" />
+                            Download PDF
+                          </a>
+                        </Button>
+                      </div>
                     </div>
                   ) : (
                     <div className="text-center py-8">
@@ -314,7 +314,7 @@ export default function CourseLearn() {
                         No additional materials for this module
                       </p>
                       <p className="text-sm text-muted-foreground mt-2">
-                        Focus on the lecture content and complete the quiz
+                        Focus on the module content and complete the quiz
                       </p>
                     </div>
                   )}
@@ -331,10 +331,10 @@ export default function CourseLearn() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  {currentModule.content?.quiz?.questions ? (
+                  {currentModule.quiz_data && Array.isArray(currentModule.quiz_data) && currentModule.quiz_data.length > 0 ? (
                     <div className="space-y-6">
-                      {currentModule.content.quiz.questions.map((question: any, qIndex: number) => (
-                        <div key={qIndex} className="space-y-3">
+                      {currentModule.quiz_data.map((question: any, qIndex: number) => (
+                        <div key={qIndex} className="space-y-3 pb-4 border-b last:border-0">
                           <p className="font-medium">
                             {qIndex + 1}. {question.question}
                           </p>
@@ -374,7 +374,7 @@ export default function CourseLearn() {
                       {quizSubmitted && quizScore !== null && (
                         <div
                           className={`p-4 rounded-lg ${
-                            quizScore >= 70 ? 'bg-green-50 text-green-900' : 'bg-red-50 text-red-900'
+                            quizScore >= 70 ? 'bg-green-50 dark:bg-green-950 text-green-900 dark:text-green-100' : 'bg-red-50 dark:bg-red-950 text-red-900 dark:text-red-100'
                           }`}
                         >
                           <p className="font-semibold">
@@ -394,7 +394,7 @@ export default function CourseLearn() {
                             onClick={handleQuizSubmit}
                             disabled={
                               Object.keys(quizAnswers).length <
-                              currentModule.content.quiz.questions.length
+                              currentModule.quiz_data.length
                             }
                           >
                             Submit Quiz
