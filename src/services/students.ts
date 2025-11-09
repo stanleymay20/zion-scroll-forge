@@ -1,5 +1,18 @@
 import { supabase } from '@/integrations/supabase/client';
 import { underChrist } from '@/lib/lordship';
+import type { Database } from '@/integrations/supabase/types';
+
+type Student = Database['public']['Tables']['students']['Row'] & {
+  student_documents?: Database['public']['Tables']['student_documents']['Row'][];
+};
+
+type Graduation = Database['public']['Tables']['graduations']['Row'] & {
+  students: { full_name: string; email: string };
+};
+
+type Transcript = Database['public']['Tables']['transcripts']['Row'] & {
+  courses: { title: string; faculty: string };
+};
 
 export const createStudentApplication = underChrist(async (formData: any) => {
   const { data: user } = await supabase.auth.getUser();

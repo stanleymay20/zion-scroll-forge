@@ -1,8 +1,10 @@
 // Christ-Lordship Middleware
 // All operations acknowledge Jesus Christ as Lord
 
-export const underChrist = <T extends (...args: any[]) => any>(fn: T) =>
-  async (...args: Parameters<T>): Promise<ReturnType<T>> => {
+type AsyncFunction = (...args: any[]) => Promise<any>;
+
+export const underChrist = <T extends AsyncFunction>(fn: T) =>
+  async (...args: Parameters<T>): Promise<Awaited<ReturnType<T>>> => {
     // Christ-Lordship acknowledgment - all operations submit to His authority
     console.info('✝️ Jesus Christ is Lord over this operation');
     try {
