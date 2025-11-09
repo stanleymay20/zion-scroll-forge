@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import scrollLogo from "@/assets/scroll-university-logo.png";
 
 export const Header = () => {
@@ -17,9 +18,9 @@ export const Header = () => {
           <a href="#faculties" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Faculties
           </a>
-          <a href="#courses" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <Link to="/courses" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Courses
-          </a>
+          </Link>
           <a href="#prayer" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Prayer Center
           </a>
@@ -29,12 +30,16 @@ export const Header = () => {
         </nav>
 
         <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="sm" className="font-sans">
-            Sign In
-          </Button>
-          <Button variant="divine" size="sm" className="font-sans">
-            Begin Journey
-          </Button>
+          <Link to="/auth">
+            <Button variant="ghost" size="sm" className="font-sans">
+              Sign In
+            </Button>
+          </Link>
+          <Link to="/auth?tab=signup&redirect=/apply">
+            <Button variant="divine" size="sm" className="font-sans">
+              Begin Journey
+            </Button>
+          </Link>
         </div>
       </div>
     </header>
