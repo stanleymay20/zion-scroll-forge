@@ -16,6 +16,8 @@ import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import CourseLearn from "./pages/CourseLearn";
+import ModuleDetail from "./pages/ModuleDetail";
+import QuizPage from "./pages/QuizPage";
 import AITutors from "./pages/AITutors";
 import AITutorChat from "./pages/AITutorChat";
 import Community from "./pages/Community";
@@ -34,6 +36,11 @@ import FacultyDashboard from "./pages/FacultyDashboard";
 import Gradebook from "./pages/Gradebook";
 import AdmissionsReview from "./pages/AdmissionsReview";
 import AlumniPortal from "./pages/AlumniPortal";
+import ProfilePage from "./pages/Profile";
+import DegreesPage from "./pages/Degrees";
+import XRClassroomsPage from "./pages/XRClassrooms";
+import VirtualLabsPage from "./pages/VirtualLabs";
+import SettingsPage from "./pages/Settings";
 import { ComingSoonPage } from "./components/layout/PageTemplate";
 import NotFound from "./pages/NotFound";
 
@@ -96,6 +103,8 @@ const App = () => (
               <Route path="courses" element={<Courses />} />
               <Route path="courses/:courseId" element={<CourseDetail />} />
               <Route path="courses/:courseId/learn" element={<CourseLearn />} />
+              <Route path="courses/:courseId/modules/:moduleId" element={<ModuleDetail />} />
+              <Route path="quiz/:quizId" element={<QuizPage />} />
               <Route path="ai-tutors" element={<AITutors />} />
               <Route path="ai-tutors/:tutorId" element={<AITutorChat />} />
               <Route path="community" element={<Community />} />
@@ -115,10 +124,14 @@ const App = () => (
               <Route path="admin/admissions" element={<AdmissionsReview />} />
               <Route path="alumni" element={<AlumniPortal />} />
             
+            {/* Dynamic pages */}
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path="degrees" element={<DegreesPage />} />
+            <Route path="xr-classrooms" element={<XRClassroomsPage />} />
+            <Route path="virtual-labs" element={<VirtualLabsPage />} />
+            <Route path="settings" element={<SettingsPage />} />
+            
             {/* All other routes use coming soon pages */}
-            <Route path="degrees" element={<ComingSoonPage title="Degree Programs" />} />
-            <Route path="xr-classrooms" element={<ComingSoonPage title="XR Classrooms" />} />
-            <Route path="virtual-labs" element={<ComingSoonPage title="Virtual Labs" />} />
             <Route path="assessments" element={<ComingSoonPage title="Assessments" />} />
             <Route path="divine-scorecard" element={<ComingSoonPage title="Divine Scorecard" />} />
             <Route path="prophetic-checkins" element={<ComingSoonPage title="Prophetic Check-ins" />} />
@@ -134,8 +147,6 @@ const App = () => (
             <Route path="job-board" element={<ComingSoonPage title="Job Board" />} />
             <Route path="research" element={<ComingSoonPage title="Research Hub" />} />
             <Route path="help" element={<ComingSoonPage title="Help Center" />} />
-            <Route path="profile" element={<ComingSoonPage title="My Profile" />} />
-            <Route path="settings" element={<ComingSoonPage title="Settings" />} />
           </Route>
           
           {/* Catch-all route for 404 */}
