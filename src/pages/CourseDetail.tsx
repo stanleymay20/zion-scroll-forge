@@ -23,7 +23,6 @@ export default function CourseDetail() {
   const enrollMutation = useEnrollInCourse();
   const { data: enrollments } = useUserEnrollments();
 
-  // Fetch comprehensive course details
   const { data: courseData, isLoading, error } = useQuery({
     queryKey: ['course-detail', courseId],
     queryFn: () => getCourseDetail(courseId!, user?.id),
@@ -31,8 +30,8 @@ export default function CourseDetail() {
   });
 
   const enrollment = useMemo(() => 
-    enrollments?.find((e: any) => e.course_id === courseId) || courseData?.enrollment,
-    [enrollments, courseId, courseData?.enrollment]
+    enrollments?.find((e: any) => e.course_id === courseId),
+    [enrollments, courseId]
   );
 
   const handleEnroll = async () => {
@@ -159,13 +158,15 @@ export default function CourseDetail() {
                             </div>
                             <div>
                               <p className="font-medium">{module.title}</p>
-                              <p className="text-sm text-muted-foreground">
-                                {module.description}
-                              </p>
-                              <div className="flex items-center space-x-4 mt-1">
+                              {module.content?.summary && (
+                                <p className="text-sm text-muted-foreground mt-1">
+                                  {module.content.summary}
+                                </p>
+                              )}
+                              <div className="flex items-center space-x-4 mt-2">
                                 <span className="text-xs text-muted-foreground">
                                   <Clock className="h-3 w-3 inline mr-1" />
-                                  {module.estimated_duration} minutes
+                                  {module.content?.duration_minutes || 45} minutes
                                 </span>
                                 <span className="text-xs text-muted-foreground">
                                   Module {index + 1}
@@ -173,6 +174,14 @@ export default function CourseDetail() {
                               </div>
                             </div>
                           </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => navigate(`/ai-tutors/${course.faculty}?context=${encodeURIComponent(module.title)}`)}
+                          >
+                            <MessageSquare className="h-4 w-4 mr-2" />
+                            Ask AI Tutor
+                          </Button>
                         </div>
 
                         {/* Module Content Overview */}
@@ -183,24 +192,28 @@ export default function CourseDetail() {
                           </div>
                           <div className="flex items-center space-x-2">
                             <FileText className="h-4 w-4 text-green-500" />
-                            <span>Notes & Resources</span>
+                            <span>Resources</span>
                           </div>
-                          <div className="flex items-center space-x-2">
-                            <CheckCircle className="h-4 w-4 text-orange-500" />
-                            <span>Assessments</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <MessageSquare className="h-4 w-4 text-purple-500" />
-                            <span>Discussion</span>
-                          </div>
+                          {module.content?.has_quiz && (
+                            <div className="flex items-center space-x-2">
+                              <CheckCircle className="h-4 w-4 text-orange-500" />
+                              <span>Quiz</span>
+                            </div>
+                          )}
+                          {module.content?.has_pdf && (
+                            <div className="flex items-center space-x-2">
+                              <FileText className="h-4 w-4 text-purple-500" />
+                              <span>PDF Download</span>
+                            </div>
+                          )}
                         </div>
 
                         {/* Learning Objectives */}
-                        {module.learning_objectives && module.learning_objectives.length > 0 && (
+                        {module.content?.learning_objectives && module.content.learning_objectives.length > 0 && (
                           <div className="bg-muted/50 rounded-lg p-3">
                             <h4 className="font-medium text-sm mb-2">Learning Objectives:</h4>
                             <ul className="space-y-1">
-                              {module.learning_objectives.map((objective, objIndex) => (
+                              {module.content.learning_objectives.map((objective: string, objIndex: number) => (
                                 <li key={objIndex} className="text-sm flex items-start space-x-2">
                                   <CheckCircle className="h-3 w-3 text-primary mt-0.5 flex-shrink-0" />
                                   <span>{objective}</span>
@@ -208,6 +221,13 @@ export default function CourseDetail() {
                               ))}
                             </ul>
                           </div>
+                        )}
+
+                        {enrollment && (
+                          <Button className="w-full" size="sm" variant="secondary">
+                            <Play className="h-4 w-4 mr-2" />
+                            Start Module
+                          </Button>
                         )}
                       </div>
                     ))}
