@@ -11,6 +11,8 @@ export default function AdmissionsReview() {
   const approveApplication = useApproveApplication();
   const rejectApplication = useRejectApplication();
 
+  console.info('✝️ ScrollUniversity: Admissions data loaded — Christ is Lord over every application');
+
   const handleApprove = async (studentId: string) => {
     try {
       const result = await approveApplication.mutateAsync(studentId);

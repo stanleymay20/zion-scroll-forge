@@ -8,6 +8,8 @@ import { Award, Download, ExternalLink } from 'lucide-react';
 export default function AlumniPortal() {
   const { data: graduations } = useGraduations();
 
+  console.info('✝️ ScrollUniversity: Alumni data loaded — Christ is Lord over every graduate');
+
   return (
     <PageTemplate
       title="Alumni Portal"
