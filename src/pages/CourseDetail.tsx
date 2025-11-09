@@ -25,7 +25,7 @@ export default function CourseDetail() {
 
   const { data: courseData, isLoading, error } = useQuery({
     queryKey: ['course-detail', courseId],
-    queryFn: () => getCourseDetail(courseId!, user?.id),
+    queryFn: async () => await getCourseDetail(courseId!, user?.id),
     enabled: !!courseId && !!user?.id
   });
 
