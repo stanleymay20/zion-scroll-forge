@@ -75,26 +75,38 @@ export type Database = {
       course_modules: {
         Row: {
           content: Json | null
+          content_md: string | null
           course_id: string | null
           created_at: string | null
+          duration_minutes: number | null
           id: string
+          material_url: string | null
           order_index: number | null
+          quiz_data: Json | null
           title: string
         }
         Insert: {
           content?: Json | null
+          content_md?: string | null
           course_id?: string | null
           created_at?: string | null
+          duration_minutes?: number | null
           id?: string
+          material_url?: string | null
           order_index?: number | null
+          quiz_data?: Json | null
           title: string
         }
         Update: {
           content?: Json | null
+          content_md?: string | null
           course_id?: string | null
           created_at?: string | null
+          duration_minutes?: number | null
           id?: string
+          material_url?: string | null
           order_index?: number | null
+          quiz_data?: Json | null
           title?: string
         }
         Relationships: [
@@ -362,6 +374,41 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_user_dashboard"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      learning_progress: {
+        Row: {
+          completed: boolean | null
+          id: string
+          module_id: string | null
+          quiz_score: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          completed?: boolean | null
+          id?: string
+          module_id?: string | null
+          quiz_score?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          id?: string
+          module_id?: string | null
+          quiz_score?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
           },
         ]
       }
