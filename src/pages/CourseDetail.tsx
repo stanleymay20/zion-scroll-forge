@@ -15,6 +15,7 @@ import { useEnrollInCourse, useUserEnrollments } from "@/hooks/useCourses";
 import { getCourseDetail } from "@/services/courses";
 import { useAuth } from "@/contexts/AuthContext";
 import { useMemo } from "react";
+import { CourseReviews } from "@/components/course/CourseReviews";
 
 export default function CourseDetail() {
   const { courseId } = useParams();
@@ -483,6 +484,11 @@ export default function CourseDetail() {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      {/* Course Reviews */}
+      <div className="mt-8">
+        <CourseReviews courseId={courseId!} />
       </div>
     </PageTemplate>
   );

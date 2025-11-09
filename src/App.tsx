@@ -24,6 +24,9 @@ import Wallet from "./pages/Wallet";
 import SpiritualFormation from "./pages/SpiritualFormation";
 import PrayerRequests from "./pages/PrayerRequests";
 import Analytics from "./pages/Analytics";
+import Transcript from "./pages/Transcript";
+import StudyGroups from "./pages/StudyGroups";
+import Achievements from "./pages/Achievements";
 import { ComingSoonPage } from "./components/layout/PageTemplate";
 import NotFound from "./pages/NotFound";
 
@@ -94,6 +97,9 @@ const App = () => (
               <Route path="spiritual-formation" element={<SpiritualFormation />} />
               <Route path="prayer-requests" element={<PrayerRequests />} />
               <Route path="analytics" element={<Analytics />} />
+              <Route path="transcript" element={<Transcript />} />
+              <Route path="study-groups" element={<StudyGroups />} />
+              <Route path="achievements" element={<Achievements />} />
             
             {/* All other routes use coming soon pages */}
             <Route path="degrees" element={<ComingSoonPage title="Degree Programs" />} />
@@ -102,15 +108,12 @@ const App = () => (
             <Route path="assessments" element={<ComingSoonPage title="Assessments" />} />
             <Route path="divine-scorecard" element={<ComingSoonPage title="Divine Scorecard" />} />
             <Route path="prophetic-checkins" element={<ComingSoonPage title="Prophetic Check-ins" />} />
-            <Route path="prayer-requests" element={<ComingSoonPage title="Prayer Center" />} />
             <Route path="calling-discernment" element={<ComingSoonPage title="Calling Discernment" />} />
             <Route path="forums" element={<ComingSoonPage title="Discussion Forums" />} />
-            <Route path="study-groups" element={<ComingSoonPage title="Study Groups" />} />
             <Route path="mentorship" element={<ComingSoonPage title="Mentorship" />} />
             <Route path="projects" element={<ComingSoonPage title="Collaborative Projects" />} />
             <Route path="marketplace" element={<ComingSoonPage title="Marketplace" />} />
             <Route path="badges" element={<ComingSoonPage title="ScrollBadges" />} />
-            <Route path="achievements" element={<ComingSoonPage title="Achievements" />} />
             <Route path="faculties" element={<ComingSoonPage title="All Faculties" />} />
             <Route path="faculties/*" element={<ComingSoonPage title="Faculty Details" />} />
             <Route path="career-pathways" element={<ComingSoonPage title="Career Pathways" />} />
