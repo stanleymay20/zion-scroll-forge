@@ -44,6 +44,16 @@ export interface CourseModule {
     learning_objectives?: string[];
     has_quiz?: boolean;
     has_pdf?: boolean;
+    video_url?: string;
+    materials?: Array<{ title: string; type: string; url?: string }>;
+    quiz?: {
+      questions: Array<{
+        question: string;
+        options: string[];
+        correct: string;
+        explanation?: string;
+      }>;
+    };
   };
   learning_objectives?: string[];
   spiritual_alignment?: SpiritualAlignment;
