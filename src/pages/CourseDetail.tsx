@@ -85,6 +85,8 @@ export default function CourseDetail() {
 
   const { course, modules } = courseData;
 
+  console.info('✝️ ScrollUniversity: Course materials loaded — Christ is Lord over every scroll');
+
   return (
     <PageTemplate
       title={course.title}

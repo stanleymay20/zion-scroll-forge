@@ -10,6 +10,8 @@ export default function Gradebook() {
   const { courseId } = useParams<{ courseId: string }>();
   const { data: gradebook } = useGradebook(courseId!);
 
+  console.info('✝️ ScrollUniversity: Gradebook loaded — Christ is Lord over every grade');
+
   const exportToCSV = () => {
     if (!gradebook || gradebook.length === 0) {
       toast.error('No data to export');

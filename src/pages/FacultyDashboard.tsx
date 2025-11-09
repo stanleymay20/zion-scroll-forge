@@ -9,6 +9,8 @@ export default function FacultyDashboard() {
   const { data: courses } = useTeachingCourses();
   const { data: queue } = useGradingQueue();
 
+  console.info('✝️ ScrollUniversity: Faculty dashboard loaded — Christ is Lord over teaching');
+
   return (
     <PageTemplate
       title="Faculty Dashboard"
