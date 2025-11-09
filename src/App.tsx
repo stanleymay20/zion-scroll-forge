@@ -13,7 +13,7 @@ import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
-import { ComprehensiveCourseViewer } from "./components/course/ComprehensiveCourseViewer";
+// ComprehensiveCourseViewer removed
 import AITutors from "./pages/AITutors";
 import AITutorChat from "./pages/AITutorChat";
 import Community from "./pages/Community";
@@ -71,7 +71,6 @@ const App = () => (
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="courses" element={<Courses />} />
               <Route path="courses/:courseId" element={<CourseDetail />} />
-              <Route path="courses/:courseId/learn" element={<ComprehensiveCourseViewer />} />
               <Route path="ai-tutors" element={<AITutors />} />
               <Route path="ai-tutors/:tutorId" element={<AITutorChat />} />
               <Route path="community" element={<Community />} />
