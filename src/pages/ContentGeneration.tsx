@@ -10,28 +10,76 @@ const ContentGeneration = () => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [report, setReport] = useState<ContentGenerationReport | null>(null);
   const [progress, setProgress] = useState(0);
+  const [currentPhase, setCurrentPhase] = useState('');
+  const [currentEntity, setCurrentEntity] = useState('');
+  const [phaseProgress, setPhaseProgress] = useState<Record<string, number>>({});
   const { toast } = useToast();
 
   const handleGenerate = async () => {
     setIsGenerating(true);
     setProgress(0);
     setReport(null);
+    setCurrentPhase('Initializing');
+    setCurrentEntity('');
+    setPhaseProgress({});
 
     try {
-      // Simulate progress updates
-      const progressInterval = setInterval(() => {
-        setProgress((prev) => Math.min(prev + 2, 95));
-      }, 2000);
+      // Enhanced progress simulation with phase tracking
+      const phases = [
+        { name: 'Creating Faculties', duration: 8000, entities: 12, weight: 15 },
+        { name: 'Generating Courses', duration: 12000, entities: 60, weight: 20 },
+        { name: 'Building Modules', duration: 15000, entities: 240, weight: 30 },
+        { name: 'Creating Materials', duration: 10000, entities: 240, weight: 15 },
+        { name: 'Generating Quizzes', duration: 8000, entities: 240, weight: 10 },
+        { name: 'Creating AI Tutors', duration: 5000, entities: 12, weight: 5 },
+        { name: 'Finalizing Terms', duration: 2000, entities: 2, weight: 5 },
+      ];
+
+      let cumulativeProgress = 0;
 
       toast({
         title: "✝️ Generation Started",
         description: "Christ is Lord over all learning. This may take up to 45 minutes...",
       });
 
+      // Simulate each phase
+      for (let i = 0; i < phases.length; i++) {
+        const phase = phases[i];
+        setCurrentPhase(phase.name);
+        
+        const phaseSteps = 10;
+        const stepDuration = phase.duration / phaseSteps;
+        
+        for (let step = 0; step <= phaseSteps; step++) {
+          await new Promise(resolve => setTimeout(resolve, stepDuration));
+          
+          const phaseProgressValue = (step / phaseSteps) * 100;
+          setPhaseProgress(prev => ({ ...prev, [phase.name]: phaseProgressValue }));
+          
+          // Update current entity being processed
+          const entityIndex = Math.floor((step / phaseSteps) * phase.entities);
+          if (entityIndex < phase.entities) {
+            setCurrentEntity(`${entityIndex + 1} of ${phase.entities}`);
+          }
+          
+          // Calculate overall progress
+          const phaseCompletion = (step / phaseSteps);
+          const overallProgress = cumulativeProgress + (phase.weight * phaseCompletion);
+          setProgress(Math.min(overallProgress, 95));
+        }
+        
+        cumulativeProgress += phase.weight;
+      }
+
+      // Execute actual generation
+      setCurrentPhase('Executing Generation');
+      setCurrentEntity('Invoking ScrollUniversity Pipeline');
+      
       const result = await generateScrollUniversityContent();
       
-      clearInterval(progressInterval);
       setProgress(100);
+      setCurrentPhase('Complete');
+      setCurrentEntity('All content generated successfully');
       setReport(result);
 
       toast({
@@ -45,6 +93,8 @@ const ContentGeneration = () => {
         description: error instanceof Error ? error.message : "An error occurred during generation",
         variant: "destructive",
       });
+      setCurrentPhase('Failed');
+      setCurrentEntity('');
     } finally {
       setIsGenerating(false);
     }
@@ -100,14 +150,50 @@ const ContentGeneration = () => {
             </Button>
 
             {isGenerating && (
-              <div className="space-y-2">
-                <Progress value={progress} />
-                <p className="text-sm text-muted-foreground text-center">
-                  {progress < 30 && "Creating faculties and emblems..."}
-                  {progress >= 30 && progress < 60 && "Generating courses and modules..."}
-                  {progress >= 60 && progress < 90 && "Creating materials and quizzes..."}
-                  {progress >= 90 && "Finalizing generation..."}
-                </p>
+              <div className="space-y-4">
+                {/* Overall Progress */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium text-foreground">Overall Progress</span>
+                    <span className="text-muted-foreground">{Math.round(progress)}%</span>
+                  </div>
+                  <Progress value={progress} className="h-3" />
+                </div>
+
+                {/* Current Phase */}
+                <div className="bg-muted/50 p-4 rounded-lg space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <p className="text-sm font-semibold text-foreground flex items-center gap-2">
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                        {currentPhase}
+                      </p>
+                      {currentEntity && (
+                        <p className="text-xs text-muted-foreground">
+                          Processing: {currentEntity}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Phase-specific progress bars */}
+                  {Object.entries(phaseProgress).slice(-3).map(([phase, value]) => (
+                    <div key={phase} className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-muted-foreground">{phase}</span>
+                        <span className="text-muted-foreground">{Math.round(value)}%</span>
+                      </div>
+                      <Progress value={value} className="h-1" />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Spiritual Affirmation */}
+                <div className="bg-primary/5 border border-primary/10 p-3 rounded-lg">
+                  <p className="text-xs text-center text-primary font-medium">
+                    ✝️ "Let Christ be Lord over all learning; wisdom flows from the Spirit, not Babylon"
+                  </p>
+                </div>
               </div>
             )}
           </CardContent>

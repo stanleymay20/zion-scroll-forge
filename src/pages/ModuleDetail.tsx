@@ -85,7 +85,7 @@ export default function ModuleDetail() {
             tutorId={defaultTutor.id}
             tutorName={defaultTutor.name}
             tutorSpecialty={defaultTutor.specialty}
-            tutorAvatar={defaultTutor.avatar_url}
+            tutorAvatar={defaultTutor.avatar_image_url}
             moduleId={moduleId}
             moduleContent={module.content_md}
           />
