@@ -12,6 +12,7 @@ interface GenerationReport {
   modulesCreated: number;
   materialsCreated: number;
   quizzesCreated: number;
+  aiTutorsCreated: number;
   termsCreated: number;
   offeringsCreated: number;
   errorsEncountered: number;
@@ -129,6 +130,7 @@ serve(async (req) => {
       modulesCreated: 0,
       materialsCreated: 0,
       quizzesCreated: 0,
+      aiTutorsCreated: 0,
       termsCreated: 0,
       offeringsCreated: 0,
       errorsEncountered: 0,
@@ -227,8 +229,100 @@ serve(async (req) => {
       }
     }
 
-    // Step 3: Generate Courses, Modules, Materials, Quizzes
-    console.log("\n📖 Step 3: Generating Courses and Content...");
+    // Step 3: Generate AI Tutors for each faculty
+    console.log("\n🤖 Step 3: Generating AI Tutor Avatars...");
+    
+    const ELEVENLABS_VOICES = ["Aria", "Roger", "Sarah", "Laura", "Charlie", "George", "Callum", "River", "Liam", "Charlotte", "Alice", "Matilda"];
+    const VOICE_IDS = ["9BWtsMINqrJLrRacOk9x", "CwhRBWXzGAHq8TQ4Fs17", "EXAVITQu4vr4xnSDxMaL", "FGY2WhTYpPnrIDTdsKH5", "IKne3meq5aSn9XLyUdCD", "JBFqnCBsd6RMkjVDRZzb", "N2lVS1w4EtoT3dr4eOWO", "SAz9YHcvj6GT2YYXdXww", "TX3LPaxmHKxFdv7VOQHJ", "XB0fDUnXU5powFXDhCwa", "Xb7hH8MSUJpSbSDYk0k2", "XrExE9yKIg1WjnnlVkGX"];
+    
+    if (faculties) {
+      for (let i = 0; i < faculties.length; i++) {
+        const faculty = faculties[i];
+        try {
+          // Generate avatar using gpt-image-1
+          const avatarPrompt = `Professional academic portrait of a friendly AI tutor for ${faculty.name}. 
+          The tutor represents: ${faculty.mission}. 
+          Style: Professional headshot, warm and approachable, academic setting, diverse representation.
+          High quality, detailed facial features, natural lighting.`;
+
+          const avatarResponse = await fetch("https://api.openai.com/v1/images/generations", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${Deno.env.get("OPENAI_API_KEY")}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: "gpt-image-1",
+              prompt: avatarPrompt,
+              n: 1,
+              size: "1024x1024",
+              output_format: "png",
+              quality: "high",
+            }),
+          });
+
+          const avatarData = await avatarResponse.json();
+          const avatarBase64 = avatarData.data?.[0]?.b64_json;
+          
+          let avatarUrl = "";
+          if (avatarBase64) {
+            const avatarBuffer = Uint8Array.from(atob(avatarBase64), c => c.charCodeAt(0));
+            const { data: uploadData } = await supabase.storage
+              .from("faculty-emblems")
+              .upload(`tutor-${faculty.faculty_code}.png`, avatarBuffer, {
+                contentType: "image/png",
+                upsert: true,
+              });
+            if (uploadData) {
+              const { data: { publicUrl } } = supabase.storage
+                .from("faculty-emblems")
+                .getPublicUrl(uploadData.path);
+              avatarUrl = publicUrl;
+            }
+          }
+
+          // Generate tutor personality
+          const tutorName = `${ELEVENLABS_VOICES[i % ELEVENLABS_VOICES.length]}`;
+          const personalityPrompt = `AI tutor for ${faculty.name}. Expert in ${faculty.mission}. Grounded in ${faculty.key_scripture}. Warm, encouraging, Christ-centered teaching style.`;
+          
+          const systemPrompt = `You are ${tutorName}, an AI tutor for ${faculty.name} at ScrollUniversity.
+
+**Your Mission**: ${faculty.mission}
+
+**Scripture Foundation**: ${faculty.key_scripture}
+
+**Teaching Approach**:
+- Ground all teaching in biblical truth and Christ-centered wisdom
+- Explain concepts clearly with practical examples
+- Encourage students with patience and grace
+- Reference Scripture when relevant to deepen spiritual understanding
+- Foster critical thinking while maintaining faith integration
+- Create a safe, supportive learning environment
+
+**Expertise**: You are highly knowledgeable in all aspects of ${faculty.name} curriculum. You can answer questions, explain complex topics, provide examples, and guide students through their learning journey.
+
+**Response Style**: Be warm, encouraging, and thorough. Use the student's name when known. Break down complex ideas into understandable parts. Always acknowledge Christ's lordship over knowledge and learning.`;
+
+          await supabase.from("ai_tutors").insert({
+            faculty_id: faculty.id,
+            name: tutorName,
+            personality_prompt: personalityPrompt,
+            system_prompt: systemPrompt,
+            avatar_image_url: avatarUrl,
+            voice_id: VOICE_IDS[i % VOICE_IDS.length],
+          });
+
+          report.aiTutorsCreated++;
+          console.log(`✅ AI Tutor created: ${tutorName} for ${faculty.name}`);
+        } catch (error) {
+          console.error(`Error generating tutor for ${faculty.name}:`, error);
+          report.errorsEncountered++;
+        }
+      }
+    }
+
+    // Step 4: Generate Courses, Modules, Materials, Quizzes
+    console.log("\n📖 Step 4: Generating Courses and Content...");
     
     const { data: faculties } = await supabase.from("faculties").select("*");
     
@@ -446,6 +540,7 @@ serve(async (req) => {
     console.log(`Modules Created: ${report.modulesCreated}`);
     console.log(`Materials Created: ${report.materialsCreated}`);
     console.log(`Quizzes Created: ${report.quizzesCreated}`);
+    console.log(`AI Tutors Created: ${report.aiTutorsCreated}`);
     console.log(`Terms Created: ${report.termsCreated}`);
     console.log(`Offerings Created: ${report.offeringsCreated}`);
     console.log(`Errors Encountered: ${report.errorsEncountered}`);
