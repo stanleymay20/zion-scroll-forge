@@ -15,8 +15,11 @@ export interface ContentGenerationReport {
   aiTutorsCreated: number;
   termsCreated: number;
   offeringsCreated: number;
+  pdfsGenerated: number;
   errorsEncountered: number;
   antiDriftValidations: number;
+  antiDriftRegenerations: number;
+  totalScrollCoins: number;
   duration: string;
 }
 

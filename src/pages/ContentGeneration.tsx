@@ -168,6 +168,14 @@ const ContentGeneration = () => {
 
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                    <FileText className="h-4 w-4" />
+                    PDFs
+                  </div>
+                  <div className="text-2xl font-bold">{report.pdfsGenerated}</div>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm">
                     <Calendar className="h-4 w-4" />
                     Terms
                   </div>
@@ -196,6 +204,22 @@ const ContentGeneration = () => {
                     Anti-Drift
                   </div>
                   <div className="text-2xl font-bold">{report.antiDriftValidations}</div>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                    <Award className="h-4 w-4" />
+                    Regenerations
+                  </div>
+                  <div className="text-2xl font-bold">{report.antiDriftRegenerations}</div>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                    <Award className="h-4 w-4" />
+                    ScrollCoins
+                  </div>
+                  <div className="text-2xl font-bold">{report.totalScrollCoins.toLocaleString()}</div>
                 </div>
               </div>
 
