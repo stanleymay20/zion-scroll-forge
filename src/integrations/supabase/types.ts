@@ -230,33 +230,50 @@ export type Database = {
       }
       ai_tutors: {
         Row: {
-          avatar_url: string | null
+          avatar_image_url: string | null
           created_at: string | null
           description: string | null
+          faculty_id: string | null
           id: string
           is_online: boolean | null
           name: string
+          personality_prompt: string | null
           specialty: string
+          voice_id: string | null
         }
         Insert: {
-          avatar_url?: string | null
+          avatar_image_url?: string | null
           created_at?: string | null
           description?: string | null
+          faculty_id?: string | null
           id?: string
           is_online?: boolean | null
           name: string
+          personality_prompt?: string | null
           specialty: string
+          voice_id?: string | null
         }
         Update: {
-          avatar_url?: string | null
+          avatar_image_url?: string | null
           created_at?: string | null
           description?: string | null
+          faculty_id?: string | null
           id?: string
           is_online?: boolean | null
           name?: string
+          personality_prompt?: string | null
           specialty?: string
+          voice_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "ai_tutors_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       assignments: {
         Row: {
@@ -715,21 +732,33 @@ export type Database = {
           created_at: string | null
           dean_id: string | null
           description: string | null
+          emblem_url: string | null
+          faculty_code: string | null
           id: string
+          key_scripture: string | null
+          mission: string | null
           name: string
         }
         Insert: {
           created_at?: string | null
           dean_id?: string | null
           description?: string | null
+          emblem_url?: string | null
+          faculty_code?: string | null
           id?: string
+          key_scripture?: string | null
+          mission?: string | null
           name: string
         }
         Update: {
           created_at?: string | null
           dean_id?: string | null
           description?: string | null
+          emblem_url?: string | null
+          faculty_code?: string | null
           id?: string
+          key_scripture?: string | null
+          mission?: string | null
           name?: string
         }
         Relationships: []
