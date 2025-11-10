@@ -30,6 +30,7 @@ The system generates the following 12 canonical academic divisions:
 For each faculty, the system generates:
 
 - **Faculty Emblem**: AI-generated visual identity using Gemini Flash
+- **AI Tutor Avatar**: Personalized tutor with DALL-E 3 avatar and ElevenLabs voice
 - **4-6 Courses**: Complete course structures with titles and descriptions
 - **4-6 Modules per Course**: Learning content (800-1200 words in markdown)
 - **2-3 Materials per Module**: PDFs, videos, and slides
@@ -39,6 +40,17 @@ For each faculty, the system generates:
 - **ScrollCoin Rewards**: 10-50 coins per module, 50-100 per course
 
 ## Features
+
+### AI Tutor Avatars (Requirement 10)
+- One AI tutor per faculty
+- DALL-E 3 generated professional avatars
+- ElevenLabs voice integration (12 unique voices)
+- Comprehensive system prompts with:
+  - Faculty expertise
+  - Christ-centered teaching approach
+  - Scripture grounding
+  - Student engagement strategies
+- Personality prompts aligned with faculty mission
 
 ### Christ-Centered Governance
 - Scroll Invocation in every module
@@ -83,6 +95,7 @@ console.log(report);
 
 ### New Tables
 - `faculties`: Faculty information with emblems
+- `ai_tutors`: AI tutor avatars per faculty with DALL-E images and ElevenLabs voices
 - `course_materials`: Learning materials (PDFs, videos, slides)
 - `quizzes`: Module assessments
 - `quiz_questions`: Individual quiz questions
@@ -109,6 +122,7 @@ After completion, the system provides:
   "modulesCreated": 270,
   "materialsCreated": 675,
   "quizzesCreated": 270,
+  "aiTutorsCreated": 12,
   "termsCreated": 2,
   "offeringsCreated": 108,
   "errorsEncountered": 0,
@@ -119,7 +133,7 @@ After completion, the system provides:
 
 ## Requirements Compliance
 
-This system fulfills all 10 requirements specified in the ScrollUniversity v3.0 requirements document:
+This system fulfills all 11 requirements specified in the ScrollUniversity v3.0 requirements document:
 
 ✅ Requirement 1: 12 Supreme Scroll Faculties with emblems
 ✅ Requirement 1A: 4-6 courses per faculty
@@ -131,14 +145,18 @@ This system fulfills all 10 requirements specified in the ScrollUniversity v3.0 
 ✅ Requirement 7: ScrollCoin reward integration
 ✅ Requirement 8: Christ-centered governance with anti-drift
 ✅ Requirement 9: Reliable AI API integration
-✅ Requirement 10: Single-command execution with comprehensive reporting
+✅ Requirement 10: AI tutor avatars with DALL-E and ElevenLabs
+✅ Requirement 11: Single-command execution with comprehensive reporting
 
 ## Technical Details
 
 ### Edge Function
 - Location: `supabase/functions/generate-content/index.ts`
 - Runtime: Deno
-- APIs: Lovable AI Gateway (Gemini models)
+- APIs: 
+  - Lovable AI Gateway (Gemini models for content)
+  - OpenAI API (DALL-E 3 for tutor avatars)
+  - ElevenLabs (voice IDs for text-to-speech)
 - Storage: Supabase Storage
 - Database: Supabase PostgreSQL
 
@@ -170,13 +188,16 @@ Upon completion:
 
 ## Notes
 
-- All content is AI-generated using Lovable AI
-- Faculty emblems are unique visual identities
+- All content is AI-generated using Lovable AI Gateway
+- Faculty emblems generated with Gemini Flash Image
+- AI tutor avatars generated with OpenAI DALL-E 3 (gpt-image-1)
+- ElevenLabs voice IDs assigned to tutors for TTS integration
 - Scripture verses anchor each faculty theologically
 - ScrollCoin rewards motivate student engagement
 - System includes comprehensive error handling
 - Supports retry logic for API failures
 - Maintains spiritual governance throughout
+- AI tutors have Christ-centered teaching prompts
 
 ---
 
