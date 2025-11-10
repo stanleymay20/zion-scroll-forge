@@ -43,6 +43,8 @@ const navigationSections: NavSection[] = [
       { label: "Course Catalog", href: "/courses", icon: Book },
       { label: "Degree Programs", href: "/degrees", icon: GraduationCap },
       { label: "AI Tutors", href: "/ai-tutors", icon: Brain },
+      { label: "Office Hours", href: "/ai-tutors/office-hours", icon: Users },
+      { label: "Tutor Analytics", href: "/ai-tutors/analytics", icon: BarChart3 },
       { label: "XR Classrooms", href: "/xr-classrooms", icon: Microscope },
       { label: "Virtual Labs", href: "/virtual-labs", icon: Microscope },
       { label: "Assessments", href: "/assessments", icon: Trophy },
