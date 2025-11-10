@@ -185,6 +185,14 @@ const ContentGeneration = () => {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 text-muted-foreground text-sm">
                     <Award className="h-4 w-4" />
+                    AI Tutors
+                  </div>
+                  <div className="text-2xl font-bold">{report.aiTutorsCreated}</div>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                    <Award className="h-4 w-4" />
                     Anti-Drift
                   </div>
                   <div className="text-2xl font-bold">{report.antiDriftValidations}</div>

@@ -12,6 +12,7 @@ export interface ContentGenerationReport {
   modulesCreated: number;
   materialsCreated: number;
   quizzesCreated: number;
+  aiTutorsCreated: number;
   termsCreated: number;
   offeringsCreated: number;
   errorsEncountered: number;
