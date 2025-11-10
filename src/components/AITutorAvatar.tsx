@@ -5,11 +5,13 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Loader2, Send, Sparkles, Video, Mic, MicOff, VideoOff, Circle, Square, Star } from 'lucide-react';
+import { Loader2, Send, Sparkles, Video, Mic, MicOff, VideoOff, Circle, Square, Star, Edit3 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Slider } from '@/components/ui/slider';
 import { ReadyPlayerMeAvatar } from '@/components/ReadyPlayerMeAvatar';
+import { CollaborativeWhiteboard } from '@/components/CollaborativeWhiteboard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -43,6 +45,7 @@ export const AITutorAvatar = ({
   const [isRecording, setIsRecording] = useState(false);
   const [satisfaction, setSatisfaction] = useState<number>(0);
   const [showSatisfaction, setShowSatisfaction] = useState(false);
+  const [showWhiteboard, setShowWhiteboard] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -305,44 +308,63 @@ export const AITutorAvatar = ({
       </CardHeader>
 
       <CardContent className="space-y-4 pb-4">
-        {/* 3D Avatar Video Preview with Lip-Sync */}
-        {isVideoMode && (
-          <div className="relative aspect-video bg-gradient-to-br from-primary/10 via-primary/5 to-background rounded-lg overflow-hidden border-2 border-primary/20">
-            <ReadyPlayerMeAvatar
-              avatarUrl={tutorAvatar}
-              isSpeaking={isSpeaking}
-              isThinking={isLoading}
-              audioElement={audioRef.current}
-            />
-            
-            {isLoading && (
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-background/80 backdrop-blur px-3 py-1 rounded-full z-10">
-                <Loader2 className="h-3 w-3 animate-spin text-primary" />
-                <span className="text-xs">Thinking...</span>
-              </div>
-            )}
-            {isSpeaking && (
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-primary/80 backdrop-blur px-3 py-1 rounded-full z-10">
-                <div className="flex gap-1">
-                  <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '0ms' }} />
-                  <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '150ms' }} />
-                  <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '300ms' }} />
+        <Tabs value={showWhiteboard ? "whiteboard" : "avatar"} onValueChange={(v) => setShowWhiteboard(v === "whiteboard")}>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="avatar">
+              <Video className="h-4 w-4 mr-2" />
+              Avatar View
+            </TabsTrigger>
+            <TabsTrigger value="whiteboard">
+              <Edit3 className="h-4 w-4 mr-2" />
+              Whiteboard
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="avatar" className="mt-4">
+            {/* 3D Avatar Video Preview with Lip-Sync */}
+            {isVideoMode && (
+              <div className="relative aspect-video bg-gradient-to-br from-primary/10 via-primary/5 to-background rounded-lg overflow-hidden border-2 border-primary/20">
+                <ReadyPlayerMeAvatar
+                  avatarUrl={tutorAvatar}
+                  isSpeaking={isSpeaking}
+                  isThinking={isLoading}
+                  audioElement={audioRef.current}
+                />
+                
+                {isLoading && (
+                  <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-background/80 backdrop-blur px-3 py-1 rounded-full z-10">
+                    <Loader2 className="h-3 w-3 animate-spin text-primary" />
+                    <span className="text-xs">Thinking...</span>
+                  </div>
+                )}
+                {isSpeaking && (
+                  <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-primary/80 backdrop-blur px-3 py-1 rounded-full z-10">
+                    <div className="flex gap-1">
+                      <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '0ms' }} />
+                      <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '150ms' }} />
+                      <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '300ms' }} />
+                    </div>
+                    <span className="text-xs text-white">Speaking...</span>
+                  </div>
+                )}
+                {isRecording && (
+                  <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-medium animate-pulse flex items-center gap-2 z-10">
+                    <Circle className="h-3 w-3 fill-white" />
+                    RECORDING
+                  </div>
+                )}
+                <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 z-10">
+                  <div className="h-2 w-2 bg-white rounded-full animate-pulse" />
+                  LIVE
                 </div>
-                <span className="text-xs text-white">Speaking...</span>
               </div>
             )}
-            {isRecording && (
-              <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-medium animate-pulse flex items-center gap-2 z-10">
-                <Circle className="h-3 w-3 fill-white" />
-                RECORDING
-              </div>
-            )}
-            <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 z-10">
-              <div className="h-2 w-2 bg-white rounded-full animate-pulse" />
-              LIVE
-            </div>
-          </div>
-        )}
+          </TabsContent>
+
+          <TabsContent value="whiteboard" className="mt-4">
+            <CollaborativeWhiteboard sessionId={`tutor-${tutorId}-${moduleId}`} />
+          </TabsContent>
+        </Tabs>
 
         {/* Satisfaction Rating */}
         {showSatisfaction && (
