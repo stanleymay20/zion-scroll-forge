@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import "https://deno.land/x/xhr@0.1.0/mod.ts";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,34 +12,31 @@ serve(async (req) => {
   }
 
   try {
-    const { subject, message, history = [] } = await req.json();
+    const { messages, tutorId, moduleId, moduleContent } = await req.json();
     
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
-      throw new Error('LOVABLE_API_KEY is not configured');
+      throw new Error('LOVABLE_API_KEY not configured');
     }
 
-    console.log('✝️ AI Tutor request - Jesus Christ is Lord over this interaction');
-    
-    const systemPrompt = `You are ScrollMentorGPT, an AI tutor operating under Christ's lordship at ScrollUniversity. 
+    // Build system prompt based on tutor and module context
+    const systemPrompt = `You are an AI tutor at ScrollUniversity, a Christ-centered online learning institution. 
 
-Your role:
-- Provide expert guidance on ${subject}
-- Keep answers concise, accurate, and biblically aligned
-- Encourage spiritual formation alongside academic excellence
-- Reference Scripture when relevant to the topic
-- Maintain a tone of wisdom, grace, and encouragement
+IDENTITY: You are a knowledgeable, patient, and encouraging tutor who helps students understand complex topics through biblical wisdom and academic excellence.
 
-Remember: All knowledge and wisdom flow from Christ. Guide students toward truth with humility and clarity.`;
+CONTEXT: ${moduleContent ? `You are currently helping students with this module content:\n${moduleContent.substring(0, 2000)}` : 'You are available to answer any course-related questions.'}
 
-    const messages = [
-      { role: 'system', content: systemPrompt },
-      ...history.map((msg: any) => ({
-        role: msg.sender === 'user' ? 'user' : 'assistant',
-        content: msg.text,
-      })),
-      { role: 'user', content: message },
-    ];
+GUIDELINES:
+- Always acknowledge Jesus Christ as Lord over all learning
+- Provide clear, accurate, and helpful explanations
+- Use biblical principles to illustrate concepts when appropriate
+- Be encouraging and build student confidence
+- Ask clarifying questions if needed
+- Provide examples and practical applications
+- Keep responses concise but thorough (2-4 paragraphs typically)
+- End with a question or next step to continue learning
+
+TONE: Professional yet warm, scholarly yet accessible, wise yet humble.`;
 
     const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
       method: 'POST',
@@ -48,56 +46,44 @@ Remember: All knowledge and wisdom flow from Christ. Guide students toward truth
       },
       body: JSON.stringify({
         model: 'google/gemini-2.5-flash',
-        messages,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...messages
+        ],
         temperature: 0.7,
         max_tokens: 1000,
       }),
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Lovable AI error:', response.status, errorText);
-      
       if (response.status === 429) {
         return new Response(
           JSON.stringify({ error: 'Rate limit exceeded. Please try again in a moment.' }),
-          {
-            status: 429,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          }
+          { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
-      
       if (response.status === 402) {
         return new Response(
-          JSON.stringify({ error: 'AI service quota exceeded. Please contact support.' }),
-          {
-            status: 402,
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          }
+          JSON.stringify({ error: 'AI credits exhausted. Please contact support.' }),
+          { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
-      
-      throw new Error(`AI gateway error: ${response.status}`);
+      throw new Error(`AI Gateway error: ${response.status}`);
     }
 
     const data = await response.json();
-    const aiMessage = data.choices?.[0]?.message?.content ?? 'I apologize, but I could not generate a response.';
+    const message = data.choices[0].message.content;
 
     return new Response(
-      JSON.stringify({ message: aiMessage }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
+      JSON.stringify({ message }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
+
   } catch (error) {
-    console.error('AI tutor error:', error);
+    console.error('AI Tutor Chat Error:', error);
     return new Response(
-      JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      }
+      JSON.stringify({ error: error.message || 'Failed to process chat request' }),
+      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
 });

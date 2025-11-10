@@ -8,6 +8,9 @@ import { useCompleteModule } from '@/hooks/useCourses';
 import { Loader2, Download, CheckCircle2, FileText, Video, Presentation } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { toast } from '@/hooks/use-toast';
+import { AITutorAvatar } from '@/components/AITutorAvatar';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 console.info('✝️ Module Detail — Christ is Lord over learning');
 
@@ -60,9 +63,34 @@ export default function ModuleDetail() {
     }
   };
 
+  // Default AI tutor (using Sophia as default)
+  const { data: defaultTutor } = useQuery({
+    queryKey: ['default-tutor'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('ai_tutors')
+        .select('*')
+        .eq('name', 'Sophia')
+        .maybeSingle();
+      return data;
+    }
+  });
+
   return (
     <PageTemplate title={module.title}>
       <div className="space-y-6">
+        {/* AI Tutor Avatar - First Priority */}
+        {defaultTutor && (
+          <AITutorAvatar
+            tutorId={defaultTutor.id}
+            tutorName={defaultTutor.name}
+            tutorSpecialty={defaultTutor.specialty}
+            tutorAvatar={defaultTutor.avatar_url}
+            moduleId={moduleId}
+            moduleContent={module.content_md}
+          />
+        )}
+
         <Card>
           <CardHeader>
             <CardTitle>Lesson Content</CardTitle>
