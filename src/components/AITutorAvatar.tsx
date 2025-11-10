@@ -9,6 +9,7 @@ import { Loader2, Send, Sparkles, Video, Mic, MicOff, VideoOff, Circle, Square, 
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
 import { Slider } from '@/components/ui/slider';
+import { ReadyPlayerMeAvatar } from '@/components/ReadyPlayerMeAvatar';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -304,27 +305,24 @@ export const AITutorAvatar = ({
       </CardHeader>
 
       <CardContent className="space-y-4 pb-4">
-        {/* Avatar Video Preview with Lip-Sync */}
+        {/* 3D Avatar Video Preview with Lip-Sync */}
         {isVideoMode && (
           <div className="relative aspect-video bg-gradient-to-br from-primary/10 via-primary/5 to-background rounded-lg overflow-hidden border-2 border-primary/20">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Avatar className={`h-32 w-32 border-4 border-primary transition-all duration-300 ${
-                isSpeaking ? 'scale-110 animate-pulse ring-8 ring-primary/30' : ''
-              }`}>
-                <AvatarImage src={tutorAvatar} />
-                <AvatarFallback className="bg-primary text-primary-foreground text-4xl">
-                  {tutorName.charAt(0)}
-                </AvatarFallback>
-              </Avatar>
-            </div>
+            <ReadyPlayerMeAvatar
+              avatarUrl={tutorAvatar}
+              isSpeaking={isSpeaking}
+              isThinking={isLoading}
+              audioElement={audioRef.current}
+            />
+            
             {isLoading && (
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-background/80 backdrop-blur px-3 py-1 rounded-full">
+              <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-background/80 backdrop-blur px-3 py-1 rounded-full z-10">
                 <Loader2 className="h-3 w-3 animate-spin text-primary" />
                 <span className="text-xs">Thinking...</span>
               </div>
             )}
             {isSpeaking && (
-              <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-primary/80 backdrop-blur px-3 py-1 rounded-full">
+              <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-primary/80 backdrop-blur px-3 py-1 rounded-full z-10">
                 <div className="flex gap-1">
                   <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '0ms' }} />
                   <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '150ms' }} />
@@ -334,12 +332,12 @@ export const AITutorAvatar = ({
               </div>
             )}
             {isRecording && (
-              <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-medium animate-pulse flex items-center gap-2">
+              <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-medium animate-pulse flex items-center gap-2 z-10">
                 <Circle className="h-3 w-3 fill-white" />
                 RECORDING
               </div>
             )}
-            <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+            <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1 z-10">
               <div className="h-2 w-2 bg-white rounded-full animate-pulse" />
               LIVE
             </div>
