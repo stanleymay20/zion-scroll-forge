@@ -46,6 +46,7 @@ const navigationSections: NavSection[] = [
       { label: "Office Hours", href: "/ai-tutors/office-hours", icon: Users },
       { label: "Tutor Analytics", href: "/ai-tutors/analytics", icon: BarChart3 },
       { label: "Customize Avatar", href: "/avatar-customization", icon: Users },
+      { label: "Content Generation", href: "/content-generation", icon: Settings },
       { label: "XR Classrooms", href: "/xr-classrooms", icon: Microscope },
       { label: "Virtual Labs", href: "/virtual-labs", icon: Microscope },
       { label: "Assessments", href: "/assessments", icon: Trophy },
