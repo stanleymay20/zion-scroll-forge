@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      academic_terms: {
+        Row: {
+          created_at: string | null
+          end_date: string
+          id: string
+          is_active: boolean | null
+          name: string
+          start_date: string
+        }
+        Insert: {
+          created_at?: string | null
+          end_date: string
+          id?: string
+          is_active?: boolean | null
+          name: string
+          start_date: string
+        }
+        Update: {
+          created_at?: string | null
+          end_date?: string
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          start_date?: string
+        }
+        Relationships: []
+      }
       achievements: {
         Row: {
           category: string
@@ -372,6 +399,41 @@ export type Database = {
           },
         ]
       }
+      course_materials: {
+        Row: {
+          created_at: string | null
+          id: string
+          module_id: string | null
+          title: string
+          type: string
+          url: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          module_id?: string | null
+          title: string
+          type: string
+          url: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          module_id?: string | null
+          title?: string
+          type?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_materials_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_modules: {
         Row: {
           content: Json | null
@@ -383,6 +445,7 @@ export type Database = {
           material_url: string | null
           order_index: number | null
           quiz_data: Json | null
+          rewards_amount: number | null
           title: string
         }
         Insert: {
@@ -395,6 +458,7 @@ export type Database = {
           material_url?: string | null
           order_index?: number | null
           quiz_data?: Json | null
+          rewards_amount?: number | null
           title: string
         }
         Update: {
@@ -407,6 +471,7 @@ export type Database = {
           material_url?: string | null
           order_index?: number | null
           quiz_data?: Json | null
+          rewards_amount?: number | null
           title?: string
         }
         Relationships: [
@@ -415,6 +480,42 @@ export type Database = {
             columns: ["course_id"]
             isOneToOne: false
             referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      course_offerings: {
+        Row: {
+          course_id: string | null
+          created_at: string | null
+          id: string
+          term_id: string | null
+        }
+        Insert: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          term_id?: string | null
+        }
+        Update: {
+          course_id?: string | null
+          created_at?: string | null
+          id?: string
+          term_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_offerings_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_offerings_term_id_fkey"
+            columns: ["term_id"]
+            isOneToOne: false
+            referencedRelation: "academic_terms"
             referencedColumns: ["id"]
           },
         ]
@@ -1373,6 +1474,38 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      quizzes: {
+        Row: {
+          created_at: string | null
+          id: string
+          module_id: string | null
+          passing_score: number
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          module_id?: string | null
+          passing_score?: number
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          module_id?: string | null
+          passing_score?: number
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quizzes_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
           },
         ]
       }
