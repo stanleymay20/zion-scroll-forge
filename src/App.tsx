@@ -20,6 +20,8 @@ import ModuleDetail from "./pages/ModuleDetail";
 import QuizPage from "./pages/QuizPage";
 import AITutors from "./pages/AITutors";
 import AITutorChat from "./pages/AITutorChat";
+import AITutorOfficeHours from "./pages/AITutorOfficeHours";
+import AITutorAnalytics from "./pages/AITutorAnalytics";
 import Community from "./pages/Community";
 import Assessments from "./pages/Assessments";
 import ScrollCoin from "./pages/ScrollCoin";
@@ -108,6 +110,8 @@ const App = () => (
               <Route path="quiz/:quizId" element={<QuizPage />} />
               <Route path="ai-tutors" element={<AITutors />} />
               <Route path="ai-tutors/:tutorId" element={<AITutorChat />} />
+              <Route path="ai-tutors/office-hours" element={<AITutorOfficeHours />} />
+              <Route path="ai-tutors/analytics" element={<AITutorAnalytics />} />
               <Route path="community" element={<Community />} />
               <Route path="scrollcoin" element={<ScrollCoin />} />
               <Route path="wallet" element={<Wallet />} />

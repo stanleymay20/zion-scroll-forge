@@ -5,9 +5,10 @@ import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Loader2, Send, Sparkles, Video, Mic, MicOff, VideoOff } from 'lucide-react';
+import { Loader2, Send, Sparkles, Video, Mic, MicOff, VideoOff, Circle, Square, Star } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { Slider } from '@/components/ui/slider';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -37,13 +38,25 @@ export const AITutorAvatar = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isVideoMode, setIsVideoMode] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [satisfaction, setSatisfaction] = useState<number>(0);
+  const [showSatisfaction, setShowSatisfaction] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const recordedChunksRef = useRef<Blob[]>([]);
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [messages]);
+
+  const getCurrentUserId = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    return user?.id;
+  };
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -59,6 +72,7 @@ export const AITutorAvatar = ({
     setIsLoading(true);
 
     try {
+      const userId = await getCurrentUserId();
       const { data, error } = await supabase.functions.invoke('ai-tutor-chat', {
         body: {
           messages: [...messages, userMessage].map(m => ({
@@ -67,7 +81,9 @@ export const AITutorAvatar = ({
           })),
           tutorId,
           moduleId,
-          moduleContent: moduleContent?.substring(0, 3000)
+          moduleContent: moduleContent?.substring(0, 3000),
+          userId,
+          withVoice: !isMuted
         }
       });
 
@@ -81,10 +97,14 @@ export const AITutorAvatar = ({
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Simulate avatar speaking (you can integrate actual TTS here)
-      if (isVideoMode && !isMuted) {
-        speakMessage(data.message);
+      // Play audio with lip-sync animation
+      if (data.audioContent && !isMuted && isVideoMode) {
+        playAudioWithLipSync(data.audioContent);
       }
+
+      // Show satisfaction rating after response
+      setShowSatisfaction(true);
+      setTimeout(() => setShowSatisfaction(false), 10000);
 
     } catch (error: any) {
       console.error('Chat error:', error);
@@ -98,14 +118,133 @@ export const AITutorAvatar = ({
     }
   };
 
-  const speakMessage = (text: string) => {
-    // Browser TTS (simple version - can be enhanced with ElevenLabs)
-    if ('speechSynthesis' in window && !isMuted) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
-      utterance.pitch = 1;
-      window.speechSynthesis.speak(utterance);
+  const playAudioWithLipSync = (base64Audio: string) => {
+    setIsSpeaking(true);
+    const audio = new Audio(`data:audio/mp3;base64,${base64Audio}`);
+    audioRef.current = audio;
+
+    audio.onended = () => {
+      setIsSpeaking(false);
+    };
+
+    audio.onerror = () => {
+      setIsSpeaking(false);
+      console.error('Audio playback error');
+    };
+
+    audio.play().catch(err => {
+      console.error('Audio play error:', err);
+      setIsSpeaking(false);
+    });
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true
+      });
+
+      const mediaRecorder = new MediaRecorder(stream, {
+        mimeType: 'video/webm;codecs=vp9'
+      });
+
+      mediaRecorderRef.current = mediaRecorder;
+      recordedChunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordedChunksRef.current.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
+        await uploadRecording(blob);
+        stream.getTracks().forEach(track => track.stop());
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+      toast({
+        title: 'Recording Started',
+        description: 'Your personalized explanation is being recorded'
+      });
+    } catch (error) {
+      console.error('Recording error:', error);
+      toast({
+        title: 'Recording Failed',
+        description: 'Could not start screen recording',
+        variant: 'destructive'
+      });
     }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const uploadRecording = async (blob: Blob) => {
+    try {
+      const fileName = `${tutorId}-${Date.now()}.webm`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('ai-tutor-videos')
+        .upload(fileName, blob);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('ai-tutor-videos')
+        .getPublicUrl(fileName);
+
+      await supabase.from('ai_tutor_videos' as any).insert({
+        tutor_id: tutorId,
+        module_id: moduleId,
+        title: `Explanation - ${new Date().toLocaleString()}`,
+        description: 'AI Tutor personalized explanation',
+        video_url: publicUrl
+      });
+
+      toast({
+        title: 'Recording Saved',
+        description: 'Your explanation video has been saved successfully'
+      });
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast({
+        title: 'Upload Failed',
+        description: 'Could not save the recording',
+        variant: 'destructive'
+      });
+    }
+  };
+
+  const submitSatisfaction = async (rating: number) => {
+    setSatisfaction(rating);
+    setShowSatisfaction(false);
+
+    if (messages.length >= 2) {
+      const lastInteraction = messages[messages.length - 2];
+      const userId = await getCurrentUserId();
+      
+      if (userId) {
+        await supabase
+          .from('ai_tutor_interactions' as any)
+          .update({ satisfaction_rating: rating })
+          .eq('user_id', userId)
+          .eq('question', lastInteraction.content)
+          .order('created_at', { ascending: false })
+          .limit(1);
+      }
+    }
+
+    toast({
+      title: 'Thank you!',
+      description: 'Your feedback helps us improve'
+    });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -120,7 +259,7 @@ export const AITutorAvatar = ({
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Avatar className="h-12 w-12 border-2 border-primary">
+            <Avatar className={`h-12 w-12 border-2 border-primary ${isSpeaking ? 'animate-pulse ring-4 ring-primary/50' : ''}`}>
               <AvatarImage src={tutorAvatar} />
               <AvatarFallback className="bg-primary text-primary-foreground">
                 {tutorName.charAt(0)}
@@ -153,16 +292,25 @@ export const AITutorAvatar = ({
             >
               {isMuted ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
             </Button>
+            <Button
+              size="sm"
+              variant={isRecording ? "destructive" : "outline"}
+              onClick={isRecording ? stopRecording : startRecording}
+            >
+              {isRecording ? <Square className="h-4 w-4" /> : <Circle className="h-4 w-4" />}
+            </Button>
           </div>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-4 pb-4">
-        {/* Avatar Video Preview */}
+        {/* Avatar Video Preview with Lip-Sync */}
         {isVideoMode && (
           <div className="relative aspect-video bg-gradient-to-br from-primary/10 via-primary/5 to-background rounded-lg overflow-hidden border-2 border-primary/20">
             <div className="absolute inset-0 flex items-center justify-center">
-              <Avatar className="h-32 w-32 border-4 border-primary">
+              <Avatar className={`h-32 w-32 border-4 border-primary transition-all duration-300 ${
+                isSpeaking ? 'scale-110 animate-pulse ring-8 ring-primary/30' : ''
+              }`}>
                 <AvatarImage src={tutorAvatar} />
                 <AvatarFallback className="bg-primary text-primary-foreground text-4xl">
                   {tutorName.charAt(0)}
@@ -175,9 +323,44 @@ export const AITutorAvatar = ({
                 <span className="text-xs">Thinking...</span>
               </div>
             )}
-            <div className="absolute top-4 right-4 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium animate-pulse">
-              ● LIVE
+            {isSpeaking && (
+              <div className="absolute bottom-4 left-4 flex items-center gap-2 bg-primary/80 backdrop-blur px-3 py-1 rounded-full">
+                <div className="flex gap-1">
+                  <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '0ms' }} />
+                  <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '150ms' }} />
+                  <div className="h-2 w-1 bg-white animate-pulse" style={{ animationDelay: '300ms' }} />
+                </div>
+                <span className="text-xs text-white">Speaking...</span>
+              </div>
+            )}
+            {isRecording && (
+              <div className="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-medium animate-pulse flex items-center gap-2">
+                <Circle className="h-3 w-3 fill-white" />
+                RECORDING
+              </div>
+            )}
+            <div className="absolute top-4 right-4 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium flex items-center gap-1">
+              <div className="h-2 w-2 bg-white rounded-full animate-pulse" />
+              LIVE
             </div>
+          </div>
+        )}
+
+        {/* Satisfaction Rating */}
+        {showSatisfaction && (
+          <div className="flex items-center justify-center gap-2 p-3 bg-muted rounded-lg animate-fade-in">
+            <span className="text-sm font-medium">Rate this response:</span>
+            {[1, 2, 3, 4, 5].map((rating) => (
+              <Button
+                key={rating}
+                size="sm"
+                variant={satisfaction === rating ? "default" : "outline"}
+                onClick={() => submitSatisfaction(rating)}
+                className="h-8 w-8 p-0"
+              >
+                <Star className={`h-4 w-4 ${satisfaction >= rating ? 'fill-current' : ''}`} />
+              </Button>
+            ))}
           </div>
         )}
 
@@ -189,7 +372,7 @@ export const AITutorAvatar = ({
                 <Sparkles className="h-10 w-10 mx-auto mb-3 opacity-50" />
                 <p className="text-sm">✝️ Christ is Lord over this learning session</p>
                 <p className="text-xs mt-2">
-                  Ask me anything about the module content. I'm here to help!
+                  Ask me anything about the module content. I'm here to help with realistic voice responses!
                 </p>
               </div>
             )}

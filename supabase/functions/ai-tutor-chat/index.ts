@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,7 +13,8 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, tutorId, moduleId, moduleContent } = await req.json();
+    const { messages, tutorId, moduleId, moduleContent, userId, withVoice } = await req.json();
+    const startTime = Date.now();
     
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -73,9 +75,71 @@ TONE: Professional yet warm, scholarly yet accessible, wise yet humble.`;
 
     const data = await response.json();
     const message = data.choices[0].message.content;
+    const responseTime = Date.now() - startTime;
+
+    // Track interaction analytics
+    if (userId) {
+      const supabase = createClient(
+        Deno.env.get('SUPABASE_URL') ?? '',
+        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+      );
+
+      const userMessage = messages[messages.length - 1];
+      await supabase.from('ai_tutor_interactions').insert({
+        user_id: userId,
+        tutor_id: tutorId,
+        module_id: moduleId,
+        question: userMessage.content,
+        response: message,
+        response_time: responseTime,
+        interaction_type: withVoice ? 'voice' : 'chat'
+      });
+
+      // Track common questions
+      if (moduleId && userMessage.content) {
+        await supabase.rpc('track_common_question', {
+          p_module_id: moduleId,
+          p_question: userMessage.content
+        });
+      }
+    }
+
+    // Generate voice with ElevenLabs if requested
+    let audioContent = null;
+    if (withVoice) {
+      const ELEVENLABS_API_KEY = Deno.env.get('ELEVENLABS_API_KEY');
+      if (ELEVENLABS_API_KEY) {
+        try {
+          const voiceResponse = await fetch('https://api.elevenlabs.io/v1/text-to-speech/9BWtsMINqrJLrRacOk9x', {
+            method: 'POST',
+            headers: {
+              'xi-api-key': ELEVENLABS_API_KEY,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              text: message,
+              model_id: 'eleven_multilingual_v2',
+              voice_settings: {
+                stability: 0.5,
+                similarity_boost: 0.75,
+                style: 0.5,
+                use_speaker_boost: true
+              }
+            }),
+          });
+
+          if (voiceResponse.ok) {
+            const audioBuffer = await voiceResponse.arrayBuffer();
+            audioContent = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
+          }
+        } catch (voiceError) {
+          console.error('Voice synthesis error:', voiceError);
+        }
+      }
+    }
 
     return new Response(
-      JSON.stringify({ message }),
+      JSON.stringify({ message, audioContent }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
