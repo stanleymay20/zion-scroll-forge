@@ -111,6 +111,96 @@ export type Database = {
           },
         ]
       }
+      ai_tutor_common_questions: {
+        Row: {
+          category: string | null
+          frequency: number
+          id: string
+          last_asked: string
+          question: string
+        }
+        Insert: {
+          category?: string | null
+          frequency?: number
+          id?: string
+          last_asked?: string
+          question: string
+        }
+        Update: {
+          category?: string | null
+          frequency?: number
+          id?: string
+          last_asked?: string
+          question?: string
+        }
+        Relationships: []
+      }
+      ai_tutor_interactions: {
+        Row: {
+          created_at: string
+          id: string
+          module_id: string | null
+          question: string
+          response: string
+          satisfaction_rating: number | null
+          session_duration: number | null
+          tutor_id: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          module_id?: string | null
+          question: string
+          response: string
+          satisfaction_rating?: number | null
+          session_duration?: number | null
+          tutor_id?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          module_id?: string | null
+          question?: string
+          response?: string
+          satisfaction_rating?: number | null
+          session_duration?: number | null
+          tutor_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_tutor_videos: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          module_id: string | null
+          title: string
+          tutor_id: string | null
+          video_url: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          module_id?: string | null
+          title: string
+          tutor_id?: string | null
+          video_url: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          module_id?: string | null
+          title?: string
+          tutor_id?: string | null
+          video_url?: string
+        }
+        Relationships: []
+      }
       ai_tutors: {
         Row: {
           avatar_url: string | null
@@ -953,6 +1043,74 @@ export type Database = {
             referencedColumns: ["user_id"]
           },
         ]
+      }
+      office_hours_bookings: {
+        Row: {
+          booked_at: string
+          id: string
+          notes: string | null
+          slot_id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          booked_at?: string
+          id?: string
+          notes?: string | null
+          slot_id: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          booked_at?: string
+          id?: string
+          notes?: string | null
+          slot_id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "office_hours_bookings_slot_id_fkey"
+            columns: ["slot_id"]
+            isOneToOne: false
+            referencedRelation: "office_hours_slots"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      office_hours_slots: {
+        Row: {
+          created_at: string
+          day_of_week: string
+          end_time: string
+          id: string
+          max_students: number
+          start_time: string
+          tutor_name: string
+          tutor_specialty: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week: string
+          end_time: string
+          id?: string
+          max_students?: number
+          start_time: string
+          tutor_name: string
+          tutor_specialty: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: string
+          end_time?: string
+          id?: string
+          max_students?: number
+          start_time?: string
+          tutor_name?: string
+          tutor_specialty?: string
+        }
+        Relationships: []
       }
       post_comments: {
         Row: {
@@ -2085,6 +2243,15 @@ export type Database = {
       }
     }
     Views: {
+      ai_tutor_analytics: {
+        Row: {
+          avg_duration: number | null
+          avg_satisfaction: number | null
+          date: string | null
+          total_interactions: number | null
+        }
+        Relationships: []
+      }
       leaderboard: {
         Row: {
           badges_earned: number | null
@@ -2272,6 +2439,10 @@ export type Database = {
       }
       spend_scrollcoin: {
         Args: { p_amount: number; p_desc: string; p_user_id: string }
+        Returns: undefined
+      }
+      track_common_question: {
+        Args: { p_category: string; p_question: string }
         Returns: undefined
       }
     }
