@@ -48,6 +48,8 @@ import VirtualLabsPage from "./pages/VirtualLabs";
 import SettingsPage from "./pages/Settings";
 import { ComingSoonPage } from "./components/layout/PageTemplate";
 import FacultyGallery from "./pages/FacultyGallery";
+import FacultyDetail from "./pages/FacultyDetail";
+import GenerationHistory from "./pages/admin/GenerationHistory";
 import NotFound from "./pages/NotFound";
 
 // Protected Route Component
@@ -128,6 +130,7 @@ const App = () => (
               <Route path="study-groups/:groupId" element={<StudyGroupChat />} />
               <Route path="achievements" element={<Achievements />} />
               <Route path="admin" element={<AdminDashboard />} />
+              <Route path="admin/generation-history" element={<GenerationHistory />} />
               <Route path="apply" element={<Apply />} />
               <Route path="faculty" element={<FacultyDashboard />} />
               <Route path="faculty/gradebook/:courseId" element={<Gradebook />} />
@@ -152,7 +155,7 @@ const App = () => (
             <Route path="marketplace" element={<ComingSoonPage title="Marketplace" />} />
             <Route path="badges" element={<ComingSoonPage title="ScrollBadges" />} />
             <Route path="faculties" element={<FacultyGallery />} />
-            <Route path="faculties/:facultyId" element={<ComingSoonPage title="Faculty Details" />} />
+            <Route path="faculties/:facultyId" element={<FacultyDetail />} />
             <Route path="career-pathways" element={<ComingSoonPage title="Career Pathways" />} />
             <Route path="job-board" element={<ComingSoonPage title="Job Board" />} />
             <Route path="research" element={<ComingSoonPage title="Research Hub" />} />

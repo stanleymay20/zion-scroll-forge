@@ -32,6 +32,7 @@ const navigationSections: NavSection[] = [
     items: [
       { label: "Home Dashboard", href: "/dashboard", icon: Home },
       { label: "Analytics", href: "/analytics", icon: BarChart3 },
+      { label: "Faculty Gallery", href: "/faculties", icon: GraduationCap },
       { label: "My Profile", href: "/profile", icon: Users },
       { label: "Settings", href: "/settings", icon: Settings },
     ]
