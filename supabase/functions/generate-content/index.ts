@@ -232,6 +232,8 @@ serve(async (req) => {
     };
 
     // PHASE 1: Generate Faculties (for this batch only)
+    let termIds: string[] = [];
+    
     if (isFirstBatch) {
       console.log("\n✝️ Initializing Academic Terms...");
       const terms = [
@@ -244,8 +246,17 @@ serve(async (req) => {
           .insert(term)
           .select()
           .single();
-        if (termData) report.termsCreated++;
+        if (termData) {
+          report.termsCreated++;
+          termIds.push(termData.id);
+        }
       }
+    } else {
+      // Fetch existing term IDs for subsequent batches
+      const { data: existingTerms } = await supabase
+        .from("academic_terms")
+        .select("id");
+      termIds = existingTerms?.map(t => t.id) || [];
     }
 
     console.log(`\n✝️ PHASE 1: Generating Faculties for Batch ${batch + 1}...`);
@@ -315,7 +326,7 @@ serve(async (req) => {
     if (faculties) {
       for (let i = 0; i < faculties.length; i++) {
         const faculty = faculties[i];
-        const facultyDef = SUPREME_FACULTIES[i];
+        const facultyDef = SUPREME_FACULTIES.find(f => f.code === faculty.faculty_code)!;
         try {
           // Generate avatar with DALL-E
           const avatarPrompt = `Professional portrait of ${facultyDef.tutorName}, an AI tutor for ${faculty.name}. 
@@ -413,7 +424,7 @@ serve(async (req) => {
     if (faculties) {
       for (let fIndex = 0; fIndex < faculties.length; fIndex++) {
         const faculty = faculties[fIndex];
-        const facultyDef = SUPREME_FACULTIES[fIndex];
+        const facultyDef = SUPREME_FACULTIES.find(f => f.code === faculty.faculty_code)!;
         const coursesCount = Math.floor(Math.random() * 3) + 4; // 4-6 courses
 
         console.log(`\n✝️ Generating ${coursesCount} courses for ${faculty.name}...`);
