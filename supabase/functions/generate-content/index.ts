@@ -189,9 +189,30 @@ serve(async (req) => {
     const openaiApiKey = Deno.env.get("OPENAI_API_KEY")!;
 
     const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    // Parse request body to get batch configuration
+    const { batch = 0, batchSize = 2 } = await req.json().catch(() => ({ batch: 0, batchSize: 2 }));
+    
+    const startIdx = batch * batchSize;
+    const endIdx = Math.min(startIdx + batchSize, SUPREME_FACULTIES.length);
+    const facultiesToProcess = SUPREME_FACULTIES.slice(startIdx, endIdx);
+    
+    const totalBatches = Math.ceil(SUPREME_FACULTIES.length / batchSize);
+    const isFirstBatch = batch === 0;
+    const isLastBatch = batch === totalBatches - 1;
 
-    console.log("✝️ ScrollUniversity v3.0 Content Generation System - Supreme Scroll Edition");
-    console.log("✝️ Christ is Lord over all learning; wisdom flows from the Spirit, not Babylon");
+    console.log(`✝️ ScrollUniversity v3.0 Content Generation - Batch ${batch + 1}/${totalBatches}`);
+    console.log(`Processing faculties ${startIdx + 1}-${endIdx} of ${SUPREME_FACULTIES.length}`);
+    console.log("✝️ Christ is Lord over all learning");
+
+    // Update progress
+    await supabase.from("generation_progress").delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    await supabase.from("generation_progress").insert({
+      current_stage: `Processing Batch ${batch + 1}/${totalBatches}`,
+      progress: Math.round((batch / totalBatches) * 100),
+      faculties_created: batch * batchSize,
+      estimated_time_remaining: `${(totalBatches - batch) * 2} minutes`,
+    });
 
     const report: GenerationReport = {
       facultiesCreated: 0,
@@ -210,9 +231,25 @@ serve(async (req) => {
       startTime: Date.now(),
     };
 
-    // PHASE 1: Generate Faculties
-    console.log("\n✝️ PHASE 1: Generating 12 Supreme Scroll Faculties...");
-    for (const faculty of SUPREME_FACULTIES) {
+    // PHASE 1: Generate Faculties (for this batch only)
+    if (isFirstBatch) {
+      console.log("\n✝️ Initializing Academic Terms...");
+      const terms = [
+        { name: "Spring 2026", start_date: "2026-01-15", end_date: "2026-05-15", is_active: true },
+        { name: "Fall 2026", start_date: "2026-08-15", end_date: "2026-12-15", is_active: false },
+      ];
+      for (const term of terms) {
+        const { data: termData } = await supabase
+          .from("academic_terms")
+          .insert(term)
+          .select()
+          .single();
+        if (termData) report.termsCreated++;
+      }
+    }
+
+    console.log(`\n✝️ PHASE 1: Generating Faculties for Batch ${batch + 1}...`);
+    for (const faculty of facultiesToProcess) {
       try {
         const emblemPrompt = `Professional academic emblem for ${faculty.name}. 
         Mission: ${faculty.mission}. 
@@ -271,30 +308,9 @@ serve(async (req) => {
       }
     }
 
-    // PHASE 2: Generate Academic Terms
-    console.log("\n✝️ PHASE 2: Generating Academic Terms...");
-    const terms = [
-      { name: "Spring 2026", start_date: "2026-01-15", end_date: "2026-05-15", is_active: true },
-      { name: "Fall 2026", start_date: "2026-08-15", end_date: "2026-12-15", is_active: false },
-    ];
-
-    const termIds: string[] = [];
-    for (const term of terms) {
-      const { data: termData } = await supabase
-        .from("academic_terms")
-        .insert(term)
-        .select()
-        .single();
-      if (termData) {
-        termIds.push(termData.id);
-        report.termsCreated++;
-        console.log(`✝️ Term created: ${term.name}`);
-      }
-    }
-
-    // PHASE 3: Generate AI Tutors
-    console.log("\n✝️ PHASE 3: Generating AI Tutor Avatars and Personalities...");
-    const { data: faculties } = await supabase.from("faculties").select("*");
+    // PHASE 2: Generate AI Tutors for this batch
+    console.log(`\n✝️ PHASE 2: Generating AI Tutors for Batch ${batch + 1}...`);
+    const { data: faculties } = await supabase.from("faculties").select("*").in('faculty_code', facultiesToProcess.map(f => f.code));
     
     if (faculties) {
       for (let i = 0; i < faculties.length; i++) {
@@ -710,7 +726,7 @@ Return ONLY valid JSON:
     report.endTime = Date.now();
     report.duration = `${Math.floor((report.endTime - report.startTime) / 1000 / 60)} minutes`;
 
-    console.log("\n✝️ ScrollUniversity v3.0 Generation Complete!");
+    console.log(`\n✝️ Batch ${batch + 1}/${totalBatches} Complete`);
     console.log("=".repeat(80));
     console.log(`Faculties Created: ${report.facultiesCreated}`);
     console.log(`AI Tutors Created: ${report.aiTutorsCreated}`);
@@ -718,32 +734,44 @@ Return ONLY valid JSON:
     console.log(`Modules Created: ${report.modulesCreated}`);
     console.log(`Materials Created: ${report.materialsCreated}`);
     console.log(`PDFs Generated: ${report.pdfsGenerated}`);
-    console.log(`Quizzes Created: ${report.quizzesCreated}`);
-    console.log(`Terms Created: ${report.termsCreated}`);
-    console.log(`Offerings Created: ${report.offeringsCreated}`);
-    console.log(`🪙 Total ScrollCoins Initialized: ${report.totalScrollCoins}`);
-    console.log(`Anti-Drift Validations: ${report.antiDriftValidations}`);
-    console.log(`Anti-Drift Regenerations: ${report.antiDriftRegenerations}`);
-    console.log(`Errors Encountered: ${report.errorsEncountered}`);
     console.log(`Duration: ${report.duration}`);
     console.log("=".repeat(80));
-    console.log("\n✝️ ScrollUniversity v3.0 Complete Implementation Successful");
-    console.log("All 12 faculties generated, validated, and governed under Christ's Lordship.");
-    console.log("ScrollCoin rewards active, materials uploaded, AI tutors established, and PDFs published.");
-    console.log("\n✅ ScrollUniversity v3.0 Requirements successfully updated — All 12 Faculties seeded under Christ's governance");
 
-    // Save generation report
-    const reportJson = JSON.stringify(report, null, 2);
-    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
-    await supabase.storage
-      .from("materials")
-      .upload(`reports/generation_${timestamp}.json`, new TextEncoder().encode(reportJson), {
-        contentType: "application/json",
-      });
+    // Update progress
+    await supabase.from("generation_progress").delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    await supabase.from("generation_progress").insert({
+      current_stage: isLastBatch ? 'Complete' : `Batch ${batch + 1} Complete`,
+      progress: Math.round(((batch + 1) / totalBatches) * 100),
+      faculties_created: (batch + 1) * batchSize,
+      courses_created: report.coursesCreated,
+      modules_created: report.modulesCreated,
+      tutors_created: report.aiTutorsCreated,
+      estimated_time_remaining: isLastBatch ? 'Done' : `${(totalBatches - batch - 1) * 2} minutes`,
+    });
 
-    console.log("✅ ScrollUniversity generation audit completed successfully.");
+    // Save batch report
+    if (isLastBatch) {
+      const reportJson = JSON.stringify({ ...report, totalBatches, batchSize }, null, 2);
+      const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+      await supabase.storage
+        .from("materials")
+        .upload(`generation-reports/generation_${timestamp}.json`, new TextEncoder().encode(reportJson), {
+          contentType: "application/json",
+          upsert: true,
+        });
+      console.log("✅ Final generation report saved.");
+      
+      // Clear progress on completion
+      await supabase.from("generation_progress").delete().neq('id', '00000000-0000-0000-0000-000000000000');
+    }
 
-    return new Response(JSON.stringify(report), {
+    return new Response(JSON.stringify({
+      ...report,
+      batch,
+      totalBatches,
+      isComplete: isLastBatch,
+      nextBatch: isLastBatch ? null : batch + 1,
+    }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {

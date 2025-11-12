@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 import { generateScrollUniversityContent, ContentGenerationReport } from '@/services/contentGeneration';
 import { Loader2, BookOpen, GraduationCap, FileText, Award, Calendar, CheckCircle2 } from 'lucide-react';
 
@@ -24,67 +25,69 @@ const ContentGeneration = () => {
     setPhaseProgress({});
 
     try {
-      // Enhanced progress simulation with phase tracking
-      const phases = [
-        { name: 'Creating Faculties', duration: 8000, entities: 12, weight: 15 },
-        { name: 'Generating Courses', duration: 12000, entities: 60, weight: 20 },
-        { name: 'Building Modules', duration: 15000, entities: 240, weight: 30 },
-        { name: 'Creating Materials', duration: 10000, entities: 240, weight: 15 },
-        { name: 'Generating Quizzes', duration: 8000, entities: 240, weight: 10 },
-        { name: 'Creating AI Tutors', duration: 5000, entities: 12, weight: 5 },
-        { name: 'Finalizing Terms', duration: 2000, entities: 2, weight: 5 },
-      ];
-
-      let cumulativeProgress = 0;
-
       toast({
         title: "✝️ Generation Started",
-        description: "Christ is Lord over all learning. This may take up to 45 minutes...",
+        description: "Processing in batches to avoid timeouts. This will take ~12-15 minutes.",
       });
 
-      // Simulate each phase
-      for (let i = 0; i < phases.length; i++) {
-        const phase = phases[i];
-        setCurrentPhase(phase.name);
-        
-        const phaseSteps = 10;
-        const stepDuration = phase.duration / phaseSteps;
-        
-        for (let step = 0; step <= phaseSteps; step++) {
-          await new Promise(resolve => setTimeout(resolve, stepDuration));
-          
-          const phaseProgressValue = (step / phaseSteps) * 100;
-          setPhaseProgress(prev => ({ ...prev, [phase.name]: phaseProgressValue }));
-          
-          // Update current entity being processed
-          const entityIndex = Math.floor((step / phaseSteps) * phase.entities);
-          if (entityIndex < phase.entities) {
-            setCurrentEntity(`${entityIndex + 1} of ${phase.entities}`);
-          }
-          
-          // Calculate overall progress
-          const phaseCompletion = (step / phaseSteps);
-          const overallProgress = cumulativeProgress + (phase.weight * phaseCompletion);
-          setProgress(Math.min(overallProgress, 95));
+      const BATCH_SIZE = 2; // Process 2 faculties per batch
+      const TOTAL_FACULTIES = 12;
+      const totalBatches = Math.ceil(TOTAL_FACULTIES / BATCH_SIZE);
+      
+      let combinedReport: any = {
+        facultiesCreated: 0,
+        coursesCreated: 0,
+        modulesCreated: 0,
+        materialsCreated: 0,
+        quizzesCreated: 0,
+        aiTutorsCreated: 0,
+        termsCreated: 0,
+        offeringsCreated: 0,
+      };
+
+      // Process each batch sequentially
+      for (let batch = 0; batch < totalBatches; batch++) {
+        setCurrentPhase(`Processing Batch ${batch + 1} of ${totalBatches}`);
+        setCurrentEntity(`Faculties ${batch * BATCH_SIZE + 1}-${Math.min((batch + 1) * BATCH_SIZE, TOTAL_FACULTIES)}`);
+        setProgress(Math.round((batch / totalBatches) * 100));
+
+        const { data, error } = await supabase.functions.invoke('generate-content', {
+          body: { batch, batchSize: BATCH_SIZE },
+        });
+
+        if (error) {
+          console.error(`Batch ${batch + 1} failed:`, error);
+          throw new Error(`Batch ${batch + 1} failed: ${error.message}`);
         }
-        
-        cumulativeProgress += phase.weight;
+
+        // Accumulate results
+        combinedReport.facultiesCreated += data.facultiesCreated || 0;
+        combinedReport.coursesCreated += data.coursesCreated || 0;
+        combinedReport.modulesCreated += data.modulesCreated || 0;
+        combinedReport.materialsCreated += data.materialsCreated || 0;
+        combinedReport.quizzesCreated += data.quizzesCreated || 0;
+        combinedReport.aiTutorsCreated += data.aiTutorsCreated || 0;
+        combinedReport.termsCreated += data.termsCreated || 0;
+
+        toast({
+          title: `✅ Batch ${batch + 1}/${totalBatches} Complete`,
+          description: `Generated ${data.facultiesCreated} faculties, ${data.coursesCreated} courses`,
+        });
+
+        // Small delay between batches
+        if (batch < totalBatches - 1) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
       }
 
-      // Execute actual generation
-      setCurrentPhase('Executing Generation');
-      setCurrentEntity('Invoking ScrollUniversity Pipeline');
-      
-      const result = await generateScrollUniversityContent();
-      
       setProgress(100);
       setCurrentPhase('Complete');
       setCurrentEntity('All content generated successfully');
-      setReport(result);
+      setReport(combinedReport);
 
       toast({
-        title: "✅ Generation Complete",
-        description: "ScrollUniversity v3.0 content successfully generated!",
+        title: "✅ Generation Complete!",
+        description: `Created ${combinedReport.facultiesCreated} faculties, ${combinedReport.coursesCreated} courses, ${combinedReport.modulesCreated} modules`,
       });
     } catch (error) {
       console.error('Generation failed:', error);
