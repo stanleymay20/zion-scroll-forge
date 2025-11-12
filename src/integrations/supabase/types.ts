@@ -798,6 +798,45 @@ export type Database = {
           },
         ]
       }
+      generation_progress: {
+        Row: {
+          courses_created: number | null
+          created_at: string | null
+          current_stage: string
+          estimated_time_remaining: string | null
+          faculties_created: number | null
+          id: string
+          modules_created: number | null
+          progress: number | null
+          tutors_created: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          courses_created?: number | null
+          created_at?: string | null
+          current_stage: string
+          estimated_time_remaining?: string | null
+          faculties_created?: number | null
+          id?: string
+          modules_created?: number | null
+          progress?: number | null
+          tutors_created?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          courses_created?: number | null
+          created_at?: string | null
+          current_stage?: string
+          estimated_time_remaining?: string | null
+          faculties_created?: number | null
+          id?: string
+          modules_created?: number | null
+          progress?: number | null
+          tutors_created?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       grades: {
         Row: {
           feedback: string | null

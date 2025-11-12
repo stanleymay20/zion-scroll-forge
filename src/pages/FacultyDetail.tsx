@@ -1,22 +1,67 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useFaculty } from '@/hooks/useFaculties';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { enrollInCourse } from '@/services/courses';
+import { spendScrollCoin } from '@/services/scrollcoin';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
 import { 
   GraduationCap, BookOpen, User, Cross, ArrowLeft, 
-  Heart, Brain, Clock, Award, ChevronRight 
+  Heart, Brain, Clock, Award, ChevronRight, Coins, CheckCircle2 
 } from 'lucide-react';
+import { useState } from 'react';
 
 const FacultyDetail = () => {
   const { facultyId } = useParams<{ facultyId: string }>();
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [enrollingCourse, setEnrollingCourse] = useState<string | null>(null);
+  
   const { data: faculty, isLoading: facultyLoading } = useFaculty(facultyId!);
+  
+  const { data: user } = useQuery({
+    queryKey: ['current-user'],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      return user;
+    },
+  });
+
+  const { data: wallet } = useQuery({
+    queryKey: ['wallet', user?.id],
+    queryFn: async () => {
+      if (!user) return null;
+      const { data, error } = await supabase
+        .from('wallets')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!user,
+  });
+
+  const { data: enrollments } = useQuery({
+    queryKey: ['my-enrollments', user?.id],
+    queryFn: async () => {
+      if (!user) return [];
+      const { data, error } = await supabase
+        .from('enrollments')
+        .select('course_id')
+        .eq('user_id', user.id);
+      if (error) throw error;
+      return data?.map(e => e.course_id) || [];
+    },
+    enabled: !!user,
+  });
 
   const { data: courses, isLoading: coursesLoading } = useQuery({
     queryKey: ['faculty-courses', facultyId],
@@ -31,6 +76,54 @@ const FacultyDetail = () => {
     },
     enabled: !!facultyId,
   });
+
+  const handleEnrollment = async (courseId: string, coursePrice: number) => {
+    if (!user) {
+      toast({
+        title: 'Authentication Required',
+        description: 'Please sign in to enroll in courses',
+        variant: 'destructive',
+      });
+      navigate('/auth');
+      return;
+    }
+
+    if (!wallet || wallet.balance < coursePrice) {
+      toast({
+        title: 'Insufficient ScrollCoins',
+        description: `You need ${coursePrice} ScrollCoins to enroll. Current balance: ${wallet?.balance || 0}`,
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setEnrollingCourse(courseId);
+
+    try {
+      // Deduct ScrollCoins
+      await spendScrollCoin(user.id, coursePrice, `Enrollment in course`);
+      
+      // Enroll in course
+      await enrollInCourse(user.id, courseId);
+
+      toast({
+        title: 'Enrollment Successful! ✝️',
+        description: 'You are now enrolled in this course. May God bless your learning journey.',
+      });
+
+      // Refresh data
+      queryClient.invalidateQueries({ queryKey: ['wallet'] });
+      queryClient.invalidateQueries({ queryKey: ['my-enrollments'] });
+    } catch (error: any) {
+      toast({
+        title: 'Enrollment Failed',
+        description: error.message || 'Unable to complete enrollment',
+        variant: 'destructive',
+      });
+    } finally {
+      setEnrollingCourse(null);
+    }
+  };
 
   if (facultyLoading || coursesLoading) {
     return (
@@ -156,11 +249,37 @@ const FacultyDetail = () => {
                     <div className="flex-1">
                       <CardTitle className="text-2xl mb-2">{course.title}</CardTitle>
                       <CardDescription className="text-base">{course.description}</CardDescription>
+                      <div className="flex items-center gap-2 mt-3">
+                        <Badge variant="secondary" className="gap-1">
+                          <Coins className="h-3 w-3" />
+                          {course.price || 0} ScrollCoins
+                        </Badge>
+                      </div>
                     </div>
-                    <Button onClick={() => navigate(`/courses/${course.id}`)}>
-                      View Course
-                      <ChevronRight className="h-4 w-4 ml-2" />
-                    </Button>
+                    <div className="flex flex-col gap-2">
+                      {enrollments?.includes(course.id) ? (
+                        <Button variant="outline" disabled className="gap-2">
+                          <CheckCircle2 className="h-4 w-4" />
+                          Enrolled
+                        </Button>
+                      ) : (
+                        <Button 
+                          onClick={() => handleEnrollment(course.id, course.price || 0)}
+                          disabled={enrollingCourse === course.id}
+                          className="gap-2"
+                        >
+                          <Coins className="h-4 w-4" />
+                          {enrollingCourse === course.id ? 'Enrolling...' : 'Enroll Now'}
+                        </Button>
+                      )}
+                      <Button 
+                        variant="outline"
+                        onClick={() => navigate(`/courses/${course.id}`)}
+                      >
+                        View Details
+                        <ChevronRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>

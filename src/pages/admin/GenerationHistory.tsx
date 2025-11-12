@@ -1,14 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Progress } from '@/components/ui/progress';
 import { 
   Download, CheckCircle2, XCircle, Clock, 
-  BarChart3, FileJson, Calendar, Zap 
+  BarChart3, FileJson, Calendar, Zap, Loader2 
 } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface GenerationReport {
   id: string;
@@ -32,6 +33,32 @@ interface GenerationReport {
 
 const GenerationHistory = () => {
   const [downloadingId, setDownloadingId] = useState<string | null>(null);
+  const [liveProgress, setLiveProgress] = useState<any>(null);
+  const queryClient = useQueryClient();
+
+  // Real-time subscription for live generation progress
+  useEffect(() => {
+    const channel = supabase
+      .channel('generation-progress')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'generation_progress' },
+        (payload) => {
+          console.log('Live generation update:', payload);
+          if (payload.eventType === 'INSERT' || payload.eventType === 'UPDATE') {
+            setLiveProgress(payload.new);
+          } else if (payload.eventType === 'DELETE') {
+            setLiveProgress(null);
+          }
+          queryClient.invalidateQueries({ queryKey: ['generation-reports'] });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
 
   const { data: reports, isLoading } = useQuery({
     queryKey: ['generation-reports'],
@@ -134,6 +161,69 @@ const GenerationHistory = () => {
           Track all content generation runs and download detailed reports
         </p>
       </div>
+
+      {/* Live Progress Monitor */}
+      {liveProgress && (
+        <Card className="mb-8 border-2 border-primary animate-pulse">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                <div>
+                  <CardTitle>Generation In Progress</CardTitle>
+                  <CardDescription>Real-time updates</CardDescription>
+                </div>
+              </div>
+              <Badge variant="secondary" className="animate-pulse">Live</Badge>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span className="font-medium">{liveProgress.current_stage || 'Processing...'}</span>
+                <span className="text-muted-foreground">
+                  {Math.round(liveProgress.progress || 0)}%
+                </span>
+              </div>
+              <Progress value={liveProgress.progress || 0} className="h-2" />
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {liveProgress.faculties_created > 0 && (
+                <div className="text-center p-2 bg-primary/10 rounded">
+                  <div className="text-xl font-bold text-primary">{liveProgress.faculties_created}</div>
+                  <div className="text-xs text-muted-foreground">Faculties</div>
+                </div>
+              )}
+              {liveProgress.courses_created > 0 && (
+                <div className="text-center p-2 bg-primary/10 rounded">
+                  <div className="text-xl font-bold text-primary">{liveProgress.courses_created}</div>
+                  <div className="text-xs text-muted-foreground">Courses</div>
+                </div>
+              )}
+              {liveProgress.modules_created > 0 && (
+                <div className="text-center p-2 bg-primary/10 rounded">
+                  <div className="text-xl font-bold text-primary">{liveProgress.modules_created}</div>
+                  <div className="text-xs text-muted-foreground">Modules</div>
+                </div>
+              )}
+              {liveProgress.tutors_created > 0 && (
+                <div className="text-center p-2 bg-primary/10 rounded">
+                  <div className="text-xl font-bold text-primary">{liveProgress.tutors_created}</div>
+                  <div className="text-xs text-muted-foreground">AI Tutors</div>
+                </div>
+              )}
+            </div>
+
+            {liveProgress.estimated_time_remaining && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Clock className="h-4 w-4" />
+                <span>Estimated time remaining: {liveProgress.estimated_time_remaining}</span>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Overall Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 mb-8">
