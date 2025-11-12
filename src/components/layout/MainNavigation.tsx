@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { 
   Home, Book, Users, Coins, GraduationCap, Brain, Microscope, 
   Trophy, Briefcase, Search, MessageSquare, Heart, Settings,
-  ChevronDown, ChevronRight, BarChart3
+  ChevronDown, ChevronRight, BarChart3, GitCompare
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -90,6 +90,7 @@ const navigationSections: NavSection[] = [
     icon: GraduationCap,
     items: [
       { label: "All Faculties", href: "/faculties", icon: GraduationCap },
+      { label: "Compare Faculties", href: "/faculties/compare", icon: GitCompare },
       { label: "ScrollMedicine", href: "/faculties/scroll-medicine", icon: Heart },
       { label: "Prophetic Law", href: "/faculties/prophetic-law", icon: Briefcase },
       { label: "Scroll Economy", href: "/faculties/scroll-economy", icon: Coins },
