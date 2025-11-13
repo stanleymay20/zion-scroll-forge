@@ -51,6 +51,8 @@ import FacultyGallery from "./pages/FacultyGallery";
 import FacultyDetail from "./pages/FacultyDetail";
 import FacultyComparison from "./pages/FacultyComparison";
 import GenerationHistory from "./pages/admin/GenerationHistory";
+import LearningProfileOnboarding from "./pages/LearningProfileOnboarding";
+import PersonalizedDashboard from "./pages/PersonalizedDashboard";
 import NotFound from "./pages/NotFound";
 
 // Protected Route Component
@@ -155,10 +157,12 @@ const App = () => (
             <Route path="projects" element={<ComingSoonPage title="Collaborative Projects" />} />
             <Route path="marketplace" element={<ComingSoonPage title="Marketplace" />} />
             <Route path="badges" element={<ComingSoonPage title="ScrollBadges" />} />
-            <Route path="faculties" element={<FacultyGallery />} />
-            <Route path="faculties/compare" element={<FacultyComparison />} />
-            <Route path="faculties/:facultyId" element={<FacultyDetail />} />
-            <Route path="career-pathways" element={<ComingSoonPage title="Career Pathways" />} />
+              <Route path="faculties" element={<FacultyGallery />} />
+              <Route path="faculties/compare" element={<FacultyComparison />} />
+              <Route path="faculties/:facultyId" element={<FacultyDetail />} />
+              <Route path="learning-profile" element={<LearningProfileOnboarding />} />
+              <Route path="personalized-dashboard" element={<PersonalizedDashboard />} />
+              <Route path="career-pathways" element={<ComingSoonPage title="Career Pathways" />} />
             <Route path="job-board" element={<ComingSoonPage title="Job Board" />} />
             <Route path="research" element={<ComingSoonPage title="Research Hub" />} />
             <Route path="help" element={<ComingSoonPage title="Help Center" />} />

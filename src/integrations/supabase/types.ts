@@ -80,6 +80,51 @@ export type Database = {
         }
         Relationships: []
       }
+      adaptive_quiz_attempts: {
+        Row: {
+          completed_at: string | null
+          difficulty_progression: Json
+          id: string
+          questions_presented: Json
+          quiz_id: string
+          score: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          difficulty_progression: Json
+          id?: string
+          questions_presented: Json
+          quiz_id: string
+          score: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          difficulty_progression?: Json
+          id?: string
+          questions_presented?: Json
+          quiz_id?: string
+          score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "adaptive_quiz_attempts_quiz_id_fkey"
+            columns: ["quiz_id"]
+            isOneToOne: false
+            referencedRelation: "quizzes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "adaptive_quiz_attempts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       ai_conversations: {
         Row: {
           context_summary: string | null
@@ -537,6 +582,48 @@ export type Database = {
           },
         ]
       }
+      course_recommendations: {
+        Row: {
+          course_id: string
+          created_at: string | null
+          id: string
+          reason: string
+          relevance_score: number
+          user_id: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string | null
+          id?: string
+          reason: string
+          relevance_score: number
+          user_id: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string | null
+          id?: string
+          reason?: string
+          relevance_score?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "course_recommendations_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "course_recommendations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       course_reviews: {
         Row: {
           course_id: string
@@ -982,6 +1069,50 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      learning_goals: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          current_value: number | null
+          deadline: string | null
+          goal_type: string
+          id: string
+          status: string | null
+          target_value: number
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          current_value?: number | null
+          deadline?: string | null
+          goal_type: string
+          id?: string
+          status?: string | null
+          target_value: number
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          current_value?: number | null
+          deadline?: string | null
+          goal_type?: string
+          id?: string
+          status?: string | null
+          target_value?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_goals_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
           },
         ]
@@ -1463,6 +1594,7 @@ export type Database = {
         Row: {
           answer: string | null
           assignment_id: string | null
+          difficulty_rating: number | null
           id: string
           kind: string | null
           options: string[] | null
@@ -1473,6 +1605,7 @@ export type Database = {
         Insert: {
           answer?: string | null
           assignment_id?: string | null
+          difficulty_rating?: number | null
           id?: string
           kind?: string | null
           options?: string[] | null
@@ -1483,6 +1616,7 @@ export type Database = {
         Update: {
           answer?: string | null
           assignment_id?: string | null
+          difficulty_rating?: number | null
           id?: string
           kind?: string | null
           options?: string[] | null
@@ -1888,6 +2022,104 @@ export type Database = {
           },
         ]
       }
+      student_learning_profiles: {
+        Row: {
+          created_at: string | null
+          goals: string[] | null
+          id: string
+          learning_style: string
+          preferred_pace: string
+          strengths: string[] | null
+          study_time_preference: Json | null
+          updated_at: string | null
+          user_id: string
+          weaknesses: string[] | null
+        }
+        Insert: {
+          created_at?: string | null
+          goals?: string[] | null
+          id?: string
+          learning_style: string
+          preferred_pace: string
+          strengths?: string[] | null
+          study_time_preference?: Json | null
+          updated_at?: string | null
+          user_id: string
+          weaknesses?: string[] | null
+        }
+        Update: {
+          created_at?: string | null
+          goals?: string[] | null
+          id?: string
+          learning_style?: string
+          preferred_pace?: string
+          strengths?: string[] | null
+          study_time_preference?: Json | null
+          updated_at?: string | null
+          user_id?: string
+          weaknesses?: string[] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_learning_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      student_module_progress: {
+        Row: {
+          attempts: number | null
+          completed_at: string | null
+          id: string
+          last_accessed: string | null
+          mastery_level: number | null
+          module_id: string
+          status: string
+          time_spent: number | null
+          user_id: string
+        }
+        Insert: {
+          attempts?: number | null
+          completed_at?: string | null
+          id?: string
+          last_accessed?: string | null
+          mastery_level?: number | null
+          module_id: string
+          status?: string
+          time_spent?: number | null
+          user_id: string
+        }
+        Update: {
+          attempts?: number | null
+          completed_at?: string | null
+          id?: string
+          last_accessed?: string | null
+          mastery_level?: number | null
+          module_id?: string
+          status?: string
+          time_spent?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_module_progress_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_module_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       students: {
         Row: {
           address: string | null
@@ -2067,6 +2299,57 @@ export type Database = {
           {
             foreignKeyName: "study_groups_creator_id_fkey"
             columns: ["creator_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      study_plans: {
+        Row: {
+          course_id: string
+          created_at: string | null
+          daily_schedule: Json
+          id: string
+          milestones: Json | null
+          target_completion_date: string
+          updated_at: string | null
+          user_id: string
+          weekly_hours: number
+        }
+        Insert: {
+          course_id: string
+          created_at?: string | null
+          daily_schedule: Json
+          id?: string
+          milestones?: Json | null
+          target_completion_date: string
+          updated_at?: string | null
+          user_id: string
+          weekly_hours: number
+        }
+        Update: {
+          course_id?: string
+          created_at?: string | null
+          daily_schedule?: Json
+          id?: string
+          milestones?: Json | null
+          target_completion_date?: string
+          updated_at?: string | null
+          user_id?: string
+          weekly_hours?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "study_plans_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "study_plans_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
