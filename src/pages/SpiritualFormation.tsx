@@ -1,413 +1,283 @@
 import { PageTemplate } from "@/components/layout/PageTemplate";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { 
-  Heart, Star, Clock, Calendar, BookOpen, Users, 
-  Target, TrendingUp, CheckCircle, Award, Flame, Crown
+  Heart, Star, BookOpen, Crown, Loader2, Calendar, Target
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useSpiritualMetrics } from "@/hooks/useSpiritualFormation";
 
-const spiritualMetrics = [
-  { 
-    label: "Divine Scorecard", 
-    value: "92%", 
-    change: "+5% this month", 
-    icon: Star,
-    description: "Overall spiritual growth assessment"
-  },
-  { 
-    label: "Prayer Consistency", 
-    value: "21 days", 
-    change: "Current streak", 
-    icon: Heart,
-    description: "Daily prayer commitment maintained"
-  },
-  { 
-    label: "Scripture Study", 
-    value: "Daily", 
-    change: "85% completion", 
-    icon: BookOpen,
-    description: "Regular Bible reading progress"
-  },
-  { 
-    label: "Ministry Readiness", 
-    value: "78%", 
-    change: "+12% this quarter", 
-    icon: Crown,
-    description: "Preparation for kingdom service"
-  },
-];
-
-const spiritualGrowthAreas = [
-  {
-    area: "Prayer Life",
-    currentLevel: 85,
-    target: 95,
-    description: "Consistency in daily prayer and intercession",
-    recommendations: [
-      "Join early morning prayer group",
-      "Complete prophetic prayer course",
-      "Increase prayer time to 45 minutes daily"
-    ],
-    icon: Heart
-  },
-  {
-    area: "Prophetic Discernment",
-    currentLevel: 72,
-    target: 90,
-    description: "Ability to receive and interpret divine insights",
-    recommendations: [
-      "Attend prophetic intelligence workshops",
-      "Practice dream interpretation",
-      "Study biblical prophecy patterns"
-    ],
-    icon: Star
-  },
-  {
-    area: "Biblical Knowledge",
-    currentLevel: 88,
-    target: 95,
-    description: "Understanding of scripture and theological concepts",
-    recommendations: [
-      "Complete advanced theology courses",
-      "Memorize 50 key verses this month",
-      "Study original Hebrew and Greek"
-    ],
-    icon: BookOpen
-  },
-  {
-    area: "Character Development",
-    currentLevel: 91,
-    target: 98,
-    description: "Christ-likeness in daily conduct and decisions",
-    recommendations: [
-      "Practice daily self-examination",
-      "Seek accountability partner",
-      "Volunteer in community service"
-    ],
-    icon: Crown
-  }
-];
-
-const recentSpiritual = [
-  {
-    type: "prayer",
-    title: "Morning Prayer Completed",
-    description: "60 minutes of intercession for global awakening",
-    time: "Today, 6:00 AM",
-    icon: Heart,
-    impact: "+5 Spiritual Growth Points"
-  },
-  {
-    type: "study",
-    title: "Prophetic Intelligence Module",
-    description: "Completed study on discerning times and seasons",
-    time: "Yesterday, 7:30 PM", 
-    icon: Star,
-    impact: "+15 Spiritual Growth Points"
-  },
-  {
-    type: "ministry",
-    title: "Prayer Request Answered",
-    description: "Healing prayer for community member manifested",
-    time: "2 days ago",
-    icon: Award,
-    impact: "+20 Ministry Readiness Points"
-  },
-  {
-    type: "character",
-    title: "Forgiveness Applied",
-    description: "Demonstrated Christ's love in difficult situation",
-    time: "3 days ago",
-    icon: Crown,
-    impact: "+10 Character Development Points"
-  }
-];
-
-const upcomingSpiritual = [
-  {
-    title: "Prophetic Check-in Session",
-    description: "Weekly assessment with spiritual mentor",
-    time: "Tomorrow, 7:00 PM EST",
-    type: "Mentoring",
-    action: "Join Session"
-  },
-  {
-    title: "Community Prayer & Fasting",
-    description: "Global intercession for world revival",
-    time: "Wednesday, 6:00 AM EST",
-    type: "Prayer Meeting",
-    action: "Commit to Participate"
-  },
-  {
-    title: "Divine Healing Workshop",
-    description: "Learn supernatural healing principles",
-    time: "Friday, 3:00 PM EST",
-    type: "Training",
-    action: "Register Now"
-  },
-  {
-    title: "Calling Discernment Retreat",
-    description: "Discover your unique kingdom assignment",
-    time: "Next Sunday, 9:00 AM EST",
-    type: "Retreat",
-    action: "Reserve Spot"
-  }
-];
-
-const callingAssessment = {
-  primaryCalling: "Prophetic Teacher",
-  confidence: 87,
-  giftings: [
-    { name: "Prophetic Insight", strength: 92 },
-    { name: "Teaching Ability", strength: 89 },
-    { name: "Intercession", strength: 85 },
-    { name: "Pastoral Care", strength: 78 }
-  ],
-  nextSteps: [
-    "Complete advanced prophetic training",
-    "Begin teaching in local study groups", 
-    "Develop prophetic writing ministry",
-    "Seek ordination for teaching ministry"
-  ]
-};
+console.info("✝️ Spiritual Formation — Christ governs all transformation");
 
 export default function SpiritualFormation() {
+  const { data: metrics, isLoading } = useSpiritualMetrics();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  const spiritualMetrics = [
+    { 
+      label: "Divine Scorecard", 
+      value: metrics?.divine_score || 0, 
+      icon: Star,
+      description: "Overall spiritual growth assessment"
+    },
+    { 
+      label: "Prayer Consistency", 
+      value: metrics?.prayer_streak || 0, 
+      icon: Heart,
+      description: "Daily prayer commitment maintained",
+      unit: "days"
+    },
+    { 
+      label: "Scripture Progress", 
+      value: metrics?.scripture_progress || 0, 
+      icon: BookOpen,
+      description: "Regular Bible reading progress"
+    },
+    { 
+      label: "Ministry Readiness", 
+      value: metrics?.ministry_readiness || 0, 
+      icon: Crown,
+      description: "Preparation for kingdom service"
+    },
+  ];
+
+  const growthAreas = [
+    {
+      area: "Prayer Life",
+      currentLevel: metrics?.divine_score || 0,
+      target: 95,
+      description: "Consistency in daily prayer and intercession",
+      icon: Heart
+    },
+    {
+      area: "Biblical Knowledge",
+      currentLevel: metrics?.scripture_progress || 0,
+      target: 95,
+      description: "Understanding of scripture and theological concepts",
+      icon: BookOpen
+    },
+    {
+      area: "Character Development",
+      currentLevel: metrics?.ministry_readiness || 0,
+      target: 98,
+      description: "Christ-likeness in daily conduct and decisions",
+      icon: Crown
+    }
+  ];
+
   return (
     <PageTemplate
-      title="Spiritual Formation Dashboard"
-      description="Your journey toward Christ-likeness and kingdom readiness"
-      actions={
-        <div className="flex space-x-2">
-          <Button variant="outline" disabled>
-            <Calendar className="h-4 w-4 mr-2" />
-            Prayer Calendar (Coming Soon)
-          </Button>
-          <Link to="/prayer-requests">
-            <Button>
-              <Heart className="h-4 w-4 mr-2" />
-              Submit Prayer Request
-            </Button>
-          </Link>
-        </div>
-      }
+      title="Spiritual Formation"
+      description="Track your spiritual growth and Christ-centered development"
     >
-      {/* Christ Lordship Acknowledgment */}
-      <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-secondary/5">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Crown className="h-5 w-5 text-primary" />
-            <span>Daily Christ Lordship Acknowledgment</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-lg font-serif italic text-primary mb-4">
-            "Jesus Christ is Lord over my heart, my mind, my spirit, and my calling. 
-            I surrender all aspects of my spiritual formation to His perfect will."
-          </p>
-          <div className="flex items-center justify-between">
-            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-              ✓ Acknowledged Today
-            </Badge>
-            <Button 
-              size="sm"
-              onClick={() => {/* acknowledgeLordship hook can be added here */}}
-            >
-              <Heart className="h-4 w-4 mr-2" />
-              Renew Daily Commitment
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Spiritual Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {spiritualMetrics.map((metric) => (
-          <Card key={metric.label}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{metric.label}</CardTitle>
-              <metric.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{metric.value}</div>
-              <p className="text-xs text-muted-foreground">{metric.change}</p>
-              <p className="text-xs text-muted-foreground mt-1">{metric.description}</p>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Spiritual Metrics Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {spiritualMetrics.map((metric, index) => {
+          const Icon = metric.icon;
+          const displayValue = metric.unit === 'days' 
+            ? `${metric.value} ${metric.unit}` 
+            : `${metric.value}%`;
+          
+          return (
+            <Card key={index}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{metric.label}</CardTitle>
+                <Icon className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{displayValue}</div>
+                <p className="text-xs text-muted-foreground mt-1">{metric.description}</p>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Spiritual Growth Areas */}
+        {/* Main Content - Growth Areas */}
         <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
               <CardTitle>Spiritual Growth Areas</CardTitle>
-              <CardDescription>Areas for continued development in Christ-likeness</CardDescription>
+              <CardDescription>Focus areas for continued development in Christ</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              {spiritualGrowthAreas.map((area) => (
-                <div key={area.area} className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <area.icon className="h-5 w-5 text-primary" />
-                      <h4 className="font-semibold">{area.area}</h4>
+              {growthAreas.map((area, index) => {
+                const Icon = area.icon;
+                const progress = (area.currentLevel / area.target) * 100;
+                
+                return (
+                  <div key={index} className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Icon className="h-5 w-5 text-primary" />
+                        <h4 className="font-semibold">{area.area}</h4>
+                      </div>
+                      <span className="text-sm font-medium text-muted-foreground">
+                        {area.currentLevel}% / {area.target}%
+                      </span>
                     </div>
-                    <Badge variant="outline">{area.currentLevel}%</Badge>
+                    <p className="text-sm text-muted-foreground">{area.description}</p>
+                    <Progress value={progress} className="h-2" />
                   </div>
-                  <p className="text-sm text-muted-foreground">{area.description}</p>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Current Progress</span>
-                      <span>{area.currentLevel}% of {area.target}% target</span>
-                    </div>
-                    <Progress value={area.currentLevel} className="h-2" />
-                  </div>
-                  <div className="space-y-1">
-                    <h5 className="text-sm font-medium">Recommended Actions:</h5>
-                    <ul className="text-sm text-muted-foreground space-y-1">
-                      {area.recommendations.map((rec, index) => (
-                        <li key={index} className="flex items-center space-x-2">
-                          <CheckCircle className="h-3 w-3 text-primary" />
-                          <span>{rec}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </CardContent>
           </Card>
 
-          {/* Recent Spiritual Activity */}
+          {/* Daily Devotional Section */}
           <Card>
             <CardHeader>
-              <CardTitle>Recent Spiritual Activity</CardTitle>
-              <CardDescription>Your journey of faith and growth</CardDescription>
+              <CardTitle>Today's Scripture</CardTitle>
+              <CardDescription>Daily bread for spiritual nourishment</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentSpiritual.map((activity, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-3 border rounded-lg">
-                    <div className="p-2 bg-primary/10 rounded-full">
-                      <activity.icon className="h-4 w-4 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-medium">{activity.title}</h4>
-                      <p className="text-sm text-muted-foreground">{activity.description}</p>
-                      <div className="flex items-center justify-between mt-2">
-                        <span className="text-xs text-muted-foreground">{activity.time}</span>
-                        <Badge variant="secondary" className="text-xs">{activity.impact}</Badge>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                <blockquote className="border-l-4 border-primary pl-4 italic text-foreground">
+                  "For I know the plans I have for you, declares the LORD, plans for welfare and not for evil, to give you a future and a hope."
+                </blockquote>
+                <p className="text-sm text-muted-foreground">— Jeremiah 29:11 (ESV)</p>
+                
+                <div className="mt-6 space-y-2">
+                  <h5 className="font-semibold text-sm">Reflection Prompts:</h5>
+                  <ul className="text-sm text-muted-foreground space-y-1 list-disc list-inside">
+                    <li>How does knowing God has plans for you impact your daily decisions?</li>
+                    <li>What areas of your life need surrender to God's perfect plan?</li>
+                    <li>How can you demonstrate hope to others today?</li>
+                  </ul>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Sidebar */}
+        {/* Sidebar - Quick Actions & Resources */}
         <div className="space-y-6">
-          {/* Calling Discernment */}
+          {/* Prayer Journal */}
           <Card>
             <CardHeader>
-              <CardTitle>Your Kingdom Calling</CardTitle>
-              <CardDescription>Divine assignment and spiritual gifts</CardDescription>
+              <CardTitle>Prayer Journal</CardTitle>
+              <CardDescription>Record your conversations with God</CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold text-primary">{callingAssessment.primaryCalling}</h3>
-                <p className="text-sm text-muted-foreground">Primary Calling</p>
-                <div className="mt-2">
-                  <Progress value={callingAssessment.confidence} className="h-2" />
-                  <p className="text-xs text-muted-foreground mt-1">{callingAssessment.confidence}% confidence</p>
-                </div>
+            <CardContent className="space-y-3">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Current Streak</span>
+                <span className="font-semibold">{metrics?.prayer_streak || 0} days</span>
               </div>
-              
-              <div className="space-y-2">
-                <h4 className="font-medium">Spiritual Giftings</h4>
-                {callingAssessment.giftings.map((gift, index) => (
-                  <div key={index} className="flex items-center justify-between">
-                    <span className="text-sm">{gift.name}</span>
-                    <Badge variant="outline">{gift.strength}%</Badge>
-                  </div>
-                ))}
-              </div>
-              
-              <Button size="sm" className="w-full" disabled>
-                <Target className="h-4 w-4 mr-2" />
-                Complete Full Assessment (Coming Soon)
+              <Button className="w-full" asChild>
+                <Link to="/prayer-requests">
+                  <Heart className="mr-2 h-4 w-4" />
+                  Open Prayer Journal
+                </Link>
               </Button>
             </CardContent>
           </Card>
 
-          {/* Upcoming Spiritual Events */}
+          {/* Scripture Reading Plan */}
           <Card>
             <CardHeader>
-              <CardTitle>Upcoming Spiritual Events</CardTitle>
+              <CardTitle>Scripture Reading</CardTitle>
+              <CardDescription>Your Bible reading progress</CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {upcomingSpiritual.map((event, index) => (
-                  <div key={index} className="space-y-2 p-3 border rounded-lg">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h4 className="font-medium text-sm">{event.title}</h4>
-                        <p className="text-xs text-muted-foreground">{event.description}</p>
-                        <p className="text-xs text-muted-foreground mt-1">{event.time}</p>
-                      </div>
-                      <Badge variant="outline" className="text-xs">{event.type}</Badge>
-                    </div>
-                    <Button size="sm" className="w-full">
-                      {event.action}
-                    </Button>
-                  </div>
-                ))}
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Progress</span>
+                  <span className="font-semibold">{metrics?.scripture_progress || 0}%</span>
+                </div>
+                <Progress value={metrics?.scripture_progress || 0} className="h-2" />
               </div>
+              <Button variant="outline" className="w-full">
+                <BookOpen className="mr-2 h-4 w-4" />
+                Continue Reading
+              </Button>
             </CardContent>
           </Card>
 
-          {/* Prayer Statistics */}
+          {/* Ministry Opportunities */}
           <Card>
             <CardHeader>
-              <CardTitle>Prayer Life Statistics</CardTitle>
+              <CardTitle>Ministry Readiness</CardTitle>
+              <CardDescription>Opportunities to serve</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Readiness Level</span>
+                  <span className="font-semibold">{metrics?.ministry_readiness || 0}%</span>
+                </div>
+                <Progress value={metrics?.ministry_readiness || 0} className="h-2" />
+              </div>
+              <Button variant="outline" className="w-full">
+                <Target className="mr-2 h-4 w-4" />
+                View Opportunities
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Christ-Centered Message */}
+          <Card className="border-primary/20">
+            <CardHeader>
+              <CardTitle className="text-sm">✝️ Abiding in Christ</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Current Streak</span>
-                  <div className="flex items-center space-x-1">
-                    <Flame className="h-4 w-4 text-orange-500" />
-                    <span className="font-bold">21 days</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Total Prayer Time</span>
-                  <span className="font-bold">847 hours</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">Requests Answered</span>
-                  <span className="font-bold">234</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm">People Prayed For</span>
-                  <span className="font-bold">156</span>
-                </div>
-              </div>
-              <Link to="/prayer-requests">
-                <Button size="sm" className="w-full mt-4">
-                  <Heart className="h-4 w-4 mr-2" />
-                  Visit Prayer Center
-                </Button>
-              </Link>
+              <p className="text-xs text-muted-foreground italic">
+                "Remain in me, as I also remain in you. No branch can bear fruit by itself; it must remain in the vine." - John 15:4
+              </p>
+              <p className="text-xs text-muted-foreground mt-3">
+                Your spiritual formation is not about perfection, but about progressively becoming more like Christ through daily surrender and obedience.
+              </p>
             </CardContent>
           </Card>
         </div>
       </div>
+
+      {/* Weekly Challenge */}
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle>This Week's Challenge</CardTitle>
+          <CardDescription>Practical steps for spiritual growth</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="flex items-start gap-3 p-4 border rounded-lg">
+              <Calendar className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <h5 className="font-semibold text-sm">Daily Prayer</h5>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Spend 15 minutes each morning in prayer
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 border rounded-lg">
+              <BookOpen className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <h5 className="font-semibold text-sm">Scripture Meditation</h5>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Read and meditate on one Psalm each day
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3 p-4 border rounded-lg">
+              <Heart className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <h5 className="font-semibold text-sm">Acts of Service</h5>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Perform at least one act of kindness daily
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </PageTemplate>
   );
 }
