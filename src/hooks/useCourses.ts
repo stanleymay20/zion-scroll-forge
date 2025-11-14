@@ -13,8 +13,8 @@ export const useUserEnrollments = () => {
     queryKey: ['enrollments', user?.id, activeInstitution?.id],
     queryFn: async () => {
       console.info('✝️ Jesus Christ is Lord over this operation');
-      const { data, error } = await supabase
-        .from('enrollments')
+      const { data, error }: any = await supabase
+        .from('enrollments' as any)
         .select(`
           *,
           courses (
@@ -45,14 +45,14 @@ export const useEnrollInCourse = () => {
       console.info('✝️ Jesus Christ is Lord over this operation');
       
       // Get user's current institution
-      const { data: profile } = await supabase
-        .from('profiles')
+      const { data: profile }: any = await supabase
+        .from('profiles' as any)
         .select('current_institution_id')
         .eq('id', user!.id)
         .single();
       
       const { error } = await supabase
-        .from('enrollments')
+        .from('enrollments' as any)
         .insert({
           user_id: user!.id,
           course_id: courseId,
