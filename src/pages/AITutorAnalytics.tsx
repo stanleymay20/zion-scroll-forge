@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { TrendingUp, Users, MessageSquare, Star, Clock, Brain } from 'lucide-react';
+import { TrendingUp, Users, MessageSquare, Star, Clock, Brain, Loader2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useInstitution } from '@/contexts/InstitutionContext';
+import { PageTemplate } from '@/components/layout/PageTemplate';
 
 interface AnalyticsData {
   total_interactions: number;
@@ -27,24 +29,34 @@ interface InteractionTrend {
 }
 
 export default function AITutorAnalytics() {
+  const { activeInstitution } = useInstitution();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [commonQuestions, setCommonQuestions] = useState<CommonQuestion[]>([]);
   const [trends, setTrends] = useState<InteractionTrend[]>([]);
   const [interactionTypes, setInteractionTypes] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetchAnalytics();
-    fetchCommonQuestions();
-    fetchTrends();
-  }, []);
+    if (activeInstitution?.id) {
+      fetchAnalytics();
+      fetchCommonQuestions();
+      fetchTrends();
+    }
+  }, [activeInstitution?.id]);
 
   const fetchAnalytics = async () => {
-    const { data, error } = await supabase
-      .from('ai_tutor_interactions' as any)
-      .select('*');
+    setIsLoading(true);
+    let query = supabase.from('ai_tutor_interactions' as any).select('*');
+    
+    if (activeInstitution?.id) {
+      query = query.eq('institution_id', activeInstitution.id);
+    }
+    
+    const { data, error } = await query;
 
     if (error || !data) {
       console.error('Analytics error:', error);
+      setIsLoading(false);
       return;
     }
 
@@ -72,6 +84,8 @@ export default function AITutorAnalytics() {
       { name: 'Voice', value: voiceCount, color: '#10b981' },
       { name: 'Video', value: videoCount, color: '#f59e0b' }
     ]);
+    
+    setIsLoading(false);
   };
 
   const fetchCommonQuestions = async () => {
@@ -123,16 +137,35 @@ export default function AITutorAnalytics() {
   };
 
   const COLORS = ['#8b5cf6', '#10b981', '#f59e0b'];
+  
+  if (!activeInstitution) {
+    return (
+      <PageTemplate title="AI Tutor Analytics" description="">
+        <Card>
+          <CardContent className="pt-6">
+            <p>Please select an institution to view analytics.</p>
+          </CardContent>
+        </Card>
+      </PageTemplate>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <PageTemplate title="AI Tutor Analytics" description="Real-time insights into AI tutor performance">
+        <div className="flex justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </PageTemplate>
+    );
+  }
 
   return (
-    <div className="container mx-auto p-6 max-w-7xl">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">AI Tutor Analytics</h1>
-        <p className="text-muted-foreground">
-          Track student engagement, learning patterns, and tutor effectiveness
-        </p>
-      </div>
-
+    <PageTemplate 
+      title="AI Tutor Analytics" 
+      description="Real-time insights into AI tutor performance and student engagement"
+    >
+      <div className="space-y-6">
       {/* Key Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card>
@@ -273,6 +306,7 @@ export default function AITutorAnalytics() {
           </ScrollArea>
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </PageTemplate>
   );
 }
