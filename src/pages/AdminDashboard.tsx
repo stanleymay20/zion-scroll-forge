@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Users, Award, Coins, ShieldCheck, TrendingUp, Sparkles, Activity, Building2, GraduationCap } from 'lucide-react';
+import { Loader2, Users, Award, Coins, ShieldCheck, TrendingUp, Sparkles, Activity, Building2, GraduationCap, Server, Workflow, BarChart3 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 
@@ -280,6 +280,33 @@ export default function AdminDashboard() {
                 <div className="text-center">
                   <div className="font-semibold">Alumni Portal</div>
                   <div className="text-xs text-muted-foreground">View graduates</div>
+                </div>
+              </Button>
+            </Link>
+            <Link to="/system-status">
+              <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
+                <Server className="h-6 w-6 text-primary" />
+                <div className="text-center">
+                  <div className="font-semibold">System Status</div>
+                  <div className="text-xs text-muted-foreground">Monitor health metrics</div>
+                </div>
+              </Button>
+            </Link>
+            <Link to="/institution-onboarding">
+              <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
+                <Workflow className="h-6 w-6 text-primary" />
+                <div className="text-center">
+                  <div className="font-semibold">Institution Setup</div>
+                  <div className="text-xs text-muted-foreground">Onboarding wizard</div>
+                </div>
+              </Button>
+            </Link>
+            <Link to="/faculty-analytics">
+              <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
+                <BarChart3 className="h-6 w-6 text-primary" />
+                <div className="text-center">
+                  <div className="font-semibold">Faculty Analytics</div>
+                  <div className="text-xs text-muted-foreground">Performance insights</div>
                 </div>
               </Button>
             </Link>

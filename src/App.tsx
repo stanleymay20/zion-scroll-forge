@@ -75,6 +75,9 @@ import NotificationsPage from "./pages/NotificationsPage";
 import NotificationSettings from "./pages/NotificationSettings";
 import GenerationMonitor from "./pages/GenerationMonitor";
 import InstitutionsAdmin from "./pages/InstitutionsAdmin";
+import SystemStatus from "./pages/SystemStatus";
+import InstitutionOnboarding from "./pages/InstitutionOnboarding";
+import FacultyAnalytics from "./pages/FacultyAnalytics";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -187,6 +190,9 @@ const App = () => (
             <Route path="generation-monitor" element={<GenerationMonitor />} />
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="notifications/settings" element={<NotificationSettings />} />
+            <Route path="system-status" element={<SystemStatus />} />
+            <Route path="institution-onboarding" element={<InstitutionOnboarding />} />
+            <Route path="faculty-analytics" element={<FacultyAnalytics />} />
             
             {/* All other routes use coming soon pages */}
             <Route path="assessments" element={<Assessments />} />
