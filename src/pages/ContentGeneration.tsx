@@ -104,13 +104,13 @@ const ContentGeneration = () => {
   };
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="max-w-4xl mx-auto space-y-6">
+    <div className="w-full max-w-4xl mx-auto py-6 sm:py-8 px-3 sm:px-4">
+      <div className="space-y-4 md:space-y-6">
         <div className="text-center space-y-2">
-          <h1 className="text-4xl font-bold text-foreground">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground break-words">
             ScrollUniversity v3.0 Content Generation
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground break-words">
             Automated pipeline for generating 12 Supreme Scroll Faculties with complete course structures
           </p>
         </div>

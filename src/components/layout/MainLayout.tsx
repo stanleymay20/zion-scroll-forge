@@ -13,8 +13,8 @@ export const MainLayout = () => {
       <MobileNavigation />
       
       {/* Main Content */}
-      <div className="lg:ml-64 pb-16 lg:pb-0">
-        <div className="container mx-auto px-4 py-6">
+      <div className="lg:ml-64 pb-20 lg:pb-6 pt-16 lg:pt-0">
+        <div className="w-full max-w-full px-3 sm:px-4 md:px-6 py-4 md:py-6 mx-auto">
           <Breadcrumbs />
           <Outlet />
         </div>
