@@ -46,11 +46,11 @@ const FacultyGallery = () => {
               </Badge>
               <Badge variant="outline" className="text-base px-4 py-2">
                 <BookOpen className="h-4 w-4 mr-2" />
-                {faculties.reduce((acc, f) => acc + (f.courses?.[0]?.count || 0), 0)} Courses
+                {faculties.reduce((acc, f) => acc + ((f as any).courseCount || 0), 0)} Courses
               </Badge>
               <Badge variant="outline" className="text-base px-4 py-2">
                 <User className="h-4 w-4 mr-2" />
-                {faculties.filter(f => f.ai_tutors?.length > 0).length} AI Tutors
+                {faculties.filter(f => (f as any).ai_tutors?.length > 0).length} AI Tutors
               </Badge>
             </div>
           )}
@@ -73,8 +73,8 @@ const FacultyGallery = () => {
         ) : faculties && faculties.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {faculties.map((faculty) => {
-              const courseCount = faculty.courses?.[0]?.count || 0;
-              const aiTutor = faculty.ai_tutors?.[0];
+              const courseCount = (faculty as any).courseCount || 0;
+              const aiTutor = (faculty as any).ai_tutors?.[0];
 
               return (
                 <Card
