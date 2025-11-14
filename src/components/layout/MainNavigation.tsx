@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import scrollLogo from "@/assets/scroll-university-logo.png";
+import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 import { NotificationDropdown } from "./NotificationDropdown";
 import { InstitutionSwitcher } from "@/components/InstitutionSwitcher";
 
