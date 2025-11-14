@@ -41,25 +41,25 @@ serve(async (req) => {
     const learningByCourse = new Map();
     learningData?.forEach(e => {
       const key = `${e.course_id}-${e.user_id}`;
-      if (!learningByC`ourse.has(key)) {
-        learningByourse.set(key, {
+      if (!learningByCourse.has(key)) {
+        learningByCourse.set(key, {
           course_id: e.course_id,
           user_id: e.user_id,
           enrollments_count: 0,
           completed_modules_count: 0,
         });
       }
-      learningByourse.get(key).enrollments_count++;
+      learningByCourse.get(key).enrollments_count++;
     });
 
     modulesData?.forEach(m => {
       const key = `${m.course_id}-${m.user_id}`;
-      if (learningByourse.has(key)) {
-        learningByourse.get(key).completed_modules_count++;
+      if (learningByCourse.has(key)) {
+        learningByCourse.get(key).completed_modules_count++;
       }
     });
 
-    for (const stats of learningByourse.values()) {
+    for (const stats of learningByCourse.values()) {
       await supabase
         .from('learning_analytics_daily')
         .upsert({
