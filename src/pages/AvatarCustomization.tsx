@@ -10,19 +10,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { User, Upload, Sparkles, Save, RefreshCw } from 'lucide-react';
 import { ReadyPlayerMeAvatar } from '@/components/ReadyPlayerMeAvatar';
 
-const PRESET_AVATARS = [
-  'https://models.readyplayer.me/6501c4fee8d3f50f2c1d1e84.glb',
-  'https://models.readyplayer.me/65a7f5e8e8d3f50f2c1d1234.glb',
-  'https://models.readyplayer.me/65a7f5e8e8d3f50f2c1d5678.glb',
-  'https://models.readyplayer.me/65a7f5e8e8d3f50f2c1d9abc.glb',
-];
+const PRESET_AVATARS: string[] = [];
 
 export default function AvatarCustomization() {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState(PRESET_AVATARS[0]);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const openReadyPlayerMe = () => {
     setIsGenerating(true);
