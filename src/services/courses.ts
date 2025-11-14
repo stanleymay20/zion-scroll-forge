@@ -152,6 +152,13 @@ export const enrollInCourse = underChrist(async (userId: string, courseId: strin
     throw new Error('Already enrolled in this course');
   }
 
+  // Get user's current institution
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('current_institution_id')
+    .eq('id', userId)
+    .single();
+
   // Create enrollment
   const { error } = await supabase
     .from('enrollments')
@@ -159,6 +166,7 @@ export const enrollInCourse = underChrist(async (userId: string, courseId: strin
       user_id: userId, 
       course_id: courseId, 
       progress: 0,
+      institution_id: profile?.current_institution_id,
       enrolled_at: new Date().toISOString()
     });
 

@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Loader2, Sparkles, BookOpen, FileText, CheckCircle2 } from "lucide-react";
 import { useFaculties } from "@/hooks/useFaculties";
 import { useGenerateContent, checkGenerationProgress } from "@/hooks/useContentGeneration";
+import { useInstitution } from "@/contexts/InstitutionContext";
 import { useQuery } from "@tanstack/react-query";
 import { checkUserRole } from "@/lib/scrollGovernance";
 import { toast } from "@/hooks/use-toast";
@@ -20,16 +21,26 @@ export default function ContentGenerationAdmin() {
   const [courseCount, setCourseCount] = useState<number>(5);
   const [modulesPerCourse, setModulesPerCourse] = useState<number>(8);
 
+  const { activeInstitution } = useInstitution();
   const { data: faculties } = useFaculties();
   const generateMutation = useGenerateContent();
 
   const { data: progress, refetch: refetchProgress } = useQuery({
-    queryKey: ["generation-progress"],
+    queryKey: ["generation-progress", activeInstitution?.id],
     queryFn: checkGenerationProgress,
     refetchInterval: 5000 // Poll every 5 seconds when generating
   });
 
   const handleGenerate = async () => {
+    if (!activeInstitution) {
+      toast({
+        title: "No institution selected",
+        description: "Please select an institution first",
+        variant: "destructive"
+      });
+      return;
+    }
+
     const isAdmin = await checkUserRole("admin");
     if (!isAdmin) {
       toast({
@@ -41,6 +52,7 @@ export default function ContentGenerationAdmin() {
     }
 
     const params: any = {
+      institution_id: activeInstitution.id,
       course_count: courseCount,
       modules_per_course: modulesPerCourse
     };
