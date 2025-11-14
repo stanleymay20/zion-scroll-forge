@@ -6,6 +6,18 @@ verify_jwt = false
 [functions.ai-tutor-chat]
 verify_jwt = false
 
+[functions.ai-tutor-voice]
+verify_jwt = false
+
+[functions.prayer-voice-to-text]
+verify_jwt = false
+
+[functions.daily-analytics-rollup]
+verify_jwt = false
+
+[functions.student-lifecycle]
+verify_jwt = false
+
 [functions.generate-content]
 verify_jwt = false
 
