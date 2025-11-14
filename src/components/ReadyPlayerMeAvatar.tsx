@@ -26,12 +26,26 @@ function AvatarModel({
   const analyserRef = useRef<AnalyserNode | null>(null);
   const dataArrayRef = useRef<Uint8Array<ArrayBuffer> | null>(null);
 
-  // Default Ready Player Me avatar (you can customize this)
-  const defaultAvatar = 'https://models.readyplayer.me/6501c4fee8d3f50f2c1d1e84.glb';
-  const modelUrl = avatarUrl || defaultAvatar;
+  // Safe model loading control
+  const [canLoadModel, setCanLoadModel] = useState(false);
 
-  // Load the GLB model
-  const { scene } = useGLTF(modelUrl);
+  // Validate URL before attempting to load GLB to avoid runtime crashes
+  useEffect(() => {
+    const url = avatarUrl?.trim();
+    if (!url || !url.endsWith('.glb')) {
+      setCanLoadModel(false);
+      return;
+    }
+    let cancelled = false;
+    fetch(url, { method: 'HEAD' })
+      .then((res) => { if (!cancelled) setCanLoadModel(res.ok); })
+      .catch(() => { if (!cancelled) setCanLoadModel(false); });
+    return () => { cancelled = true; };
+  }, [avatarUrl]);
+
+  // Load the GLB model only when validated
+  const gltf = canLoadModel ? useGLTF(avatarUrl as string) as any : null;
+  const scene = gltf?.scene;
 
   // Setup audio analyzer for lip-sync
   useEffect(() => {
@@ -126,6 +140,18 @@ function AvatarModel({
     groupRef.current.position.y = Math.sin(time * 0.5) * 0.02;
   });
 
+  if (!scene) {
+    // Fallback placeholder when model cannot be loaded
+    return (
+      <group ref={groupRef}>
+        <mesh position={[0, -0.5, 0]} castShadow receiveShadow>
+          <sphereGeometry args={[0.8, 32, 32]} />
+          <meshStandardMaterial color={new THREE.Color('#7c3aed')} roughness={0.5} metalness={0.2} />
+        </mesh>
+      </group>
+    );
+  }
+
   return (
     <group ref={groupRef}>
       <primitive 
@@ -173,4 +199,4 @@ export const ReadyPlayerMeAvatar = ({
 };
 
 // Preload the default avatar
-useGLTF.preload('https://models.readyplayer.me/6501c4fee8d3f50f2c1d1e84.glb');
+// (preload removed to avoid fetching invalid default models)

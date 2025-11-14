@@ -59,36 +59,30 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
         .eq('id', user.id)
         .single();
 
-      // Get all memberships with institution details
-      // Note: Using 'as any' until Supabase types regenerate with institution_members table
-      const { data: membershipsData, error: membershipsError } = await supabase
+      // Get all memberships (no JOIN to avoid RLS recursion)
+      const { data: rawMemberships, error: membershipsError } = await supabase
         .from('institution_members' as any)
-        .select(`
-          id,
-          institution_id,
-          role,
-          status,
-          institution:institutions(
-            id,
-            name,
-            slug,
-            short_name,
-            description,
-            logo_url,
-            primary_color,
-            accent_color,
-            plan,
-            is_active
-          )
-        `)
+        .select('id, institution_id, role, status')
         .eq('user_id', user.id)
         .eq('status', 'active');
 
       if (membershipsError) throw membershipsError;
 
-      const formattedMemberships = (membershipsData || []).map((m: any) => ({
+      // Fetch institution details separately to avoid policy recursion
+      const institutionIds = (rawMemberships || []).map((m: any) => m.institution_id);
+      let institutionsById: Record<string, Institution> = {};
+      if (institutionIds.length > 0) {
+        const { data: institutionsData, error: instError } = await supabase
+          .from('institutions' as any)
+          .select('id, name, slug, short_name, description, logo_url, primary_color, accent_color, plan, is_active')
+          .in('id', institutionIds);
+        if (instError) throw instError;
+        institutionsById = Object.fromEntries((institutionsData || []).map((i: any) => [i.id, i]));
+      }
+
+      const formattedMemberships = (rawMemberships || []).map((m: any) => ({
         ...m,
-        institution: Array.isArray(m.institution) ? m.institution[0] : m.institution
+        institution: institutionsById[m.institution_id] as Institution
       }));
 
       setMemberships(formattedMemberships);
