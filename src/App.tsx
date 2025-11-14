@@ -23,6 +23,7 @@ import AITutors from "./pages/AITutors";
 import AITutorChat from "./pages/AITutorChat";
 import AITutorOfficeHours from "./pages/AITutorOfficeHours";
 import AITutorAnalytics from "./pages/AITutorAnalytics";
+import TutorProfile from "./pages/TutorProfile";
 import AvatarCustomization from "./pages/AvatarCustomization";
 import ContentGeneration from "./pages/ContentGeneration";
 import Community from "./pages/Community";
@@ -138,6 +139,7 @@ const App = () => (
               <Route path="quiz/:quizId" element={<QuizPage />} />
               <Route path="ai-tutors" element={<AITutors />} />
               <Route path="ai-tutors/:tutorId" element={<AITutorChat />} />
+              <Route path="ai-tutors/:tutorId/profile" element={<TutorProfile />} />
               <Route path="ai-tutors/office-hours" element={<AITutorOfficeHours />} />
               <Route path="ai-tutors/analytics" element={<AITutorAnalytics />} />
               <Route path="avatar-customization" element={<AvatarCustomization />} />
