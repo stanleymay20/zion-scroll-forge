@@ -52,6 +52,7 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
     try {
       // Get user's profile with current institution
+      // Note: Using 'as any' until Supabase types regenerate with current_institution_id column
       const { data: profile } = await supabase
         .from('profiles' as any)
         .select('current_institution_id')
@@ -59,6 +60,7 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
         .single();
 
       // Get all memberships with institution details
+      // Note: Using 'as any' until Supabase types regenerate with institution_members table
       const { data: membershipsData, error: membershipsError } = await supabase
         .from('institution_members' as any)
         .select(`
@@ -114,7 +116,7 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
         // Update profile with first institution
         await supabase
           .from('profiles' as any)
-          .update({ current_institution_id: active.id })
+          .update({ current_institution_id: active.id } as any)
           .eq('id', user.id);
       }
 
@@ -144,7 +146,7 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
       // Update profile
       const { error } = await supabase
         .from('profiles' as any)
-        .update({ current_institution_id: institutionId })
+        .update({ current_institution_id: institutionId } as any)
         .eq('id', user.id);
 
       if (error) throw error;
