@@ -65,20 +65,22 @@ export default function VirtualLabsPage() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <CardTitle className="flex items-center gap-2">
-                        <Code className="h-5 w-5 text-[hsl(var(--scroll-gold))]" />
-                        {lab.title}
-                      </CardTitle>
-                      <CardDescription className="mt-2">
+                      <div className="flex items-center gap-2 mb-2">
+                        <CardTitle className="flex items-center gap-2">
+                          <Code className="h-5 w-5 text-[hsl(var(--scroll-gold))]" />
+                          {lab.title}
+                        </CardTitle>
                         <Badge variant="secondary" className="capitalize">
                           {lab.difficulty}
                         </Badge>
+                      </div>
+                      <CardDescription>
+                        {lab.description}
                       </CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground">{lab.description}</p>
                   {lab.technology_stack && lab.technology_stack.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {lab.technology_stack.map((tech, i) => (
