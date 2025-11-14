@@ -11,6 +11,20 @@ export interface ContentGenerationParams {
   modules_per_course?: number;
 }
 
+export interface GenerationProgress {
+  id: string;
+  institution_id?: string;
+  progress: number;
+  current_stage: string;
+  faculties_created: number;
+  courses_created: number;
+  modules_created: number;
+  tutors_created: number;
+  estimated_time_remaining?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export async function generateContent(params: ContentGenerationParams = {}) {
   const { data, error } = await supabase.functions.invoke("generate-content", {
     body: params
@@ -20,16 +34,23 @@ export async function generateContent(params: ContentGenerationParams = {}) {
   return data;
 }
 
-export async function checkGenerationProgress() {
-  const { data, error } = await supabase
-    .from("generation_progress")
+export async function checkGenerationProgress(institutionId?: string): Promise<GenerationProgress | null> {
+  const query = supabase
+    .from("generation_progress" as any)
     .select("*")
-    .order("created_at", { ascending: false })
+    .order("created_at", { ascending: false });
+
+  // Filter by institution if provided
+  const finalQuery = institutionId 
+    ? query.eq("institution_id", institutionId)
+    : query;
+
+  const { data, error } = await finalQuery
     .limit(1)
     .maybeSingle();
   
   if (error) throw error;
-  return data;
+  return data as unknown as GenerationProgress | null;
 }
 
 export const useGenerateContent = () => {
