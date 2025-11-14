@@ -153,15 +153,15 @@ export const enrollInCourse = underChrist(async (userId: string, courseId: strin
   }
 
   // Get user's current institution
-  const { data: profile } = await supabase
-    .from('profiles')
+  const { data: profile }: any = await supabase
+    .from('profiles' as any)
     .select('current_institution_id')
     .eq('id', userId)
     .single();
 
   // Create enrollment
   const { error } = await supabase
-    .from('enrollments')
+    .from('enrollments' as any)
     .insert({ 
       user_id: userId, 
       course_id: courseId, 

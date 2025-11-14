@@ -53,14 +53,14 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
     try {
       // Get user's profile with current institution
       const { data: profile } = await supabase
-        .from('profiles')
+        .from('profiles' as any)
         .select('current_institution_id')
         .eq('id', user.id)
         .single();
 
       // Get all memberships with institution details
       const { data: membershipsData, error: membershipsError } = await supabase
-        .from('institution_members')
+        .from('institution_members' as any)
         .select(`
           id,
           institution_id,
@@ -95,9 +95,9 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
       let active: Institution | null = null;
       let role: string | null = null;
 
-      if (profile?.current_institution_id) {
+      if ((profile as any)?.current_institution_id) {
         const membership = formattedMemberships.find(
-          (m: InstitutionMembership) => m.institution_id === profile.current_institution_id
+          (m: InstitutionMembership) => m.institution_id === (profile as any)?.current_institution_id
         );
         if (membership) {
           active = membership.institution;
@@ -113,7 +113,7 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
         // Update profile with first institution
         await supabase
-          .from('profiles')
+          .from('profiles' as any)
           .update({ current_institution_id: active.id })
           .eq('id', user.id);
       }
@@ -143,7 +143,7 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
       // Update profile
       const { error } = await supabase
-        .from('profiles')
+        .from('profiles' as any)
         .update({ current_institution_id: institutionId })
         .eq('id', user.id);
 

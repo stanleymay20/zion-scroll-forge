@@ -7,14 +7,53 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// ✝️ Multi-tenant institution resolver
+async function resolveInstitutionId(req: Request, supabase: any, bodyData?: any): Promise<string> {
+  try {
+    if (bodyData?.institution_id) {
+      return bodyData.institution_id;
+    }
+
+    try {
+      const authHeader = req.headers.get('authorization');
+      if (authHeader) {
+        const { data: { user } } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''));
+        if (user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('current_institution_id')
+            .eq('id', user.id)
+            .single();
+          if (profile?.current_institution_id) {
+            return profile.current_institution_id;
+          }
+        }
+      }
+    } catch {}
+
+    const { data } = await supabase.from('institutions').select('id').eq('slug', 'scrolluniversity').single();
+    return data?.id;
+  } catch {
+    throw new Error('Failed to resolve institution');
+  }
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { messages, tutorId, moduleId, moduleContent, userId, withVoice } = await req.json();
+    const bodyData = await req.json();
+    const { messages, tutorId, moduleId, moduleContent, userId, withVoice } = bodyData;
     const startTime = Date.now();
+
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    // Resolve institution_id
+    const institutionId = await resolveInstitutionId(req, supabase, bodyData);
     
     const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
     if (!LOVABLE_API_KEY) {
@@ -78,75 +117,30 @@ TONE: Professional yet warm, scholarly yet accessible, wise yet humble.`;
     const responseTime = Date.now() - startTime;
 
     // Track interaction analytics
-    if (userId) {
-      const supabase = createClient(
-        Deno.env.get('SUPABASE_URL') ?? '',
-        Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-      );
-
-      const userMessage = messages[messages.length - 1];
-      await supabase.from('ai_tutor_interactions').insert({
+    if (userId && moduleId) {
+      await supabase.from('ai_conversations').insert({
+        institution_id: institutionId,
         user_id: userId,
-        tutor_id: tutorId,
-        module_id: moduleId,
-        question: userMessage.content,
-        response: message,
-        response_time: responseTime,
-        interaction_type: withVoice ? 'voice' : 'chat'
-      });
-
-      // Track common questions
-      if (moduleId && userMessage.content) {
-        await supabase.rpc('track_common_question', {
-          p_module_id: moduleId,
-          p_question: userMessage.content
-        });
-      }
-    }
-
-    // Generate voice with ElevenLabs if requested
-    let audioContent = null;
-    if (withVoice) {
-      const ELEVENLABS_API_KEY = Deno.env.get('ELEVENLABS_API_KEY');
-      if (ELEVENLABS_API_KEY) {
-        try {
-          const voiceResponse = await fetch('https://api.elevenlabs.io/v1/text-to-speech/9BWtsMINqrJLrRacOk9x', {
-            method: 'POST',
-            headers: {
-              'xi-api-key': ELEVENLABS_API_KEY,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              text: message,
-              model_id: 'eleven_multilingual_v2',
-              voice_settings: {
-                stability: 0.5,
-                similarity_boost: 0.75,
-                style: 0.5,
-                use_speaker_boost: true
-              }
-            }),
-          });
-
-          if (voiceResponse.ok) {
-            const audioBuffer = await voiceResponse.arrayBuffer();
-            audioContent = btoa(String.fromCharCode(...new Uint8Array(audioBuffer)));
-          }
-        } catch (voiceError) {
-          console.error('Voice synthesis error:', voiceError);
+        faculty: tutorId || 'general',
+        subject: moduleId,
+        messages: messages.concat([{ role: 'assistant', content: message }]),
+        learning_insights: {
+          responseTime,
+          moduleId,
+          tutorId
         }
-      }
+      });
     }
 
     return new Response(
-      JSON.stringify({ message, audioContent }),
+      JSON.stringify({ message, responseTime }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 
-  } catch (error) {
-    console.error('AI Tutor Chat Error:', error);
+  } catch (error: any) {
+    console.error('AI Tutor error:', error);
     return new Response(
-      JSON.stringify({ error: error.message || 'Failed to process chat request' }),
+      JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   }
