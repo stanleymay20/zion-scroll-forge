@@ -11,8 +11,9 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Users, Award, Coins, ShieldCheck, TrendingUp } from 'lucide-react';
+import { Loader2, Users, Award, Coins, ShieldCheck, TrendingUp, Sparkles, Activity, Building2, GraduationCap } from 'lucide-react';
 import { toast } from 'sonner';
+import { Link } from 'react-router-dom';
 
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -237,6 +238,54 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Quick Actions */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Quick Actions</CardTitle>
+          <CardDescription>Navigate to key administrative functions</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Link to="/admin/content-generation">
+              <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
+                <Sparkles className="h-6 w-6 text-primary" />
+                <div className="text-center">
+                  <div className="font-semibold">Content Generation</div>
+                  <div className="text-xs text-muted-foreground">Generate courses & modules</div>
+                </div>
+              </Button>
+            </Link>
+            <Link to="/generation-monitor">
+              <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
+                <Activity className="h-6 w-6 text-primary" />
+                <div className="text-center">
+                  <div className="font-semibold">Generation Monitor</div>
+                  <div className="text-xs text-muted-foreground">Track generation progress</div>
+                </div>
+              </Button>
+            </Link>
+            <Link to="/admin/institutions">
+              <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
+                <Building2 className="h-6 w-6 text-primary" />
+                <div className="text-center">
+                  <div className="font-semibold">Institutions</div>
+                  <div className="text-xs text-muted-foreground">Manage institutions</div>
+                </div>
+              </Button>
+            </Link>
+            <Link to="/alumni">
+              <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
+                <GraduationCap className="h-6 w-6 text-primary" />
+                <div className="text-center">
+                  <div className="font-semibold">Alumni Portal</div>
+                  <div className="text-xs text-muted-foreground">View graduates</div>
+                </div>
+              </Button>
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
 
       <Tabs defaultValue="awards" className="space-y-6">
         <TabsList>
