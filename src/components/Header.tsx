@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import scrollLogo from "@/assets/scroll-university-logo.png";
+import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 
 export const Header = () => {
   return (
