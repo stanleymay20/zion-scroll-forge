@@ -186,65 +186,114 @@ async function runGeneration(supabase: any, apiKey: string, progressId: string, 
 }
 
 async function genCourse(supabase: any, apiKey: string, faculty: any, institutionId: string) {
-  const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'google/gemini-2.5-flash',
-      messages: [{
-        role: 'user',
-        content: `Create a Christ-centered course for ${faculty.name}. Return JSON: {title, description, level, duration, learning_objectives}`
-      }],
-      temperature: 0.8,
-    }),
-  });
+  try {
+    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash',
+        messages: [{
+          role: 'user',
+          content: `Create a Christ-centered course for ${faculty.name}. Return ONLY valid JSON with no markdown formatting: {"title": "course title", "description": "course description", "level": "Beginner|Intermediate|Advanced", "duration": "X weeks", "learning_objectives": ["objective1", "objective2"]}`
+        }],
+        temperature: 0.8,
+      }),
+    });
 
-  const data = await aiResponse.json();
-  const courseData = JSON.parse(data.choices[0].message.content);
+    if (!aiResponse.ok) {
+      throw new Error(`AI API failed: ${aiResponse.status} ${aiResponse.statusText}`);
+    }
 
-  const { data: course } = await supabase.from('courses').insert({
-    institution_id: institutionId,
-    title: courseData.title,
-    description: courseData.description,
-    faculty: faculty.name,
-    faculty_id: faculty.id,
-    level: courseData.level || 'Beginner',
-    duration: courseData.duration || '8 weeks',
-    tags: courseData.learning_objectives || [],
-    xr_enabled: false
-  }).select().single();
+    const data = await aiResponse.json();
+    console.log('AI Response for course:', JSON.stringify(data));
+    
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      throw new Error('Invalid AI response structure');
+    }
 
-  return course;
+    let content = data.choices[0].message.content.trim();
+    // Remove markdown code blocks if present
+    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    
+    const courseData = JSON.parse(content);
+
+    const { data: course, error: courseError } = await supabase.from('courses').insert({
+      institution_id: institutionId,
+      title: courseData.title,
+      description: courseData.description,
+      faculty: faculty.name,
+      faculty_id: faculty.id,
+      level: courseData.level || 'Beginner',
+      duration: courseData.duration || '8 weeks',
+      tags: courseData.learning_objectives || [],
+      xr_enabled: false
+    }).select().single();
+
+    if (courseError) {
+      console.error('Error inserting course:', courseError);
+      throw courseError;
+    }
+
+    console.log('✅ Created course:', course.title);
+    return course;
+  } catch (error: any) {
+    console.error('Error in genCourse:', error.message);
+    throw error;
+  }
 }
 
 async function genModule(supabase: any, apiKey: string, course: any, order: number, institutionId: string) {
-  const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'google/gemini-2.5-pro',
-      messages: [{
-        role: 'user',
-        content: `Create module ${order} for course "${course.title}". 900-1200 words markdown content with scripture reference and ScrollCoin reward markers. Return JSON: {title, content_md}`
-      }],
-      temperature: 0.7,
-    }),
-  });
+  try {
+    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-pro',
+        messages: [{
+          role: 'user',
+          content: `Create module ${order} for course "${course.title}". 900-1200 words markdown content with scripture reference and ScrollCoin reward markers. Return ONLY valid JSON with no markdown formatting: {"title": "module title", "content_md": "# Module Title\\n\\n... full markdown content here ..."}`
+        }],
+        temperature: 0.7,
+      }),
+    });
 
-  const data = await aiResponse.json();
-  const moduleData = JSON.parse(data.choices[0].message.content);
+    if (!aiResponse.ok) {
+      throw new Error(`AI API failed: ${aiResponse.status} ${aiResponse.statusText}`);
+    }
 
-  const { data: module } = await supabase.from('course_modules').insert({
-    institution_id: institutionId,
-    course_id: course.id,
-    title: moduleData.title,
-    content_md: moduleData.content_md,
-    order_index: order,
-    duration_minutes: 45,
-    rewards_amount: 10
-  }).select().single();
+    const data = await aiResponse.json();
+    
+    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
+      throw new Error('Invalid AI response structure');
+    }
 
-  return module;
+    let content = data.choices[0].message.content.trim();
+    // Remove markdown code blocks if present
+    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    
+    const moduleData = JSON.parse(content);
+
+    const { data: module, error: moduleError } = await supabase.from('course_modules').insert({
+      institution_id: institutionId,
+      course_id: course.id,
+      title: moduleData.title,
+      content_md: moduleData.content_md,
+      order_index: order,
+      duration_minutes: 45,
+      rewards_amount: 10
+    }).select().single();
+
+    if (moduleError) {
+      console.error('Error inserting module:', moduleError);
+      throw moduleError;
+    }
+
+    console.log('✅ Created module:', module.title);
+    return module;
+  } catch (error: any) {
+    console.error('Error in genModule:', error.message);
+    throw error;
+  }
 }
 
 async function genQuiz(supabase: any, module: any, institutionId: string) {
