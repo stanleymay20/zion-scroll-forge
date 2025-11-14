@@ -150,7 +150,7 @@ const FacultyDetail = () => {
     );
   }
 
-  const aiTutor = faculty.ai_tutors?.[0];
+  const aiTutor = (faculty as any).ai_tutors?.[0];
   const totalModules = courses?.reduce((sum, course) => sum + (course.course_modules?.length || 0), 0) || 0;
 
   return (

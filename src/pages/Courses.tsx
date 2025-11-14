@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { PageTemplate } from "@/components/layout/PageTemplate";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,11 +16,22 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useEnrollInCourse, useUserEnrollments } from "@/hooks/useCourses";
+import { useFaculties } from "@/hooks/useFaculties";
 
 export default function Courses() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFaculty, setSelectedFaculty] = useState<string>("all");
   const [selectedLevel, setSelectedLevel] = useState<string>("all");
+  
+  const { data: faculties } = useFaculties();
+
+  useEffect(() => {
+    const faculty = searchParams.get("faculty");
+    if (faculty) {
+      setSelectedFaculty(faculty);
+    }
+  }, [searchParams]);
 
   const { data: courses, isLoading } = useQuery({
     queryKey: ['courses', searchQuery, selectedFaculty, selectedLevel],
@@ -93,10 +105,11 @@ export default function Courses() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">All Faculties</SelectItem>
-                    <SelectItem value="Prophetic Intelligence">Prophetic Intelligence</SelectItem>
-                    <SelectItem value="Kingdom Economics">Kingdom Economics</SelectItem>
-                    <SelectItem value="Scroll Medicine">Scroll Medicine</SelectItem>
-                    <SelectItem value="Scroll Law">Scroll Law</SelectItem>
+                    {faculties?.map((faculty) => (
+                      <SelectItem key={faculty.id} value={faculty.name}>
+                        {faculty.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
