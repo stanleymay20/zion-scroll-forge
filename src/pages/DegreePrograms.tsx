@@ -75,21 +75,23 @@ export default function DegreePrograms() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                   <div className="flex-1">
-                      <CardTitle className="flex items-center gap-2">
-                        <GraduationCap className="h-5 w-5 text-[hsl(var(--scroll-gold))]" />
-                        {(program as any).title}
-                      </CardTitle>
-                      <CardDescription className="mt-2">
-                        <Badge variant="secondary" className="mr-2">
+                      <div className="flex items-center gap-2 mb-2">
+                        <CardTitle className="flex items-center gap-2">
+                          <GraduationCap className="h-5 w-5 text-[hsl(var(--scroll-gold))]" />
+                          {(program as any).title}
+                        </CardTitle>
+                        <Badge variant="secondary">
                           {(program as any).faculty}
                         </Badge>
                         <Badge variant="outline">{(program as any).level}</Badge>
+                      </div>
+                      <CardDescription>
+                        {(program as any).description}
                       </CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-sm text-muted-foreground">{(program as any).description}</p>
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-2 text-muted-foreground">
