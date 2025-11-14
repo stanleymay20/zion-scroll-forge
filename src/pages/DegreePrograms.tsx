@@ -38,7 +38,7 @@ export default function DegreePrograms() {
       title="Degree Programs"
       description="Choose your path of Christ-centered higher education"
     >
-      <div className="space-y-6">
+      <div className="space-y-4 md:space-y-6">
         <div className="flex gap-2 flex-wrap">
           <Button
             variant={selectedFaculty === null ? "default" : "outline"}
@@ -65,7 +65,7 @@ export default function DegreePrograms() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2">
+          <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
             {filteredPrograms.map((program) => (
               <Card
                 key={program.id}

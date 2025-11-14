@@ -39,10 +39,10 @@ export const InstitutionOnboarding = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="w-full max-w-4xl mx-auto p-3 sm:p-4 md:p-6 space-y-4 md:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Institution Onboarding</h1>
-        <p className="text-muted-foreground mt-2">
+        <h1 className="text-2xl sm:text-3xl font-bold break-words">Institution Onboarding</h1>
+        <p className="text-sm sm:text-base text-muted-foreground mt-2 break-words">
           Complete the setup process for your new institution
         </p>
       </div>

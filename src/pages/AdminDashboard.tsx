@@ -181,38 +181,38 @@ export default function AdminDashboard() {
       description="Manage ScrollUniversity"
     >
       {/* Overview Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
         <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+          <CardHeader className="pb-2 md:pb-3">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
               Total Users
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-primary" />
-              <span className="text-2xl font-bold">{analytics?.total_users || 0}</span>
+              <Users className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+              <span className="text-lg sm:text-2xl font-bold">{analytics?.total_users || 0}</span>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+          <CardHeader className="pb-2 md:pb-3">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
               Total Enrollments
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2">
-              <TrendingUp className="h-5 w-5 text-primary" />
-              <span className="text-2xl font-bold">{analytics?.total_enrollments || 0}</span>
+              <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0" />
+              <span className="text-lg sm:text-2xl font-bold">{analytics?.total_enrollments || 0}</span>
             </div>
           </CardContent>
         </Card>
 
         <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+          <CardHeader className="pb-2 md:pb-3">
+            <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground">
               ScrollCoins Distributed
             </CardTitle>
           </CardHeader>

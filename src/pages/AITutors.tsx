@@ -48,48 +48,48 @@ export default function AITutors() {
       }
     >
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 md:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-2xl font-bold">24/7</p>
-                <p className="text-sm text-muted-foreground">Available</p>
+                <p className="text-lg sm:text-2xl font-bold">24/7</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Available</p>
               </div>
-              <Brain className="h-8 w-8 text-primary" />
+              <Brain className="h-6 w-6 sm:h-8 sm:w-8 text-primary flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 md:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-2xl font-bold">&lt; 1s</p>
-                <p className="text-sm text-muted-foreground">Response Time</p>
+                <p className="text-lg sm:text-2xl font-bold">&lt; 1s</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Response Time</p>
               </div>
-              <Zap className="h-8 w-8 text-primary" />
+              <Zap className="h-6 w-6 sm:h-8 sm:w-8 text-primary flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 md:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-2xl font-bold">99.7%</p>
-                <p className="text-sm text-muted-foreground">Accuracy Rate</p>
+                <p className="text-lg sm:text-2xl font-bold">99.7%</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Accuracy Rate</p>
               </div>
-              <Star className="h-8 w-8 text-primary" />
+              <Star className="h-6 w-6 sm:h-8 sm:w-8 text-primary flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
         <Card>
-          <CardContent className="pt-6">
+          <CardContent className="pt-4 md:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-2xl font-bold">50K+</p>
-                <p className="text-sm text-muted-foreground">Active Sessions</p>
+                <p className="text-lg sm:text-2xl font-bold">50K+</p>
+                <p className="text-xs sm:text-sm text-muted-foreground">Active Sessions</p>
               </div>
-              <Users className="h-8 w-8 text-primary" />
+              <Users className="h-6 w-6 sm:h-8 sm:w-8 text-primary flex-shrink-0" />
             </div>
           </CardContent>
         </Card>
@@ -97,8 +97,8 @@ export default function AITutors() {
 
       {/* Featured AI Tutors */}
       <div>
-        <h2 className="text-2xl font-semibold mb-4">Featured AI Tutors</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Featured AI Tutors</h2>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
           {featuredTutors.map((tutor: any) => (
             <Card key={tutor.id} className="overflow-hidden">
               <CardHeader>
@@ -139,8 +139,8 @@ export default function AITutors() {
 
       {/* All AI Tutors */}
       <div>
-        <h2 className="text-2xl font-semibold mb-4">Specialized AI Tutors</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Specialized AI Tutors</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {specializedTutors.map((tutor: any) => (
             <Card key={tutor.id} className="overflow-hidden hover:shadow-lg transition-shadow">
               <CardHeader>

@@ -98,15 +98,15 @@ export default function CourseDetail() {
         </Button>
       }
     >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* Main Content */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-4 md:space-y-6">
           <Card>
             <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <CardTitle className="text-2xl">{course.title}</CardTitle>
-                  <CardDescription className="mt-2">
+              <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+                <div className="flex-1 min-w-0">
+                  <CardTitle className="text-xl sm:text-2xl break-words">{course.title}</CardTitle>
+                  <CardDescription className="mt-2 break-words">
                     {course.description}
                   </CardDescription>
                 </div>
@@ -379,7 +379,7 @@ export default function CourseDetail() {
         </div>
 
         {/* Sidebar */}
-        <div className="space-y-6">
+        <div className="space-y-4 md:space-y-6">
           <Card>
             <CardContent className="pt-6">
               <div className="space-y-4">
