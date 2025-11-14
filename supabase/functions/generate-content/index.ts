@@ -130,7 +130,7 @@ async function runGeneration(supabase: any, apiKey: string, progressId: string, 
       const faculty = faculties[i];
       
       await updateProgress(supabase, progressId, {
-        stage: `Generating ${faculty.name}`,
+        current_stage: `Generating ${faculty.name}`,
         progress: Math.floor((i / faculties.length) * 90),
         faculties_created: i,
         courses_created: stats.courses,
@@ -161,7 +161,7 @@ async function runGeneration(supabase: any, apiKey: string, progressId: string, 
     }
 
     await updateProgress(supabase, progressId, {
-      stage: 'Complete',
+      current_stage: 'Complete',
       progress: 100,
       faculties_created: faculties.length,
       courses_created: stats.courses,
@@ -169,10 +169,10 @@ async function runGeneration(supabase: any, apiKey: string, progressId: string, 
     });
 
     console.log('✝️ Content generation complete:', stats);
-  } catch (error) {
+  } catch (error: any) {
     console.error('Generation failed:', error);
     await updateProgress(supabase, progressId, {
-      stage: `Error: ${error.message}`,
+      current_stage: `Error: ${error.message}`,
       progress: -1
     });
   }

@@ -5,6 +5,7 @@ import { toast } from "@/hooks/use-toast";
 console.info("✝️ Content Generation Hooks — Christ governs creation");
 
 export interface ContentGenerationParams {
+  institution_id?: string;
   faculty_id?: string;
   course_count?: number;
   modules_per_course?: number;
