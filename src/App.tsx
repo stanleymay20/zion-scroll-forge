@@ -50,6 +50,7 @@ import FacultyGallery from "./pages/FacultyGallery";
 import FacultyDetail from "./pages/FacultyDetail";
 import FacultyComparison from "./pages/FacultyComparison";
 import GenerationHistory from "./pages/admin/GenerationHistory";
+import ContentGenerationAdmin from "./pages/ContentGenerationAdmin";
 import LearningProfileOnboarding from "./pages/LearningProfileOnboarding";
 import PersonalizedDashboard from "./pages/PersonalizedDashboard";
 import LearningGoals from "./pages/LearningGoals";
@@ -156,6 +157,7 @@ const App = () => (
               <Route path="achievements" element={<Achievements />} />
               <Route path="admin" element={<AdminDashboard />} />
               <Route path="admin/generation-history" element={<GenerationHistory />} />
+              <Route path="admin/content-generation" element={<ContentGenerationAdmin />} />
               <Route path="admin/institutions" element={<InstitutionsAdmin />} />
               <Route path="apply" element={<Apply />} />
               <Route path="faculty" element={<FacultyDashboard />} />
