@@ -5,8 +5,8 @@ import { useInstitution } from "@/contexts/InstitutionContext";
 console.info("✝️ ScrollUniversity Faculty Hooks — Christ governs all learning");
 
 export async function getFaculties(institutionId?: string) {
-  let query = supabase
-    .from("faculties")
+  let query: any = supabase
+    .from("faculties" as any)
     .select("*")
     .order("name");
   
@@ -31,22 +31,22 @@ export async function getFaculty(facultyId: string) {
 }
 
 export async function getFacultyStats(institutionId?: string) {
-  let query = supabase
-    .from("faculties")
+  let query: any = supabase
+    .from("faculties" as any)
     .select("id, name, description");
   
   if (institutionId) {
     query = query.eq("institution_id", institutionId);
   }
   
-  const { data: faculties } = await query;
+  const { data: faculties }: any = await query;
   
   if (!faculties) return [];
   
   const stats = await Promise.all(
-    faculties.map(async (faculty) => {
+    faculties.map(async (faculty: any) => {
       const { count: courseCount } = await supabase
-        .from("courses")
+        .from("courses" as any)
         .select("*", { count: "exact", head: true })
         .eq("faculty", faculty.name);
       

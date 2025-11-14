@@ -67,12 +67,12 @@ export const InstitutionsAdmin: React.FC = () => {
     queryKey: ['institutions-admin'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('institutions')
+        .from('institutions' as any)
         .select('*')
         .order('created_at', { ascending: false });
       
       if (error) throw error;
-      return data as Institution[];
+      return (data as any) as Institution[];
     },
   });
 
@@ -80,24 +80,24 @@ export const InstitutionsAdmin: React.FC = () => {
   const { data: stats } = useQuery({
     queryKey: ['institution-stats'],
     queryFn: async () => {
-      const { data: members } = await supabase
-        .from('institution_members')
+      const { data: members }: any = await supabase
+        .from('institution_members' as any)
         .select('institution_id');
       
-      const { data: courses } = await supabase
-        .from('courses')
+      const { data: courses }: any = await supabase
+        .from('courses' as any)
         .select('institution_id');
 
       const statsMap: Record<string, InstitutionStats> = {};
       
-      members?.forEach(m => {
+      members?.forEach((m: any) => {
         if (!statsMap[m.institution_id]) {
           statsMap[m.institution_id] = { institution_id: m.institution_id, member_count: 0, course_count: 0 };
         }
         statsMap[m.institution_id].member_count++;
       });
 
-      courses?.forEach(c => {
+      courses?.forEach((c: any) => {
         if (!statsMap[c.institution_id]) {
           statsMap[c.institution_id] = { institution_id: c.institution_id, member_count: 0, course_count: 0 };
         }
@@ -113,13 +113,13 @@ export const InstitutionsAdmin: React.FC = () => {
     mutationFn: async (data: typeof formData) => {
       if (editingInstitution) {
         const { error } = await supabase
-          .from('institutions')
+          .from('institutions' as any)
           .update(data)
           .eq('id', editingInstitution.id);
         if (error) throw error;
       } else {
         const { error } = await supabase
-          .from('institutions')
+          .from('institutions' as any)
           .insert(data);
         if (error) throw error;
       }
@@ -138,7 +138,7 @@ export const InstitutionsAdmin: React.FC = () => {
   const toggleActiveMutation = useMutation({
     mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
       const { error } = await supabase
-        .from('institutions')
+        .from('institutions' as any)
         .update({ is_active })
         .eq('id', id);
       if (error) throw error;
