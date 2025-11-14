@@ -54,8 +54,8 @@ export default function AITutorChat() {
   const { tutorId } = useParams();
   const navigate = useNavigate();
   
-  const tutor = tutorId ? tutorDetails[tutorId] : tutorDetails["scrollmentor-gpt"];
-  const TutorIcon = tutor.icon;
+  const tutor = (tutorId && tutorDetails[tutorId]) ? tutorDetails[tutorId] : tutorDetails["scrollmentor-gpt"];
+  const TutorIcon = tutor?.icon || Brain;
 
   return (
     <PageTemplate
