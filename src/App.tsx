@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { AuthProvider } from "./contexts/AuthContext";
+import { InstitutionProvider } from "./contexts/InstitutionContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import { useRealtimeSubscriptions } from "@/hooks/useRealtime";
@@ -71,6 +72,7 @@ import CourseAnalyticsPage from "./pages/CourseAnalyticsPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import NotificationSettings from "./pages/NotificationSettings";
 import GenerationMonitor from "./pages/GenerationMonitor";
+import InstitutionsAdmin from "./pages/InstitutionsAdmin";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -114,12 +116,13 @@ const RealtimeProvider = ({ children }: { children: React.ReactNode }) => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <RealtimeProvider>
-            <Suspense fallback={<LoadingFallback />}>
+      <InstitutionProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <RealtimeProvider>
+              <Suspense fallback={<LoadingFallback />}>
               <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
@@ -151,6 +154,7 @@ const App = () => (
               <Route path="achievements" element={<Achievements />} />
               <Route path="admin" element={<AdminDashboard />} />
               <Route path="admin/generation-history" element={<GenerationHistory />} />
+              <Route path="admin/institutions" element={<InstitutionsAdmin />} />
               <Route path="apply" element={<Apply />} />
               <Route path="faculty" element={<FacultyDashboard />} />
               <Route path="faculty/gradebook/:courseId" element={<Gradebook />} />
@@ -210,6 +214,7 @@ const App = () => (
           </RealtimeProvider>
         </BrowserRouter>
       </TooltipProvider>
+      </InstitutionProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
