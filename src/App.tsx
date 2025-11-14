@@ -53,6 +53,8 @@ import FacultyComparison from "./pages/FacultyComparison";
 import GenerationHistory from "./pages/admin/GenerationHistory";
 import LearningProfileOnboarding from "./pages/LearningProfileOnboarding";
 import PersonalizedDashboard from "./pages/PersonalizedDashboard";
+import LearningGoals from "./pages/LearningGoals";
+import SkillsAssessment from "./pages/SkillsAssessment";
 import NotFound from "./pages/NotFound";
 
 // Protected Route Component
@@ -162,6 +164,8 @@ const App = () => (
               <Route path="faculties/:facultyId" element={<FacultyDetail />} />
               <Route path="learning-profile" element={<LearningProfileOnboarding />} />
               <Route path="personalized-dashboard" element={<PersonalizedDashboard />} />
+              <Route path="learning-goals" element={<LearningGoals />} />
+              <Route path="skills-assessment" element={<SkillsAssessment />} />
               <Route path="career-pathways" element={<ComingSoonPage title="Career Pathways" />} />
             <Route path="job-board" element={<ComingSoonPage title="Job Board" />} />
             <Route path="research" element={<ComingSoonPage title="Research Hub" />} />
