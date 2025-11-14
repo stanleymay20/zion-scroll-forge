@@ -1,0 +1,180 @@
+import { useParams, useNavigate } from "react-router-dom";
+import { PageTemplate } from "@/components/layout/PageTemplate";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Loader2, GraduationCap, BookOpen, Clock, ArrowLeft, CheckCircle } from "lucide-react";
+import { useDegreeProgram, useEnrollInDegree, useDegreeProgress } from "@/hooks/useDegreePrograms";
+
+console.info("✝️ Degree Program Detail — Christ-centered path");
+
+export default function DegreeProgramDetail() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { data: program, isLoading } = useDegreeProgram(id!);
+  const { data: progress } = useDegreeProgress(id!);
+  const enrollInDegree = useEnrollInDegree();
+
+  const handleEnroll = async () => {
+    if (!id) return;
+    await enrollInDegree.mutateAsync(id);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!program) {
+    return (
+      <PageTemplate title="Program Not Found">
+        <Card>
+          <CardContent className="py-12 text-center">
+            <p className="text-muted-foreground">Degree program not found</p>
+            <Button onClick={() => navigate("/degrees")} className="mt-4">
+              Back to Programs
+            </Button>
+          </CardContent>
+        </Card>
+      </PageTemplate>
+    );
+  }
+
+  const completionPercentage = progress?.completedCredits && (program as any).total_credits
+    ? (progress.completedCredits / (program as any).total_credits) * 100
+    : 0;
+
+  return (
+    <PageTemplate
+      title={(program as any).title || "Degree Program"}
+      description={`${(program as any).faculty} - ${(program as any).level}`}
+      actions={
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={() => navigate("/degrees")}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+          {!(program as any).is_enrolled && (
+            <Button onClick={handleEnroll}>
+              <GraduationCap className="h-4 w-4 mr-2" />
+              Enroll Now
+            </Button>
+          )}
+        </div>
+      }
+    >
+      <div className="grid gap-6 lg:grid-cols-3">
+        <div className="lg:col-span-2 space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Program Overview</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p className="text-muted-foreground">{(program as any).description}</p>
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+                <div>
+                  <p className="text-sm text-muted-foreground">Duration</p>
+                  <p className="font-medium">{(program as any).duration}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Total Credits</p>
+                  <p className="font-medium">{(program as any).total_credits}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {(program as any).is_enrolled && progress && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Your Progress</CardTitle>
+                <CardDescription>
+                  {progress.completedCredits} of {(program as any).total_credits} credits completed
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <Progress value={completionPercentage} className="h-2" />
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-sm text-muted-foreground">Courses Completed</p>
+                    <p className="text-2xl font-bold">{progress.completedCourses || 0}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-muted-foreground">Progress</p>
+                    <p className="text-2xl font-bold">{progress.progressPercentage.toFixed(0)}%</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Curriculum</CardTitle>
+              <CardDescription>Required and elective courses</CardDescription>
+            </CardHeader>
+            <CardContent>
+              {(program as any).courses && (program as any).courses.length > 0 ? (
+                <div className="space-y-3">
+                  {(program as any).courses.map((course: any, index: number) => (
+                    <div
+                      key={course.id || index}
+                      className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors"
+                    >
+                      {course.is_completed ? (
+                        <CheckCircle className="h-5 w-5 text-[hsl(var(--scroll-gold))] mt-0.5" />
+                      ) : (
+                        <BookOpen className="h-5 w-5 text-muted-foreground mt-0.5" />
+                      )}
+                      <div className="flex-1">
+                        <p className="font-medium">{course.title || course.course_title}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {course.credits} credits
+                          {course.is_required && (
+                            <Badge variant="outline" className="ml-2">Required</Badge>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  Curriculum details coming soon
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Program Details</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <p className="text-sm text-muted-foreground">Faculty</p>
+                <p className="font-medium">{(program as any).faculty}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Level</p>
+                <p className="font-medium">{(program as any).level}</p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Status</p>
+                <Badge variant={(program as any).is_enrolled ? "default" : "secondary"}>
+                  {(program as any).is_enrolled ? "Enrolled" : "Not Enrolled"}
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </PageTemplate>
+  );
+}

@@ -56,6 +56,14 @@ import PersonalizedDashboard from "./pages/PersonalizedDashboard";
 import LearningGoals from "./pages/LearningGoals";
 import SkillsAssessment from "./pages/SkillsAssessment";
 import NotFound from "./pages/NotFound";
+import PrayerJournal from "./pages/PrayerJournal";
+import Events from "./pages/Events";
+import EventDetail from "./pages/EventDetail";
+import DegreePrograms from "./pages/DegreePrograms";
+import DegreeProgramDetail from "./pages/DegreeProgramDetail";
+import BillingDashboard from "./pages/BillingDashboard";
+import ScrollCoinWallet from "./pages/ScrollCoinWallet";
+import ScrollCoinLeaderboard from "./pages/ScrollCoinLeaderboard";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -144,10 +152,17 @@ const App = () => (
             
             {/* Dynamic pages */}
             <Route path="profile" element={<ProfilePage />} />
-            <Route path="degrees" element={<DegreesPage />} />
+            <Route path="degrees" element={<DegreePrograms />} />
+            <Route path="degrees/:id" element={<DegreeProgramDetail />} />
             <Route path="xr-classrooms" element={<XRClassroomsPage />} />
             <Route path="virtual-labs" element={<VirtualLabsPage />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="prayer-journal" element={<PrayerJournal />} />
+            <Route path="events" element={<Events />} />
+            <Route path="events/:id" element={<EventDetail />} />
+            <Route path="billing" element={<BillingDashboard />} />
+            <Route path="scrollcoin-wallet" element={<ScrollCoinWallet />} />
+            <Route path="scrollcoin-leaderboard" element={<ScrollCoinLeaderboard />} />
             
             {/* All other routes use coming soon pages */}
             <Route path="assessments" element={<Assessments />} />
