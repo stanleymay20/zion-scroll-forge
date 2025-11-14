@@ -27,8 +27,9 @@ export default function ContentGenerationAdmin() {
 
   const { data: progress, refetch: refetchProgress } = useQuery({
     queryKey: ["generation-progress", activeInstitution?.id],
-    queryFn: checkGenerationProgress,
-    refetchInterval: 5000 // Poll every 5 seconds when generating
+    queryFn: () => checkGenerationProgress(activeInstitution?.id),
+    refetchInterval: 5000, // Poll every 5 seconds when generating
+    enabled: !!activeInstitution
   });
 
   const handleGenerate = async () => {

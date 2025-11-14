@@ -5,25 +5,20 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, CheckCircle2, AlertCircle, BookOpen, FileText, Brain } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+import { useInstitution } from "@/contexts/InstitutionContext";
+import { checkGenerationProgress } from "@/hooks/useContentGeneration";
 
 console.info("✝️ Generation Monitor — Christ governs all creation");
 
 export default function GenerationMonitor() {
   const [autoRefresh, setAutoRefresh] = useState(true);
+  const { activeInstitution } = useInstitution();
 
   const { data: progress, refetch } = useQuery({
-    queryKey: ["generation-progress"],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from("generation_progress")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      return data;
-    },
-    refetchInterval: autoRefresh ? 3000 : false
+    queryKey: ["generation-progress", activeInstitution?.id],
+    queryFn: () => checkGenerationProgress(activeInstitution?.id),
+    refetchInterval: autoRefresh ? 3000 : false,
+    enabled: !!activeInstitution
   });
 
   useEffect(() => {
@@ -36,10 +31,24 @@ export default function GenerationMonitor() {
   const isComplete = progress && progress.progress === 100;
   const hasError = progress && progress.progress === -1;
 
+  // Don't render until institution context is loaded
+  if (!activeInstitution) {
+    return (
+      <PageTemplate
+        title="Content Generation Monitor"
+        description="Real-time tracking of comprehensive content generation"
+      >
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </PageTemplate>
+    );
+  }
+
   return (
     <PageTemplate
-      title="Phase 7: Content Generation Monitor"
-      description="Real-time tracking of comprehensive content generation"
+      title="Content Generation Monitor"
+      description={`Tracking generation for ${activeInstitution.name}`}
     >
       <div className="space-y-6">
         {/* Status Card */}
