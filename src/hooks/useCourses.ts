@@ -1,14 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useInstitution } from '@/contexts/InstitutionContext';
 import { useToast } from '@/hooks/use-toast';
 import { underChrist } from '@/lib/lordship';
 
 export const useUserEnrollments = () => {
   const { user } = useAuth();
+  const { activeInstitution } = useInstitution();
 
   return useQuery({
-    queryKey: ['enrollments', user?.id],
+    queryKey: ['enrollments', user?.id, activeInstitution?.id],
     queryFn: async () => {
       console.info('✝️ Jesus Christ is Lord over this operation');
       const { data, error } = await supabase
@@ -23,12 +25,13 @@ export const useUserEnrollments = () => {
           )
         `)
         .eq('user_id', user!.id)
+        .eq('institution_id', activeInstitution!.id)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
       return data;
     },
-    enabled: !!user,
+    enabled: !!user && !!activeInstitution,
   });
 };
 
@@ -40,12 +43,21 @@ export const useEnrollInCourse = () => {
   return useMutation({
     mutationFn: async (courseId: string) => {
       console.info('✝️ Jesus Christ is Lord over this operation');
+      
+      // Get user's current institution
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('current_institution_id')
+        .eq('id', user!.id)
+        .single();
+      
       const { error } = await supabase
         .from('enrollments')
         .insert({
           user_id: user!.id,
           course_id: courseId,
-          progress: 0
+          progress: 0,
+          institution_id: profile?.current_institution_id
         });
 
       if (error) throw error;
