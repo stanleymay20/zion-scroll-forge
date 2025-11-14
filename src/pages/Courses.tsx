@@ -81,10 +81,10 @@ export default function Courses() {
       }
     >
       <Card>
-        <CardContent className="pt-6">
+        <CardContent className="pt-4 md:pt-6">
           <div className="space-y-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex-1">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end gap-4">
+              <div className="flex-1 w-full">
                 <Label htmlFor="search">Search Courses</Label>
                 <div className="relative">
                   <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -97,7 +97,7 @@ export default function Courses() {
                   />
                 </div>
               </div>
-              <div className="w-48">
+              <div className="w-full sm:w-48">
                 <Label>Faculty</Label>
                 <Select value={selectedFaculty} onValueChange={setSelectedFaculty}>
                   <SelectTrigger>
@@ -113,7 +113,7 @@ export default function Courses() {
                   </SelectContent>
                 </Select>
               </div>
-              <div className="w-40">
+              <div className="w-full sm:w-40">
                 <Label>Level</Label>
                 <Select value={selectedLevel} onValueChange={setSelectedLevel}>
                   <SelectTrigger>
@@ -146,7 +146,7 @@ export default function Courses() {
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : courses && courses.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {courses.map((course: any) => (
                 <Card key={course.id}>
                   <CardHeader>

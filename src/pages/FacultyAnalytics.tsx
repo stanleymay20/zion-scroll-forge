@@ -46,16 +46,16 @@ export const FacultyAnalytics = () => {
   const { data: analytics, isLoading } = useFacultyAnalytics(selectedFaculty === 'all' ? undefined : selectedFaculty);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Faculty Analytics</h1>
-          <p className="text-muted-foreground mt-2">
+    <div className="w-full max-w-7xl mx-auto p-3 sm:p-4 md:p-6 space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex-1 min-w-0">
+          <h1 className="text-2xl sm:text-3xl font-bold break-words">Faculty Analytics</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-2 break-words">
             Enrollment trends, performance metrics, and AI tutor usage by faculty
           </p>
         </div>
         <Select value={selectedFaculty} onValueChange={setSelectedFaculty}>
-          <SelectTrigger className="w-[250px]">
+          <SelectTrigger className="w-full sm:w-[250px]">
             <SelectValue placeholder="Select faculty" />
           </SelectTrigger>
           <SelectContent>
@@ -74,14 +74,14 @@ export const FacultyAnalytics = () => {
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       ) : (
-        <Tabs defaultValue="enrollment" className="space-y-6">
-          <TabsList>
-            <TabsTrigger value="enrollment">Enrollment Trends</TabsTrigger>
-            <TabsTrigger value="performance">Student Performance</TabsTrigger>
-            <TabsTrigger value="ai-tutor">AI Tutor Usage</TabsTrigger>
+        <Tabs defaultValue="enrollment" className="space-y-4 md:space-y-6">
+          <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 gap-1">
+            <TabsTrigger value="enrollment" className="text-xs sm:text-sm">Enrollment Trends</TabsTrigger>
+            <TabsTrigger value="performance" className="text-xs sm:text-sm">Student Performance</TabsTrigger>
+            <TabsTrigger value="ai-tutor" className="text-xs sm:text-sm">AI Tutor Usage</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="enrollment" className="space-y-6">
+          <TabsContent value="enrollment" className="space-y-4 md:space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle>Course Enrollment Trends</CardTitle>
@@ -94,7 +94,7 @@ export const FacultyAnalytics = () => {
               </CardContent>
             </Card>
 
-            <div className="grid gap-6 md:grid-cols-3">
+            <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-3">
               <Card>
                 <CardHeader>
                   <CardTitle>Total Enrollments</CardTitle>

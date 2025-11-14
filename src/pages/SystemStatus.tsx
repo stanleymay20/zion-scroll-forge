@@ -120,25 +120,25 @@ export const SystemStatus = () => {
     : 'degraded';
 
   return (
-    <div className="space-y-6">
+    <div className="w-full max-w-7xl mx-auto space-y-4 md:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">System Status</h1>
-        <p className="text-muted-foreground mt-2">
+        <h1 className="text-2xl sm:text-3xl font-bold break-words">System Status</h1>
+        <p className="text-sm sm:text-base text-muted-foreground mt-2 break-words">
           Real-time health metrics for all services
         </p>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-3">
+          <CardTitle className="flex flex-wrap items-center gap-2 sm:gap-3 text-lg sm:text-xl">
             Overall System Status
             {isLoading ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
+              <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
             ) : (
               <StatusIcon status={overallStatus} />
             )}
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-sm sm:text-base">
             {overallStatus === 'healthy' && 'All systems operational'}
             {overallStatus === 'degraded' && 'Some services experiencing issues'}
             {overallStatus === 'down' && 'Service disruption detected'}
@@ -146,7 +146,7 @@ export const SystemStatus = () => {
         </CardHeader>
       </Card>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2">
         {metrics?.map((metric) => (
           <Card key={metric.name}>
             <CardHeader>

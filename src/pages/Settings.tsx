@@ -27,22 +27,22 @@ export default function SettingsPage() {
       description="Manage your account preferences and settings"
     >
       <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-4 mb-8">
-          <TabsTrigger value="profile" className="flex items-center gap-2">
-            <User className="h-4 w-4" />
-            <span className="hidden sm:inline">Profile</span>
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 mb-6 md:mb-8 gap-1">
+          <TabsTrigger value="profile" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+            <User className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span>Profile</span>
           </TabsTrigger>
-          <TabsTrigger value="notifications" className="flex items-center gap-2">
-            <Bell className="h-4 w-4" />
-            <span className="hidden sm:inline">Notifications</span>
+          <TabsTrigger value="notifications" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+            <Bell className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span>Notifications</span>
           </TabsTrigger>
-          <TabsTrigger value="theme" className="flex items-center gap-2">
-            <Palette className="h-4 w-4" />
-            <span className="hidden sm:inline">Theme</span>
+          <TabsTrigger value="theme" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+            <Palette className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span>Theme</span>
           </TabsTrigger>
-          <TabsTrigger value="institution" className="flex items-center gap-2">
-            <Building2 className="h-4 w-4" />
-            <span className="hidden sm:inline">Institution</span>
+          <TabsTrigger value="institution" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+            <Building2 className="h-3 w-3 sm:h-4 sm:w-4" />
+            <span>Institution</span>
           </TabsTrigger>
         </TabsList>
 
