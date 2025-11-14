@@ -70,6 +70,7 @@ import AnalyticsDashboard from "./pages/AnalyticsDashboard";
 import CourseAnalyticsPage from "./pages/CourseAnalyticsPage";
 import NotificationsPage from "./pages/NotificationsPage";
 import NotificationSettings from "./pages/NotificationSettings";
+import GenerationMonitor from "./pages/GenerationMonitor";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -175,6 +176,7 @@ const App = () => (
             <Route path="admissions-review" element={<AdmissionsReview />} />
             <Route path="analytics/dashboard" element={<AnalyticsDashboard />} />
             <Route path="analytics/courses/:courseId" element={<CourseAnalyticsPage />} />
+            <Route path="generation-monitor" element={<GenerationMonitor />} />
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="notifications/settings" element={<NotificationSettings />} />
             
