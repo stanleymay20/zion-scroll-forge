@@ -23,10 +23,14 @@ export default function PrayerJournal() {
   const updateEntry = useUpdatePrayerEntry();
   const deleteEntry = useDeletePrayerEntry();
   const markAnswered = useMarkPrayerAnswered();
+  const { toast } = useToast();
 
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editingEntry, setEditingEntry] = useState<any>(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [isProcessingVoice, setIsProcessingVoice] = useState(false);
+  const voiceClientRef = useRef<VoiceClient | null>(null);
   const [formData, setFormData] = useState({
     title: "",
     content: "",
@@ -35,6 +39,68 @@ export default function PrayerJournal() {
     tags: [] as string[],
     scripture_references: [] as string[]
   });
+
+  const handleVoiceToggle = async () => {
+    if (isRecording) {
+      // Stop recording and transcribe
+      if (voiceClientRef.current) {
+        setIsProcessingVoice(true);
+        try {
+          const audioBlob = await voiceClientRef.current.stopRecording();
+          const audioBase64 = await voiceClientRef.current.blobToBase64(audioBlob);
+
+          const { data: { user } } = await supabase.auth.getUser();
+          if (!user) throw new Error('Not authenticated');
+
+          // Send to edge function
+          const { data, error } = await supabase.functions.invoke('prayer-voice-to-text', {
+            body: { audio_base64: audioBase64, user_id: user.id }
+          });
+
+          if (error) throw error;
+
+          // Autofill transcript
+          setFormData(prev => ({
+            ...prev,
+            content: data.transcript
+          }));
+
+          toast({
+            title: 'Voice prayer recorded',
+            description: 'Your prayer has been transcribed',
+          });
+        } catch (error) {
+          console.error('Voice processing error:', error);
+          toast({
+            title: 'Voice error',
+            description: 'Failed to process voice prayer',
+            variant: 'destructive',
+          });
+        } finally {
+          setIsProcessingVoice(false);
+          setIsRecording(false);
+        }
+      }
+    } else {
+      // Start recording
+      try {
+        if (!voiceClientRef.current) {
+          voiceClientRef.current = new VoiceClient((status) => {
+            setIsRecording(status === 'recording');
+          });
+        }
+        await voiceClientRef.current.startRecording();
+        setIsRecording(true);
+      } catch (error) {
+        console.error('Recording start error:', error);
+        toast({
+          title: 'Microphone access denied',
+          description: 'Please allow microphone access to use voice mode',
+          variant: 'destructive',
+        });
+      }
+    }
+  };
 
   const handleCreate = async () => {
     await createEntry.mutateAsync(formData);
@@ -124,12 +190,34 @@ export default function PrayerJournal() {
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 />
-                <Textarea
-                  placeholder="Your prayer..."
-                  value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  rows={6}
-                />
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleVoiceToggle}
+                      disabled={isProcessingVoice}
+                      className={isRecording ? 'bg-red-500 text-white' : ''}
+                    >
+                      {isProcessingVoice ? (
+                        <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      ) : isRecording ? (
+                        <MicOff className="h-4 w-4 mr-2" />
+                      ) : (
+                        <Mic className="h-4 w-4 mr-2" />
+                      )}
+                      {isRecording ? 'Stop Recording' : 'Record Voice Prayer'}
+                    </Button>
+                    {isProcessingVoice && <span className="text-sm text-muted-foreground">Processing...</span>}
+                  </div>
+                  <Textarea
+                    placeholder="Your prayer..."
+                    value={formData.content}
+                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                    rows={6}
+                  />
+                </div>
                 <Select
                   value={formData.prayer_type}
                   onValueChange={(value) => setFormData({ ...formData, prayer_type: value as any })}

@@ -66,6 +66,10 @@ import TutorSession from "./pages/TutorSession";
 import VirtualLabsPage from "./pages/VirtualLabsPage";
 import XRClassroomsPage from "./pages/XRClassroomsPage";
 import AdmissionsReview from "./pages/AdmissionsReview";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import CourseAnalyticsPage from "./pages/CourseAnalyticsPage";
+import NotificationsPage from "./pages/NotificationsPage";
+import NotificationSettings from "./pages/NotificationSettings";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -167,7 +171,12 @@ const App = () => (
             <Route path="scrollcoin-leaderboard" element={<ScrollCoinLeaderboard />} />
             <Route path="ai-tutors-catalog" element={<AITutorsCatalog />} />
             <Route path="ai-tutors/:id" element={<TutorSession />} />
+            <Route path="tutor-session/:id" element={<TutorSession />} />
             <Route path="admissions-review" element={<AdmissionsReview />} />
+            <Route path="analytics/dashboard" element={<AnalyticsDashboard />} />
+            <Route path="analytics/courses/:courseId" element={<CourseAnalyticsPage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="notifications/settings" element={<NotificationSettings />} />
             
             {/* All other routes use coming soon pages */}
             <Route path="assessments" element={<Assessments />} />
