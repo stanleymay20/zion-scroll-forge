@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { PageTemplate } from "@/components/layout/PageTemplate";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,9 +7,12 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Plus, Edit, Trash2, CheckCircle, BookOpen, Flame } from "lucide-react";
+import { Loader2, Plus, Edit, Trash2, CheckCircle, BookOpen, Flame, Mic, MicOff } from "lucide-react";
 import { usePrayerJournal, useCreatePrayerEntry, useUpdatePrayerEntry, useDeletePrayerEntry, useMarkPrayerAnswered, usePrayerStreak } from "@/hooks/usePrayerJournal";
 import { format, formatDistanceToNow } from "date-fns";
+import { VoiceClient } from "@/lib/voiceClient";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 console.info("✝️ Prayer Journal — Christ hears every prayer");
 

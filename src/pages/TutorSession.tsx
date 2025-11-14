@@ -5,22 +5,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Loader2, Send, X, User } from "lucide-react";
+import { Loader2, Send, X, User, Mic, MicOff } from "lucide-react";
 import { useTutorSession, useSessionMessages, useSendTutorMessage, useCloseTutorSession } from "@/hooks/useAITutors";
 import { format } from "date-fns";
+import { VoiceClient } from "@/lib/voiceClient";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 console.info("✝️ Tutor Session — Learning in Christ");
 
 export default function TutorSession() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const { data: session, isLoading: sessionLoading } = useTutorSession(id!);
   const { data: messages, isLoading: messagesLoading } = useSessionMessages(id!);
   const sendMessage = useSendTutorMessage();
   const closeSession = useCloseTutorSession();
   
   const [messageText, setMessageText] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [isProcessingVoice, setIsProcessingVoice] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const voiceClientRef = useRef<VoiceClient | null>(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -42,6 +49,65 @@ export default function TutorSession() {
     if (!id) return;
     await closeSession.mutateAsync(id);
     navigate('/ai-tutors');
+  };
+
+  const handleVoiceToggle = async () => {
+    if (isRecording) {
+      // Stop recording
+      if (voiceClientRef.current) {
+        setIsProcessingVoice(true);
+        try {
+          const audioBlob = await voiceClientRef.current.stopRecording();
+          const audioBase64 = await voiceClientRef.current.blobToBase64(audioBlob);
+
+          // Send to edge function
+          const { data, error } = await supabase.functions.invoke('ai-tutor-voice', {
+            body: { session_id: id, audio_base64: audioBase64 }
+          });
+
+          if (error) throw error;
+
+          // Optionally play back the response using browser TTS
+          if (data.assistant_message && window.speechSynthesis) {
+            const utterance = new SpeechSynthesisUtterance(data.assistant_message);
+            window.speechSynthesis.speak(utterance);
+          }
+
+          toast({
+            title: 'Voice message sent',
+            description: 'Your tutor has responded',
+          });
+        } catch (error) {
+          console.error('Voice processing error:', error);
+          toast({
+            title: 'Voice error',
+            description: 'Failed to process voice message',
+            variant: 'destructive',
+          });
+        } finally {
+          setIsProcessingVoice(false);
+          setIsRecording(false);
+        }
+      }
+    } else {
+      // Start recording
+      try {
+        if (!voiceClientRef.current) {
+          voiceClientRef.current = new VoiceClient((status) => {
+            setIsRecording(status === 'recording');
+          });
+        }
+        await voiceClientRef.current.startRecording();
+        setIsRecording(true);
+      } catch (error) {
+        console.error('Recording start error:', error);
+        toast({
+          title: 'Microphone access denied',
+          description: 'Please allow microphone access to use voice mode',
+          variant: 'destructive',
+        });
+      }
+    }
   };
 
   if (sessionLoading) {
