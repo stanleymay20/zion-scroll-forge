@@ -115,16 +115,23 @@ async function runGeneration(supabase: any, apiKey: string, progressId: string, 
 
   try {
     // Get all faculties for this institution
-    const { data: faculties } = await supabase
+    console.log(`✝️ Fetching faculties for institution: ${institutionId}`);
+    const { data: faculties, error: facultiesError } = await supabase
       .from('faculties')
       .select('*')
       .eq('institution_id', institutionId);
     
-    if (!faculties || faculties.length === 0) {
-      throw new Error('No faculties found for this institution');
+    if (facultiesError) {
+      console.error('Error fetching faculties:', facultiesError);
+      throw new Error(`Failed to fetch faculties: ${facultiesError.message}`);
     }
 
-    console.log(`Processing ${faculties.length} faculties for institution ${institutionId}`);
+    if (!faculties || faculties.length === 0) {
+      console.error(`❌ No faculties found for institution ${institutionId}`);
+      throw new Error(`No faculties found for this institution. Please ensure faculties are created and linked to institution_id: ${institutionId}`);
+    }
+
+    console.log(`✅ Processing ${faculties.length} faculties for institution ${institutionId}`);
 
     for (let i = 0; i < faculties.length; i++) {
       const faculty = faculties[i];
