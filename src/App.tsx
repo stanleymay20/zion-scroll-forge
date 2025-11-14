@@ -39,12 +39,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Apply from "./pages/Apply";
 import FacultyDashboard from "./pages/FacultyDashboard";
 import Gradebook from "./pages/Gradebook";
-import AdmissionsReview from "./pages/AdmissionsReview";
 import AlumniPortal from "./pages/AlumniPortal";
 import ProfilePage from "./pages/Profile";
 import DegreesPage from "./pages/Degrees";
-import XRClassroomsPage from "./pages/XRClassrooms";
-import VirtualLabsPage from "./pages/VirtualLabs";
 import SettingsPage from "./pages/Settings";
 import { ComingSoonPage } from "./components/layout/PageTemplate";
 import FacultyGallery from "./pages/FacultyGallery";
@@ -64,6 +61,11 @@ import DegreeProgramDetail from "./pages/DegreeProgramDetail";
 import BillingDashboard from "./pages/BillingDashboard";
 import ScrollCoinWallet from "./pages/ScrollCoinWallet";
 import ScrollCoinLeaderboard from "./pages/ScrollCoinLeaderboard";
+import AITutorsCatalog from "./pages/AITutorsCatalog";
+import TutorSession from "./pages/TutorSession";
+import VirtualLabsPage from "./pages/VirtualLabsPage";
+import XRClassroomsPage from "./pages/XRClassroomsPage";
+import AdmissionsReview from "./pages/AdmissionsReview";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -163,6 +165,9 @@ const App = () => (
             <Route path="billing" element={<BillingDashboard />} />
             <Route path="scrollcoin-wallet" element={<ScrollCoinWallet />} />
             <Route path="scrollcoin-leaderboard" element={<ScrollCoinLeaderboard />} />
+            <Route path="ai-tutors-catalog" element={<AITutorsCatalog />} />
+            <Route path="ai-tutors/:id" element={<TutorSession />} />
+            <Route path="admissions-review" element={<AdmissionsReview />} />
             
             {/* All other routes use coming soon pages */}
             <Route path="assessments" element={<Assessments />} />
