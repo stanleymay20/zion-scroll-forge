@@ -6,6 +6,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { AuthProvider } from "./contexts/AuthContext";
 import { InstitutionProvider } from "./contexts/InstitutionContext";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import { useRealtimeSubscriptions } from "@/hooks/useRealtime";
@@ -78,6 +79,7 @@ import InstitutionsAdmin from "./pages/InstitutionsAdmin";
 import SystemStatus from "./pages/SystemStatus";
 import InstitutionOnboarding from "./pages/InstitutionOnboarding";
 import FacultyAnalytics from "./pages/FacultyAnalytics";
+import Faculties from "./pages/Faculties";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -119,16 +121,17 @@ const RealtimeProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <InstitutionProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <RealtimeProvider>
-              <Suspense fallback={<LoadingFallback />}>
-              <Routes>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <InstitutionProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <RealtimeProvider>
+                <Suspense fallback={<LoadingFallback />}>
+                <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
@@ -227,6 +230,7 @@ const App = () => (
       </InstitutionProvider>
     </AuthProvider>
   </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;
