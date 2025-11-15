@@ -2566,6 +2566,91 @@ export type Database = {
           },
         ]
       }
+      student_applications: {
+        Row: {
+          created_at: string | null
+          decision_notes: string | null
+          education_background: string
+          email: string
+          full_name: string
+          id: string
+          institution_id: string
+          motivation: string
+          phone: string
+          program_interest: string
+          reference_info: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          spiritual_journey: string
+          status: string | null
+          submitted_at: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          decision_notes?: string | null
+          education_background: string
+          email: string
+          full_name: string
+          id?: string
+          institution_id: string
+          motivation: string
+          phone: string
+          program_interest: string
+          reference_info?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          spiritual_journey: string
+          status?: string | null
+          submitted_at?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          decision_notes?: string | null
+          education_background?: string
+          email?: string
+          full_name?: string
+          id?: string
+          institution_id?: string
+          motivation?: string
+          phone?: string
+          program_interest?: string
+          reference_info?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          spiritual_journey?: string
+          status?: string | null
+          submitted_at?: string | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_applications_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_applications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "student_applications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       student_documents: {
         Row: {
           doc_type: string | null
