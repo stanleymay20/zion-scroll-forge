@@ -80,6 +80,20 @@ import SystemStatus from "./pages/SystemStatus";
 import InstitutionOnboarding from "./pages/InstitutionOnboarding";
 import FacultyAnalytics from "./pages/FacultyAnalytics";
 import Faculties from "./pages/Faculties";
+import SuperAdmin from "./pages/SuperAdmin";
+import FacultyAdmin from "./pages/FacultyAdmin";
+import CommunityFeed from "./pages/CommunityFeed";
+import DailyDevotion from "./pages/DailyDevotion";
+import ScriptureMemory from "./pages/ScriptureMemory";
+import Testimonies from "./pages/Testimonies";
+import FellowshipRooms from "./pages/FellowshipRooms";
+import SpiritualMentor from "./pages/SpiritualMentor";
+import Messaging from "./pages/Messaging";
+import RedemptionStore from "./pages/RedemptionStore";
+import AssignmentUpload from "./pages/AssignmentUpload";
+import DegreeAudit from "./pages/DegreeAudit";
+import ScholarshipsPage from "./pages/ScholarshipsPage";
+import RealTimeMessaging from "./pages/RealTimeMessaging";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -165,11 +179,32 @@ const App = () => (
               <Route path="admin/generation-history" element={<GenerationHistory />} />
               <Route path="admin/content-generation" element={<ContentGenerationAdmin />} />
               <Route path="admin/institutions" element={<InstitutionsAdmin />} />
+              <Route path="admin/super" element={<SuperAdmin />} />
               <Route path="apply" element={<Apply />} />
               <Route path="faculty" element={<FacultyDashboard />} />
+              <Route path="faculty/admin" element={<FacultyAdmin />} />
               <Route path="faculty/gradebook/:courseId" element={<Gradebook />} />
               <Route path="admin/admissions" element={<AdmissionsReview />} />
               <Route path="alumni" element={<AlumniPortal />} />
+              
+              {/* Community & Social */}
+              <Route path="community-feed" element={<CommunityFeed />} />
+              <Route path="messaging" element={<RealTimeMessaging />} />
+              <Route path="fellowship-rooms" element={<FellowshipRooms />} />
+              <Route path="spiritual-mentor" element={<SpiritualMentor />} />
+              
+              {/* Spiritual Formation */}
+              <Route path="daily-devotion" element={<DailyDevotion />} />
+              <Route path="scripture-memory" element={<ScriptureMemory />} />
+              <Route path="testimonies" element={<Testimonies />} />
+              
+              {/* Learning */}
+              <Route path="assignment-upload" element={<AssignmentUpload />} />
+              <Route path="degree-audit" element={<DegreeAudit />} />
+              <Route path="scholarships" element={<ScholarshipsPage />} />
+              
+              {/* ScrollCoin Economy */}
+              <Route path="redemption-store" element={<RedemptionStore />} />
             
             {/* Dynamic pages */}
             <Route path="profile" element={<ProfilePage />} />

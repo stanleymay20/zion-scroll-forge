@@ -580,6 +580,80 @@ export type Database = {
           },
         ]
       }
+      conversation_members: {
+        Row: {
+          conversation_id: string
+          id: string
+          joined_at: string | null
+          last_read_at: string | null
+          user_id: string
+        }
+        Insert: {
+          conversation_id: string
+          id?: string
+          joined_at?: string | null
+          last_read_at?: string | null
+          user_id: string
+        }
+        Update: {
+          conversation_id?: string
+          id?: string
+          joined_at?: string | null
+          last_read_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_members_conversation_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversation_members_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      conversations: {
+        Row: {
+          created_at: string | null
+          id: string
+          institution_id: string | null
+          is_group: boolean | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          is_group?: boolean | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          is_group?: boolean | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversations_institution_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       course_certificates: {
         Row: {
           certificate_url: string | null
@@ -942,6 +1016,80 @@ export type Database = {
         }
         Relationships: []
       }
+      devotional_completions: {
+        Row: {
+          completed_at: string | null
+          devotional_id: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          devotional_id: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          devotional_id?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devotional_completions_devotional_fkey"
+            columns: ["devotional_id"]
+            isOneToOne: false
+            referencedRelation: "devotionals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "devotional_completions_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      devotionals: {
+        Row: {
+          content: string
+          created_at: string | null
+          date: string
+          id: string
+          institution_id: string | null
+          scripture_reference: string | null
+          title: string
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          date: string
+          id?: string
+          institution_id?: string | null
+          scripture_reference?: string | null
+          title: string
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          date?: string
+          id?: string
+          institution_id?: string | null
+          scripture_reference?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devotionals_institution_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       enrollments: {
         Row: {
           course_id: string | null
@@ -1087,6 +1235,47 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      fellowship_rooms: {
+        Row: {
+          created_at: string | null
+          current_count: number | null
+          description: string | null
+          id: string
+          institution_id: string
+          is_active: boolean | null
+          max_capacity: number | null
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          current_count?: number | null
+          description?: string | null
+          id?: string
+          institution_id: string
+          is_active?: boolean | null
+          max_capacity?: number | null
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          current_count?: number | null
+          description?: string | null
+          id?: string
+          institution_id?: string
+          is_active?: boolean | null
+          max_capacity?: number | null
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fellowship_rooms_institution_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1625,6 +1814,96 @@ export type Database = {
           {
             foreignKeyName: "learning_progress_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      mentorship_requests: {
+        Row: {
+          accepted_at: string | null
+          created_at: string | null
+          id: string
+          institution_id: string
+          mentor_id: string | null
+          message: string | null
+          status: string | null
+          student_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          created_at?: string | null
+          id?: string
+          institution_id: string
+          mentor_id?: string | null
+          message?: string | null
+          status?: string | null
+          student_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          created_at?: string | null
+          id?: string
+          institution_id?: string
+          mentor_id?: string | null
+          message?: string | null
+          status?: string | null
+          student_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentorship_requests_institution_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentorship_requests_mentor_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "mentorship_requests_student_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          content: string
+          conversation_id: string
+          created_at: string | null
+          id: string
+          read_at: string | null
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          conversation_id: string
+          created_at?: string | null
+          id?: string
+          read_at?: string | null
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          conversation_id?: string
+          created_at?: string | null
+          id?: string
+          read_at?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_sender_fkey"
+            columns: ["sender_id"]
             isOneToOne: false
             referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
@@ -2323,6 +2602,47 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "v_course_gradebook"
             referencedColumns: ["assignment_id"]
+          },
+        ]
+      }
+      scripture_memory: {
+        Row: {
+          id: string
+          last_reviewed_at: string | null
+          mastery_level: number | null
+          memorized_at: string | null
+          review_count: number | null
+          user_id: string
+          verse_reference: string
+          verse_text: string
+        }
+        Insert: {
+          id?: string
+          last_reviewed_at?: string | null
+          mastery_level?: number | null
+          memorized_at?: string | null
+          review_count?: number | null
+          user_id: string
+          verse_reference: string
+          verse_text: string
+        }
+        Update: {
+          id?: string
+          last_reviewed_at?: string | null
+          mastery_level?: number | null
+          memorized_at?: string | null
+          review_count?: number | null
+          user_id?: string
+          verse_reference?: string
+          verse_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scripture_memory_user_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -3155,6 +3475,57 @@ export type Database = {
           {
             foreignKeyName: "teaching_assignments_faculty_user_id_fkey"
             columns: ["faculty_user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      testimonies: {
+        Row: {
+          approved_at: string | null
+          approved_by: string | null
+          content: string
+          created_at: string | null
+          id: string
+          institution_id: string | null
+          status: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          approved_at?: string | null
+          approved_by?: string | null
+          content: string
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          status?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          approved_at?: string | null
+          approved_by?: string | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          institution_id?: string | null
+          status?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "testimonies_institution_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "testimonies_user_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
