@@ -99,7 +99,9 @@ export const getCourseDetail = underChrist(async (courseId: string, userId?: str
     .eq('id', courseId)
     .single();
 
-  if (courseError) throw courseError;
+  if (courseError || !course) {
+    throw new Error('Course not found');
+  }
 
   // Get course modules with content
   const { data: modules, error: modulesError } = await supabase
@@ -108,7 +110,9 @@ export const getCourseDetail = underChrist(async (courseId: string, userId?: str
     .eq('course_id', courseId)
     .order('order_index');
 
-  if (modulesError) throw modulesError;
+  if (modulesError) {
+    console.error('Error fetching modules:', modulesError);
+  }
 
   // Get user enrollment if userId provided
   let enrollment: any = undefined;
@@ -123,14 +127,27 @@ export const getCourseDetail = underChrist(async (courseId: string, userId?: str
     enrollment = enrollmentData;
   }
 
+  // Get user progress for modules
+  let progress: any[] = [];
+  if (userId && modules && modules.length > 0) {
+    const { data: progressData } = await supabase
+      .from('module_progress')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('course_id', courseId);
+    
+    progress = progressData || [];
+  }
+
   return {
     course: course as any,
     modules: (modules || []).map(m => ({
       ...m,
-      content: typeof m.content === 'string' ? JSON.parse(m.content) : m.content
+      content: typeof m.content === 'string' ? JSON.parse(m.content) : m.content,
+      quiz_data: m.quiz_data ? (typeof m.quiz_data === 'string' ? JSON.parse(m.quiz_data) : m.quiz_data) : null
     })) as any[],
     enrollment,
-    progress: []
+    progress
   };
 });
 

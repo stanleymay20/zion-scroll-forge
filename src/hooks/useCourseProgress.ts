@@ -68,27 +68,45 @@ export const useCompleteModule = (courseId: string) => {
     mutationFn: underChrist(async ({ moduleId, quizScore }: { moduleId: string; quizScore?: number }) => {
       if (!user?.id) throw new Error('Not authenticated');
 
-      // Record module completion
+      // Record module completion in module_progress
       const { error: progressError } = await supabase
-        .from('learning_progress')
+        .from('module_progress')
         .upsert({
           user_id: user.id,
+          course_id: courseId,
           module_id: moduleId,
           completed: true,
-          quiz_score: quizScore,
-          updated_at: new Date().toISOString()
+          completed_at: new Date().toISOString()
         });
 
-      if (progressError) throw progressError;
+      if (progressError) {
+        console.error('Progress error:', progressError);
+        throw progressError;
+      }
 
-      // Award ScrollCoins
+      // Also update learning_progress if quiz score provided
+      if (quizScore !== undefined) {
+        await supabase
+          .from('learning_progress')
+          .upsert({
+            user_id: user.id,
+            module_id: moduleId,
+            completed: true,
+            quiz_score: quizScore,
+            updated_at: new Date().toISOString()
+          });
+      }
+
+      // Award ScrollCoins (don't throw on error, just log)
       const { error: coinError } = await supabase.rpc('earn_scrollcoin', {
         p_user_id: user.id,
         p_amount: 50,
         p_desc: 'Module completion reward'
       });
 
-      if (coinError) throw coinError;
+      if (coinError) {
+        console.error('ScrollCoin award error:', coinError);
+      }
 
       // Update enrollment progress
       const { data: allModules } = await supabase
@@ -97,13 +115,14 @@ export const useCompleteModule = (courseId: string) => {
         .eq('course_id', courseId);
 
       const { data: completedModules } = await supabase
-        .from('learning_progress')
+        .from('module_progress')
         .select('module_id')
         .eq('user_id', user.id)
+        .eq('course_id', courseId)
         .eq('completed', true);
 
       const progress = allModules && completedModules 
-        ? (completedModules.length / allModules.length) * 100 
+        ? Math.round((completedModules.length / allModules.length) * 100)
         : 0;
 
       const { error: enrollmentError } = await supabase
@@ -115,52 +134,17 @@ export const useCompleteModule = (courseId: string) => {
         .eq('course_id', courseId)
         .eq('user_id', user.id);
 
-      if (enrollmentError) throw enrollmentError;
-
-      // Update user stats
-      const { data: userStats } = await supabase
-        .from('user_stats')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (!userStats) {
-        await supabase.from('user_stats').insert({
-          user_id: user.id,
-          total_xp: 25,
-          total_scrollcoins: 50,
-          courses_completed: progress === 100 ? 1 : 0,
-          current_streak: 1,
-          longest_streak: 1,
-          last_activity_date: new Date().toISOString().split('T')[0],
-        });
-      } else {
-        const newCoursesCompleted = progress === 100 
-          ? userStats.courses_completed + 1 
-          : userStats.courses_completed;
-
-        await supabase.from('user_stats').update({
-          total_xp: userStats.total_xp + 25,
-          total_scrollcoins: userStats.total_scrollcoins + 50,
-          courses_completed: newCoursesCompleted,
-          last_activity_date: new Date().toISOString().split('T')[0],
-        }).eq('user_id', user.id);
+      if (enrollmentError) {
+        console.error('Enrollment update error:', enrollmentError);
       }
 
-      // Check for new achievements
-      await supabase.functions.invoke('check-achievements', {
-        body: { userId: user.id },
-      });
-
-      return { progress };
+      return { progress, moduleId };
     }),
-    onSuccess: () => {
+    onSuccess: (data: { progress: number; moduleId: string }) => {
       queryClient.invalidateQueries({ queryKey: ['course-progress'] });
       queryClient.invalidateQueries({ queryKey: ['user-enrollments'] });
-      queryClient.invalidateQueries({ queryKey: ['user_stats'] });
-      queryClient.invalidateQueries({ queryKey: ['notifications'] });
       toast.success('Module completed! 🎉', {
-        description: 'You earned 50 ScrollCoins!',
+        description: `You earned 50 ScrollCoins! Progress: ${data.progress}%`,
       });
     },
     onError: (error: Error) => {
