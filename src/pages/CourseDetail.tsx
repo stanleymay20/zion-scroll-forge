@@ -66,7 +66,7 @@ export default function CourseDetail() {
     );
   }
 
-  if (error || !courseData) {
+  if (error || !courseData || !courseData.course) {
     return (
       <PageTemplate title="Course Not Found" description="">
         <div className="text-center py-12">
@@ -83,7 +83,7 @@ export default function CourseDetail() {
     );
   }
 
-  const { course, modules } = courseData;
+  const { course, modules = [] } = courseData;
 
   console.info('✝️ ScrollUniversity: Course materials loaded — Christ is Lord over every scroll');
 

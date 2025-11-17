@@ -56,7 +56,7 @@ export default function CourseLearn() {
     );
   }
 
-  if (!courseData) {
+  if (!courseData || !courseData.course || !courseData.modules) {
     return (
       <PageTemplate title="Course Not Found" description="">
         <div className="text-center py-12">
@@ -71,7 +71,23 @@ export default function CourseLearn() {
     );
   }
 
-  const { course, modules } = courseData;
+  const { course, modules = [] } = courseData;
+  
+  if (modules.length === 0) {
+    return (
+      <PageTemplate title={course?.title || "Course"} description="">
+        <div className="text-center py-12">
+          <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+          <p className="text-lg text-muted-foreground mb-4">No modules available for this course yet</p>
+          <Button onClick={() => navigate('/courses')}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back to Courses
+          </Button>
+        </div>
+      </PageTemplate>
+    );
+  }
+
   const currentModule = modules[currentModuleIndex];
   const isLastModule = currentModuleIndex === modules.length - 1;
   const isFirstModule = currentModuleIndex === 0;
