@@ -1820,6 +1820,155 @@ export type Database = {
           },
         ]
       }
+      live_sessions: {
+        Row: {
+          course_id: string
+          created_at: string | null
+          ended_at: string | null
+          id: string
+          institution_id: string
+          module_id: string | null
+          recording_url: string | null
+          scheduled_end: string
+          scheduled_start: string
+          started_at: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          course_id: string
+          created_at?: string | null
+          ended_at?: string | null
+          id?: string
+          institution_id: string
+          module_id?: string | null
+          recording_url?: string | null
+          scheduled_end: string
+          scheduled_start: string
+          started_at?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          course_id?: string
+          created_at?: string | null
+          ended_at?: string | null
+          id?: string
+          institution_id?: string
+          module_id?: string | null
+          recording_url?: string | null
+          scheduled_end?: string
+          scheduled_start?: string
+          started_at?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_sessions_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      live_sessions_chat: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message: string
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_sessions_chat_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "live_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      live_sessions_participants: {
+        Row: {
+          attendance_duration: number | null
+          audio_enabled: boolean | null
+          hand_raised: boolean | null
+          id: string
+          is_host: boolean | null
+          joined_at: string | null
+          left_at: string | null
+          session_id: string
+          user_id: string
+          video_enabled: boolean | null
+        }
+        Insert: {
+          attendance_duration?: number | null
+          audio_enabled?: boolean | null
+          hand_raised?: boolean | null
+          id?: string
+          is_host?: boolean | null
+          joined_at?: string | null
+          left_at?: string | null
+          session_id: string
+          user_id: string
+          video_enabled?: boolean | null
+        }
+        Update: {
+          attendance_duration?: number | null
+          audio_enabled?: boolean | null
+          hand_raised?: boolean | null
+          id?: string
+          is_host?: boolean | null
+          joined_at?: string | null
+          left_at?: string | null
+          session_id?: string
+          user_id?: string
+          video_enabled?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_sessions_participants_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "live_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       mentorship_requests: {
         Row: {
           accepted_at: string | null
