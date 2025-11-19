@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">24.65% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>18/73</span>
+                <span class='fraction'>0/73</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/30</span>
+                <span class='fraction'>0/30</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.11% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/18</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25.71% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>18/70</span>
+                <span class='fraction'>0/70</span>
             </div>
         
             
@@ -344,8 +344,8 @@
 <a name='L279'></a><a href='#L279'>279</a>
 <a name='L280'></a><a href='#L280'>280</a>
 <a name='L281'></a><a href='#L281'>281</a>
-<a name='L282'></a><a href='#L282'>282</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L282'></a><a href='#L282'>282</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -362,25 +362,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -389,7 +386,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -625,8 +625,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import { logger } from '../../utils/logger';
-import { PrismaClient } from '@prisma/client';
+<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" >import { logger } from '../../utils/logger';</span>
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
 &nbsp;
 interface SecurityEvent {
   id: string;
@@ -643,22 +643,22 @@ interface SecurityEvent {
   resolvedBy?: string;
 }
 &nbsp;
-enum SecurityEventType {
-  UNAUTHORIZED_ACCESS = 'unauthorized_access',
-  SUSPICIOUS_LOGIN = 'suspicious_login',
-  DATA_BREACH_ATTEMPT = 'data_breach_attempt',
-  DOCUMENT_TAMPERING = 'document_tampering',
-  FRAUD_ATTEMPT = 'fraud_attempt',
-  PRIVACY_VIOLATION = 'privacy_violation',
-  ACCESS_CONTROL_VIOLATION = 'access_control_violation',
-  SYSTEM_INTRUSION = 'system_intrusion'
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >enum S</span>ecurityEventType {</span>
+<span class="cstat-no" title="statement not covered" >  UNAUTHORIZED_ACCESS = 'unauthorized_access',</span>
+<span class="cstat-no" title="statement not covered" >  SUSPICIOUS_LOGIN = 'suspicious_login',</span>
+<span class="cstat-no" title="statement not covered" >  DATA_BREACH_ATTEMPT = 'data_breach_attempt',</span>
+<span class="cstat-no" title="statement not covered" >  DOCUMENT_TAMPERING = 'document_tampering',</span>
+<span class="cstat-no" title="statement not covered" >  FRAUD_ATTEMPT = 'fraud_attempt',</span>
+<span class="cstat-no" title="statement not covered" >  PRIVACY_VIOLATION = 'privacy_violation',</span>
+<span class="cstat-no" title="statement not covered" >  ACCESS_CONTROL_VIOLATION = 'access_control_violation',</span>
+<span class="cstat-no" title="statement not covered" >  SYSTEM_INTRUSION = 'system_intrusion'</span>
 }
 &nbsp;
-enum SecuritySeverity {
-  LOW = 'low',
-  MEDIUM = 'medium',
-  HIGH = 'high',
-  CRITICAL = 'critical'
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >enum S</span>ecuritySeverity {</span>
+<span class="cstat-no" title="statement not covered" >  LOW = 'low',</span>
+<span class="cstat-no" title="statement not covered" >  MEDIUM = 'medium',</span>
+<span class="cstat-no" title="statement not covered" >  HIGH = 'high',</span>
+<span class="cstat-no" title="statement not covered" >  CRITICAL = 'critical'</span>
 }
 &nbsp;
 interface SecurityMetrics {
@@ -670,7 +670,7 @@ interface SecurityMetrics {
   averageResolutionTime: number;
 }
 &nbsp;
-export class SecurityMonitoringService {
+<span class="cstat-no" title="statement not covered" >export class S</span>ecurityMonitoringService {
   private prisma: PrismaClient;
 &nbsp;
 <span class="fstat-no" title="function not covered" >  constructor() {</span>
@@ -906,14 +906,14 @@ export class SecurityMonitoringService {
   }
 }
 &nbsp;
-export default SecurityMonitoringService;</pre></td></tr></table></pre>
+<span class="cstat-no" title="statement not covered" >export default SecurityMonitoringService;</span></pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-16T09:21:20.087Z
+                at 2025-11-19T13:55:34.483Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

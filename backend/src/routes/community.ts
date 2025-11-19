@@ -1,431 +1,762 @@
-import express from 'express';
-import { CommunityCollaborationService } from '../../../src/services/CommunityCollaborationService';
-import { authMiddleware } from '../middleware/auth';
+/**
+ * Community Feed and Social Features Routes
+ * "Let us consider how we may spur one another on toward love and good deeds" - Hebrews 10:24
+ */
+
+import express, { Request, Response } from 'express';
+import { authenticate } from '../middleware/auth';
+import CommunityService from '../services/CommunityService';
+import CommentService from '../services/CommentService';
+import SocialInteractionService from '../services/SocialInteractionService';
+import ContentModerationService from '../services/ContentModerationService';
+import NotificationService from '../services/NotificationService';
+import TrendingTopicsService from '../services/TrendingTopicsService';
+import {
+  CreatePostRequest,
+  UpdatePostRequest,
+  GetFeedRequest,
+  CreateCommentRequest,
+  ReportPostRequest,
+  ModerationAction,
+  TrendingTimeRange
+} from '../types/community.types';
+import logger from '../utils/logger';
 
 const router = express.Router();
-const communityService = new CommunityCollaborationService();
 
-// Apply authentication middleware to all routes
-router.use(authMiddleware);
+// ============================================================================
+// Post Routes
+// ============================================================================
 
-// Community Dashboard
-router.get('/dashboard/:userId', async (req, res) => {
+/**
+ * Create a new post
+ * POST /api/community/posts
+ */
+router.post('/posts', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId } = req.params;
-    const dashboard = await communityService.getCommunityDashboard(userId);
-    res.json(dashboard);
-  } catch (error) {
-    console.error('Error fetching community dashboard:', error);
-    res.status(500).json({ error: 'Failed to fetch community dashboard' });
-  }
-});
+    const userId = (req as any).user.id;
+    const data: CreatePostRequest = req.body;
 
-// Forums
-router.get('/forums', async (req, res) => {
-  try {
-    const forumService = await communityService.getForumService();
-    const { category, spiritualFocus } = req.query;
+    // AI content moderation
+    const flagResult = await ContentModerationService.flagContentWithAI(data.content);
     
-    let forums;
-    if (category) {
-      forums = await forumService.getForumsByCategory(category as any);
-    } else {
-      forums = await forumService.getPopularForums();
+    if (flagResult.isFlagged && flagResult.confidence > 0.8) {
+      res.status(400).json({
+        success: false,
+        error: 'Content flagged by moderation system',
+        details: flagResult
+      });
+      return;
     }
-    
-    res.json(forums);
+
+    const post = await CommunityService.createPost(userId, data);
+
+    res.status(201).json({
+      success: true,
+      post
+    });
   } catch (error) {
-    console.error('Error fetching forums:', error);
-    res.status(500).json({ error: 'Failed to fetch forums' });
+    logger.error('Error creating post:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to create post'
+    });
   }
 });
 
-router.post('/forums', async (req, res) => {
+/**
+ * Get feed
+ * GET /api/community/feed
+ */
+router.get('/feed', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const forumService = await communityService.getForumService();
-    const forum = await forumService.createForum(req.body);
-    res.status(201).json(forum);
+    const userId = (req as any).user.id;
+    const params: GetFeedRequest = {
+      type: req.query.type as any,
+      visibility: req.query.visibility as any,
+      hashtag: req.query.hashtag as string,
+      userId: req.query.userId as string,
+      limit: parseInt(req.query.limit as string) || 20,
+      offset: parseInt(req.query.offset as string) || 0,
+      sortBy: req.query.sortBy as any
+    };
+
+    const result = await CommunityService.getFeed(userId, params);
+
+    res.json({
+      success: true,
+      ...result
+    });
   } catch (error) {
-    console.error('Error creating forum:', error);
-    res.status(500).json({ error: 'Failed to create forum' });
+    logger.error('Error getting feed:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get feed'
+    });
   }
 });
 
-router.post('/forums/:forumId/join', async (req, res) => {
+/**
+ * Get a single post
+ * GET /api/community/posts/:postId
+ */
+router.get('/posts/:postId', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const forumService = await communityService.getForumService();
-    const { forumId } = req.params;
-    const { userId } = req.body;
-    
-    await forumService.joinForum(forumId, userId);
-    res.json({ message: 'Successfully joined forum' });
-  } catch (error) {
-    console.error('Error joining forum:', error);
-    res.status(500).json({ error: 'Failed to join forum' });
-  }
-});
-
-router.post('/forums/:forumId/posts', async (req, res) => {
-  try {
-    const forumService = await communityService.getForumService();
-    const { forumId } = req.params;
-    const postData = { ...req.body, forumId };
-    
-    const post = await forumService.createPost(postData);
-    res.status(201).json(post);
-  } catch (error) {
-    console.error('Error creating post:', error);
-    res.status(500).json({ error: 'Failed to create post' });
-  }
-});
-
-router.post('/posts/:postId/replies', async (req, res) => {
-  try {
-    const forumService = await communityService.getForumService();
+    const userId = (req as any).user.id;
     const { postId } = req.params;
-    const replyData = { ...req.body, postId };
-    
-    const reply = await forumService.createReply(replyData);
-    res.status(201).json(reply);
+
+    const post = await CommunityService.getPostWithAuthor(postId, userId);
+
+    res.json({
+      success: true,
+      post
+    });
   } catch (error) {
-    console.error('Error creating reply:', error);
-    res.status(500).json({ error: 'Failed to create reply' });
+    logger.error('Error getting post:', error);
+    res.status(404).json({
+      success: false,
+      error: 'Post not found'
+    });
   }
 });
 
-// Mentoring
-router.get('/mentoring/:userId', async (req, res) => {
+/**
+ * Update a post
+ * PUT /api/community/posts/:postId
+ */
+router.put('/posts/:postId', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const mentoringService = await communityService.getMentoringService();
+    const userId = (req as any).user.id;
+    const { postId } = req.params;
+    const data: UpdatePostRequest = { ...req.body, postId };
+
+    const post = await CommunityService.updatePost(userId, postId, data);
+
+    res.json({
+      success: true,
+      post
+    });
+  } catch (error) {
+    logger.error('Error updating post:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to update post'
+    });
+  }
+});
+
+/**
+ * Delete a post
+ * DELETE /api/community/posts/:postId
+ */
+router.delete('/posts/:postId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const { postId } = req.params;
+
+    await CommunityService.deletePost(userId, postId);
+
+    res.json({
+      success: true,
+      message: 'Post deleted successfully'
+    });
+  } catch (error) {
+    logger.error('Error deleting post:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to delete post'
+    });
+  }
+});
+
+/**
+ * Search posts
+ * GET /api/community/posts/search
+ */
+router.get('/posts/search', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const query = req.query.q as string;
+    const filters = {
+      type: req.query.type,
+      authorId: req.query.authorId,
+      limit: parseInt(req.query.limit as string) || 20,
+      offset: parseInt(req.query.offset as string) || 0
+    };
+
+    const result = await CommunityService.searchPosts(userId, query, filters);
+
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    logger.error('Error searching posts:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to search posts'
+    });
+  }
+});
+
+// ============================================================================
+// Comment Routes
+// ============================================================================
+
+/**
+ * Create a comment
+ * POST /api/community/comments
+ */
+router.post('/comments', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const data: CreateCommentRequest = req.body;
+
+    const comment = await CommentService.createComment(userId, data);
+
+    res.status(201).json({
+      success: true,
+      comment
+    });
+  } catch (error) {
+    logger.error('Error creating comment:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to create comment'
+    });
+  }
+});
+
+/**
+ * Get comments for a post
+ * GET /api/community/posts/:postId/comments
+ */
+router.get('/posts/:postId/comments', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const { postId } = req.params;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const result = await CommentService.getComments(postId, userId, limit, offset);
+
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    logger.error('Error getting comments:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get comments'
+    });
+  }
+});
+
+/**
+ * Update a comment
+ * PUT /api/community/comments/:commentId
+ */
+router.put('/comments/:commentId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const { commentId } = req.params;
+    const { content } = req.body;
+
+    const comment = await CommentService.updateComment(userId, commentId, content);
+
+    res.json({
+      success: true,
+      comment
+    });
+  } catch (error) {
+    logger.error('Error updating comment:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to update comment'
+    });
+  }
+});
+
+/**
+ * Delete a comment
+ * DELETE /api/community/comments/:commentId
+ */
+router.delete('/comments/:commentId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const { commentId } = req.params;
+
+    await CommentService.deleteComment(userId, commentId);
+
+    res.json({
+      success: true,
+      message: 'Comment deleted successfully'
+    });
+  } catch (error) {
+    logger.error('Error deleting comment:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to delete comment'
+    });
+  }
+});
+
+// ============================================================================
+// Social Interaction Routes
+// ============================================================================
+
+/**
+ * Like a post
+ * POST /api/community/posts/:postId/like
+ */
+router.post('/posts/:postId/like', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const { postId } = req.params;
+
+    const result = await SocialInteractionService.likePost(userId, postId);
+
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    logger.error('Error liking post:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to like post'
+    });
+  }
+});
+
+/**
+ * Like a comment
+ * POST /api/community/comments/:commentId/like
+ */
+router.post('/comments/:commentId/like', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const { commentId } = req.params;
+
+    const result = await SocialInteractionService.likeComment(userId, commentId);
+
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    logger.error('Error liking comment:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to like comment'
+    });
+  }
+});
+
+/**
+ * Share a post
+ * POST /api/community/posts/:postId/share
+ */
+router.post('/posts/:postId/share', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const userId = (req as any).user.id;
+    const { postId } = req.params;
+    const { shareMessage } = req.body;
+
+    await SocialInteractionService.sharePost(userId, postId, shareMessage);
+
+    res.json({
+      success: true,
+      message: 'Post shared successfully'
+    });
+  } catch (error) {
+    logger.error('Error sharing post:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to share post'
+    });
+  }
+});
+
+/**
+ * Follow a user
+ * POST /api/community/users/:userId/follow
+ */
+router.post('/users/:userId/follow', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const followerId = (req as any).user.id;
+    const { userId: followingId } = req.params;
+
+    const result = await SocialInteractionService.followUser(followerId, followingId);
+
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    logger.error('Error following user:', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Failed to follow user'
+    });
+  }
+});
+
+/**
+ * Get followers
+ * GET /api/community/users/:userId/followers
+ */
+router.get('/users/:userId/followers', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
     const { userId } = req.params;
-    const { role } = req.query;
-    
-    const mentorships = await mentoringService.getMentorshipsByUser(userId, role as 'mentor' | 'mentee');
-    res.json(mentorships);
+    const limit = parseInt(req.query.limit as string) || 20;
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const result = await SocialInteractionService.getFollowers(userId, limit, offset);
+
+    res.json({
+      success: true,
+      ...result
+    });
   } catch (error) {
-    console.error('Error fetching mentorships:', error);
-    res.status(500).json({ error: 'Failed to fetch mentorships' });
+    logger.error('Error getting followers:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get followers'
+    });
   }
 });
 
-router.post('/mentoring/request', async (req, res) => {
+/**
+ * Get following
+ * GET /api/community/users/:userId/following
+ */
+router.get('/users/:userId/following', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const mentoringService = await communityService.getMentoringService();
-    const mentorship = await mentoringService.createMentorshipRequest(req.body);
-    res.status(201).json(mentorship);
-  } catch (error) {
-    console.error('Error creating mentorship request:', error);
-    res.status(500).json({ error: 'Failed to create mentorship request' });
-  }
-});
-
-router.post('/mentoring/:mentorshipId/accept', async (req, res) => {
-  try {
-    const mentoringService = await communityService.getMentoringService();
-    const { mentorshipId } = req.params;
-    const { mentorId } = req.body;
-    
-    await mentoringService.acceptMentorshipRequest(mentorshipId, mentorId);
-    res.json({ message: 'Mentorship request accepted' });
-  } catch (error) {
-    console.error('Error accepting mentorship:', error);
-    res.status(500).json({ error: 'Failed to accept mentorship request' });
-  }
-});
-
-router.post('/mentoring/:mentorshipId/sessions', async (req, res) => {
-  try {
-    const mentoringService = await communityService.getMentoringService();
-    const { mentorshipId } = req.params;
-    const sessionData = { ...req.body, mentorshipId };
-    
-    const session = await mentoringService.scheduleSession(sessionData);
-    res.status(201).json(session);
-  } catch (error) {
-    console.error('Error scheduling session:', error);
-    res.status(500).json({ error: 'Failed to schedule session' });
-  }
-});
-
-router.post('/mentoring/sessions/:sessionId/complete', async (req, res) => {
-  try {
-    const mentoringService = await communityService.getMentoringService();
-    const { sessionId } = req.params;
-    const { notes, feedback } = req.body;
-    
-    await mentoringService.completeSession(sessionId, notes, feedback);
-    res.json({ message: 'Session completed successfully' });
-  } catch (error) {
-    console.error('Error completing session:', error);
-    res.status(500).json({ error: 'Failed to complete session' });
-  }
-});
-
-// Study Groups
-router.get('/study-groups', async (req, res) => {
-  try {
-    const studyGroupService = await communityService.getStudyGroupService();
-    const { subject, courseId, hasSpace } = req.query;
-    
-    const criteria: any = {};
-    if (subject) criteria.subject = subject;
-    if (courseId) criteria.courseId = courseId;
-    if (hasSpace === 'true') criteria.hasSpace = true;
-    
-    const studyGroups = await studyGroupService.findStudyGroups(criteria);
-    res.json(studyGroups);
-  } catch (error) {
-    console.error('Error fetching study groups:', error);
-    res.status(500).json({ error: 'Failed to fetch study groups' });
-  }
-});
-
-router.post('/study-groups', async (req, res) => {
-  try {
-    const studyGroupService = await communityService.getStudyGroupService();
-    const studyGroup = await studyGroupService.createStudyGroup(req.body);
-    res.status(201).json(studyGroup);
-  } catch (error) {
-    console.error('Error creating study group:', error);
-    res.status(500).json({ error: 'Failed to create study group' });
-  }
-});
-
-router.post('/study-groups/:groupId/join', async (req, res) => {
-  try {
-    const studyGroupService = await communityService.getStudyGroupService();
-    const { groupId } = req.params;
-    const { userId } = req.body;
-    
-    await studyGroupService.joinStudyGroup(groupId, userId);
-    res.json({ message: 'Successfully joined study group' });
-  } catch (error) {
-    console.error('Error joining study group:', error);
-    res.status(500).json({ error: 'Failed to join study group' });
-  }
-});
-
-router.post('/study-groups/:groupId/resources', async (req, res) => {
-  try {
-    const studyGroupService = await communityService.getStudyGroupService();
-    const { groupId } = req.params;
-    
-    const resource = await studyGroupService.addStudyResource(groupId, req.body);
-    res.status(201).json(resource);
-  } catch (error) {
-    console.error('Error adding resource:', error);
-    res.status(500).json({ error: 'Failed to add study resource' });
-  }
-});
-
-router.post('/study-groups/:groupId/sessions', async (req, res) => {
-  try {
-    const studyGroupService = await communityService.getStudyGroupService();
-    const { groupId } = req.params;
-    
-    await studyGroupService.recordStudySession(groupId, req.body);
-    res.json({ message: 'Study session recorded successfully' });
-  } catch (error) {
-    console.error('Error recording session:', error);
-    res.status(500).json({ error: 'Failed to record study session' });
-  }
-});
-
-// Projects
-router.get('/projects', async (req, res) => {
-  try {
-    const projectService = await communityService.getProjectService();
-    const { type, status, spiritualFocus } = req.query;
-    
-    const criteria: any = {};
-    if (type) criteria.type = type;
-    if (status) criteria.status = status;
-    if (spiritualFocus === 'true') criteria.spiritualFocus = true;
-    
-    const projects = await projectService.findProjects(criteria);
-    res.json(projects);
-  } catch (error) {
-    console.error('Error fetching projects:', error);
-    res.status(500).json({ error: 'Failed to fetch projects' });
-  }
-});
-
-router.post('/projects', async (req, res) => {
-  try {
-    const projectService = await communityService.getProjectService();
-    const project = await projectService.createProject(req.body);
-    res.status(201).json(project);
-  } catch (error) {
-    console.error('Error creating project:', error);
-    res.status(500).json({ error: 'Failed to create project' });
-  }
-});
-
-router.post('/projects/:projectId/join', async (req, res) => {
-  try {
-    const projectService = await communityService.getProjectService();
-    const { projectId } = req.params;
-    const { userId, role } = req.body;
-    
-    await projectService.joinProject(projectId, userId, role);
-    res.json({ message: 'Successfully joined project' });
-  } catch (error) {
-    console.error('Error joining project:', error);
-    res.status(500).json({ error: 'Failed to join project' });
-  }
-});
-
-router.post('/projects/:projectId/tasks', async (req, res) => {
-  try {
-    const projectService = await communityService.getProjectService();
-    const { projectId } = req.params;
-    
-    const task = await projectService.createTask(projectId, req.body);
-    res.status(201).json(task);
-  } catch (error) {
-    console.error('Error creating task:', error);
-    res.status(500).json({ error: 'Failed to create task' });
-  }
-});
-
-router.put('/projects/tasks/:taskId/status', async (req, res) => {
-  try {
-    const projectService = await communityService.getProjectService();
-    const { taskId } = req.params;
-    const { status, userId } = req.body;
-    
-    await projectService.updateTaskStatus(taskId, status, userId);
-    res.json({ message: 'Task status updated successfully' });
-  } catch (error) {
-    console.error('Error updating task status:', error);
-    res.status(500).json({ error: 'Failed to update task status' });
-  }
-});
-
-// Networking
-router.get('/networking/:userId', async (req, res) => {
-  try {
-    const networkingService = await communityService.getNetworkingService();
     const { userId } = req.params;
-    const { connectionType, status } = req.query;
-    
-    const filters: any = {};
-    if (connectionType) filters.connectionType = connectionType;
-    if (status) filters.status = status;
-    
-    const connections = await networkingService.getConnectionsByUser(userId, filters);
-    res.json(connections);
+    const limit = parseInt(req.query.limit as string) || 20;
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const result = await SocialInteractionService.getFollowing(userId, limit, offset);
+
+    res.json({
+      success: true,
+      ...result
+    });
   } catch (error) {
-    console.error('Error fetching connections:', error);
-    res.status(500).json({ error: 'Failed to fetch connections' });
+    logger.error('Error getting following:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get following'
+    });
   }
 });
 
-router.post('/networking/connect', async (req, res) => {
+/**
+ * Get user profile
+ * GET /api/community/users/:userId/profile
+ */
+router.get('/users/:userId/profile', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const networkingService = await communityService.getNetworkingService();
-    const { fromUserId, toUserId, connectionType, message } = req.body;
-    
-    const connection = await networkingService.sendConnectionRequest(fromUserId, toUserId, connectionType, message);
-    res.status(201).json(connection);
-  } catch (error) {
-    console.error('Error sending connection request:', error);
-    res.status(500).json({ error: 'Failed to send connection request' });
-  }
-});
-
-router.post('/networking/connections/:connectionId/accept', async (req, res) => {
-  try {
-    const networkingService = await communityService.getNetworkingService();
-    const { connectionId } = req.params;
-    const { userId } = req.body;
-    
-    await networkingService.acceptConnectionRequest(connectionId, userId);
-    res.json({ message: 'Connection request accepted' });
-  } catch (error) {
-    console.error('Error accepting connection:', error);
-    res.status(500).json({ error: 'Failed to accept connection request' });
-  }
-});
-
-router.get('/networking/:userId/opportunities', async (req, res) => {
-  try {
-    const networkingService = await communityService.getNetworkingService();
+    const currentUserId = (req as any).user.id;
     const { userId } = req.params;
-    const { careerTrack, skills, interests } = req.query;
+
+    const profile = await SocialInteractionService.getUserProfile(userId, currentUserId);
+
+    res.json({
+      success: true,
+      profile
+    });
+  } catch (error) {
+    logger.error('Error getting user profile:', error);
+    res.status(404).json({
+      success: false,
+      error: 'User not found'
+    });
+  }
+});
+
+/**
+ * Search users
+ * GET /api/community/users/search
+ */
+router.get('/users/search', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const query = req.query.q as string;
+    const filters = {
+      role: req.query.role,
+      limit: parseInt(req.query.limit as string) || 20,
+      offset: parseInt(req.query.offset as string) || 0
+    };
+
+    const result = await CommunityService.searchUsers(query, filters);
+
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    logger.error('Error searching users:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to search users'
+    });
+  }
+});
+
+// ============================================================================
+// Moderation Routes
+// ============================================================================
+
+/**
+ * Report a post
+ * POST /api/community/posts/:postId/report
+ */
+router.post('/posts/:postId/report', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const reporterId = (req as any).user.id;
+    const { postId } = req.params;
+    const { reason, description }: ReportPostRequest = req.body;
+
+    const report = await ContentModerationService.reportPost(reporterId, postId, reason, description);
+
+    res.status(201).json({
+      success: true,
+      report
+    });
+  } catch (error) {
+    logger.error('Error reporting post:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to report post'
+    });
+  }
+});
+
+/**
+ * Get moderation queue (admin only)
+ * GET /api/community/moderation/queue
+ */
+router.get('/moderation/queue', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const user = (req as any).user;
     
-    const criteria: any = {};
-    if (careerTrack) criteria.careerTrack = careerTrack;
-    if (skills) criteria.skills = (skills as string).split(',');
-    if (interests) criteria.interests = (interests as string).split(',');
+    // Check if user is admin or moderator
+    if (user.role !== 'ADMIN' && user.role !== 'SCROLL_ELDER') {
+      res.status(403).json({
+        success: false,
+        error: 'Unauthorized'
+      });
+      return;
+    }
+
+    const status = req.query.status as any;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const result = await ContentModerationService.getModerationQueue(status, limit, offset);
+
+    res.json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    logger.error('Error getting moderation queue:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get moderation queue'
+    });
+  }
+});
+
+/**
+ * Moderate a post (admin only)
+ * POST /api/community/moderation/posts/:postId
+ */
+router.post('/moderation/posts/:postId', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const user = (req as any).user;
     
-    const opportunities = await networkingService.findNetworkingOpportunities(userId, criteria);
-    res.json(opportunities);
+    // Check if user is admin or moderator
+    if (user.role !== 'ADMIN' && user.role !== 'SCROLL_ELDER') {
+      res.status(403).json({
+        success: false,
+        error: 'Unauthorized'
+      });
+      return;
+    }
+
+    const { postId } = req.params;
+    const { action, notes } = req.body;
+
+    await ContentModerationService.moderatePost(user.id, postId, action as ModerationAction, notes);
+
+    res.json({
+      success: true,
+      message: 'Post moderated successfully'
+    });
   } catch (error) {
-    console.error('Error finding networking opportunities:', error);
-    res.status(500).json({ error: 'Failed to find networking opportunities' });
+    logger.error('Error moderating post:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to moderate post'
+    });
   }
 });
 
-// Search
-router.get('/search', async (req, res) => {
+// ============================================================================
+// Notification Routes
+// ============================================================================
+
+/**
+ * Get notifications
+ * GET /api/community/notifications
+ */
+router.get('/notifications', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const { query, contentType, spiritualFocus, careerTrack } = req.query;
-    
-    const filters: any = {};
-    if (contentType) filters.contentType = contentType;
-    if (spiritualFocus === 'true') filters.spiritualFocus = true;
-    if (careerTrack) filters.careerTrack = careerTrack;
-    
-    const results = await communityService.searchCommunityContent(query as string, filters);
-    res.json(results);
+    const userId = (req as any).user.id;
+    const type = req.query.type as any;
+    const isRead = req.query.isRead === 'true' ? true : req.query.isRead === 'false' ? false : undefined;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const result = await NotificationService.getNotifications(userId, type, isRead, limit, offset);
+
+    res.json({
+      success: true,
+      ...result
+    });
   } catch (error) {
-    console.error('Error searching community content:', error);
-    res.status(500).json({ error: 'Failed to search community content' });
+    logger.error('Error getting notifications:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get notifications'
+    });
   }
 });
 
-// Peer Assistance Rewards (Requirement 9.2)
-router.post('/peer-assistance', async (req, res) => {
+/**
+ * Mark notification as read
+ * PUT /api/community/notifications/:notificationId/read
+ */
+router.put('/notifications/:notificationId/read', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    await communityService.implementPeerAssistanceRewards(req.body);
-    res.json({ message: 'Peer assistance recorded and rewards distributed' });
+    const { notificationId } = req.params;
+
+    await NotificationService.markAsRead(notificationId);
+
+    res.json({
+      success: true,
+      message: 'Notification marked as read'
+    });
   } catch (error) {
-    console.error('Error recording peer assistance:', error);
-    res.status(500).json({ error: 'Failed to record peer assistance' });
+    logger.error('Error marking notification as read:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to mark notification as read'
+    });
   }
 });
 
-// Faculty Interaction Quality (Requirement 5.4)
-router.post('/faculty-interaction-quality', async (req, res) => {
+/**
+ * Mark all notifications as read
+ * PUT /api/community/notifications/read-all
+ */
+router.put('/notifications/read-all', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const qualityAssessment = await communityService.ensureFacultyInteractionQuality(req.body);
-    res.json(qualityAssessment);
+    const userId = (req as any).user.id;
+
+    await NotificationService.markAllAsRead(userId);
+
+    res.json({
+      success: true,
+      message: 'All notifications marked as read'
+    });
   } catch (error) {
-    console.error('Error assessing faculty interaction quality:', error);
-    res.status(500).json({ error: 'Failed to assess faculty interaction quality' });
+    logger.error('Error marking all notifications as read:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to mark all notifications as read'
+    });
   }
 });
 
-// Analytics
-router.get('/analytics', async (req, res) => {
+// ============================================================================
+// Trending Topics Routes
+// ============================================================================
+
+/**
+ * Get trending topics
+ * GET /api/community/trending
+ */
+router.get('/trending', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const analytics = await communityService.getCommunityAnalytics();
-    res.json(analytics);
+    const limit = parseInt(req.query.limit as string) || 10;
+    const timeRange = (req.query.timeRange as TrendingTimeRange) || TrendingTimeRange.DAY;
+
+    const topics = await TrendingTopicsService.getTrendingTopics(limit, timeRange);
+
+    res.json({
+      success: true,
+      topics
+    });
   } catch (error) {
-    console.error('Error fetching community analytics:', error);
-    res.status(500).json({ error: 'Failed to fetch community analytics' });
+    logger.error('Error getting trending topics:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get trending topics'
+    });
   }
 });
 
-// Spiritual Community Events
-router.post('/spiritual-events', async (req, res) => {
+/**
+ * Get posts by hashtag
+ * GET /api/community/hashtags/:hashtag/posts
+ */
+router.get('/hashtags/:hashtag/posts', authenticate, async (req: Request, res: Response): Promise<void> => {
   try {
-    const eventId = await communityService.createSpiritualCommunityEvent(req.body);
-    res.status(201).json({ eventId, message: 'Spiritual community event created successfully' });
+    const userId = (req as any).user.id;
+    const { hashtag } = req.params;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const offset = parseInt(req.query.offset as string) || 0;
+
+    const result = await TrendingTopicsService.getPostsByHashtag(hashtag, userId, limit, offset);
+
+    res.json({
+      success: true,
+      ...result
+    });
   } catch (error) {
-    console.error('Error creating spiritual event:', error);
-    res.status(500).json({ error: 'Failed to create spiritual community event' });
+    logger.error('Error getting posts by hashtag:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get posts by hashtag'
+    });
+  }
+});
+
+/**
+ * Search hashtags
+ * GET /api/community/hashtags/search
+ */
+router.get('/hashtags/search', authenticate, async (req: Request, res: Response): Promise<void> => {
+  try {
+    const query = req.query.q as string;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const topics = await TrendingTopicsService.searchHashtags(query, limit);
+
+    res.json({
+      success: true,
+      topics
+    });
+  } catch (error) {
+    logger.error('Error searching hashtags:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to search hashtags'
+    });
   }
 });
 

@@ -6,16 +6,21 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { 
   ArrowLeft, Play, Clock, Users, Star, BookOpen, 
   CheckCircle, Lock, Trophy, Loader2, AlertCircle,
-  FileText, MessageSquare, Award, Heart
+  FileText, MessageSquare, Award, Heart, ChevronDown
 } from "lucide-react";
 import { useEnrollInCourse, useUserEnrollments } from "@/hooks/useCourses";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { CourseReviews } from "@/components/course/CourseReviews";
+import { CoursePreviewVideo } from "@/components/course/CoursePreviewVideo";
+import { InstructorProfileCard } from "@/components/course/InstructorProfileCard";
+import { CourseEnrollmentFlow } from "@/components/course/CourseEnrollmentFlow";
+import { CourseRecommendations } from "@/components/course/CourseRecommendations";
 
 export default function CourseDetail() {
   const { courseId } = useParams();
@@ -23,6 +28,7 @@ export default function CourseDetail() {
   const navigate = useNavigate();
   const enrollMutation = useEnrollInCourse();
   const { data: enrollments } = useUserEnrollments();
+  const [showEnrollmentFlow, setShowEnrollmentFlow] = useState(false);
 
   const { data: courseData, isLoading, error } = useQuery({
     queryKey: ['course-detail', courseId],
@@ -48,12 +54,33 @@ export default function CourseDetail() {
     [enrollments, courseId]
   );
 
-  const handleEnroll = async () => {
-    await enrollMutation.mutateAsync(courseId!);
+  const handleEnroll = () => {
+    setShowEnrollmentFlow(true);
   };
 
   const handleStartLearning = () => {
     navigate(`/courses/${courseId}/learn`);
+  };
+
+  // Mock instructor data (would come from API in production)
+  const instructorData = {
+    id: '1',
+    name: 'Dr. Samuel Scroll',
+    title: `Dean of ${courseData?.course?.faculty || 'Faculty'}`,
+    bio: 'Dr. Samuel Scroll is a renowned prophetic teacher with over 20 years of experience in training believers in prophetic ministry. He has trained thousands of students globally and has documented accuracy rates of 95%+ in prophetic ministry.',
+    faculty: courseData?.course?.faculty,
+    yearsExperience: 20,
+    studentsTaught: 10000,
+    coursesCreated: 15,
+    rating: 4.9,
+    specializations: ['Prophetic Intelligence', 'Spiritual Discernment', 'Kingdom Leadership'],
+    credentials: [
+      'Ph.D. in Prophetic Studies',
+      'Master of Divinity',
+      'Certified Prophetic Minister',
+      'Published Author of 5 Books'
+    ],
+    email: 'samuel.scroll@scrolluniversity.edu'
   };
 
   if (isLoading) {
@@ -101,6 +128,7 @@ export default function CourseDetail() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-4 md:space-y-6">
+          {/* Course Header */}
           <Card>
             <CardHeader>
               <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
@@ -126,6 +154,14 @@ export default function CourseDetail() {
               </div>
             </CardHeader>
           </Card>
+
+          {/* Preview Video */}
+          <CoursePreviewVideo
+            videoUrl={course.preview_video_url}
+            thumbnailUrl={course.thumbnail_url}
+            title={course.title}
+            duration="5:30"
+          />
 
           {enrollment && (
             <Card>
@@ -157,144 +193,122 @@ export default function CourseDetail() {
                 <CardHeader>
                   <CardTitle>Course Modules</CardTitle>
                   <CardDescription>
-                    Comprehensive learning modules with lectures, assessments, and practical applications
+                    {modules.length} comprehensive modules with lectures, assessments, and practical applications
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
+                  <Accordion type="single" collapsible className="w-full">
                     {modules.map((module, index) => (
-                      <div 
-                        key={module.id} 
-                        className="border rounded-lg p-4 space-y-3"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-3 flex-1">
+                      <AccordionItem key={module.id} value={`module-${index}`}>
+                        <AccordionTrigger className="hover:no-underline">
+                          <div className="flex items-center space-x-3 flex-1 text-left">
                             <div className="p-2 bg-primary/10 rounded-full">
                               <BookOpen className="h-4 w-4 text-primary" />
                             </div>
-                            <div>
-                              <p className="font-medium">{module.title}</p>
-                              {(module.content as any)?.summary && (
-                                <p className="text-sm text-muted-foreground mt-1">
-                                  {(module.content as any).summary}
-                                </p>
-                              )}
-                              <div className="flex items-center space-x-4 mt-2">
+                            <div className="flex-1">
+                              <p className="font-medium">Module {index + 1}: {module.title}</p>
+                              <div className="flex items-center space-x-4 mt-1">
                                 <span className="text-xs text-muted-foreground">
                                   <Clock className="h-3 w-3 inline mr-1" />
                                   {(module.content as any)?.duration_minutes || 45} minutes
                                 </span>
-                                <span className="text-xs text-muted-foreground">
-                                  Module {index + 1}
-                                </span>
+                                {module.learning_materials && (
+                                  <span className="text-xs text-muted-foreground">
+                                    {module.learning_materials.length} materials
+                                  </span>
+                                )}
                               </div>
                             </div>
                           </div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => navigate(`/ai-tutors/${course.faculty}?context=${encodeURIComponent(module.title)}`)}
-                          >
-                            <MessageSquare className="h-4 w-4 mr-2" />
-                            Ask AI Tutor
-                          </Button>
-                        </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="space-y-4 pt-4">
+                          {/* Module Summary */}
+                          {(module.content as any)?.summary && (
+                            <p className="text-sm text-muted-foreground">
+                              {(module.content as any).summary}
+                            </p>
+                          )}
 
-                        {/* Learning Materials */}
-                        {module.learning_materials && module.learning_materials.length > 0 && (
-                          <div className="space-y-2">
-                            <h4 className="font-medium text-sm">Materials:</h4>
-                            {module.learning_materials.map((material: any) => (
-                              <div key={material.id} className="flex items-center justify-between p-2 bg-muted/30 rounded">
-                                <div className="flex items-center space-x-2">
-                                  {material.kind === 'pdf' && <FileText className="h-4 w-4 text-red-500" />}
-                                  {material.kind === 'video' && <Play className="h-4 w-4 text-blue-500" />}
-                                  {material.kind === 'link' && <FileText className="h-4 w-4 text-green-500" />}
-                                  <span className="text-sm">{material.title}</span>
-                                </div>
-                                {material.url && (
-                                  <a
-                                    href={material.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs text-primary hover:underline"
-                                  >
-                                    Open
-                                  </a>
-                                )}
+                          {/* Learning Objectives */}
+                          {(module.content as any)?.learning_objectives && (module.content as any).learning_objectives.length > 0 && (
+                            <div className="bg-muted/50 rounded-lg p-3">
+                              <h4 className="font-medium text-sm mb-2">Learning Objectives:</h4>
+                              <ul className="space-y-1">
+                                {(module.content as any).learning_objectives.map((objective: string, objIndex: number) => (
+                                  <li key={objIndex} className="text-sm flex items-start space-x-2">
+                                    <CheckCircle className="h-3 w-3 text-primary mt-0.5 flex-shrink-0" />
+                                    <span>{objective}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* Learning Materials */}
+                          {module.learning_materials && module.learning_materials.length > 0 && (
+                            <div className="space-y-2">
+                              <h4 className="font-medium text-sm">Course Materials:</h4>
+                              <div className="space-y-2">
+                                {module.learning_materials.map((material: any) => (
+                                  <div key={material.id} className="flex items-center justify-between p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+                                    <div className="flex items-center space-x-3">
+                                      {material.kind === 'pdf' && <FileText className="h-4 w-4 text-red-500" />}
+                                      {material.kind === 'video' && <Play className="h-4 w-4 text-blue-500" />}
+                                      {material.kind === 'link' && <FileText className="h-4 w-4 text-green-500" />}
+                                      <div>
+                                        <p className="text-sm font-medium">{material.title}</p>
+                                        <p className="text-xs text-muted-foreground capitalize">{material.kind}</p>
+                                      </div>
+                                    </div>
+                                    {material.url && (
+                                      <a
+                                        href={material.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        <Button variant="ghost" size="sm">
+                                          Open
+                                        </Button>
+                                      </a>
+                                    )}
+                                  </div>
+                                ))}
                               </div>
-                            ))}
-                          </div>
-                        )}
+                            </div>
+                          )}
 
-                        {/* Learning Objectives */}
-                        {(module.content as any)?.learning_objectives && (module.content as any).learning_objectives.length > 0 && (
-                          <div className="bg-muted/50 rounded-lg p-3">
-                            <h4 className="font-medium text-sm mb-2">Learning Objectives:</h4>
-                            <ul className="space-y-1">
-                              {(module.content as any).learning_objectives.map((objective: string, objIndex: number) => (
-                                <li key={objIndex} className="text-sm flex items-start space-x-2">
-                                  <CheckCircle className="h-3 w-3 text-primary mt-0.5 flex-shrink-0" />
-                                  <span>{objective}</span>
-                                </li>
-                              ))}
-                            </ul>
+                          {/* Action Buttons */}
+                          <div className="flex gap-2 pt-2">
+                            {enrollment ? (
+                              <Button className="flex-1" size="sm" variant="default">
+                                <Play className="h-4 w-4 mr-2" />
+                                Start Module
+                              </Button>
+                            ) : (
+                              <Button className="flex-1" size="sm" variant="outline" disabled>
+                                <Lock className="h-4 w-4 mr-2" />
+                                Enroll to Access
+                              </Button>
+                            )}
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => navigate(`/ai-tutors/${course.faculty}?context=${encodeURIComponent(module.title)}`)}
+                            >
+                              <MessageSquare className="h-4 w-4 mr-2" />
+                              Ask AI Tutor
+                            </Button>
                           </div>
-                        )}
-
-                        {enrollment && (
-                          <Button className="w-full" size="sm" variant="secondary">
-                            <Play className="h-4 w-4 mr-2" />
-                            Start Module
-                          </Button>
-                        )}
-                      </div>
+                        </AccordionContent>
+                      </AccordionItem>
                     ))}
-                  </div>
+                  </Accordion>
                 </CardContent>
               </Card>
             </TabsContent>
 
             <TabsContent value="instructor">
-              <Card>
-                <CardHeader>
-                  <CardTitle>About the Instructor</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="font-semibold text-lg">Dr. Samuel Scroll</h3>
-                      <p className="text-sm text-muted-foreground">
-                        Dean of {course.faculty}
-                      </p>
-                    </div>
-                    <p className="text-muted-foreground">
-                      Dr. Samuel Scroll is a renowned prophetic teacher with over 20 years of 
-                      experience in training believers in prophetic ministry. He has trained 
-                      thousands of students globally and has documented accuracy rates of 95%+ 
-                      in prophetic ministry.
-                    </p>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <p className="font-medium">Experience</p>
-                        <p className="text-muted-foreground">20+ years</p>
-                      </div>
-                      <div>
-                        <p className="font-medium">Students Trained</p>
-                        <p className="text-muted-foreground">10,000+</p>
-                      </div>
-                      <div>
-                        <p className="font-medium">Accuracy Rate</p>
-                        <p className="text-muted-foreground">95%+</p>
-                      </div>
-                      <div>
-                        <p className="font-medium">Specialization</p>
-                        <p className="text-muted-foreground">Prophetic Intelligence</p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <InstructorProfileCard instructor={instructorData} />
             </TabsContent>
 
             <TabsContent value="spiritual">
@@ -417,19 +431,9 @@ export default function CourseDetail() {
                   <Button 
                     className="w-full" 
                     onClick={handleEnroll}
-                    disabled={enrollMutation.isPending}
                   >
-                    {enrollMutation.isPending ? (
-                      <>
-                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Enrolling...
-                      </>
-                    ) : (
-                      <>
-                        <Trophy className="h-4 w-4 mr-2" />
-                        Enroll Now
-                      </>
-                    )}
+                    <Trophy className="h-4 w-4 mr-2" />
+                    Enroll Now
                   </Button>
                 )}
               </div>
@@ -508,6 +512,25 @@ export default function CourseDetail() {
       <div className="mt-8">
         <CourseReviews courseId={courseId!} />
       </div>
+
+      {/* Course Recommendations */}
+      <div className="mt-8">
+        <CourseRecommendations currentCourseId={courseId} limit={6} />
+      </div>
+
+      {/* Enrollment Flow Dialog */}
+      <CourseEnrollmentFlow
+        course={{
+          id: course.id,
+          title: course.title,
+          price_cents: course.price_cents,
+          scrollCoinCost: course.scroll_coin_cost,
+          scholarshipEligible: course.scholarship_eligible,
+        }}
+        isOpen={showEnrollmentFlow}
+        onClose={() => setShowEnrollmentFlow(false)}
+        onSuccess={handleStartLearning}
+      />
     </PageTemplate>
   );
 }

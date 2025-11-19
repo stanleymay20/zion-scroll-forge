@@ -103,12 +103,12 @@ interface ProblemAnalysis {
 }
 
 interface PropheticInsight {
-    insight: string;
-  scriptural Basis: string[];
-receivedThrough: 'prayer' | 'dream' | 'vision' | 'word' | 'meditation';
-validatedBy ?: string; // ScrollElder ID
-applicationToProject: string;
-recordedAt: Date;
+  insight: string;
+  scripturalBasis: string[];
+  receivedThrough: 'prayer' | 'dream' | 'vision' | 'word' | 'meditation';
+  validatedBy?: string; // ScrollElder ID
+  applicationToProject: string;
+  recordedAt: Date;
 }
 
 interface PrototypeData {

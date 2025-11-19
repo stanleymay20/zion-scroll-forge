@@ -1,181 +1,153 @@
 /**
  * ScrollUniversity Authentication Middleware
- * Divine authorization system for kingdom access control
+ * "Guard the good deposit that was entrusted to you" - 2 Timothy 1:14
  */
 
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
-import { PrismaClient, UserRole } from '@prisma/client';
-import { logger } from '../utils/logger';
+import { supabaseAuthService } from '../services/SupabaseAuthService';
+import { authService } from '../services/AuthService';
+import { logger } from '../utils/productionLogger';
 
-const prisma = new PrismaClient();
-
-interface ScrollJWTPayload {
-  userId: string;
-  email: string;
-  role: UserRole;
-  scrollAlignment: number;
-  iat: number;
-  exp: number;
-}
-
-// Extend Express Request to include user
+// Extend Express Request type
 declare global {
   namespace Express {
     interface Request {
       user?: {
         id: string;
         email: string;
-        role: UserRole;
-        scrollAlignment: number;
+        role: string;
+        supabaseId?: string;
       };
     }
   }
 }
 
-export const authMiddleware = async (
+/**
+ * Authenticate user from JWT token (Supabase or legacy)
+ */
+export const authenticate = async (
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
-    
+
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       res.status(401).json({
-        error: 'Access denied',
-        message: 'No token provided. ScrollUniversity requires divine authorization.',
-        scrollMessage: 'Seek ye first the kingdom, then access shall be granted.'
+        success: false,
+        error: 'No authentication token provided'
       });
       return;
     }
-    
+
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
-    const jwtSecret = process.env.JWT_SECRET;
-    
-    if (!jwtSecret) {
-      logger.error('JWT_SECRET not configured');
-      res.status(500).json({
-        error: 'Server configuration error',
-        message: 'Divine secrets not properly configured'
+
+    // Check if token is blacklisted
+    const isBlacklisted = await supabaseAuthService.isTokenBlacklisted(token);
+    if (isBlacklisted) {
+      res.status(401).json({
+        success: false,
+        error: 'Token has been revoked'
       });
       return;
     }
-    
-    // Verify token
-    const decoded = jwt.verify(token, jwtSecret) as ScrollJWTPayload;
-    
-    // Fetch fresh user data to ensure account is still active
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId },
-      select: {
-        id: true,
-        email: true,
-        role: true,
-        scrollAlignment: true,
-        enrollmentStatus: true,
-        lastLoginAt: true
+
+    // Try Supabase auth first
+    try {
+      const payload = await supabaseAuthService.verifyAccessToken(token);
+      req.user = payload;
+      next();
+      return;
+    } catch (supabaseError) {
+      // Fallback to legacy auth
+      try {
+        const payload = await authService.verifyAccessToken(token);
+        req.user = payload;
+        next();
+        return;
+      } catch (legacyError) {
+        throw new Error('Invalid or expired authentication token');
       }
-    });
-    
-    if (!user) {
-      res.status(401).json({
-        error: 'User not found',
-        message: 'ScrollStudent record not found in the kingdom database'
-      });
-      return;
     }
-    
-    if (user.enrollmentStatus !== 'ACTIVE') {
-      res.status(403).json({
-        error: 'Account suspended',
-        message: 'ScrollStudent enrollment is not active',
-        status: user.enrollmentStatus
-      });
-      return;
-    }
-    
-    // Update last login time
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { lastLoginAt: new Date() }
-    });
-    
-    // Attach user to request
-    req.user = {
-      id: user.id,
-      email: user.email,
-      role: user.role,
-      scrollAlignment: user.scrollAlignment
-    };
-    
-    logger.debug(`ScrollStudent authenticated: ${user.email} (${user.role})`);
-    next();
-    
   } catch (error) {
-    if (error instanceof jwt.JsonWebTokenError) {
-      res.status(401).json({
-        error: 'Invalid token',
-        message: 'Divine authorization token is invalid or expired',
-        scrollMessage: 'Renew your covenant and try again'
-      });
-      return;
-    }
-    
-    logger.error('Authentication middleware error:', error);
-    res.status(500).json({
-      error: 'Authentication error',
-      message: 'An error occurred during divine authorization'
+    logger.warn('Authentication failed', {
+      error: error.message,
+      ip: req.ip,
+      path: req.path
+    });
+
+    res.status(401).json({
+      success: false,
+      error: 'Invalid or expired authentication token'
     });
   }
 };
 
-// Role-based authorization middleware
-export const requireRole = (allowedRoles: UserRole[]) => {
+/**
+ * Authorize user based on roles
+ */
+export const authorize = (...allowedRoles: string[]) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     if (!req.user) {
       res.status(401).json({
-        error: 'Authentication required',
-        message: 'Divine authorization required for this operation'
+        success: false,
+        error: 'Authentication required'
       });
       return;
     }
-    
+
     if (!allowedRoles.includes(req.user.role)) {
+      logger.warn('Authorization failed', {
+        userId: req.user.id,
+        userRole: req.user.role,
+        requiredRoles: allowedRoles,
+        path: req.path
+      });
+
       res.status(403).json({
-        error: 'Insufficient privileges',
-        message: `This operation requires ${allowedRoles.join(' or ')} authority`,
-        currentRole: req.user.role,
-        scrollMessage: 'Seek greater anointing for higher access'
+        success: false,
+        error: 'Insufficient permissions'
       });
       return;
     }
-    
+
     next();
   };
 };
 
-// Scroll alignment requirement middleware
-export const requireScrollAlignment = (minimumAlignment: number) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
-    if (!req.user) {
-      res.status(401).json({
-        error: 'Authentication required',
-        message: 'Divine authorization required for scroll alignment check'
-      });
-      return;
+/**
+ * Optional authentication - doesn't fail if no token
+ */
+export const optionalAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const authHeader = req.headers.authorization;
+
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const token = authHeader.substring(7);
+      const payload = await authService.verifyAccessToken(token);
+      req.user = payload;
     }
-    
-    if (req.user.scrollAlignment < minimumAlignment) {
-      res.status(403).json({
-        error: 'Insufficient scroll alignment',
-        message: `This operation requires scroll alignment of ${minimumAlignment}`,
-        currentAlignment: req.user.scrollAlignment,
-        scrollMessage: 'Increase your scroll alignment through faithful study and kingdom service'
-      });
-      return;
-    }
-    
+
     next();
-  };
+  } catch (error) {
+    // Continue without authentication
+    next();
+  }
+};
+
+/**
+ * Require authentication (alias for authenticate)
+ */
+export const requireAuth = authenticate;
+
+/**
+ * Require specific role(s)
+ */
+export const requireRole = (roles: string[]) => {
+  return [authenticate, authorize(...roles)];
 };

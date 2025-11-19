@@ -397,14 +397,14 @@ export class CommitteeCoordinator {
   }
 
   private requiresSpiritualExpertise(application: any): boolean {
-    return application.spiritualEvaluations?.some((eval: any) => 
-      eval.scrollAlignment < 0.7 || eval.spiritualMaturity === 'SEEKER'
+    return application.spiritualEvaluations?.some((evaluation: any) => 
+      evaluation.scrollAlignment < 0.7 || evaluation.spiritualMaturity === 'SEEKER'
     ) || false;
   }
 
   private requiresAcademicExpertise(application: any): boolean {
-    return application.academicEvaluations?.some((eval: any) => 
-      eval.academicReadiness < 60 || eval.supportNeeds?.length > 0
+    return application.academicEvaluations?.some((evaluation: any) => 
+      evaluation.academicReadiness < 60 || evaluation.supportNeeds?.length > 0
     ) || false;
   }
 

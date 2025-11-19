@@ -776,7 +776,7 @@ export class AccessibilityComplianceService {
 
   private async testScreenReaderCompatibility(
     technology: AssistiveTechnology,
-    interface: any
+    applicationInterface: any
   ): Promise<CompatibilityTest[]> {
     // Implementation would test screen reader compatibility
     return [];
@@ -784,7 +784,7 @@ export class AccessibilityComplianceService {
 
   private async testMagnificationCompatibility(
     technology: AssistiveTechnology,
-    interface: any
+    applicationInterface: any
   ): Promise<CompatibilityTest[]> {
     // Implementation would test magnification compatibility
     return [];
@@ -792,7 +792,7 @@ export class AccessibilityComplianceService {
 
   private async testVoiceRecognitionCompatibility(
     technology: AssistiveTechnology,
-    interface: any
+    applicationInterface: any
   ): Promise<CompatibilityTest[]> {
     // Implementation would test voice recognition compatibility
     return [];
@@ -800,7 +800,7 @@ export class AccessibilityComplianceService {
 
   private async testAlternativeKeyboardCompatibility(
     technology: AssistiveTechnology,
-    interface: any
+    applicationInterface: any
   ): Promise<CompatibilityTest[]> {
     // Implementation would test alternative keyboard compatibility
     return [];
@@ -808,7 +808,7 @@ export class AccessibilityComplianceService {
 
   private async testGenericCompatibility(
     technology: AssistiveTechnology,
-    interface: any
+    applicationInterface: any
   ): Promise<CompatibilityTest[]> {
     // Implementation would test generic compatibility
     return [];

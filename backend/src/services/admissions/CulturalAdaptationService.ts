@@ -591,10 +591,10 @@ export class CulturalAdaptationService {
     return language;
   }
 
-  private addFamilyContext(interface: any): any {
+  private addFamilyContext(userInterface: any): any {
     // Implementation would add family involvement context
     return {
-      ...interface,
+      ...userInterface,
       familyInvolvement: {
         enabled: true,
         guidance: 'We understand that family plays an important role in your educational decisions'
