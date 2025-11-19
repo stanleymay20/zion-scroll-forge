@@ -1920,6 +1920,27 @@ export type Database = {
             referencedRelation: "live_sessions"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "live_sessions_chat_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_chat_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "live_sessions_chat_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       live_sessions_participants: {
@@ -1966,6 +1987,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "live_sessions"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "live_sessions_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
           },
         ]
       }
