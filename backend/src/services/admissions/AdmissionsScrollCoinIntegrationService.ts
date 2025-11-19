@@ -466,4 +466,13 @@ export class AdmissionsScrollCoinIntegrationService {
 
   /**
    * Process work-trade payment
-   *
+   *   */
+ 
+ private async processWorkTradePayment(
+    applicationId: string,
+    amount: number
+  ): Promise<void> {
+    // Implementation for work-trade payment processing
+    logger.info('Processing work-trade payment', { applicationId, amount });
+  }
+}

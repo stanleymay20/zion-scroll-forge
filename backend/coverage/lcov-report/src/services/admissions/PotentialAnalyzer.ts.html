@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">2.83% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/282</span>
+                <span class='fraction'>0/282</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">1.78% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/112</span>
+                <span class='fraction'>0/112</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">1.88% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/53</span>
+                <span class='fraction'>0/53</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.26% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/245</span>
+                <span class='fraction'>0/245</span>
             </div>
         
             
@@ -873,7 +873,7 @@
 <a name='L808'></a><a href='#L808'>808</a>
 <a name='L809'></a><a href='#L809'>809</a>
 <a name='L810'></a><a href='#L810'>810</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -884,12 +884,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -959,7 +959,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1682,7 +1682,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { PrismaClient } from '@prisma/client';
-import { logger } from '../../utils/logger';
+<span class="cstat-no" title="statement not covered" >import { logger } from '../../utils/logger';</span>
 import { PerformanceMetrics, SkillAssessment, PotentialScore, CapacityAssessment } from './AcademicEvaluator';
 &nbsp;
 export interface LearningPattern {
@@ -1693,12 +1693,12 @@ export interface LearningPattern {
   challengeResponse: ChallengeResponse;
 }
 &nbsp;
-export enum LearningStyle {
-  VISUAL = 'visual',
-  AUDITORY = 'auditory',
-  KINESTHETIC = 'kinesthetic',
-  READING_WRITING = 'reading_writing',
-  MULTIMODAL = 'multimodal'
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export enum L</span>earningStyle {</span>
+<span class="cstat-no" title="statement not covered" >  VISUAL = 'visual',</span>
+<span class="cstat-no" title="statement not covered" >  AUDITORY = 'auditory',</span>
+<span class="cstat-no" title="statement not covered" >  KINESTHETIC = 'kinesthetic',</span>
+<span class="cstat-no" title="statement not covered" >  READING_WRITING = 'reading_writing',</span>
+<span class="cstat-no" title="statement not covered" >  MULTIMODAL = 'multimodal'</span>
 }
 &nbsp;
 export interface MotivationFactor {
@@ -1768,7 +1768,7 @@ export interface SuccessPredictor {
   correlation: number; // correlation with success
 }
 &nbsp;
-export class PotentialAnalyzer {
+<span class="cstat-no" title="statement not covered" >export class P</span>otentialAnalyzer {
   private prisma: PrismaClient;
 &nbsp;
 <span class="fstat-no" title="function not covered" >  constructor(p</span>risma: PrismaClient) {
@@ -2497,7 +2497,7 @@ export class PotentialAnalyzer {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-16T09:21:19.316Z
+                at 2025-11-19T13:55:33.461Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

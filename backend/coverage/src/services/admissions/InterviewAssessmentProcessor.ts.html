@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">6.25% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/144</span>
+                <span class='fraction'>0/144</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.84% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/52</span>
+                <span class='fraction'>0/52</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.76% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/21</span>
+                <span class='fraction'>0/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">6.56% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/137</span>
+                <span class='fraction'>0/137</span>
             </div>
         
             
@@ -929,7 +929,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1005,13 +1005,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1187,7 +1187,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1788,7 +1788,7 @@
 &nbsp;
 import { InterviewEvaluation, EvaluationScores, EvaluationObservations } from './InterviewEvaluator';
 import { VideoConferenceSession } from './VideoConferenceManager';
-import { InterviewType, RecommendationType } from '@prisma/client';
+<span class="cstat-no" title="statement not covered" >import { InterviewType, RecommendationType } from '@prisma/client';</span>
 &nbsp;
 export interface AssessmentAnalysis {
   interviewId: string;
@@ -1864,13 +1864,13 @@ export interface ProcessorRecommendations {
   developmentAreas: DevelopmentArea[];
 }
 &nbsp;
-export enum AnalysisType {
-  TRANSCRIPT = 'transcript',
-  VIDEO = 'video',
-  AUDIO = 'audio',
-  BEHAVIORAL = 'behavioral',
-  SENTIMENT = 'sentiment',
-  COMPREHENSIVE = 'comprehensive'
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export enum A</span>nalysisType {</span>
+<span class="cstat-no" title="statement not covered" >  TRANSCRIPT = 'transcript',</span>
+<span class="cstat-no" title="statement not covered" >  VIDEO = 'video',</span>
+<span class="cstat-no" title="statement not covered" >  AUDIO = 'audio',</span>
+<span class="cstat-no" title="statement not covered" >  BEHAVIORAL = 'behavioral',</span>
+<span class="cstat-no" title="statement not covered" >  SENTIMENT = 'sentiment',</span>
+<span class="cstat-no" title="statement not covered" >  COMPREHENSIVE = 'comprehensive'</span>
 }
 &nbsp;
 export interface SpeakingTimeBreakdown {
@@ -2046,7 +2046,7 @@ export interface DevelopmentArea {
   recommendations: string[];
 }
 &nbsp;
-export class InterviewAssessmentProcessor {
+<span class="cstat-no" title="statement not covered" >export class I</span>nterviewAssessmentProcessor {
   /**
    * Process comprehensive interview assessment
    */
@@ -2647,7 +2647,7 @@ export class InterviewAssessmentProcessor {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-16T09:21:20.087Z
+                at 2025-11-19T13:55:34.483Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

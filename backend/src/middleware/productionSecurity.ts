@@ -1,230 +1,374 @@
 /**
- * ScrollUniversity Production Security Middleware
- * "Be wise as serpents and harmless as doves" - Matthew 10:16
+ * Production Security Middleware
+ * Enhanced security measures for production environment
  */
 
 import { Request, Response, NextFunction } from 'express';
-import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
-import cors from 'cors';
-import compression from 'compression';
-import { body, validationResult, sanitizeBody } from 'express-validator';
+import rateLimit from 'express-rate-limit';
+import { getProductionConfig } from '../config/production.config';
 import { logger } from '../utils/logger';
 
-// Rate limiting configuration
-export const createRateLimiter = (windowMs: number, max: number, message: string) => {
+/**
+ * Configure Helmet security headers for production
+ */
+export function configureHelmet() {
+  const config = getProductionConfig();
+
+  if (!config.security.helmetEnabled) {
+    return (req: Request, res: Response, next: NextFunction) => next();
+  }
+
+  return helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+        imgSrc: ["'self'", 'data:', 'https:', 'blob:'],
+        scriptSrc: ["'self'"],
+        connectSrc: ["'self'", 'https://api.openai.com', 'https://api.anthropic.com'],
+        frameSrc: ["'none'"],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+    hsts: {
+      maxAge: 31536000, // 1 year
+      includeSubDomains: true,
+      preload: true,
+    },
+    frameguard: {
+      action: 'deny',
+    },
+    noSniff: true,
+    xssFilter: true,
+    referrerPolicy: {
+      policy: 'strict-origin-when-cross-origin',
+    },
+  });
+}
+
+/**
+ * Configure rate limiting for production
+ */
+export function configureRateLimit() {
+  const config = getProductionConfig();
+
   return rateLimit({
-    windowMs,
-    max,
-    message: { success: false, error: message },
+    windowMs: config.security.rateLimitWindow * 60 * 1000,
+    max: config.security.rateLimitMax,
+    message: 'Too many requests from this IP, please try again later.',
     standardHeaders: true,
     legacyHeaders: false,
     handler: (req: Request, res: Response) => {
-      logger.warn(`Rate limit exceeded for IP: ${req.ip}`, {
+      logger.warn('Rate limit exceeded', {
         ip: req.ip,
-        userAgent: req.get('User-Agent'),
-        endpoint: req.path
+        path: req.path,
+        method: req.method,
       });
-      res.status(429).json({ success: false, error: message });
+
+      res.status(429).json({
+        success: false,
+        error: 'Too many requests. Please try again later.',
+        retryAfter: res.getHeader('Retry-After'),
+      });
+    },
+    skip: (req: Request) => {
+      // Skip rate limiting for health checks
+      return req.path === '/health' || req.path === '/ready' || req.path === '/live';
+    },
+  });
+}
+
+/**
+ * Configure AI-specific rate limiting
+ */
+export function configureAIRateLimit() {
+  const config = getProductionConfig();
+
+  return rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: config.ai.rateLimits.rpm,
+    message: 'AI request rate limit exceeded.',
+    keyGenerator: (req: Request) => {
+      // Rate limit per user for AI requests
+      return req.user?.id || req.ip || 'anonymous';
+    },
+    handler: (req: Request, res: Response) => {
+      logger.warn('AI rate limit exceeded', {
+        userId: req.user?.id,
+        ip: req.ip,
+        path: req.path,
+      });
+
+      res.status(429).json({
+        success: false,
+        error: 'AI request rate limit exceeded. Please try again later.',
+        retryAfter: res.getHeader('Retry-After'),
+      });
+    },
+  });
+}
+
+/**
+ * Request sanitization middleware
+ */
+export function sanitizeRequest(req: Request, res: Response, next: NextFunction): void {
+  // Remove potentially dangerous characters from query parameters
+  if (req.query) {
+    Object.keys(req.query).forEach((key) => {
+      if (typeof req.query[key] === 'string') {
+        req.query[key] = (req.query[key] as string)
+          .replace(/<script[^>]*>.*?<\/script>/gi, '')
+          .replace(/<[^>]+>/g, '')
+          .trim();
+      }
+    });
+  }
+
+  // Sanitize request body
+  if (req.body && typeof req.body === 'object') {
+    sanitizeObject(req.body);
+  }
+
+  next();
+}
+
+/**
+ * Recursively sanitize object properties
+ */
+function sanitizeObject(obj: any): void {
+  Object.keys(obj).forEach((key) => {
+    if (typeof obj[key] === 'string') {
+      obj[key] = obj[key]
+        .replace(/<script[^>]*>.*?<\/script>/gi, '')
+        .replace(/<[^>]+>/g, '')
+        .trim();
+    } else if (typeof obj[key] === 'object' && obj[key] !== null) {
+      sanitizeObject(obj[key]);
     }
   });
-};
+}
 
-// General API rate limiter
-export const generalRateLimit = createRateLimiter(
-  15 * 60 * 1000, // 15 minutes
-  100, // limit each IP to 100 requests per windowMs
-  'Too many requests from this IP, please try again later'
-);
+/**
+ * Security headers middleware
+ */
+export function securityHeaders(req: Request, res: Response, next: NextFunction): void {
+  // Remove sensitive headers
+  res.removeHeader('X-Powered-By');
+  res.removeHeader('Server');
 
-// Strict rate limiter for auth endpoints
-export const authRateLimit = createRateLimiter(
-  15 * 60 * 1000, // 15 minutes
-  5, // limit each IP to 5 requests per windowMs
-  'Too many authentication attempts, please try again later'
-);
+  // Add custom security headers
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
 
-// Admissions rate limiter
-export const admissionsRateLimit = createRateLimiter(
-  60 * 60 * 1000, // 1 hour
-  10, // limit each IP to 10 requests per hour
-  'Too many admissions requests, please try again later'
-);
-
-// Security headers middleware
-export const securityHeaders = helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-      fontSrc: ["'self'", "https://fonts.gstatic.com"],
-      imgSrc: ["'self'", "data:", "https:"],
-      scriptSrc: ["'self'"],
-      connectSrc: ["'self'", process.env.API_URL || "http://localhost:3001"],
-      frameSrc: ["'none'"],
-      objectSrc: ["'none'"],
-      upgradeInsecureRequests: []
-    }
-  },
-  hsts: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true
-  }
-});
-
-// CORS configuration
-export const corsConfig = cors({
-  origin: (origin, callback) => {
-    const allowedOrigins = [
-      process.env.FRONTEND_URL || 'http://localhost:3000',
-      process.env.PORTAL_URL || 'http://localhost:3002',
-      process.env.MOBILE_URL || 'http://localhost:3003'
-    ];
-    
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      logger.warn(`CORS blocked request from origin: ${origin}`);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
-});
-
-// Compression middleware
-export const compressionConfig = compression({
-  filter: (req: Request, res: Response) => {
-    if (req.headers['x-no-compression']) {
-      return false;
-    }
-    return compression.filter(req, res);
-  },
-  level: 6,
-  threshold: 1024
-});
-
-// Input validation middleware
-export const validateInput = (validations: any[]) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
-    // Run all validations
-    await Promise.all(validations.map(validation => validation.run(req)));
-
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      logger.warn('Input validation failed', {
-        errors: errors.array(),
-        ip: req.ip,
-        endpoint: req.path
-      });
-      
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid input data',
-        details: errors.array()
-      });
-    }
-
-    next();
-  };
-};
-
-// SQL injection protection
-export const sanitizeInput = (req: Request, res: Response, next: NextFunction) => {
-  const sanitizeObject = (obj: any): any => {
-    if (typeof obj === 'string') {
-      return obj.replace(/['"\\;]/g, '');
-    }
-    if (Array.isArray(obj)) {
-      return obj.map(sanitizeObject);
-    }
-    if (obj && typeof obj === 'object') {
-      const sanitized: any = {};
-      for (const key in obj) {
-        sanitized[key] = sanitizeObject(obj[key]);
-      }
-      return sanitized;
-    }
-    return obj;
-  };
-
-  req.body = sanitizeObject(req.body);
-  req.query = sanitizeObject(req.query);
-  req.params = sanitizeObject(req.params);
-  
   next();
-};
+}
 
-// Request logging middleware
-export const requestLogger = (req: Request, res: Response, next: NextFunction) => {
-  const start = Date.now();
-  
+/**
+ * Request logging middleware for production
+ */
+export function requestLogger(req: Request, res: Response, next: NextFunction): void {
+  const startTime = Date.now();
+
+  // Log request
+  logger.info('Incoming request', {
+    method: req.method,
+    path: req.path,
+    ip: req.ip,
+    userAgent: req.get('user-agent'),
+    userId: req.user?.id,
+  });
+
+  // Log response
   res.on('finish', () => {
-    const duration = Date.now() - start;
-    logger.info('HTTP Request', {
+    const duration = Date.now() - startTime;
+
+    logger.info('Request completed', {
       method: req.method,
-      url: req.url,
+      path: req.path,
       statusCode: res.statusCode,
       duration,
-      ip: req.ip,
-      userAgent: req.get('User-Agent')
+      userId: req.user?.id,
     });
+
+    // Log slow requests
+    if (duration > 5000) {
+      logger.warn('Slow request detected', {
+        method: req.method,
+        path: req.path,
+        duration,
+        userId: req.user?.id,
+      });
+    }
   });
-  
+
   next();
-};
+}
 
-// Error handling middleware
-export const productionErrorHandler = (
-  error: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  logger.error('Production error occurred', {
-    error: error.message,
-    stack: error.stack,
-    url: req.url,
+/**
+ * Error boundary middleware
+ */
+export function errorBoundary(err: Error, req: Request, res: Response, next: NextFunction): Response | void {
+  // Log error
+  logger.error('Unhandled error', {
+    error: err.message,
+    stack: err.stack,
     method: req.method,
-    ip: req.ip
+    path: req.path,
+    userId: req.user?.id,
   });
 
-  // Don't leak error details in production
+  // Don't expose internal errors in production
   const isDevelopment = process.env.NODE_ENV === 'development';
-  
-  res.status(error.status || 500).json({
+
+  return res.status(500).json({
     success: false,
-    error: isDevelopment ? error.message : 'Internal server error',
-    ...(isDevelopment && { stack: error.stack })
+    error: isDevelopment ? err.message : 'Internal server error',
+    ...(isDevelopment && { stack: err.stack }),
   });
-};
+}
 
-// Health check middleware
-export const healthCheck = (req: Request, res: Response) => {
-  res.status(200).json({
-    success: true,
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    memory: process.memoryUsage(),
-    version: process.env.npm_package_version || '1.0.0'
-  });
-};
+/**
+ * CORS configuration for production
+ */
+export function configureCORS() {
+  const config = getProductionConfig();
 
-// Common validation schemas
-export const commonValidations = {
-  email: body('email').isEmail().normalizeEmail(),
-  password: body('password').isLength({ min: 8 }).matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/),
-  uuid: (field: string) => body(field).isUUID(),
-  string: (field: string, min = 1, max = 255) => body(field).isString().isLength({ min, max }).trim(),
-  number: (field: string, min?: number, max?: number) => body(field).isNumeric().toFloat().custom((value) => {
-    if (min !== undefined && value < min) throw new Error(`Must be at least ${min}`);
-    if (max !== undefined && value > max) throw new Error(`Must be at most ${max}`);
-    return true;
-  }),
-  boolean: (field: string) => body(field).isBoolean(),
-  array: (field: string) => body(field).isArray(),
-  date: (field: string) => body(field).isISO8601().toDate()
+  return {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      // Allow requests with no origin (mobile apps, Postman, etc.)
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      // Check if origin is in allowed list
+      if (config.security.corsOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        logger.warn('CORS origin rejected', { origin });
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: config.security.corsCredentials,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    exposedHeaders: ['X-Total-Count', 'X-Page-Count'],
+    maxAge: 86400, // 24 hours
+  };
+}
+
+/**
+ * IP whitelist middleware (for admin routes)
+ */
+export function ipWhitelist(allowedIPs: string[]) {
+  return (req: Request, res: Response, next: NextFunction): Response | void => {
+    const clientIP = req.ip || req.connection.remoteAddress || '';
+
+    if (allowedIPs.includes(clientIP)) {
+      return next();
+    } else {
+      logger.warn('IP whitelist rejection', {
+        ip: clientIP,
+        path: req.path,
+      });
+
+      return res.status(403).json({
+        success: false,
+        error: 'Access denied',
+      });
+    }
+  };
+}
+
+/**
+ * Request size limiter
+ */
+export function requestSizeLimiter(maxSize: string = '10mb') {
+  return (req: Request, res: Response, next: NextFunction): Response | void => {
+    const contentLength = req.get('content-length');
+
+    if (contentLength) {
+      const sizeInBytes = parseInt(contentLength, 10);
+      const maxSizeInBytes = parseSize(maxSize);
+
+      if (sizeInBytes > maxSizeInBytes) {
+        logger.warn('Request size exceeded', {
+          size: sizeInBytes,
+          maxSize: maxSizeInBytes,
+          path: req.path,
+        });
+
+        return res.status(413).json({
+          success: false,
+          error: 'Request entity too large',
+        });
+      }
+    }
+
+    return next();
+  };
+}
+
+/**
+ * Parse size string to bytes
+ */
+function parseSize(size: string): number {
+  const units: { [key: string]: number } = {
+    b: 1,
+    kb: 1024,
+    mb: 1024 * 1024,
+    gb: 1024 * 1024 * 1024,
+  };
+
+  const match = size.toLowerCase().match(/^(\d+(?:\.\d+)?)\s*([a-z]+)$/);
+  if (!match) {
+    return parseInt(size, 10);
+  }
+
+  const value = parseFloat(match[1]);
+  const unit = match[2];
+
+  return value * (units[unit] || 1);
+}
+
+/**
+ * Maintenance mode middleware
+ */
+export function maintenanceMode(req: Request, res: Response, next: NextFunction): void {
+  const isMaintenanceMode = process.env.ENABLE_MAINTENANCE_MODE === 'true';
+
+  if (isMaintenanceMode) {
+    // Allow health checks during maintenance
+    if (req.path === '/health' || req.path === '/ready') {
+      return next();
+    }
+
+    return res.status(503).json({
+      success: false,
+      error: 'Service temporarily unavailable for maintenance',
+      retryAfter: 3600, // 1 hour
+    });
+  }
+
+  next();
+}
+
+export default {
+  configureHelmet,
+  configureRateLimit,
+  configureAIRateLimit,
+  sanitizeRequest,
+  securityHeaders,
+  requestLogger,
+  errorBoundary,
+  configureCORS,
+  ipWhitelist,
+  requestSizeLimiter,
+  maintenanceMode,
 };

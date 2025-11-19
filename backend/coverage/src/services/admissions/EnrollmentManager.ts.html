@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.49% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/126</span>
+                <span class='fraction'>0/126</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.81% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/27</span>
+                <span class='fraction'>0/27</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.38% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/13</span>
+                <span class='fraction'>0/13</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.7% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/124</span>
+                <span class='fraction'>0/124</span>
             </div>
         
             
@@ -407,7 +407,7 @@
 <a name='L342'></a><a href='#L342'>342</a>
 <a name='L343'></a><a href='#L343'>343</a>
 <a name='L344'></a><a href='#L344'>344</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -434,26 +434,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -750,7 +750,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { PrismaClient } from '@prisma/client';
-import { logger } from '../../utils/logger';
+<span class="cstat-no" title="statement not covered" >import { logger } from '../../utils/logger';</span>
 &nbsp;
 export interface EnrollmentConfirmation {
   id: string;
@@ -777,26 +777,26 @@ export interface EnrollmentCondition {
   evidence?: string[];
 }
 &nbsp;
-export enum EnrollmentStatus {
-  PENDING_CONFIRMATION = 'pending_confirmation',
-  CONFIRMED = 'confirmed',
-  DEPOSIT_PENDING = 'deposit_pending',
-  CONDITIONS_PENDING = 'conditions_pending',
-  ENROLLED = 'enrolled',
-  EXPIRED = 'expired',
-  WITHDRAWN = 'withdrawn'
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export enum E</span>nrollmentStatus {</span>
+<span class="cstat-no" title="statement not covered" >  PENDING_CONFIRMATION = 'pending_confirmation',</span>
+<span class="cstat-no" title="statement not covered" >  CONFIRMED = 'confirmed',</span>
+<span class="cstat-no" title="statement not covered" >  DEPOSIT_PENDING = 'deposit_pending',</span>
+<span class="cstat-no" title="statement not covered" >  CONDITIONS_PENDING = 'conditions_pending',</span>
+<span class="cstat-no" title="statement not covered" >  ENROLLED = 'enrolled',</span>
+<span class="cstat-no" title="statement not covered" >  EXPIRED = 'expired',</span>
+<span class="cstat-no" title="statement not covered" >  WITHDRAWN = 'withdrawn'</span>
 }
 &nbsp;
-export enum ConditionType {
-  ACADEMIC_TRANSCRIPT = 'academic_transcript',
-  MEDICAL_CLEARANCE = 'medical_clearance',
-  BACKGROUND_CHECK = 'background_check',
-  FINANCIAL_AID_COMPLETION = 'financial_aid_completion',
-  HOUSING_APPLICATION = 'housing_application',
-  ORIENTATION_ATTENDANCE = 'orientation_attendance'
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export enum C</span>onditionType {</span>
+<span class="cstat-no" title="statement not covered" >  ACADEMIC_TRANSCRIPT = 'academic_transcript',</span>
+<span class="cstat-no" title="statement not covered" >  MEDICAL_CLEARANCE = 'medical_clearance',</span>
+<span class="cstat-no" title="statement not covered" >  BACKGROUND_CHECK = 'background_check',</span>
+<span class="cstat-no" title="statement not covered" >  FINANCIAL_AID_COMPLETION = 'financial_aid_completion',</span>
+<span class="cstat-no" title="statement not covered" >  HOUSING_APPLICATION = 'housing_application',</span>
+<span class="cstat-no" title="statement not covered" >  ORIENTATION_ATTENDANCE = 'orientation_attendance'</span>
 }
 &nbsp;
-export class EnrollmentManager {
+<span class="cstat-no" title="statement not covered" >export class E</span>nrollmentManager {
   private prisma: PrismaClient;
 &nbsp;
 <span class="fstat-no" title="function not covered" >  constructor(p</span>risma: PrismaClient) {
@@ -1099,7 +1099,7 @@ export class EnrollmentManager {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-16T09:21:20.087Z
+                at 2025-11-19T13:55:34.483Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

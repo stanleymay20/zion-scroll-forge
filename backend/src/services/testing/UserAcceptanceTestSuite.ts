@@ -108,8 +108,8 @@ export interface AccessibilityIssue {
   description: string;
   suggestion: string;
 }
-export cl
-ass UserAcceptanceTestSuite extends EventEmitter {
+
+export class UserAcceptanceTestSuite extends EventEmitter {
   private config: UserAcceptanceTestConfig;
   private screenshots: string[] = [];
 

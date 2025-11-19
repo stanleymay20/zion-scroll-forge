@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.18% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/153</span>
+                <span class='fraction'>0/153</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.54% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/44</span>
+                <span class='fraction'>0/44</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.57% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/28</span>
+                <span class='fraction'>0/28</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.38% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/149</span>
+                <span class='fraction'>0/149</span>
             </div>
         
             
@@ -1030,10 +1030,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1081,13 +1081,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1121,7 +1121,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1992,10 +1992,10 @@
  * "By their fruits you will recognize them" (Matthew 7:16)
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
-import { InterviewType, InterviewFormat, RecommendationType } from '@prisma/client';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
+<span class="cstat-no" title="statement not covered" >import { InterviewType, InterviewFormat, RecommendationType } from '@prisma/client';</span>
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
 export interface InterviewEvaluation {
   interviewId: string;
@@ -2043,13 +2043,13 @@ export interface FollowUpAction {
   priority: 'low' | 'medium' | 'high';
 }
 &nbsp;
-export enum FollowUpActionType {
-  ADDITIONAL_INTERVIEW = 'additional_interview',
-  REFERENCE_CHECK = 'reference_check',
-  DOCUMENT_VERIFICATION = 'document_verification',
-  SPIRITUAL_COUNSELING = 'spiritual_counseling',
-  ACADEMIC_ASSESSMENT = 'academic_assessment',
-  COMMITTEE_REVIEW = 'committee_review'
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export enum F</span>ollowUpActionType {</span>
+<span class="cstat-no" title="statement not covered" >  ADDITIONAL_INTERVIEW = 'additional_interview',</span>
+<span class="cstat-no" title="statement not covered" >  REFERENCE_CHECK = 'reference_check',</span>
+<span class="cstat-no" title="statement not covered" >  DOCUMENT_VERIFICATION = 'document_verification',</span>
+<span class="cstat-no" title="statement not covered" >  SPIRITUAL_COUNSELING = 'spiritual_counseling',</span>
+<span class="cstat-no" title="statement not covered" >  ACADEMIC_ASSESSMENT = 'academic_assessment',</span>
+<span class="cstat-no" title="statement not covered" >  COMMITTEE_REVIEW = 'committee_review'</span>
 }
 &nbsp;
 export interface EvaluationCriteria {
@@ -2083,7 +2083,7 @@ export interface RubricLevel {
   indicators: string[];
 }
 &nbsp;
-export class InterviewEvaluator {
+<span class="cstat-no" title="statement not covered" >export class I</span>nterviewEvaluator {
   /**
    * Create evaluation form for specific interview type
    */
@@ -2956,7 +2956,7 @@ export class InterviewEvaluator {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-16T09:21:19.316Z
+                at 2025-11-19T13:55:33.461Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

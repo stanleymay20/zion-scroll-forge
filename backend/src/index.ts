@@ -36,6 +36,8 @@ import scrollcoinRoutes from './routes/scrollcoin';
 import tuitionRoutes from './routes/tuition';
 import researchRoutes from './routes/research';
 import aiRoutes from './routes/ai';
+import aiUnifiedRoutes from './routes/ai-unified';
+import aiTutorRoutes from './routes/ai-tutor';
 import analyticsRoutes from './routes/analytics';
 import securityRoutes from './routes/security';
 import communityRoutes from './routes/community';
@@ -49,8 +51,32 @@ import criticalThinkingRoutes from './routes/critical-thinking';
 import launchRoutes from './routes/launch';
 import curriculumGridRoutes from './routes/curriculum-grid';
 import architectureComparisonRoutes from './routes/architecture-comparison';
+import contentCreationRoutes from './routes/content-creation';
+import courseRecommendationRoutes from './routes/course-recommendation';
+import facultySupportRoutes from './routes/faculty-support';
+import translationRoutes from './routes/translation';
+import fundraisingRoutes from './routes/fundraising';
+import careerServicesRoutes from './routes/career-services';
+import moderationRoutes from './routes/moderation';
+import accessibilityRoutes from './routes/accessibility';
+import aiMonitoringRoutes from './routes/ai-monitoring';
+import videoStreamingRoutes from './routes/video-streaming';
+import assignmentsRoutes from './routes/assignments';
+import chatRoutes from './routes/chat';
+import studyGroupsRoutes from './routes/study-groups';
+import paymentsRoutes from './routes/payments';
+import scholarshipsRoutes from './routes/scholarships';
+import devotionsRoutes from './routes/devotions';
+import prayerRoutes from './routes/prayer';
+import scriptureMemoryRoutes from './routes/scripture-memory';
+import enrollmentRoutes from './routes/enrollment';
+import profileRoutes from './routes/profile';
+
+// Socket.io service
+import SocketService from './services/SocketService';
 
 // Admissions routes
+import admissionsRoutes from './routes/admissions';
 import admissionsApplicationsRoutes from './routes/admissions/applications';
 import admissionsAnalyticsRoutes from './routes/admissions/analytics';
 import admissionsPredictiveAnalyticsRoutes from './routes/admissions/predictive-analytics';
@@ -202,6 +228,8 @@ async function startServer() {
   routeWithMonitoring('/api/tuition', tuitionRoutes);
   routeWithMonitoring('/api/research', researchRoutes);
   routeWithMonitoring('/api/ai', aiRoutes);
+  routeWithMonitoring('/api/ai-unified', aiUnifiedRoutes);
+  routeWithMonitoring('/api/ai-tutor', aiTutorRoutes);
   routeWithMonitoring('/api/analytics', analyticsRoutes);
   routeWithMonitoring('/api/security', securityRoutes);
   routeWithMonitoring('/api/community', communityRoutes);
@@ -215,6 +243,27 @@ async function startServer() {
   routeWithMonitoring('/api/launch', launchRoutes);
   routeWithMonitoring('/api/curriculum-grid', curriculumGridRoutes);
   routeWithMonitoring('/api/architecture-comparison', architectureComparisonRoutes);
+  routeWithMonitoring('/api/content-creation', contentCreationRoutes);
+  routeWithMonitoring('/api/course-recommendation', courseRecommendationRoutes);
+  routeWithMonitoring('/api/faculty-support', facultySupportRoutes);
+  routeWithMonitoring('/api/translation', translationRoutes);
+  routeWithMonitoring('/api/fundraising', fundraisingRoutes);
+  routeWithMonitoring('/api/career-services', careerServicesRoutes);
+  routeWithMonitoring('/api/profile', profileRoutes);
+  routeWithMonitoring('/api/moderation', moderationRoutes);
+  routeWithMonitoring('/api/accessibility', accessibilityRoutes);
+  routeWithMonitoring('/api/admissions', admissionsRoutes);
+  routeWithMonitoring('/api/ai-monitoring', aiMonitoringRoutes);
+  routeWithMonitoring('/api/video-streaming', videoStreamingRoutes);
+  routeWithMonitoring('/api/assignments', assignmentsRoutes);
+  routeWithMonitoring('/api/chat', chatRoutes);
+  routeWithMonitoring('/api/study-groups', studyGroupsRoutes);
+  routeWithMonitoring('/api/payments', paymentsRoutes);
+  routeWithMonitoring('/api/scholarships', scholarshipsRoutes);
+  routeWithMonitoring('/api/devotions', devotionsRoutes);
+  routeWithMonitoring('/api/prayer', prayerRoutes);
+  routeWithMonitoring('/api/scripture-memory', scriptureMemoryRoutes);
+  routeWithMonitoring('/api/enrollment', enrollmentRoutes);
 
   // Admissions API routes
   routeWithMonitoring('/api/admissions/applications', admissionsApplicationsRoutes);
@@ -282,7 +331,7 @@ async function startServer() {
   }
 
   // Start server
-  const server = app.listen(PORT, '0.0.0.0', () => {
+  const server = app.listen(PORT, '0.0.0.0', async () => {
     logger.info(`ScrollUniversity server started`, {
       port: PORT,
       environment: process.env.NODE_ENV || 'development',
@@ -290,6 +339,14 @@ async function startServer() {
       nodeVersion: process.version,
       platform: process.platform
     });
+    
+    // Initialize Socket.io for real-time chat
+    try {
+      await SocketService.initialize(server);
+      logger.info('Socket.io initialized successfully');
+    } catch (error) {
+      logger.error('Failed to initialize Socket.io', { error: error.message });
+    }
     
     // Record server start metric
     monitoringService.recordEvent('server.started', {
@@ -319,6 +376,10 @@ async function startServer() {
         // Close health check service
         await healthCheckService.close();
         logger.info('Health check service closed');
+        
+        // Shutdown Socket.io
+        await SocketService.shutdown();
+        logger.info('Socket.io shutdown');
         
         // Shutdown monitoring
         monitoringService.shutdown();

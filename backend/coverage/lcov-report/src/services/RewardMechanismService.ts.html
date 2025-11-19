@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/50</span>
+                <span class='fraction'>0/50</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.18% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/11</span>
+                <span class='fraction'>0/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.91% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/48</span>
+                <span class='fraction'>0/48</span>
             </div>
         
             
@@ -252,13 +252,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -266,14 +264,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -431,16 +431,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">/**
+<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Reward Mechanism Service
  * "Where righteousness abounds, divine rewards flow"
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
-import ScrollCoinService from './ScrollCoinService';
-import { logger } from '../utils/logger';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
+<span class="cstat-no" title="statement not covered" >import ScrollCoinService from './ScrollCoinService';</span>
+<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
 export interface RewardEvent {
   userId: string;
@@ -450,14 +450,14 @@ export interface RewardEvent {
   timestamp: Date;
 }
 &nbsp;
-export enum RewardEventType {
-  COURSE_COMPLETION = 'COURSE_COMPLETION',
-  PEER_ASSISTANCE = 'PEER_ASSISTANCE',
-  DAILY_LOGIN = 'DAILY_LOGIN',
-  LEARNING_STREAK = 'LEARNING_STREAK'
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export enum R</span>ewardEventType {</span>
+<span class="cstat-no" title="statement not covered" >  COURSE_COMPLETION = 'COURSE_COMPLETION',</span>
+<span class="cstat-no" title="statement not covered" >  PEER_ASSISTANCE = 'PEER_ASSISTANCE',</span>
+<span class="cstat-no" title="statement not covered" >  DAILY_LOGIN = 'DAILY_LOGIN',</span>
+<span class="cstat-no" title="statement not covered" >  LEARNING_STREAK = 'LEARNING_STREAK'</span>
 }
 &nbsp;
-export class RewardMechanismService {
+<span class="cstat-no" title="statement not covered" >export class R</span>ewardMechanismService {
   private static instance: RewardMechanismService;
   private scrollCoinService: ScrollCoinService;
 &nbsp;
@@ -615,14 +615,14 @@ export class RewardMechanismService {
   }
 }
 &nbsp;
-export default RewardMechanismService;</pre></td></tr></table></pre>
+<span class="cstat-no" title="statement not covered" >export default RewardMechanismService;</span></pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-16T09:21:19.316Z
+                at 2025-11-19T13:55:33.461Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

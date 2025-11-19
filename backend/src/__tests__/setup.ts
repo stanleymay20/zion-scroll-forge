@@ -13,56 +13,40 @@ process.env.LOG_LEVEL = 'error';
 process.env.JWT_SECRET = 'test-jwt-secret-key';
 process.env.BCRYPT_ROUNDS = '4'; // Faster for tests
 
-// Create unique test database
-const testDatabaseName = `scrolluniversity_test_${randomBytes(8).toString('hex')}`;
-process.env.DATABASE_URL = `postgresql://postgres:testpassword@localhost:5432/${testDatabaseName}`;
-process.env.REDIS_URL = 'redis://localhost:6379/15'; // Use test database
+// Use existing database for tests (don't create new one)
+// Make sure DATABASE_URL is set in .env file
+if (!process.env.DATABASE_URL) {
+  console.warn('⚠️  DATABASE_URL not set, using default');
+  process.env.DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/scrolluniversity';
+}
 
 // Global test variables
 let prisma: PrismaClient;
 
 // Setup before all tests
 beforeAll(async () => {
-  // Create test database
-  try {
-    execSync(`createdb ${testDatabaseName}`, { stdio: 'ignore' });
-  } catch (error) {
-    // Database might already exist
-  }
-
-  // Initialize Prisma
+  // Initialize Prisma with existing database
   prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL
-      }
-    }
+    log: ['error'], // Only log errors in tests
   });
 
-  // Run migrations
-  try {
-    execSync('npx prisma migrate deploy', { 
-      stdio: 'ignore',
-      env: { ...process.env, DATABASE_URL: process.env.DATABASE_URL }
-    });
-  } catch (error) {
-    console.error('Failed to run migrations:', error);
-  }
-
   // Connect to database
-  await prisma.$connect();
+  try {
+    await prisma.$connect();
+    console.log('✅ Test database connected');
+  } catch (error) {
+    console.error('❌ Failed to connect to test database:', error);
+    console.error('💡 Make sure PostgreSQL is running and DATABASE_URL is correct in .env');
+    throw error;
+  }
 }, 60000);
 
 // Cleanup after all tests
 afterAll(async () => {
   // Disconnect from database
-  await prisma.$disconnect();
-
-  // Drop test database
-  try {
-    execSync(`dropdb ${testDatabaseName}`, { stdio: 'ignore' });
-  } catch (error) {
-    // Database might not exist
+  if (prisma) {
+    await prisma.$disconnect();
+    console.log('✅ Test database disconnected');
   }
 }, 30000);
 

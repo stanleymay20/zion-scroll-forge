@@ -4,15 +4,13 @@
  */
 
 import express from 'express';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
 import Joi from 'joi';
-import { logger } from '../utils/logger';
-import { ScrollValidationError } from '../middleware/errorHandler';
+import { supabaseAuthService } from '../services/SupabaseAuthService';
+import { authService } from '../services/AuthService';
+import { authenticate } from '../middleware/auth';
+import { logger } from '../utils/productionLogger';
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 // Validation schemas
 const registerSchema = Joi.object({
@@ -326,6 +324,355 @@ router.post('/logout', async (req, res) => {
     message: 'ScrollStudent successfully logged out',
     scrollMessage: 'May the kingdom peace be with you',
     kingdomGuidance: 'Return anytime to continue your divine education'
+  });
+});
+
+export default router;
+
+// ============================================================================
+// SUPABASE AUTHENTICATION ROUTES
+// ============================================================================
+
+/**
+ * Register with Supabase Auth
+ */
+router.post('/supabase/register', async (req, res, next) => {
+  try {
+    const { error, value } = registerSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.details[0].message
+      });
+    }
+
+    const result = await supabaseAuthService.register(value);
+
+    res.status(201).json({
+      success: true,
+      message: 'User registered successfully',
+      data: {
+        user: result.user,
+        tokens: result.tokens
+      }
+    });
+  } catch (error) {
+    logger.error('Supabase registration failed', { error: error.message });
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * Login with Supabase Auth
+ */
+router.post('/supabase/login', async (req, res, next) => {
+  try {
+    const { error, value } = loginSchema.validate(req.body);
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.details[0].message
+      });
+    }
+
+    const result = await supabaseAuthService.login(value.email, value.password);
+
+    res.json({
+      success: true,
+      message: 'Login successful',
+      data: {
+        user: result.user,
+        tokens: result.tokens
+      }
+    });
+  } catch (error) {
+    logger.error('Supabase login failed', { error: error.message });
+    res.status(401).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * Refresh access token
+ */
+router.post('/supabase/refresh', async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(400).json({
+        success: false,
+        error: 'Refresh token required'
+      });
+    }
+
+    const tokens = await supabaseAuthService.refreshToken(refreshToken);
+
+    res.json({
+      success: true,
+      message: 'Token refreshed successfully',
+      data: { tokens }
+    });
+  } catch (error) {
+    logger.error('Token refresh failed', { error: error.message });
+    res.status(401).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * Logout
+ */
+router.post('/supabase/logout', authenticate, async (req, res) => {
+  try {
+    await supabaseAuthService.logout(req.user!.id);
+
+    res.json({
+      success: true,
+      message: 'Logged out successfully'
+    });
+  } catch (error) {
+    logger.error('Logout failed', { error: error.message });
+    res.status(500).json({
+      success: false,
+      error: 'Logout failed'
+    });
+  }
+});
+
+/**
+ * Social authentication - initiate OAuth flow
+ */
+router.post('/supabase/social/:provider', async (req, res) => {
+  try {
+    const { provider } = req.params;
+    const { redirectTo } = req.body;
+
+    if (!['google', 'microsoft', 'github', 'facebook'].includes(provider)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid provider'
+      });
+    }
+
+    const result = await supabaseAuthService.socialAuth({
+      provider: provider as any,
+      redirectTo
+    });
+
+    res.json({
+      success: true,
+      message: 'OAuth flow initiated',
+      data: { url: result.url }
+    });
+  } catch (error) {
+    logger.error('Social auth failed', { error: error.message });
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * OAuth callback handler
+ */
+router.get('/supabase/callback', async (req, res) => {
+  try {
+    const { code } = req.query;
+
+    if (!code || typeof code !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'Authorization code required'
+      });
+    }
+
+    const result = await supabaseAuthService.handleOAuthCallback(code);
+
+    // Redirect to frontend with tokens
+    const redirectUrl = new URL(process.env.FRONTEND_URL || 'http://localhost:3001');
+    redirectUrl.searchParams.set('access_token', result.tokens.accessToken);
+    redirectUrl.searchParams.set('refresh_token', result.tokens.refreshToken);
+
+    res.redirect(redirectUrl.toString());
+  } catch (error) {
+    logger.error('OAuth callback failed', { error: error.message });
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * Request password reset
+ */
+router.post('/supabase/password-reset/request', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email required'
+      });
+    }
+
+    await supabaseAuthService.requestPasswordReset(email);
+
+    res.json({
+      success: true,
+      message: 'Password reset email sent if account exists'
+    });
+  } catch (error) {
+    logger.error('Password reset request failed', { error: error.message });
+    // Always return success to prevent email enumeration
+    res.json({
+      success: true,
+      message: 'Password reset email sent if account exists'
+    });
+  }
+});
+
+/**
+ * Reset password with token
+ */
+router.post('/supabase/password-reset/confirm', async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: 'Token and new password required'
+      });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        success: false,
+        error: 'Password must be at least 8 characters'
+      });
+    }
+
+    await supabaseAuthService.resetPassword(token, newPassword);
+
+    res.json({
+      success: true,
+      message: 'Password reset successfully'
+    });
+  } catch (error) {
+    logger.error('Password reset failed', { error: error.message });
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * Verify email
+ */
+router.post('/supabase/verify-email', async (req, res) => {
+  try {
+    const { token, type } = req.body;
+
+    if (!token || !type) {
+      return res.status(400).json({
+        success: false,
+        error: 'Token and type required'
+      });
+    }
+
+    await supabaseAuthService.verifyEmail(token, type);
+
+    res.json({
+      success: true,
+      message: 'Email verified successfully'
+    });
+  } catch (error) {
+    logger.error('Email verification failed', { error: error.message });
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * Get current user session
+ */
+router.get('/supabase/session', authenticate, async (req, res) => {
+  try {
+    const session = await supabaseAuthService.getSession(req.user!.id);
+
+    res.json({
+      success: true,
+      data: { session }
+    });
+  } catch (error) {
+    logger.error('Get session failed', { error: error.message });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve session'
+    });
+  }
+});
+
+/**
+ * Change password (authenticated)
+ */
+router.post('/supabase/change-password', authenticate, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        error: 'Current and new password required'
+      });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({
+        success: false,
+        error: 'New password must be at least 8 characters'
+      });
+    }
+
+    await authService.changePassword(req.user!.id, currentPassword, newPassword);
+
+    res.json({
+      success: true,
+      message: 'Password changed successfully'
+    });
+  } catch (error) {
+    logger.error('Password change failed', { error: error.message });
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * Health check endpoint
+ */
+router.get('/health', (req, res) => {
+  res.json({
+    success: true,
+    message: 'Authentication service is healthy',
+    timestamp: new Date().toISOString()
   });
 });
 

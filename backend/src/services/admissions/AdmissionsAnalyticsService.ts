@@ -899,11 +899,11 @@ export class AdmissionsAnalyticsService {
 
     // Calculate averages
     const spiritualAlignmentScore = spiritualEvaluations.length > 0
-      ? spiritualEvaluations.reduce((sum, eval) => sum + (eval.scrollAlignment || 0), 0) / spiritualEvaluations.length
+      ? spiritualEvaluations.reduce((sum, evaluation) => sum + (evaluation.scrollAlignment || 0), 0) / spiritualEvaluations.length
       : 0;
 
     const academicReadinessScore = academicEvaluations.length > 0
-      ? academicEvaluations.reduce((sum, eval) => sum + (eval.learningPotential || 0), 0) / academicEvaluations.length
+      ? academicEvaluations.reduce((sum, evaluation) => sum + (evaluation.learningPotential || 0), 0) / academicEvaluations.length
       : 0;
 
     // Character assessment score (simplified calculation)

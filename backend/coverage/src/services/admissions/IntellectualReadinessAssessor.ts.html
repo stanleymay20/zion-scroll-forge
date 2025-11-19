@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.44% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/232</span>
+                <span class='fraction'>0/232</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">2.12% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/94</span>
+                <span class='fraction'>0/94</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">2.63% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/38</span>
+                <span class='fraction'>0/38</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.25% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/188</span>
+                <span class='fraction'>0/188</span>
             </div>
         
             
@@ -761,8 +761,8 @@
 <a name='L696'></a><a href='#L696'>696</a>
 <a name='L697'></a><a href='#L697'>697</a>
 <a name='L698'></a><a href='#L698'>698</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -778,11 +778,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -854,7 +854,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1458,8 +1458,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { PrismaClient } from '@prisma/client';
-import { logger } from '../../utils/logger';
-import { SkillAssessment, AcademicLevel, CapacityAssessment, PotentialScore } from './AcademicEvaluator';
+<span class="cstat-no" title="statement not covered" >import { logger } from '../../utils/logger';</span>
+<span class="cstat-no" title="statement not covered" >import { SkillAssessment, AcademicLevel, CapacityAssessment, PotentialScore } from './AcademicEvaluator';</span>
 &nbsp;
 export interface ReadinessAssessment {
   applicantId: string;
@@ -1475,11 +1475,11 @@ export interface ReadinessAssessment {
   assessedAt: Date;
 }
 &nbsp;
-export enum ReadinessLevel {
-  NOT_READY = 'not_ready',
-  CONDITIONALLY_READY = 'conditionally_ready',
-  READY = 'ready',
-  HIGHLY_READY = 'highly_ready'
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export enum R</span>eadinessLevel {</span>
+<span class="cstat-no" title="statement not covered" >  NOT_READY = 'not_ready',</span>
+<span class="cstat-no" title="statement not covered" >  CONDITIONALLY_READY = 'conditionally_ready',</span>
+<span class="cstat-no" title="statement not covered" >  READY = 'ready',</span>
+<span class="cstat-no" title="statement not covered" >  HIGHLY_READY = 'highly_ready'</span>
 }
 &nbsp;
 export interface CognitiveReadiness {
@@ -1551,7 +1551,7 @@ export interface ReadinessGap {
   timeToClose: string;
 }
 &nbsp;
-export class IntellectualReadinessAssessor {
+<span class="cstat-no" title="statement not covered" >export class I</span>ntellectualReadinessAssessor {
   private prisma: PrismaClient;
 &nbsp;
 <span class="fstat-no" title="function not covered" >  constructor(p</span>risma: PrismaClient) {
@@ -2161,7 +2161,7 @@ export class IntellectualReadinessAssessor {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-09-16T09:21:20.087Z
+                at 2025-11-19T13:55:34.483Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

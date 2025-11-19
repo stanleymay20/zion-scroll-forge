@@ -1,170 +1,173 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+}
 
-// ✝️ Multi-tenant institution resolver
-async function resolveInstitutionId(req: Request, supabase: any, bodyData?: any): Promise<string> {
-  try {
-    if (bodyData?.institution_id) {
-      console.log('✝️ Using institution_id from request:', bodyData.institution_id);
-      return bodyData.institution_id;
-    }
-
-    try {
-      const authHeader = req.headers.get('authorization');
-      if (authHeader) {
-        const { data: { user } } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''));
-        if (user) {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('current_institution_id')
-            .eq('id', user.id)
-            .single();
-          if (profile?.current_institution_id) {
-            console.log('✝️ Using institution_id from profile:', profile.current_institution_id);
-            return profile.current_institution_id;
-          }
-        }
-      }
-    } catch {}
-
-    const { data } = await supabase.from('institutions').select('id').eq('slug', 'scrolluniversity').single();
-    if (data) {
-      console.log('✝️ Using default ScrollUniversity institution:', data.id);
-      return data.id;
-    }
-
-    throw new Error('No institution could be resolved');
-  } catch (error) {
-    console.error('Institution resolution error:', error);
-    throw error;
-  }
+interface LifecycleAction {
+  action: 'submit_application' | 'process_admission' | 'enroll_student' | 'graduate_student';
+  userId?: string;
+  applicationId?: string;
+  institutionId?: string;
+  degreeProgramId?: string;
+  applicationData?: any;
+  decision?: 'admitted' | 'rejected' | 'waitlisted';
+  decisionReason?: string;
 }
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
+    return new Response('ok', { headers: corsHeaders })
   }
 
   try {
-    const bodyData = await req.json();
-    const { application_id } = bodyData;
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    )
+
+    // Verify JWT token
+    const authHeader = req.headers.get('Authorization')!
+    const token = authHeader.replace('Bearer ', '')
+    const { data: { user }, error: authError } = await supabaseClient.auth.getUser(token)
     
-    if (!application_id) {
-      throw new Error('application_id is required');
+    if (authError || !user) {
+      return new Response('Unauthorized', { status: 401, headers: corsHeaders })
     }
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const { action, userId, applicationId, institutionId, degreeProgramId, applicationData, decision, decisionReason }: LifecycleAction = await req.json()
 
-    // Resolve institution_id for multi-tenancy
-    const institutionId = await resolveInstitutionId(req, supabase, bodyData);
-
-    console.log(`Processing student lifecycle for application ${application_id} in institution ${institutionId}`);
-
-    // Get application details
-    const { data: application, error: appError } = await supabase
-      .from('applications')
-      .select('*')
-      .eq('id', application_id)
-      .single();
-
-    if (appError) throw appError;
-
-    // Ensure profile exists (should already exist from auth trigger)
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('id, current_institution_id')
-      .eq('id', application.user_id)
-      .maybeSingle();
-
-    if (!profile) {
-      console.log('Creating profile for user:', application.user_id);
-      await supabase
-        .from('profiles')
-        .insert({
-          id: application.user_id,
-          email: application.email,
-          role: 'student',
-          current_institution_id: institutionId
-        });
-    } else if (!profile.current_institution_id) {
-      // Update profile with institution if missing
-      await supabase
-        .from('profiles')
-        .update({ current_institution_id: institutionId })
-        .eq('id', application.user_id);
+    if (!action) {
+      return new Response('Missing action', { status: 400, headers: corsHeaders })
     }
 
-    // Create institution membership if doesn't exist
-    const { data: existingMembership } = await supabase
-      .from('institution_members')
-      .select('id')
-      .eq('user_id', application.user_id)
-      .eq('institution_id', institutionId)
-      .maybeSingle();
+    let result: any = {}
 
-    if (!existingMembership) {
-      await supabase
-        .from('institution_members')
-        .insert({
-          institution_id: institutionId,
-          user_id: application.user_id,
-          role: 'student',
-          status: 'active'
-        });
+    switch (action) {
+      case 'submit_application': {
+        if (!institutionId || !degreeProgramId || !applicationData) {
+          return new Response('Missing required fields for application', { status: 400, headers: corsHeaders })
+        }
+
+        // Create application
+        const { data: application, error: appError } = await supabaseClient
+          .from('applications')
+          .insert({
+            user_id: user.id,
+            institution_id: institutionId,
+            degree_program_id: degreeProgramId,
+            status: 'submitted',
+            application_data: applicationData,
+            submitted_at: new Date().toISOString()
+          })
+          .select()
+          .single()
+
+        if (appError) {
+          throw new Error('Failed to create application: ' + appError.message)
+        }
+
+        // Update student lifecycle status
+        await supabaseClient
+          .from('student_lifecycle')
+          .upsert({
+            user_id: user.id,
+            institution_id: institutionId,
+            status: 'applied',
+            application_id: application.id,
+            degree_program_id: degreeProgramId,
+            status_changed_at: new Date().toISOString()
+          })
+
+        // Create notification for student
+        await supabaseClient
+          .from('notifications')
+          .insert({
+            user_id: user.id,
+            type: 'application_submitted',
+            title: 'Application Submitted',
+            message: 'Your application has been submitted and is under review.',
+            data: { application_id: application.id },
+            created_at: new Date().toISOString()
+          })
+
+        // Award ScrollCoins for application submission
+        await supabaseClient.rpc('earn_scrollcoin', {
+          user_uuid: user.id,
+          amount: 50,
+          reason: 'Application submission',
+          reference_id: application.id,
+          reference_type: 'application'
+        })
+
+        result = { application, status: 'applied' }
+        break
+      }
+
+      case 'process_admission': {
+        if (!applicationId || !decision) {
+          return new Response('Missing required fields for admission decision', { status: 400, headers: corsHeaders })
+        }
+
+        // Verify user has admin role
+        const { data: hasAdminRole } = await supabaseClient.rpc('has_role', {
+          user_uuid: user.id,
+          required_role: 'admin'
+        })
+
+        if (!hasAdminRole) {
+          return new Response('Insufficient permissions', { status: 403, headers: corsHeaders })
+        }
+
+        // Update application
+        const { data: application, error: updateError } = await supabaseClient
+          .from('applications')
+          .update({
+            status: decision,
+            decision_reason: decisionReason,
+            decided_by: user.id,
+            decided_at: new Date().toISOString()
+          })
+          .eq('id', applicationId)
+          .select()
+          .single()
+
+        if (updateError) {
+          throw new Error('Failed to update application: ' + updateError.message)
+        }
+
+        result = { application, decision }
+        break
+      }
+
+      default:
+        return new Response('Action not yet implemented', { status: 501, headers: corsHeaders })
     }
 
-    // Award welcome ScrollCoins
-    console.log('Awarding welcome ScrollCoins');
-    await supabase.from('transactions').insert({
-      user_id: application.user_id,
-      type: 'earned',
-      amount: 100,
-      description: 'Welcome to ScrollUniversity! May Christ guide your studies.'
-    });
+    return new Response(
+      JSON.stringify({
+        success: true,
+        action,
+        result
+      }),
+      { 
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      },
+    )
 
-    // Find an orientation course for this institution
-    const { data: orientationCourse } = await supabase
-      .from('courses')
-      .select('id')
-      .eq('institution_id', institutionId)
-      .ilike('title', '%orientation%')
-      .limit(1)
-      .maybeSingle();
-
-    if (orientationCourse) {
-      console.log('Auto-enrolling in orientation course');
-      await supabase
-        .from('enrollments')
-        .insert({
-          user_id: application.user_id,
-          course_id: orientationCourse.id,
-          institution_id: institutionId,
-          progress: 0
-        });
-    }
-
-    console.log('✝️ Student lifecycle completed successfully');
-
-    return new Response(JSON.stringify({
-      success: true,
-      institution_id: institutionId,
-      scrollcoins_awarded: 100,
-      orientation_enrolled: !!orientationCourse
-    }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-  } catch (error: any) {
-    console.error('Error in student-lifecycle:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+  } catch (error) {
+    console.error('Student lifecycle error:', error)
+    return new Response(
+      JSON.stringify({ 
+        error: error.message,
+        success: false 
+      }),
+      { 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      },
+    )
   }
-});
+})

@@ -14,7 +14,19 @@ import { MainLayout } from "./components/layout/MainLayout";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Dashboard from "./pages/Dashboard";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
+import VerifyEmail from "./pages/auth/VerifyEmail";
+import OAuthCallback from "./pages/auth/OAuthCallback";
+import Dashboard from "@/pages/Dashboard";
+import EnhancedDashboard from "@/pages/EnhancedDashboard";
+import ForgeDashboard from "@/pages/ForgeDashboard";
+import FunctionalDashboard from "@/pages/FunctionalDashboard";
+import ScrollSpecs from "@/pages/ScrollSpecs";
+import Agents from "@/pages/Agents";
+import ForgeSessions from "@/pages/ForgeSessions";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import CourseLearn from "./pages/CourseLearn";
@@ -28,6 +40,7 @@ import TutorProfile from "./pages/TutorProfile";
 import AvatarCustomization from "./pages/AvatarCustomization";
 import ContentGeneration from "./pages/ContentGeneration";
 import Community from "./pages/Community";
+import { UserProfilePage } from "./components/community";
 import Assessments from "./pages/Assessments";
 import ScrollCoin from "./pages/ScrollCoin";
 import Wallet from "./pages/Wallet";
@@ -67,6 +80,7 @@ import ScrollCoinWallet from "./pages/ScrollCoinWallet";
 import ScrollCoinLeaderboard from "./pages/ScrollCoinLeaderboard";
 import AITutorsCatalog from "./pages/AITutorsCatalog";
 import TutorSession from "./pages/TutorSession";
+import AITutorInterface from "./pages/AITutorInterface";
 import VirtualLabsPage from "./pages/VirtualLabsPage";
 import XRClassroomsPage from "./pages/XRClassroomsPage";
 import AdmissionsReview from "./pages/AdmissionsReview";
@@ -148,11 +162,43 @@ const App = () => (
                 <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
+            
+            {/* Authentication Routes */}
             <Route path="/auth" element={<Auth />} />
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/register" element={<Register />} />
+            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+            <Route path="/auth/reset-password" element={<ResetPassword />} />
+            <Route path="/auth/verify-email" element={<VerifyEmail />} />
+            <Route path="/auth/callback" element={<OAuthCallback />} />
             
             {/* Protected Routes with Main Layout */}
             <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
-              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="dashboard" element={<EnhancedDashboard />} />
+              <Route path="specs" element={<ScrollSpecs />} />
+              <Route path="specs/new" element={<ScrollSpecs />} />
+              <Route path="specs/templates" element={<ScrollSpecs />} />
+              <Route path="specs/versions" element={<ScrollSpecs />} />
+              <Route path="specs/dependencies" element={<ScrollSpecs />} />
+              <Route path="agents" element={<Agents />} />
+              <Route path="agents/new" element={<Agents />} />
+              <Route path="agents/training" element={<Agents />} />
+              <Route path="agents/performance" element={<Agents />} />
+              <Route path="agents/deployment" element={<Agents />} />
+              <Route path="sessions" element={<ForgeSessions />} />
+              <Route path="sessions/new" element={<ForgeSessions />} />
+              <Route path="sessions/collab" element={<ForgeSessions />} />
+              <Route path="sessions/history" element={<ForgeSessions />} />
+              <Route path="workspace" element={<ForgeSessions />} />
+              <Route path="activity" element={<ForgeDashboard />} />
+              <Route path="status" element={<ForgeDashboard />} />
+              <Route path="university/courses" element={<Dashboard />} />
+              <Route path="university/faculty" element={<Dashboard />} />
+              <Route path="university/students" element={<Dashboard />} />
+              <Route path="university/curriculum" element={<Dashboard />} />
+              <Route path="settings/api" element={<SettingsPage />} />
+              <Route path="settings/integrations" element={<SettingsPage />} />
+              <Route path="settings/users" element={<SettingsPage />} />
               <Route path="courses" element={<Courses />} />
               <Route path="courses/:courseId" element={<CourseDetail />} />
               <Route path="courses/:courseId/learn" element={<CourseLearn />} />
@@ -166,6 +212,7 @@ const App = () => (
               <Route path="avatar-customization" element={<AvatarCustomization />} />
               <Route path="content-generation" element={<ContentGeneration />} />
               <Route path="community" element={<Community />} />
+              <Route path="community/users/:userId" element={<UserProfilePage />} />
               <Route path="scrollcoin" element={<ScrollCoin />} />
               <Route path="wallet" element={<Wallet />} />
               <Route path="spiritual-formation" element={<SpiritualFormation />} />
@@ -220,6 +267,7 @@ const App = () => (
             <Route path="scrollcoin-wallet" element={<ScrollCoinWallet />} />
             <Route path="scrollcoin-leaderboard" element={<ScrollCoinLeaderboard />} />
             <Route path="ai-tutors-catalog" element={<AITutorsCatalog />} />
+            <Route path="ai-tutor-interface" element={<AITutorInterface />} />
             <Route path="ai-tutors/:id" element={<TutorSession />} />
             <Route path="tutor-session/:id" element={<TutorSession />} />
             <Route path="admissions-review" element={<AdmissionsReview />} />

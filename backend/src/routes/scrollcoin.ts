@@ -1,388 +1,578 @@
 /**
- * ScrollUniversity ScrollCoin Routes
- * "Let righteousness be rewarded with divine currency"
+ * ScrollCoin API Routes
+ * "By the Spirit of Wisdom, we establish kingdom economy endpoints"
+ * 
+ * Routes for ScrollCoin blockchain integration, wallet management,
+ * transactions, and fraud prevention.
  */
 
-import express from 'express';
-import { logger } from '../utils/logger';
+import express, { Request, Response } from 'express';
+import { authenticateToken, requireRole } from '../middleware/auth';
 import ScrollCoinService from '../services/ScrollCoinService';
-import BlockchainService from '../services/BlockchainService';
-import RewardMechanismService from '../services/RewardMechanismService';
+import WalletManagementService from '../services/WalletManagementService';
+import FraudPreventionService from '../services/FraudPreventionService';
+import ExchangeRateService from '../services/ExchangeRateService';
+import BlockchainIntegrationService from '../services/BlockchainIntegrationService';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
-const scrollCoinService = ScrollCoinService.getInstance();
-const blockchainService = BlockchainService.getInstance();
-const rewardService = RewardMechanismService.getInstance();
+
+// ============================================================================
+// WALLET MANAGEMENT ROUTES
+// ============================================================================
 
 /**
- * GET /api/scrollcoin/balance
- * Get user's ScrollCoin balance and wallet information
+ * GET /api/scrollcoin/wallet
+ * Get user's wallet balance and information
  */
-router.get('/balance', async (req, res) => {
+router.get('/wallet', authenticateToken, async (req: Request, res: Response) => {
   try {
-    const userId = req.user?.id; // Assuming auth middleware sets req.user
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        error: 'Authentication required',
-        scrollMessage: 'You must be authenticated to access your divine treasury.'
-      });
-    }
+    const userId = (req as any).user.userId;
 
-    const wallet = await scrollCoinService.getWallet(userId);
-    
+    const balance = await ScrollCoinService.getWalletBalance(userId);
+    const statistics = await WalletManagementService.getWalletStatistics(userId);
+
     res.json({
       success: true,
-      wallet,
-      message: 'ScrollCoin balance retrieved',
-      scrollMessage: 'Your divine currency balance reflects your kingdom contributions.'
+      data: {
+        ...balance,
+        statistics
+      }
     });
   } catch (error) {
-    logger.error('Get ScrollCoin balance error:', error);
+    logger.error('Error getting wallet:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to retrieve balance',
-      scrollMessage: 'The ScrollCoin ledger could not be accessed at this time.'
+      error: 'Failed to get wallet information'
     });
   }
 });
 
 /**
- * GET /api/scrollcoin/transactions
- * Get user's ScrollCoin transaction history
+ * POST /api/scrollcoin/wallet/create
+ * Create a new wallet for user
  */
-router.get('/transactions', async (req, res) => {
+router.post('/wallet/create', authenticateToken, async (req: Request, res: Response) => {
   try {
-    const userId = req.user?.id;
-    if (!userId) {
-      return res.status(401).json({
+    const userId = (req as any).user.userId;
+
+    const wallet = await WalletManagementService.createWallet({ userId });
+
+    res.json({
+      success: true,
+      data: wallet
+    });
+  } catch (error) {
+    logger.error('Error creating wallet:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to create wallet'
+    });
+  }
+});
+
+/**
+ * POST /api/scrollcoin/wallet/sync
+ * Sync wallet balance with blockchain
+ */
+router.post('/wallet/sync', authenticateToken, async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.userId;
+
+    const balance = await WalletManagementService.syncWalletBalance(userId);
+
+    res.json({
+      success: true,
+      data: { balance }
+    });
+  } catch (error) {
+    logger.error('Error syncing wallet:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to sync wallet'
+    });
+  }
+});
+
+// ============================================================================
+// TRANSACTION ROUTES
+// ============================================================================
+
+/**
+ * POST /api/scrollcoin/mint
+ * Mint ScrollCoin rewards (admin only)
+ */
+router.post('/mint', authenticateToken, requireRole(['ADMIN', 'SCROLL_ELDER']), async (req: Request, res: Response) => {
+  try {
+    const { userId, amount, reason, referenceId, rewardId } = req.body;
+
+    if (!userId || !amount || !reason || !rewardId) {
+      return res.status(400).json({
         success: false,
-        error: 'Authentication required',
-        scrollMessage: 'You must be authenticated to view your transaction scrolls.'
+        error: 'Missing required fields: userId, amount, reason, rewardId'
       });
     }
 
-    const limit = parseInt(req.query.limit as string) || 50;
-    const offset = parseInt(req.query.offset as string) || 0;
+    const transaction = await ScrollCoinService.mintReward({
+      userId,
+      amount,
+      reason,
+      referenceId,
+      rewardId
+    });
 
-    const transactions = await scrollCoinService.getTransactionHistory(userId, limit, offset);
-    
     res.json({
       success: true,
-      transactions,
-      pagination: { limit, offset, count: transactions.length },
-      message: 'Transaction history retrieved',
-      scrollMessage: 'Your ScrollCoin journey is recorded in the heavenly ledger.'
+      data: transaction
     });
   } catch (error) {
-    logger.error('Get ScrollCoin transactions error:', error);
+    logger.error('Error minting ScrollCoin:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to retrieve transactions',
-      scrollMessage: 'The transaction scrolls could not be opened at this time.'
+      error: error instanceof Error ? error.message : 'Failed to mint ScrollCoin'
     });
   }
 });
 
 /**
  * POST /api/scrollcoin/transfer
- * Transfer ScrollCoin to another user
+ * Transfer ScrollCoin between users
  */
-router.post('/transfer', async (req, res) => {
+router.post('/transfer', authenticateToken, async (req: Request, res: Response) => {
   try {
-    const fromUserId = req.user?.id;
-    if (!fromUserId) {
-      return res.status(401).json({
-        success: false,
-        error: 'Authentication required',
-        scrollMessage: 'You must be authenticated to transfer divine currency.'
-      });
-    }
+    const fromUserId = (req as any).user.userId;
+    const { toUserId, amount, reason } = req.body;
 
-    const { toUserId, amount, description } = req.body;
-
-    if (!toUserId || !amount || amount <= 0) {
+    if (!toUserId || !amount) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid transfer parameters',
-        scrollMessage: 'The transfer requires a valid recipient and positive amount.'
+        error: 'Missing required fields: toUserId, amount'
       });
     }
 
-    const result = await scrollCoinService.transferScrollCoin(
+    const transaction = await ScrollCoinService.transferTokens({
       fromUserId,
       toUserId,
       amount,
-      description || 'ScrollCoin transfer'
-    );
+      reason
+    });
 
     res.json({
       success: true,
-      transfer: result,
-      message: 'ScrollCoin transfer completed',
-      scrollMessage: 'Your divine currency has been transferred with heavenly blessing.'
+      data: transaction
     });
   } catch (error) {
-    logger.error('ScrollCoin transfer error:', error);
+    logger.error('Error transferring ScrollCoin:', error);
     res.status(500).json({
       success: false,
-      error: error.message || 'Failed to transfer ScrollCoin',
-      scrollMessage: 'The ScrollCoin transfer could not be completed at this time.'
+      error: error instanceof Error ? error.message : 'Failed to transfer ScrollCoin'
     });
   }
 });
 
 /**
- * POST /api/scrollcoin/spend
- * Spend ScrollCoin for premium features or services
+ * POST /api/scrollcoin/burn
+ * Burn ScrollCoin for purchases
  */
-router.post('/spend', async (req, res) => {
+router.post('/burn', authenticateToken, async (req: Request, res: Response) => {
   try {
-    const userId = req.user?.id;
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        error: 'Authentication required',
-        scrollMessage: 'You must be authenticated to spend divine currency.'
-      });
-    }
+    const userId = (req as any).user.userId;
+    const { amount, reason, referenceId } = req.body;
 
-    const { amount, description, relatedEntityId } = req.body;
-
-    if (!amount || amount <= 0 || !description) {
+    if (!amount || !reason) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid spending parameters',
-        scrollMessage: 'The purchase requires a valid amount and description.'
+        error: 'Missing required fields: amount, reason'
       });
     }
 
-    const transaction = await scrollCoinService.spendScrollCoin(
+    const transaction = await ScrollCoinService.burnTokens({
       userId,
       amount,
-      description,
-      relatedEntityId
-    );
+      reason,
+      referenceId
+    });
 
     res.json({
       success: true,
-      transaction,
-      message: 'ScrollCoin spent successfully',
-      scrollMessage: 'Your divine currency has been invested in kingdom advancement.'
+      data: transaction
     });
   } catch (error) {
-    logger.error('ScrollCoin spend error:', error);
+    logger.error('Error burning ScrollCoin:', error);
     res.status(500).json({
       success: false,
-      error: error.message || 'Failed to spend ScrollCoin',
-      scrollMessage: 'The ScrollCoin transaction could not be completed at this time.'
+      error: error instanceof Error ? error.message : 'Failed to burn ScrollCoin'
     });
   }
 });
 
 /**
- * GET /api/scrollcoin/leaderboard
- * Get ScrollCoin leaderboard
+ * GET /api/scrollcoin/transactions
+ * Get transaction history
  */
-router.get('/leaderboard', async (req, res) => {
+router.get('/transactions', authenticateToken, async (req: Request, res: Response) => {
   try {
-    const limit = parseInt(req.query.limit as string) || 10;
-    const leaderboard = await scrollCoinService.getLeaderboard(limit);
-    
-    res.json({
-      success: true,
-      leaderboard,
-      message: 'ScrollCoin leaderboard retrieved',
-      scrollMessage: 'Behold the faithful stewards of divine currency.'
-    });
-  } catch (error) {
-    logger.error('Get ScrollCoin leaderboard error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to retrieve leaderboard',
-      scrollMessage: 'The leaderboard scrolls could not be accessed at this time.'
-    });
-  }
-});
+    const userId = (req as any).user.userId;
+    const { type, status, startDate, endDate, limit, offset } = req.query;
 
-/**
- * GET /api/scrollcoin/rewards/config
- * Get current reward configuration
- */
-router.get('/rewards/config', async (req, res) => {
-  try {
-    const config = scrollCoinService.getRewardConfiguration();
-    const rules = Array.from(rewardService.getRewardRules().entries()).map(([type, rule]) => ({
-      eventType: type,
-      ...rule
-    }));
-    
-    res.json({
-      success: true,
-      rewardConfig: config,
-      rewardRules: rules,
-      message: 'Reward configuration retrieved',
-      scrollMessage: 'The divine reward system operates by these sacred principles.'
-    });
-  } catch (error) {
-    logger.error('Get reward config error:', error);
-    res.status(500).json({
-      success: false,
-      error: 'Failed to retrieve reward configuration',
-      scrollMessage: 'The reward scrolls could not be accessed at this time.'
-    });
-  }
-});
-
-/**
- * POST /api/scrollcoin/rewards/course-completion
- * Award ScrollCoin for course completion
- */
-router.post('/rewards/course-completion', async (req, res) => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) {
-      return res.status(401).json({
-        success: false,
-        error: 'Authentication required'
-      });
-    }
-
-    const { courseId, score, difficulty } = req.body;
-
-    if (!courseId || score === undefined) {
-      return res.status(400).json({
-        success: false,
-        error: 'Course ID and score are required'
-      });
-    }
-
-    const result = await rewardService.processCourseCompletion(
+    const history = await ScrollCoinService.getTransactionHistory({
       userId,
-      courseId,
-      score,
-      difficulty || 'BEGINNER'
-    );
+      type: type as any,
+      status: status as any,
+      startDate: startDate ? new Date(startDate as string) : undefined,
+      endDate: endDate ? new Date(endDate as string) : undefined,
+      limit: limit ? parseInt(limit as string) : undefined,
+      offset: offset ? parseInt(offset as string) : undefined
+    });
 
     res.json({
       success: true,
-      reward: result,
-      message: 'Course completion reward processed',
-      scrollMessage: result.awarded 
-        ? `Congratulations! You have earned ${result.amount} ScrollCoin for your faithful completion.`
-        : 'Your completion has been recorded, though no reward was given at this time.'
+      data: history
     });
   } catch (error) {
-    logger.error('Course completion reward error:', error);
+    logger.error('Error getting transaction history:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to process course completion reward'
+      error: 'Failed to get transaction history'
+    });
+  }
+});
+
+// ============================================================================
+// EXCHANGE RATE ROUTES
+// ============================================================================
+
+/**
+ * GET /api/scrollcoin/exchange-rate
+ * Get current exchange rate
+ */
+router.get('/exchange-rate', async (req: Request, res: Response) => {
+  try {
+    const rate = await ExchangeRateService.getCurrentRate();
+
+    res.json({
+      success: true,
+      data: rate
+    });
+  } catch (error) {
+    logger.error('Error getting exchange rate:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get exchange rate'
     });
   }
 });
 
 /**
- * POST /api/scrollcoin/rewards/peer-assistance
- * Award ScrollCoin for peer assistance
+ * POST /api/scrollcoin/exchange-rate/convert
+ * Convert between ScrollCoin and USD
  */
-router.post('/rewards/peer-assistance', async (req, res) => {
+router.post('/exchange-rate/convert', async (req: Request, res: Response) => {
   try {
-    const helperId = req.user?.id;
-    if (!helperId) {
-      return res.status(401).json({
-        success: false,
-        error: 'Authentication required'
-      });
-    }
+    const { amount, from } = req.body;
 
-    const { helpedUserId, impact } = req.body;
-
-    if (!helpedUserId) {
+    if (!amount || !from) {
       return res.status(400).json({
         success: false,
-        error: 'Helped user ID is required'
+        error: 'Missing required fields: amount, from'
       });
     }
 
-    const result = await rewardService.processPeerAssistance(
-      helperId,
-      helpedUserId,
-      impact || 'MEDIUM'
+    let conversion;
+    if (from === 'SCROLLCOIN') {
+      conversion = await ExchangeRateService.convertToUSD(amount);
+    } else if (from === 'USD') {
+      conversion = await ExchangeRateService.convertFromUSD(amount);
+    } else {
+      return res.status(400).json({
+        success: false,
+        error: 'Invalid currency. Use SCROLLCOIN or USD'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: conversion
+    });
+  } catch (error) {
+    logger.error('Error converting currency:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to convert currency'
+    });
+  }
+});
+
+/**
+ * POST /api/scrollcoin/exchange-rate/create
+ * Create new exchange rate (admin only)
+ */
+router.post('/exchange-rate/create', authenticateToken, requireRole(['ADMIN']), async (req: Request, res: Response) => {
+  try {
+    const { rateToUSD, rateFromUSD, source, isActive, effectiveFrom, effectiveTo } = req.body;
+
+    if (!rateToUSD || !rateFromUSD) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: rateToUSD, rateFromUSD'
+      });
+    }
+
+    const rate = await ExchangeRateService.createRate({
+      rateToUSD,
+      rateFromUSD,
+      source: source || 'MANUAL',
+      isActive: isActive !== false,
+      effectiveFrom: effectiveFrom ? new Date(effectiveFrom) : new Date(),
+      effectiveTo: effectiveTo ? new Date(effectiveTo) : undefined
+    });
+
+    res.json({
+      success: true,
+      data: rate
+    });
+  } catch (error) {
+    logger.error('Error creating exchange rate:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to create exchange rate'
+    });
+  }
+});
+
+// ============================================================================
+// FRAUD PREVENTION ROUTES
+// ============================================================================
+
+/**
+ * GET /api/scrollcoin/fraud/alerts
+ * Get fraud alerts (admin only)
+ */
+router.get('/fraud/alerts', authenticateToken, requireRole(['ADMIN', 'FRAUD_MONITOR_ROLE']), async (req: Request, res: Response) => {
+  try {
+    const { limit } = req.query;
+
+    const alerts = await FraudPreventionService.getPendingAlerts(
+      limit ? parseInt(limit as string) : undefined
     );
 
     res.json({
       success: true,
-      reward: result,
-      message: 'Peer assistance reward processed',
-      scrollMessage: result.awarded 
-        ? `Blessed are those who help others! You have earned ${result.amount} ScrollCoin.`
-        : 'Your assistance has been noted, though no reward was given at this time.'
+      data: alerts
     });
   } catch (error) {
-    logger.error('Peer assistance reward error:', error);
+    logger.error('Error getting fraud alerts:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to process peer assistance reward'
+      error: 'Failed to get fraud alerts'
     });
   }
 });
+
+/**
+ * POST /api/scrollcoin/fraud/alerts/:alertId/review
+ * Review and resolve fraud alert (admin only)
+ */
+router.post('/fraud/alerts/:alertId/review', authenticateToken, requireRole(['ADMIN', 'FRAUD_MONITOR_ROLE']), async (req: Request, res: Response) => {
+  try {
+    const { alertId } = req.params;
+    const { status, reviewNotes } = req.body;
+    const reviewedBy = (req as any).user.userId;
+
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required field: status'
+      });
+    }
+
+    const alert = await FraudPreventionService.reviewAlert(
+      alertId,
+      reviewedBy,
+      status,
+      reviewNotes
+    );
+
+    res.json({
+      success: true,
+      data: alert
+    });
+  } catch (error) {
+    logger.error('Error reviewing fraud alert:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to review fraud alert'
+    });
+  }
+});
+
+/**
+ * GET /api/scrollcoin/fraud/statistics
+ * Get fraud statistics (admin only)
+ */
+router.get('/fraud/statistics', authenticateToken, requireRole(['ADMIN']), async (req: Request, res: Response) => {
+  try {
+    const { startDate, endDate } = req.query;
+
+    const statistics = await FraudPreventionService.getFraudStatistics(
+      startDate ? new Date(startDate as string) : undefined,
+      endDate ? new Date(endDate as string) : undefined
+    );
+
+    res.json({
+      success: true,
+      data: statistics
+    });
+  } catch (error) {
+    logger.error('Error getting fraud statistics:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get fraud statistics'
+    });
+  }
+});
+
+// ============================================================================
+// BLOCKCHAIN INTEGRATION ROUTES
+// ============================================================================
 
 /**
  * GET /api/scrollcoin/blockchain/status
  * Get blockchain network status
  */
-router.get('/blockchain/status', async (req, res) => {
+router.get('/blockchain/status', async (req: Request, res: Response) => {
   try {
-    const status = await blockchainService.getNetworkStatus();
-    
+    const status = await BlockchainIntegrationService.getNetworkStatus();
+
     res.json({
       success: true,
-      blockchain: status,
-      message: 'Blockchain status retrieved',
-      scrollMessage: 'The heavenly ledger network status has been revealed.'
+      data: status
     });
   } catch (error) {
-    logger.error('Get blockchain status error:', error);
+    logger.error('Error getting blockchain status:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to retrieve blockchain status',
-      scrollMessage: 'The heavenly ledger could not be accessed at this time.'
+      error: 'Failed to get blockchain status'
     });
   }
 });
 
 /**
- * GET /api/scrollcoin/stats/:userId
- * Get reward statistics for a user
+ * POST /api/scrollcoin/blockchain/verify
+ * Verify transaction on blockchain
  */
-router.get('/stats/:userId', async (req, res) => {
+router.post('/blockchain/verify', authenticateToken, async (req: Request, res: Response) => {
   try {
-    const requestingUserId = req.user?.id;
-    const targetUserId = req.params.userId;
+    const { txHash, expectedData } = req.body;
 
-    // Users can only view their own stats unless they're admin
-    if (requestingUserId !== targetUserId && req.user?.role !== 'ADMIN') {
-      return res.status(403).json({
+    if (!txHash) {
+      return res.status(400).json({
         success: false,
-        error: 'Access denied',
-        scrollMessage: 'You may only view your own reward statistics.'
+        error: 'Missing required field: txHash'
       });
     }
 
-    const stats = await rewardService.getUserRewardStats(targetUserId);
-    
+    const verification = await BlockchainIntegrationService.verifyTransaction(
+      txHash,
+      expectedData || {}
+    );
+
     res.json({
       success: true,
-      stats,
-      message: 'User reward statistics retrieved',
-      scrollMessage: 'Your faithful service has been recorded in the heavenly books.'
+      data: verification
     });
   } catch (error) {
-    logger.error('Get user reward stats error:', error);
+    logger.error('Error verifying transaction:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to retrieve reward statistics',
-      scrollMessage: 'The reward scrolls could not be accessed at this time.'
+      error: 'Failed to verify transaction'
+    });
+  }
+});
+
+/**
+ * GET /api/scrollcoin/blockchain/balance/:address
+ * Get balance from blockchain
+ */
+router.get('/blockchain/balance/:address', authenticateToken, async (req: Request, res: Response) => {
+  try {
+    const { address } = req.params;
+
+    const balance = await BlockchainIntegrationService.getBalance(address);
+
+    res.json({
+      success: true,
+      data: { balance }
+    });
+  } catch (error) {
+    logger.error('Error getting blockchain balance:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to get blockchain balance'
+    });
+  }
+});
+
+// ============================================================================
+// ADMIN ROUTES
+// ============================================================================
+
+/**
+ * POST /api/scrollcoin/admin/wallet/blacklist
+ * Blacklist a wallet (admin only)
+ */
+router.post('/admin/wallet/blacklist', authenticateToken, requireRole(['ADMIN', 'FRAUD_MONITOR_ROLE']), async (req: Request, res: Response) => {
+  try {
+    const { userId, reason } = req.body;
+
+    if (!userId || !reason) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required fields: userId, reason'
+      });
+    }
+
+    await WalletManagementService.blacklistWallet(userId, reason);
+
+    res.json({
+      success: true,
+      message: 'Wallet blacklisted successfully'
+    });
+  } catch (error) {
+    logger.error('Error blacklisting wallet:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to blacklist wallet'
+    });
+  }
+});
+
+/**
+ * POST /api/scrollcoin/admin/wallet/whitelist
+ * Whitelist a wallet (admin only)
+ */
+router.post('/admin/wallet/whitelist', authenticateToken, requireRole(['ADMIN']), async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Missing required field: userId'
+      });
+    }
+
+    await WalletManagementService.whitelistWallet(userId);
+
+    res.json({
+      success: true,
+      message: 'Wallet whitelisted successfully'
+    });
+  } catch (error) {
+    logger.error('Error whitelisting wallet:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to whitelist wallet'
     });
   }
 });
