@@ -67,8 +67,8 @@ export const EngagementChart: React.FC<EngagementChartProps> = ({
                 key={index}
                 type="monotone"
                 dataKey={dataset.label}
-                stroke={dataset.borderColor || '#8884d8'}
-                fill={dataset.backgroundColor || '#8884d8'}
+                stroke={Array.isArray(dataset.borderColor) ? dataset.borderColor[0] : dataset.borderColor || '#8884d8'}
+                fill={Array.isArray(dataset.backgroundColor) ? dataset.backgroundColor[0] : dataset.backgroundColor || '#8884d8'}
                 fillOpacity={0.6}
               />
             ))}
@@ -87,7 +87,7 @@ export const EngagementChart: React.FC<EngagementChartProps> = ({
               <Bar
                 key={index}
                 dataKey={dataset.label}
-                fill={dataset.backgroundColor || '#8884d8'}
+                fill={Array.isArray(dataset.backgroundColor) ? dataset.backgroundColor[0] : dataset.backgroundColor || '#8884d8'}
               />
             ))}
           </BarChart>
@@ -106,7 +106,7 @@ export const EngagementChart: React.FC<EngagementChartProps> = ({
                 key={index}
                 type="monotone"
                 dataKey={dataset.label}
-                stroke={dataset.borderColor || '#8884d8'}
+                stroke={Array.isArray(dataset.borderColor) ? dataset.borderColor[0] : dataset.borderColor || '#8884d8'}
                 strokeWidth={2}
                 dot={{ r: 4 }}
               />

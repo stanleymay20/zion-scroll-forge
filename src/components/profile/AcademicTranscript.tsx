@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/table';
 import { Download, FileText, Award, Calendar } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import type { AcademicTranscript as TranscriptType } from '@/types/student-profile';
 
 interface AcademicTranscriptProps {
@@ -31,9 +32,10 @@ const AcademicTranscript: React.FC<AcademicTranscriptProps> = ({ studentId }) =>
   const loadTranscript = async () => {
     try {
       setLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
       const response = await fetch(`/api/profile/${studentId}/transcript`, {
         headers: {
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session?.access_token}`
         }
       });
       
@@ -51,11 +53,12 @@ const AcademicTranscript: React.FC<AcademicTranscriptProps> = ({ studentId }) =>
   const handleDownload = async (format: 'pdf' | 'json') => {
     try {
       setDownloading(true);
+      const { data: { session } } = await supabase.auth.getSession();
       const response = await fetch(
         `/api/profile/${studentId}/transcript/download?format=${format}`,
         {
           headers: {
-            'Authorization': `Bearer ${user?.token}`
+            'Authorization': `Bearer ${session?.access_token}`
           }
         }
       );

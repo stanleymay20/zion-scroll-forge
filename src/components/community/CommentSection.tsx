@@ -258,9 +258,9 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ postId, onCommen
       <div className="mb-6">
         <div className="flex items-start gap-3">
           <Avatar className="w-8 h-8">
-            <AvatarImage src={user?.avatarUrl} />
+            <AvatarImage src={user?.user_metadata?.avatar_url} />
             <AvatarFallback>
-              {user?.firstName?.[0]}{user?.lastName?.[0]}
+              {user?.email?.charAt(0).toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
 
