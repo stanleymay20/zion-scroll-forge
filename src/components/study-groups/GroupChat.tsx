@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
-import { useChatSocket } from '@/hooks/useChatSocket';
+// import { useChatSocket } from '@/hooks/useChatSocket'; // Disabled - requires backend setup
 
 interface Message {
   id: string;
@@ -32,27 +32,24 @@ export const GroupChat: React.FC<GroupChatProps> = ({ groupId }) => {
   const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const { socket, connected } = useChatSocket();
+  // const { socket, connected } = useChatSocket(); // Disabled - requires backend setup
 
   useEffect(() => {
     fetchMessages();
     
-    // Join group chat room
-    if (socket && connected) {
-      socket.emit('join-room', { roomId: `group-${groupId}` });
-
-      // Listen for new messages
-      socket.on('new-message', (message: Message) => {
-        setMessages(prev => [...prev, message]);
-        scrollToBottom();
-      });
-
-      return () => {
-        socket.emit('leave-room', { roomId: `group-${groupId}` });
-        socket.off('new-message');
-      };
-    }
-  }, [groupId, socket, connected]);
+    // Socket functionality disabled - requires backend setup
+    // if (socket && connected) {
+    //   socket.emit('join-room', { roomId: `group-${groupId}` });
+    //   socket.on('new-message', (message: Message) => {
+    //     setMessages(prev => [...prev, message]);
+    //     scrollToBottom();
+    //   });
+    //   return () => {
+    //     socket.emit('leave-room', { roomId: `group-${groupId}` });
+    //     socket.off('new-message');
+    //   };
+    // }
+  }, [groupId]);
 
   const fetchMessages = async () => {
     try {

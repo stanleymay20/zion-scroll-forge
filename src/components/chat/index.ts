@@ -3,7 +3,6 @@
  * Export all chat-related components
  */
 
-export { default as ChatInterface } from './ChatInterface';
 export { default as ChannelSidebar } from './ChannelSidebar';
 export { default as MessageList } from './MessageList';
 export { default as MessageInput } from './MessageInput';

@@ -87,7 +87,7 @@ export function PrayerJournal({
       setNewEntry({
         title: '',
         content: '',
-        category: 'personal',
+        category: 'thanksgiving' as PrayerCategory,
         isPrivate: true,
         tags: []
       });
@@ -297,7 +297,7 @@ export function PrayerJournal({
                             Answered on {entry.answeredDate && new Date(entry.answeredDate).toLocaleDateString()}
                           </CardDescription>
                         </div>
-                        <Badge variant="success">
+                        <Badge variant="secondary" className="bg-green-500/10 text-green-700 dark:text-green-300">
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           Answered
                         </Badge>

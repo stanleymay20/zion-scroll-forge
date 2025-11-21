@@ -4,7 +4,6 @@
  */
 
 export { CourseReviews } from './CourseReviews';
-export { CourseRecommendations } from './CourseRecommendations';
 export { InstructorProfileCard } from './InstructorProfileCard';
 export { CoursePreviewVideo } from './CoursePreviewVideo';
 export { CourseEnrollmentFlow } from './CourseEnrollmentFlow';
