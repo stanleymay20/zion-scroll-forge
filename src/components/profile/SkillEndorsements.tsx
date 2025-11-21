@@ -72,9 +72,12 @@ const SkillEndorsements: React.FC<SkillEndorsementsProps> = ({
   const loadSkills = async () => {
     try {
       setLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error('Not authenticated');
+      
       const response = await fetch(`/api/profile/${studentId}/skills`, {
         headers: {
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session.access_token}`
         }
       });
       
@@ -110,11 +113,14 @@ const SkillEndorsements: React.FC<SkillEndorsementsProps> = ({
 
   const handleAddSkill = async () => {
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error('Not authenticated');
+      
       const response = await fetch(`/api/profile/${studentId}/skills`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session.access_token}`
         },
         body: JSON.stringify({
           skillName: newSkillName,
@@ -138,13 +144,16 @@ const SkillEndorsements: React.FC<SkillEndorsementsProps> = ({
     if (!selectedSkill) return;
     
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error('Not authenticated');
+      
       const response = await fetch(
         `/api/profile/${studentId}/skills/${selectedSkill.id}/endorse`,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user?.token}`
+            'Authorization': `Bearer ${session.access_token}`
           },
           body: JSON.stringify({
             comment: endorsementComment

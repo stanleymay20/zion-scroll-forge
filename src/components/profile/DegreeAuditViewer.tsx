@@ -37,9 +37,12 @@ const DegreeAuditViewer: React.FC<DegreeAuditViewerProps> = ({ studentId }) => {
   const loadDegreeAudit = async () => {
     try {
       setLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error('Not authenticated');
+      
       const response = await fetch(`/api/profile/${studentId}/degree-audit`, {
         headers: {
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session.access_token}`
         }
       });
       

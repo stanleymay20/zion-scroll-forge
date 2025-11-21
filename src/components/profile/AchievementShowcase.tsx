@@ -94,11 +94,14 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
 
   const handleTogglePin = async (achievementId: string, isPinned: boolean) => {
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error('Not authenticated');
+      
       const response = await fetch(`/api/profile/${studentId}/achievements/${achievementId}/pin`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session.access_token}`
         },
         body: JSON.stringify({ isPinned: !isPinned })
       });
