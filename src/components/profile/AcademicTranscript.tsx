@@ -31,9 +31,12 @@ const AcademicTranscript: React.FC<AcademicTranscriptProps> = ({ studentId }) =>
   const loadTranscript = async () => {
     try {
       setLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error('Not authenticated');
+      
       const response = await fetch(`/api/profile/${studentId}/transcript`, {
         headers: {
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session.access_token}`
         }
       });
       
@@ -51,11 +54,14 @@ const AcademicTranscript: React.FC<AcademicTranscriptProps> = ({ studentId }) =>
   const handleDownload = async (format: 'pdf' | 'json') => {
     try {
       setDownloading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) throw new Error('Not authenticated');
+      
       const response = await fetch(
         `/api/profile/${studentId}/transcript/download?format=${format}`,
         {
           headers: {
-            'Authorization': `Bearer ${user?.token}`
+            'Authorization': `Bearer ${session.access_token}`
           }
         }
       );

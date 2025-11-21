@@ -86,16 +86,15 @@ export function CourseEnrollmentFlow({
       if (enrollError) throw enrollError;
 
       // Handle payment based on method
-      if (paymentMethod === 'scrollcoin') {
-        // Deduct ScrollCoin (this would integrate with ScrollCoin service)
+      if (paymentMethod === 'scrollcoin' && scrollCoinCost) {
+        // Deduct ScrollCoin
         const { error: paymentError } = await supabase
-          .from('scrollcoin_transactions')
+          .from('transactions')
           .insert({
             user_id: user!.id,
-            amount: -scrollCoinCost,
-            transaction_type: 'COURSE_ENROLLMENT',
-            description: `Enrolled in ${course.title}`,
-            reference_id: enrollment.id,
+            amount: scrollCoinCost,
+            type: 'course_enrollment',
+            description: `Enrolled in ${course.title}`
           });
 
         if (paymentError) throw paymentError;

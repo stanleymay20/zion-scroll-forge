@@ -18,6 +18,22 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 
+interface CommentWithAuthor {
+  id: string;
+  authorId: string;
+  content: string;
+  createdAt: string;
+  isEdited?: boolean;
+  isLiked?: boolean;
+  likesCount: number;
+  replies?: CommentWithAuthor[];
+  author: {
+    id: string;
+    avatarUrl?: string;
+    full_name: string;
+  };
+}
+
 interface CommentSectionProps {
   postId: string;
   onCommentAdded: () => void;
@@ -160,8 +176,8 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ postId, onCommen
     return (
       <div key={comment.id} className={`${isReply ? 'ml-12' : ''} mb-4`}>
         <div className="flex items-start gap-3">
-          <Avatar className="w-8 h-8">
-            <AvatarImage src={comment.author.avatar_url} />
+        <Avatar className="w-8 h-8">
+            <AvatarImage src={comment.author.avatarUrl} />
             <AvatarFallback>
               {comment.author.full_name?.charAt(0) || 'U'}
             </AvatarFallback>
