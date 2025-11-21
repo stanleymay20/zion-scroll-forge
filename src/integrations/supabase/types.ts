@@ -930,10 +930,15 @@ export type Database = {
           id: string
           institution_id: string
           level: string | null
+          preview_video_url: string | null
           price: number | null
+          price_cents: number | null
           rating: number | null
+          scholarship_eligible: boolean | null
+          scroll_coin_cost: number | null
           students: number | null
           tags: string[] | null
+          thumbnail_url: string | null
           title: string
           xr_enabled: boolean | null
         }
@@ -946,10 +951,15 @@ export type Database = {
           id?: string
           institution_id: string
           level?: string | null
+          preview_video_url?: string | null
           price?: number | null
+          price_cents?: number | null
           rating?: number | null
+          scholarship_eligible?: boolean | null
+          scroll_coin_cost?: number | null
           students?: number | null
           tags?: string[] | null
+          thumbnail_url?: string | null
           title: string
           xr_enabled?: boolean | null
         }
@@ -962,10 +972,15 @@ export type Database = {
           id?: string
           institution_id?: string
           level?: string | null
+          preview_video_url?: string | null
           price?: number | null
+          price_cents?: number | null
           rating?: number | null
+          scholarship_eligible?: boolean | null
+          scroll_coin_cost?: number | null
           students?: number | null
           tags?: string[] | null
+          thumbnail_url?: string | null
           title?: string
           xr_enabled?: boolean | null
         }
@@ -1087,6 +1102,80 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "institutions"
             referencedColumns: ["id"]
+          },
+        ]
+      }
+      discussion_likes: {
+        Row: {
+          created_at: string | null
+          id: string
+          post_id: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          post_id?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discussion_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "discussion_posts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "discussion_likes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      discussion_posts: {
+        Row: {
+          content: string
+          created_at: string | null
+          id: string
+          lecture_id: string | null
+          likes_count: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          content: string
+          created_at?: string | null
+          id?: string
+          lecture_id?: string | null
+          likes_count?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          content?: string
+          created_at?: string | null
+          id?: string
+          lecture_id?: string | null
+          likes_count?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discussion_posts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -1820,6 +1909,238 @@ export type Database = {
           },
         ]
       }
+      lecture_progress: {
+        Row: {
+          completed: boolean | null
+          created_at: string | null
+          enrollment_id: string | null
+          id: string
+          lecture_id: string | null
+          progress: number | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          completed?: boolean | null
+          created_at?: string | null
+          enrollment_id?: string | null
+          id?: string
+          lecture_id?: string | null
+          progress?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string | null
+          enrollment_id?: string | null
+          id?: string
+          lecture_id?: string | null
+          progress?: number | null
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lecture_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      live_sessions: {
+        Row: {
+          course_id: string
+          created_at: string | null
+          ended_at: string | null
+          id: string
+          institution_id: string
+          module_id: string | null
+          recording_url: string | null
+          scheduled_end: string
+          scheduled_start: string
+          started_at: string | null
+          status: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          course_id: string
+          created_at?: string | null
+          ended_at?: string | null
+          id?: string
+          institution_id: string
+          module_id?: string | null
+          recording_url?: string | null
+          scheduled_end: string
+          scheduled_start: string
+          started_at?: string | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          course_id?: string
+          created_at?: string | null
+          ended_at?: string | null
+          id?: string
+          institution_id?: string
+          module_id?: string | null
+          recording_url?: string | null
+          scheduled_end?: string
+          scheduled_start?: string
+          started_at?: string | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_sessions_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      live_sessions_chat: {
+        Row: {
+          created_at: string | null
+          id: string
+          message: string
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          message: string
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          message?: string
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_sessions_chat_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "live_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_chat_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_chat_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "live_sessions_chat_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      live_sessions_participants: {
+        Row: {
+          attendance_duration: number | null
+          audio_enabled: boolean | null
+          hand_raised: boolean | null
+          id: string
+          is_host: boolean | null
+          joined_at: string | null
+          left_at: string | null
+          session_id: string
+          user_id: string
+          video_enabled: boolean | null
+        }
+        Insert: {
+          attendance_duration?: number | null
+          audio_enabled?: boolean | null
+          hand_raised?: boolean | null
+          id?: string
+          is_host?: boolean | null
+          joined_at?: string | null
+          left_at?: string | null
+          session_id: string
+          user_id: string
+          video_enabled?: boolean | null
+        }
+        Update: {
+          attendance_duration?: number | null
+          audio_enabled?: boolean | null
+          hand_raised?: boolean | null
+          id?: string
+          is_host?: boolean | null
+          joined_at?: string | null
+          left_at?: string | null
+          session_id?: string
+          user_id?: string
+          video_enabled?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "live_sessions_participants_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "live_sessions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "live_sessions_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "live_sessions_participants_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       mentorship_requests: {
         Row: {
           accepted_at: string | null
@@ -2285,9 +2606,11 @@ export type Database = {
       profiles: {
         Row: {
           academic_profile: Json | null
+          avatar_url: string | null
           created_at: string | null
           current_institution_id: string | null
           email: string | null
+          full_name: string | null
           id: string
           role: string | null
           scrollcoin_balance: number | null
@@ -2297,9 +2620,11 @@ export type Database = {
         }
         Insert: {
           academic_profile?: Json | null
+          avatar_url?: string | null
           created_at?: string | null
           current_institution_id?: string | null
           email?: string | null
+          full_name?: string | null
           id: string
           role?: string | null
           scrollcoin_balance?: number | null
@@ -2309,9 +2634,11 @@ export type Database = {
         }
         Update: {
           academic_profile?: Json | null
+          avatar_url?: string | null
           created_at?: string | null
           current_institution_id?: string | null
           email?: string | null
+          full_name?: string | null
           id?: string
           role?: string | null
           scrollcoin_balance?: number | null
@@ -2759,6 +3086,41 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      scrollcoin_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          description: string | null
+          id: string
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scrollcoin_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       spiritual_analytics_daily: {
         Row: {
@@ -4054,6 +4416,7 @@ export type Database = {
         }
         Returns: string
       }
+      decrement_post_likes: { Args: { post_id: string }; Returns: undefined }
       earn_scrollcoin: {
         Args: { p_amount: number; p_desc: string; p_user_id: string }
         Returns: undefined
@@ -4065,6 +4428,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_post_likes: { Args: { post_id: string }; Returns: undefined }
       spend_scrollcoin: {
         Args: { p_amount: number; p_desc: string; p_user_id: string }
         Returns: undefined
