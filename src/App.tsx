@@ -119,8 +119,6 @@ import ApplicationStatus from "./pages/ApplicationStatus";
 import StudentProfile from "./pages/StudentProfile";
 import MobileFeaturesDemo from "./pages/MobileFeaturesDemo";
 import RealtimeDemo from "./pages/RealtimeDemo";
-import LiveClassroom from "./pages/LiveClassroom";
-import SuperAdminDashboard from "./pages/SuperAdminDashboard";
 import CourseCatalog from "./pages/CourseCatalog";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import MyCourses from "./pages/MyCourses";
@@ -287,9 +285,7 @@ const App = () => (
               <Route path="admin/content-generation" element={<ContentGenerationAdmin />} />
               <Route path="admin/institutions" element={<InstitutionsAdmin />} />
               <Route path="admin/super" element={<SuperAdmin />} />
-              <Route path="admin/dashboard" element={<SuperAdminDashboard />} />
               <Route path="apply" element={<Apply />} />
-              <Route path="live-classroom" element={<LiveClassroom />} />
               <Route path="courses-catalog" element={<CourseCatalog />} />
               <Route path="courses-detail/:courseId" element={<CourseDetailPage />} />
               <Route path="my-courses" element={<MyCourses />} />
