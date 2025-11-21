@@ -6,7 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { X, Download, Share, Plus } from 'lucide-react';
+import { X, Download, Share, Plus, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import scrollLogo from '@/assets/scroll-university-logo-optimized.png';
 

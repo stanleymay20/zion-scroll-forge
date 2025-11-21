@@ -13,12 +13,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Settings, Save, AlertCircle } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import adminService from '@/services/adminService';
-import type { SystemConfiguration, ConfigurationUpdate } from '@/types/admin';
+import type { SystemConfiguration as SystemConfigType, ConfigurationUpdate } from '@/types/admin';
 import { useAuth } from '@/contexts/AuthContext';
 
 export const SystemConfiguration: React.FC = () => {
   const { user } = useAuth();
-  const [config, setConfig] = useState<SystemConfiguration | null>(null);
+  const [config, setConfig] = useState<SystemConfigType | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -39,7 +39,7 @@ export const SystemConfiguration: React.FC = () => {
     }
   };
 
-  const handleSave = async (section: keyof SystemConfiguration, updates: Record<string, any>) => {
+  const handleSave = async (section: keyof SystemConfigType, updates: Record<string, any>) => {
     if (!user) return;
 
     try {
