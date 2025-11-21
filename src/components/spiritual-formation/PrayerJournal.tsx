@@ -44,12 +44,18 @@ export function PrayerJournal({
   const [entries, setEntries] = useState<PrayerEntry[]>(initialEntries);
   const [loading, setLoading] = useState<boolean>(false);
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-  const [newEntry, setNewEntry] = useState({
+  const [newEntry, setNewEntry] = useState<{
+    title: string;
+    content: string;
+    category: PrayerCategory;
+    isPrivate: boolean;
+    tags: string[];
+  }>({
     title: '',
     content: '',
-    category: 'personal' as PrayerCategory,
+    category: 'thanksgiving' as PrayerCategory,
     isPrivate: true,
-    tags: [] as string[]
+    tags: []
   });
 
   // Load entries
@@ -87,7 +93,7 @@ export function PrayerJournal({
       setNewEntry({
         title: '',
         content: '',
-        category: 'personal',
+        category: 'thanksgiving' as PrayerCategory,
         isPrivate: true,
         tags: []
       });
@@ -297,7 +303,7 @@ export function PrayerJournal({
                             Answered on {entry.answeredDate && new Date(entry.answeredDate).toLocaleDateString()}
                           </CardDescription>
                         </div>
-                        <Badge variant="success">
+                        <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100">
                           <CheckCircle2 className="h-3 w-3 mr-1" />
                           Answered
                         </Badge>

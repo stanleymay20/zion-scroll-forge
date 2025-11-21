@@ -16,12 +16,12 @@ import {
   Coins, Trophy, Heart, FileText, Shield 
 } from "lucide-react";
 import { useProfile } from "@/hooks/useProfile";
-import { useScrollCoin } from "@/hooks/useScrollCoin";
+import { useWallet } from "@/hooks/useScrollCoin";
 
 export const UserProfileDropdown = () => {
   const { user, signOut } = useAuth();
   const { data: profile } = useProfile();
-  const { data: scrollCoinData } = useScrollCoin();
+  const { data: walletData } = useWallet();
 
   const getInitials = (name?: string) => {
     if (!name) return user?.email?.charAt(0).toUpperCase() || "U";
@@ -68,7 +68,7 @@ export const UserProfileDropdown = () => {
               <div className="flex items-center space-x-1">
                 <Coins className="h-3 w-3 text-yellow-500" />
                 <span className="text-xs font-semibold">
-                  {scrollCoinData?.balance?.toFixed(0) || "0"}
+                  {walletData?.wallet?.balance?.toFixed(0) || "0"}
                 </span>
               </div>
             </div>

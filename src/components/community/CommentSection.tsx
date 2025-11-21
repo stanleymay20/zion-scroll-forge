@@ -161,9 +161,9 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ postId, onCommen
       <div key={comment.id} className={`${isReply ? 'ml-12' : ''} mb-4`}>
         <div className="flex items-start gap-3">
           <Avatar className="w-8 h-8">
-            <AvatarImage src={comment.author.avatarUrl} />
+            <AvatarImage src={comment.author.avatar_url} />
             <AvatarFallback>
-              {comment.author.firstName[0]}{comment.author.lastName[0]}
+              {comment.author.full_name?.charAt(0) || 'U'}
             </AvatarFallback>
           </Avatar>
 
@@ -172,7 +172,7 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ postId, onCommen
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
                   <span className="font-semibold text-sm">
-                    {comment.author.firstName} {comment.author.lastName}
+                    {comment.author.full_name || 'Anonymous'}
                   </span>
                   <span className="text-gray-500 text-xs">
                     {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
@@ -258,9 +258,9 @@ export const CommentSection: React.FC<CommentSectionProps> = ({ postId, onCommen
       <div className="mb-6">
         <div className="flex items-start gap-3">
           <Avatar className="w-8 h-8">
-            <AvatarImage src={user?.avatarUrl} />
+            <AvatarImage src={user?.user_metadata?.avatar_url} />
             <AvatarFallback>
-              {user?.firstName?.[0]}{user?.lastName?.[0]}
+              {user?.email?.charAt(0).toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
 

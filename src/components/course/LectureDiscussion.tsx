@@ -33,8 +33,8 @@ interface DiscussionPost {
   user_id: string;
   content: string;
   created_at: string;
-  likes: number;
-  replies: DiscussionPost[];
+  likes_count: number;
+  replies?: DiscussionPost[];
   user: {
     id: string;
     full_name: string;
@@ -67,7 +67,11 @@ export function LectureDiscussion({ lectureId, courseId, userId }: LectureDiscus
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return data as DiscussionPost[];
+      return (data || []).map(post => ({
+        ...post,
+        likes_count: post.likes_count || 0,
+        replies: post.replies || []
+      })) as DiscussionPost[];
     }
   });
 
@@ -82,7 +86,7 @@ export function LectureDiscussion({ lectureId, courseId, userId }: LectureDiscus
           user_id: userId,
           content,
           parent_id: parentId || null,
-          likes: 0
+          likes_count: 0
         });
 
       if (error) throw error;
@@ -271,7 +275,7 @@ export function LectureDiscussion({ lectureId, courseId, userId }: LectureDiscus
                     className="text-muted-foreground hover:text-primary"
                   >
                     <ThumbsUp className="h-4 w-4 mr-1" />
-                    {post.likes || 0}
+                    {post.likes_count || 0}
                   </Button>
                   <Button
                     variant="ghost"
@@ -357,7 +361,7 @@ export function LectureDiscussion({ lectureId, courseId, userId }: LectureDiscus
                             className="text-muted-foreground hover:text-primary"
                           >
                             <ThumbsUp className="h-3 w-3 mr-1" />
-                            {reply.likes || 0}
+                            {reply.likes_count || 0}
                           </Button>
                         </div>
                       </div>
