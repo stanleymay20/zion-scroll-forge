@@ -157,9 +157,9 @@ export const PostComposer: React.FC<PostComposerProps> = ({ onPostCreated, onCan
     <Card className="p-6">
       <div className="flex items-start gap-4">
         <Avatar className="w-12 h-12">
-          <AvatarImage src={user?.avatarUrl} />
-          <AvatarFallback>
-            {user?.firstName?.[0]}{user?.lastName?.[0]}
+              <AvatarImage src={user?.user_metadata?.avatar_url} />
+              <AvatarFallback>
+                {user?.email?.charAt(0).toUpperCase()}
           </AvatarFallback>
         </Avatar>
 

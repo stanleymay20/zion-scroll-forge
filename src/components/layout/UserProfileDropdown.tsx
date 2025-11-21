@@ -21,7 +21,7 @@ import { useScrollCoin } from "@/hooks/useScrollCoin";
 export const UserProfileDropdown = () => {
   const { user, signOut } = useAuth();
   const { data: profile } = useProfile();
-  const { data: scrollCoinData } = useScrollCoin();
+  const { data: walletData } = useWallet();
 
   const getInitials = (name?: string) => {
     if (!name) return user?.email?.charAt(0).toUpperCase() || "U";
