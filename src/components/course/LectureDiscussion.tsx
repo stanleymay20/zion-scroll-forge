@@ -67,11 +67,7 @@ export function LectureDiscussion({ lectureId, courseId, userId }: LectureDiscus
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      return (data || []).map(post => ({
-        ...post,
-        likes_count: post.likes_count || 0,
-        replies: post.replies || []
-      })) as DiscussionPost[];
+      return (data || []) as any;
     }
   });
 
