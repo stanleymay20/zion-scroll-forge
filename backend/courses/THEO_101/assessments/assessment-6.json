@@ -1,0 +1,20 @@
+{
+  "id": "assessment-6",
+  "moduleId": "module-THEO_101-6",
+  "type": "QUIZ",
+  "title": "Module 6 Assessment",
+  "description": "Comprehensive assessment for Module 6",
+  "points": 100,
+  "dueDate": "2025-11-20T17:07:57.657Z",
+  "rubric": {
+    "id": "rubric-6",
+    "criteria": [],
+    "totalPoints": 100
+  },
+  "questions": [],
+  "alignedObjectives": [
+    "lo-6-0",
+    "lo-6-1",
+    "lo-6-2"
+  ]
+}

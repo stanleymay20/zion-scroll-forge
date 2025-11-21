@@ -136,7 +136,7 @@ export class PerformanceMonitor {
       this.end(operation, { ...metadata, success: true });
       return result;
     } catch (error) {
-      this.end(operation, { ...metadata, success: false, error: error.message });
+      this.end(operation, { ...metadata, success: false, error: error instanceof Error ? error.message : String(error) });
       throw error;
     }
   }

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">12.5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/112</span>
+                <span class='fraction'>0/112</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/15</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">15.55% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/90</span>
+                <span class='fraction'>0/90</span>
             </div>
         
             
@@ -417,23 +417,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -576,8 +576,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -727,8 +727,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -749,8 +749,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -764,23 +764,23 @@
  * Generates official transcripts with blockchain verification
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
-import { logger } from '../utils/productionLogger';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
+<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/productionLogger';</span>
 import { OfficialTranscript } from '../types/degree-graduation.types';
-import crypto from 'crypto';
+<span class="cstat-no" title="statement not covered" >import crypto from 'crypto';</span>
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
-export class OfficialTranscriptService {
+<span class="cstat-no" title="statement not covered" >export class O</span>fficialTranscriptService {
   /**
    * Generate official transcript for student
    */
-  async generateOfficialTranscript(studentId: string): Promise&lt;OfficialTranscript&gt; {
-    try {
-      logger.info('Generating official transcript', { studentId });
+<span class="fstat-no" title="function not covered" >  async </span>generateOfficialTranscript(studentId: string): Promise&lt;OfficialTranscript&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Generating official transcript', { studentId });</span>
 &nbsp;
       // Get student information
-      const student = await prisma.user.findUnique({
+      const student = <span class="cstat-no" title="statement not covered" >await prisma.user.findUnique({</span>
         where: { id: studentId },
         include: {
           enrollments: {
@@ -923,8 +923,8 @@ export class OfficialTranscriptService {
 <span class="cstat-no" title="statement not covered" >      return transcript;</span>
 &nbsp;
     } catch (error: any) {
-      logger.error('Generate official transcript error', { error: error.message, studentId });
-      throw error;
+<span class="cstat-no" title="statement not covered" >      logger.error('Generate official transcript error', { error: error.message, studentId });</span>
+<span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
@@ -1070,12 +1070,12 @@ export class OfficialTranscriptService {
   /**
    * Verify transcript authenticity
    */
-  async verifyTranscript(blockchainHash: string): Promise&lt;{
+<span class="fstat-no" title="function not covered" >  async </span>verifyTranscript(blockchainHash: string): Promise&lt;{
     valid: boolean;
     message: string;
   }&gt; {
-    try {
-      const transcript = await prisma.scrollTranscript.findFirst({
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const transcript = <span class="cstat-no" title="statement not covered" >await prisma.scrollTranscript.findFirst({</span>
         where: {
           verificationHashes: {
             has: blockchainHash
@@ -1096,8 +1096,8 @@ export class OfficialTranscriptService {
       };
 &nbsp;
     } catch (error: any) {
-      logger.error('Verify transcript error', { error: error.message });
-      return {
+<span class="cstat-no" title="statement not covered" >      logger.error('Verify transcript error', { error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >      return {</span>
         valid: false,
         message: 'Error verifying transcript'
       };
@@ -1111,7 +1111,7 @@ export class OfficialTranscriptService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-19T13:55:33.461Z
+                at 2025-11-21T04:03:59.298Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

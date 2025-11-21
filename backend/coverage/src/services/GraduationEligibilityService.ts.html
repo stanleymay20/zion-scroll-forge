@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.25% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>11/83</span>
+                <span class='fraction'>0/83</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">22.22% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/9</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.58% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/81</span>
+                <span class='fraction'>0/81</span>
             </div>
         
             
@@ -333,29 +333,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -460,8 +460,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -596,29 +596,29 @@
  * Manages graduation eligibility checking and validation
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
-import { logger } from '../utils/productionLogger';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
+<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/productionLogger';</span>
 import { GraduationEligibility } from '../types/degree-graduation.types';
-import { DegreeAuditService } from './DegreeAuditService';
+<span class="cstat-no" title="statement not covered" >import { DegreeAuditService } from './DegreeAuditService';</span>
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
-export class GraduationEligibilityService {
+<span class="cstat-no" title="statement not covered" >export class G</span>raduationEligibilityService {
   private degreeAuditService: DegreeAuditService;
 &nbsp;
-  constructor() {
-    this.degreeAuditService = new DegreeAuditService();
+<span class="fstat-no" title="function not covered" >  constructor() {</span>
+<span class="cstat-no" title="statement not covered" >    this.degreeAuditService = new DegreeAuditService();</span>
   }
 &nbsp;
   /**
    * Check if student is eligible for graduation
    */
-  async checkEligibility(studentId: string, degreeProgramId: string): Promise&lt;GraduationEligibility&gt; {
-    try {
-      logger.info('Checking graduation eligibility', { studentId, degreeProgramId });
+<span class="fstat-no" title="function not covered" >  async </span>checkEligibility(studentId: string, degreeProgramId: string): Promise&lt;GraduationEligibility&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Checking graduation eligibility', { studentId, degreeProgramId });</span>
 &nbsp;
       // Get degree audit
-      const audit = await this.degreeAuditService.getDegreeAudit(studentId, degreeProgramId);
+      const audit = <span class="cstat-no" title="statement not covered" >await this.degreeAuditService.getDegreeAudit(studentId, degreeProgramId);</span>
 &nbsp;
       // Check credit hours
       const creditHoursComplete = <span class="cstat-no" title="statement not covered" >audit.creditHoursCompleted &gt;= audit.creditHoursRequired;</span>
@@ -723,8 +723,8 @@ export class GraduationEligibilityService {
 <span class="cstat-no" title="statement not covered" >      return eligibility;</span>
 &nbsp;
     } catch (error: any) {
-      logger.error('Check eligibility error', { error: error.message, studentId });
-      throw error;
+<span class="cstat-no" title="statement not covered" >      logger.error('Check eligibility error', { error: error.message, studentId });</span>
+<span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
@@ -859,7 +859,7 @@ export class GraduationEligibilityService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-19T13:55:34.483Z
+                at 2025-11-21T04:04:03.213Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

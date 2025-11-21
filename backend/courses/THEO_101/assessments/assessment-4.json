@@ -1,0 +1,20 @@
+{
+  "id": "assessment-4",
+  "moduleId": "module-THEO_101-4",
+  "type": "QUIZ",
+  "title": "Module 4 Assessment",
+  "description": "Comprehensive assessment for Module 4",
+  "points": 100,
+  "dueDate": "2025-11-20T17:07:57.656Z",
+  "rubric": {
+    "id": "rubric-4",
+    "criteria": [],
+    "totalPoints": 100
+  },
+  "questions": [],
+  "alignedObjectives": [
+    "lo-4-0",
+    "lo-4-1",
+    "lo-4-2"
+  ]
+}

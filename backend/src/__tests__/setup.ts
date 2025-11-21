@@ -1,299 +1,155 @@
 /**
- * ScrollUniversity Test Setup
- * "Test all things; hold fast what is good" - 1 Thessalonians 5:21
+ * Jest Test Setup for ScrollUniversity Backend
+ * Global test configuration and mocks
  */
 
 import { PrismaClient } from '@prisma/client';
-import { execSync } from 'child_process';
-import { randomBytes } from 'crypto';
 
-// Global test configuration
+// Mock Prisma Client globally
+jest.mock('@prisma/client', () => ({
+  PrismaClient: jest.fn().mockImplementation(() => ({
+    $connect: jest.fn(),
+    $disconnect: jest.fn(),
+    $transaction: jest.fn(),
+    // Add other Prisma methods as needed
+  }))
+}));
+
+// Mock logger globally
+jest.mock('../utils/logger', () => ({
+  logger: {
+    info: jest.fn(),
+    error: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn()
+  }
+}));
+
+// Mock AI Gateway Service
+jest.mock('../services/AIGatewayService', () => ({
+  AIGatewayService: jest.fn().mockImplementation(() => ({
+    generateContent: jest.fn().mockResolvedValue({
+      content: 'Mock AI generated content',
+      usage: { totalTokens: 100 }
+    })
+  }))
+}));
+
+// Global test timeout for property-based tests
+jest.setTimeout(60000);
+
+// Setup environment variables for testing
 process.env.NODE_ENV = 'test';
-process.env.LOG_LEVEL = 'error';
-process.env.JWT_SECRET = 'test-jwt-secret-key';
-process.env.BCRYPT_ROUNDS = '4'; // Faster for tests
+process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/scrolluniversity_test';
+process.env.OPENAI_API_KEY = 'test-key';
+process.env.CLAUDE_API_KEY = 'test-key';
 
-// Use existing database for tests (don't create new one)
-// Make sure DATABASE_URL is set in .env file
-if (!process.env.DATABASE_URL) {
-  console.warn('⚠️  DATABASE_URL not set, using default');
-  process.env.DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/scrolluniversity';
-}
+// Global test utilities
+global.testUtils = {
+  // Helper to create mock course outline
+  createMockCourseOutline: (overrides = {}) => ({
+    title: 'Test Course',
+    subject: 'Theology',
+    level: 'intermediate' as const,
+    chapters: [
+      {
+        title: 'Test Chapter',
+        orderIndex: 1,
+        topics: ['Test Topic'],
+        learningObjectives: ['Test Objective']
+      }
+    ],
+    ...overrides
+  }),
 
-// Global test variables
-let prisma: PrismaClient;
+  // Helper to create mock book input
+  createMockBookInput: (overrides = {}) => ({
+    title: 'Test Book',
+    subject: 'Theology',
+    level: 'intermediate' as const,
+    ...overrides
+  }),
 
-// Setup before all tests
-beforeAll(async () => {
-  // Initialize Prisma with existing database
-  prisma = new PrismaClient({
-    log: ['error'], // Only log errors in tests
-  });
+  // Helper to create mock search query
+  createMockSearchQuery: (overrides = {}) => ({
+    query: 'test query',
+    type: 'semantic' as const,
+    limit: 10,
+    ...overrides
+  })
+};
 
-  // Connect to database
-  try {
-    await prisma.$connect();
-    console.log('✅ Test database connected');
-  } catch (error) {
-    console.error('❌ Failed to connect to test database:', error);
-    console.error('💡 Make sure PostgreSQL is running and DATABASE_URL is correct in .env');
-    throw error;
-  }
-}, 60000);
+// Extend Jest matchers for property-based testing
+expect.extend({
+  toBeValidScrollContent(received: string) {
+    const hasScrollTone = received.includes('kingdom') || 
+                         received.includes('calling') || 
+                         received.includes('Lord') ||
+                         received.includes('Biblical');
+    
+    const hasStructure = received.includes('#') || // Headers
+                        received.includes('##') ||
+                        received.includes('###');
+    
+    const pass = hasScrollTone && hasStructure;
+    
+    if (pass) {
+      return {
+        message: () => `Expected content not to have scroll tone and structure`,
+        pass: true
+      };
+    } else {
+      return {
+        message: () => `Expected content to have scroll tone (kingdom/calling/Lord/Biblical) and markdown structure`,
+        pass: false
+      };
+    }
+  },
 
-// Cleanup after all tests
-afterAll(async () => {
-  // Disconnect from database
-  if (prisma) {
-    await prisma.$disconnect();
-    console.log('✅ Test database disconnected');
-  }
-}, 30000);
-
-// Clean database between tests
-beforeEach(async () => {
-  // Clean all tables in reverse dependency order
-  const tablenames = await prisma.$queryRaw<Array<{ tablename: string }>>`
-    SELECT tablename FROM pg_tables WHERE schemaname='public'
-  `;
-
-  const tables = tablenames
-    .map(({ tablename }) => tablename)
-    .filter(name => name !== '_prisma_migrations')
-    .map(name => `"public"."${name}"`)
-    .join(', ');
-
-  if (tables) {
-    try {
-      await prisma.$executeRawUnsafe(`TRUNCATE TABLE ${tables} RESTART IDENTITY CASCADE`);
-    } catch (error) {
-      console.error('Failed to truncate tables:', error);
+  toHaveValidBookStructure(received: any) {
+    const requiredFields = ['id', 'title', 'subject', 'level', 'metadata', 'createdAt', 'updatedAt'];
+    const missingFields = requiredFields.filter(field => !(field in received));
+    
+    const pass = missingFields.length === 0;
+    
+    if (pass) {
+      return {
+        message: () => `Expected book not to have valid structure`,
+        pass: true
+      };
+    } else {
+      return {
+        message: () => `Expected book to have valid structure. Missing fields: ${missingFields.join(', ')}`,
+        pass: false
+      };
     }
   }
 });
 
-// Mock external services
-jest.mock('../services/CacheService', () => ({
-  cacheService: {
-    get: jest.fn().mockResolvedValue(null),
-    set: jest.fn().mockResolvedValue(true),
-    delete: jest.fn().mockResolvedValue(true),
-    exists: jest.fn().mockResolvedValue(false),
-    getOrSet: jest.fn().mockImplementation(async (key, fn) => await fn()),
-    increment: jest.fn().mockResolvedValue(1),
-    expire: jest.fn().mockResolvedValue(true),
-    mget: jest.fn().mockResolvedValue([]),
-    mset: jest.fn().mockResolvedValue(true),
-    invalidateByTags: jest.fn().mockResolvedValue(0),
-    clear: jest.fn().mockResolvedValue(true),
-    getStats: jest.fn().mockResolvedValue({}),
-    healthCheck: jest.fn().mockResolvedValue(true),
-    close: jest.fn().mockResolvedValue(undefined)
+// Declare global types for TypeScript
+declare global {
+  namespace jest {
+    interface Matchers<R> {
+      toBeValidScrollContent(): R;
+      toHaveValidBookStructure(): R;
+    }
   }
-}));
 
-jest.mock('../utils/productionLogger', () => ({
-  logger: {
-    info: jest.fn(),
-    warn: jest.fn(),
-    error: jest.fn(),
-    debug: jest.fn()
-  },
-  PerformanceMonitor: {
-    start: jest.fn(),
-    end: jest.fn(),
-    measure: jest.fn().mockImplementation(async (name, fn) => await fn())
-  },
-  SecurityLogger: {
-    logAuthAttempt: jest.fn(),
-    logSuspiciousActivity: jest.fn(),
-    logDataAccess: jest.fn(),
-    logSecurityViolation: jest.fn()
-  },
-  MetricsLogger: {
-    logUserAction: jest.fn(),
-    logSystemMetric: jest.fn(),
-    logBusinessEvent: jest.fn()
-  },
-  ErrorTracker: {
-    trackError: jest.fn(),
-    trackDatabaseError: jest.fn(),
-    trackAPIError: jest.fn()
-  }
-}));
+  var testUtils: {
+    createMockCourseOutline: (overrides?: any) => any;
+    createMockBookInput: (overrides?: any) => any;
+    createMockSearchQuery: (overrides?: any) => any;
+  };
+}
 
-// Mock monitoring service
-jest.mock('../services/MonitoringService', () => ({
-  monitoringService: {
-    recordMetric: jest.fn(),
-    getMetrics: jest.fn().mockReturnValue([]),
-    getAggregatedMetrics: jest.fn().mockReturnValue(0),
-    addAlertRule: jest.fn(),
-    removeAlertRule: jest.fn(),
-    getActiveAlerts: jest.fn().mockReturnValue([]),
-    acknowledgeAlert: jest.fn(),
-    resolveAlert: jest.fn(),
-    recordEvent: jest.fn(),
-    recordError: jest.fn(),
-    recordPerformance: jest.fn(),
-    recordSecurityEvent: jest.fn(),
-    getSystemHealth: jest.fn().mockResolvedValue({ status: 'healthy' }),
-    getDashboardMetrics: jest.fn().mockReturnValue({}),
-    shutdown: jest.fn()
-  }
-}));
+// Clean up after each test
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
-// Mock email service
-jest.mock('nodemailer', () => ({
-  createTransport: jest.fn().mockReturnValue({
-    sendMail: jest.fn().mockResolvedValue({ messageId: 'test-message-id' })
-  })
-}));
+// Global error handler for unhandled promise rejections in tests
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
 
-// Mock blockchain services
-jest.mock('ethers', () => ({
-  ethers: {
-    providers: {
-      JsonRpcProvider: jest.fn().mockImplementation(() => ({
-        getNetwork: jest.fn().mockResolvedValue({ chainId: 1 }),
-        getBalance: jest.fn().mockResolvedValue('1000000000000000000')
-      }))
-    },
-    Wallet: jest.fn().mockImplementation(() => ({
-      address: '0x1234567890123456789012345678901234567890',
-      connect: jest.fn().mockReturnThis()
-    })),
-    Contract: jest.fn().mockImplementation(() => ({
-      mint: jest.fn().mockResolvedValue({ hash: '0xtest' }),
-      balanceOf: jest.fn().mockResolvedValue('100')
-    }))
-  }
-}));
-
-// Test utilities
-export const testUtils = {
-  // Create test user
-  createTestUser: async (overrides = {}) => {
-    return await prisma.user.create({
-      data: {
-        email: 'test@scrolluniversity.edu',
-        username: 'testuser',
-        passwordHash: '$2b$04$test.hash.for.testing.purposes.only',
-        firstName: 'Test',
-        lastName: 'User',
-        role: 'STUDENT',
-        academicLevel: 'SCROLL_OPEN',
-        ...overrides
-      }
-    });
-  },
-
-  // Create test course
-  createTestCourse: async (overrides = {}) => {
-    const faculty = await prisma.faculty.create({
-      data: {
-        name: 'Test Faculty',
-        description: 'Test faculty for testing'
-      }
-    });
-
-    return await prisma.course.create({
-      data: {
-        title: 'Test Course',
-        description: 'Test course for testing',
-        difficulty: 'BEGINNER',
-        duration: 60,
-        scrollXPReward: 100,
-        scrollCoinCost: 0,
-        facultyId: faculty.id,
-        ...overrides
-      }
-    });
-  },
-
-  // Create test application
-  createTestApplication: async (userId: string, overrides = {}) => {
-    return await prisma.application.create({
-      data: {
-        applicantId: userId,
-        programApplied: 'SCROLL_DEGREE',
-        intendedStartDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        personalStatement: 'Test personal statement',
-        spiritualTestimony: 'Test spiritual testimony',
-        academicHistory: [],
-        characterReferences: [],
-        documents: [],
-        applicationTimeline: [],
-        ...overrides
-      }
-    });
-  },
-
-  // Wait for async operations
-  waitFor: (ms: number) => new Promise(resolve => setTimeout(resolve, ms)),
-
-  // Generate test JWT token
-  generateTestToken: (userId: string) => {
-    const jwt = require('jsonwebtoken');
-    return jwt.sign(
-      { userId, role: 'STUDENT' },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    );
-  },
-
-  // Clean specific table
-  cleanTable: async (tableName: string) => {
-    await prisma.$executeRawUnsafe(`TRUNCATE TABLE "${tableName}" RESTART IDENTITY CASCADE`);
-  }
-};
-
-// Global test data
-export const testData = {
-  validUser: {
-    email: 'valid@scrolluniversity.edu',
-    username: 'validuser',
-    password: 'ValidPassword123!',
-    firstName: 'Valid',
-    lastName: 'User'
-  },
-  
-  validCourse: {
-    title: 'Introduction to Scroll Theology',
-    description: 'A foundational course in scroll-aligned theology',
-    difficulty: 'BEGINNER' as const,
-    duration: 120,
-    scrollXPReward: 200,
-    scrollCoinCost: 0
-  },
-
-  validApplication: {
-    programApplied: 'SCROLL_DEGREE' as const,
-    personalStatement: 'I am called to serve in scroll-aligned education and ministry.',
-    spiritualTestimony: 'My testimony of faith and transformation through Christ.',
-    academicHistory: [
-      {
-        institutionName: 'Previous University',
-        degree: 'Bachelor of Arts',
-        fieldOfStudy: 'Theology',
-        startDate: '2020-09-01',
-        endDate: '2024-05-15',
-        gpa: 3.7,
-        creditsEarned: 120,
-        transcriptVerified: true,
-        documents: ['transcript.pdf']
-      }
-    ],
-    characterReferences: [
-      {
-        name: 'Pastor John Smith',
-        relationship: 'Pastor',
-        contact: 'pastor@church.org',
-        recommendation: 'Strong character and spiritual maturity'
-      }
-    ]
-  }
-};
-
-// Export prisma instance for tests
-export { prisma };
+export {};

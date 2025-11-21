@@ -1,0 +1,20 @@
+{
+  "id": "assessment-9",
+  "moduleId": "module-THEO_101-9",
+  "type": "QUIZ",
+  "title": "Module 9 Assessment",
+  "description": "Comprehensive assessment for Module 9",
+  "points": 100,
+  "dueDate": "2025-11-20T17:07:57.657Z",
+  "rubric": {
+    "id": "rubric-9",
+    "criteria": [],
+    "totalPoints": 100
+  },
+  "questions": [],
+  "alignedObjectives": [
+    "lo-9-0",
+    "lo-9-1",
+    "lo-9-2"
+  ]
+}

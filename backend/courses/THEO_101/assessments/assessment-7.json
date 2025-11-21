@@ -1,0 +1,20 @@
+{
+  "id": "assessment-7",
+  "moduleId": "module-THEO_101-7",
+  "type": "QUIZ",
+  "title": "Module 7 Assessment",
+  "description": "Comprehensive assessment for Module 7",
+  "points": 100,
+  "dueDate": "2025-11-20T17:07:57.657Z",
+  "rubric": {
+    "id": "rubric-7",
+    "criteria": [],
+    "totalPoints": 100
+  },
+  "questions": [],
+  "alignedObjectives": [
+    "lo-7-0",
+    "lo-7-1",
+    "lo-7-2"
+  ]
+}

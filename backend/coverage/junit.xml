@@ -1,129 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="10" failures="6" errors="0" time="2.623">
-  <testsuite name="DegreeGraduationService" errors="0" failures="6" skipped="0" timestamp="2025-11-19T13:55:16" time="2.306" tests="10">
-    <testcase classname="DegreeGraduationService › getDegreeProgress" name="should return degree audit and eligibility" time="0.132">
-      <failure>PrismaClientKnownRequestError: 
-Invalid `prisma.user.findUnique()` invocation in
-C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:41
-
-  27 logger.info(&apos;Getting degree audit&apos;, { studentId, degreeProgramId });
-  28 
-  29 // Get student data
-→ 30 const student = await prisma.user.findUnique(
-The table `public.users` does not exist in the current database.
-    at $n.handleRequestError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
-    at $n.handleAndLogRequestError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
-    at $n.request (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
-    at l (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
-    at DegreeAuditService.getDegreeAudit (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:23)
-    at DegreeGraduationService.getDegreeProgress (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeGraduationService.ts:43:21)
-    at Object.&lt;anonymous&gt; (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\__tests__\DegreeGraduationService.test.ts:24:22)</failure>
+<testsuites name="jest tests" tests="9" failures="0" errors="0" time="8.078">
+  <testsuite name="Property 23: Video Quality Verification" errors="0" failures="0" skipped="0" timestamp="2025-11-21T04:03:26" time="7.758" tests="9">
+    <testcase classname="Property 23: Video Quality Verification" name="should verify audio quality, visual clarity, and engagement for all videos" time="0.805">
     </testcase>
-    <testcase classname="DegreeGraduationService › trackCourseCompletion" name="should track course completion successfully" time="0.008">
-      <failure>Error: expect(received).resolves.not.toThrow()
-
-Received promise rejected instead of resolved
-Rejected to value: [PrismaClientKnownRequestError:·
-Invalid `prisma.user.findUnique()` invocation in
-C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:41·
-  27 logger.info(&apos;Getting degree audit&apos;, { studentId, degreeProgramId });
-  28·
-  29 // Get student data
-→ 30 const student = await prisma.user.findUnique(
-The table `public.users` does not exist in the current database.]
-    at expect (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\expect\build\index.js:113:15)
-    at Object.&lt;anonymous&gt; (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\__tests__\DegreeGraduationService.test.ts:37:13)
-    at Promise.then.completed (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-circus\build\utils.js:298:28)
-    at new Promise (&lt;anonymous&gt;)
-    at callAsyncCircusFn (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-circus\build\utils.js:231:10)
-    at _callCircusTest (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-circus\build\run.js:316:40)
-    at _runTest (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-circus\build\run.js:252:3)
-    at _runTestsForDescribeBlock (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-circus\build\run.js:126:9)
-    at _runTestsForDescribeBlock (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-circus\build\run.js:121:9)
-    at _runTestsForDescribeBlock (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-circus\build\run.js:121:9)
-    at run (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-circus\build\run.js:71:3)
-    at runAndTransformResultsToJestFormat (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
-    at jestAdapter (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
-    at runTestInternal (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-runner\build\runTest.js:367:16)
-    at runTest (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\jest-runner\build\runTest.js:444:34)</failure>
+    <testcase classname="Property 23: Video Quality Verification" name="should detect audio quality issues for low bitrate videos" time="0.015">
     </testcase>
-    <testcase classname="DegreeAuditService › getDegreeAudit" name="should return comprehensive degree audit" time="0.005">
-      <failure>PrismaClientKnownRequestError: 
-Invalid `prisma.user.findUnique()` invocation in
-C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:41
-
-  27 logger.info(&apos;Getting degree audit&apos;, { studentId, degreeProgramId });
-  28 
-  29 // Get student data
-→ 30 const student = await prisma.user.findUnique(
-The table `public.users` does not exist in the current database.
-    at $n.handleRequestError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
-    at $n.handleAndLogRequestError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
-    at $n.request (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
-    at l (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
-    at DegreeAuditService.getDegreeAudit (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:23)
-    at Object.&lt;anonymous&gt; (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\__tests__\DegreeGraduationService.test.ts:56:21)</failure>
+    <testcase classname="Property 23: Video Quality Verification" name="should detect visual quality issues for low resolution videos" time="0.015">
     </testcase>
-    <testcase classname="DegreeAuditService › getDegreeAudit" name="should calculate progress percentage correctly" time="0.005">
-      <failure>PrismaClientKnownRequestError: 
-Invalid `prisma.user.findUnique()` invocation in
-C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:41
-
-  27 logger.info(&apos;Getting degree audit&apos;, { studentId, degreeProgramId });
-  28 
-  29 // Get student data
-→ 30 const student = await prisma.user.findUnique(
-The table `public.users` does not exist in the current database.
-    at $n.handleRequestError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
-    at $n.handleAndLogRequestError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
-    at $n.request (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
-    at l (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
-    at DegreeAuditService.getDegreeAudit (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:23)
-    at Object.&lt;anonymous&gt; (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\__tests__\DegreeGraduationService.test.ts:74:21)</failure>
+    <testcase classname="Property 24: Written Material Quality Checks" name="should check accuracy, clarity, and depth for all written materials" time="3.406">
     </testcase>
-    <testcase classname="GraduationEligibilityService › checkEligibility" name="should return eligibility status" time="0.012">
-      <failure>PrismaClientKnownRequestError: 
-Invalid `prisma.user.findUnique()` invocation in
-C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:41
-
-  27 logger.info(&apos;Getting degree audit&apos;, { studentId, degreeProgramId });
-  28 
-  29 // Get student data
-→ 30 const student = await prisma.user.findUnique(
-The table `public.users` does not exist in the current database.
-    at $n.handleRequestError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
-    at $n.handleAndLogRequestError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
-    at $n.request (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
-    at l (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
-    at DegreeAuditService.getDegreeAudit (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:23)
-    at GraduationEligibilityService.checkEligibility (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\GraduationEligibilityService.ts:30:21)
-    at Object.&lt;anonymous&gt; (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\__tests__\DegreeGraduationService.test.ts:94:27)</failure>
+    <testcase classname="Property 24: Written Material Quality Checks" name="should detect depth issues for documents that are too short" time="1.993">
     </testcase>
-    <testcase classname="GraduationEligibilityService › checkEligibility" name="should check all requirement categories" time="0.008">
-      <failure>PrismaClientKnownRequestError: 
-Invalid `prisma.user.findUnique()` invocation in
-C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:41
-
-  27 logger.info(&apos;Getting degree audit&apos;, { studentId, degreeProgramId });
-  28 
-  29 // Get student data
-→ 30 const student = await prisma.user.findUnique(
-The table `public.users` does not exist in the current database.
-    at $n.handleRequestError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:7315)
-    at $n.handleAndLogRequestError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:6623)
-    at $n.request (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:121:6307)
-    at l (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\@prisma\client\runtime\library.js:130:9633)
-    at DegreeAuditService.getDegreeAudit (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\DegreeAuditService.ts:30:23)
-    at GraduationEligibilityService.checkEligibility (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\GraduationEligibilityService.ts:30:21)
-    at Object.&lt;anonymous&gt; (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\src\services\__tests__\DegreeGraduationService.test.ts:108:27)</failure>
+    <testcase classname="Property 25: Assessment Rigor Validation" name="should validate rigor level and alignment for all assessments" time="0.05">
     </testcase>
-    <testcase classname="DiplomaGenerationService › generateDiploma" name="should generate diploma with blockchain verification" time="0.201">
+    <testcase classname="Property 25: Assessment Rigor Validation" name="should detect alignment issues for assessments without aligned objectives" time="0.044">
     </testcase>
-    <testcase classname="DiplomaGenerationService › verifyDiploma" name="should verify diploma authenticity" time="0.006">
+    <testcase classname="Property 25: Assessment Rigor Validation" name="should detect rubric issues for assessments without rubrics" time="0.04">
     </testcase>
-    <testcase classname="OfficialTranscriptService › generateOfficialTranscript" name="should generate official transcript with all sections" time="0.047">
-    </testcase>
-    <testcase classname="OfficialTranscriptService › verifyTranscript" name="should verify transcript authenticity" time="0.007">
+    <testcase classname="Property 26: Course Approval on Passing Checks" name="should approve courses only when all quality checks pass" time="0.45">
     </testcase>
   </testsuite>
 </testsuites>

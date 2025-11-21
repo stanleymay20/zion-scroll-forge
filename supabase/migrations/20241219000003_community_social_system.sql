@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS public.study_groups (
     name TEXT NOT NULL,
     description TEXT,
     institution_id UUID REFERENCES public.institutions(id) ON DELETE CASCADE,
-    course_id UUID REFERENCES public.courses(id) ON DELETE SET NULL,
+    course_id UUID, -- Will add foreign key constraint after courses table is created
     creator_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
     max_members INTEGER DEFAULT 20,
     current_members INTEGER DEFAULT 1,
@@ -573,6 +573,17 @@ CREATE INDEX IF NOT EXISTS idx_fellowship_rooms_active ON public.fellowship_room
 CREATE INDEX IF NOT EXISTS idx_direct_messages_conversation_created ON public.direct_messages(conversation_id, created_at);
 CREATE INDEX IF NOT EXISTS idx_notifications_user_read ON public.notifications(user_id, is_read, created_at DESC);
 
+-- Add foreign key constraint for course_id if courses table exists
+DO $$ 
+BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'courses') THEN
+        ALTER TABLE public.study_groups 
+        ADD CONSTRAINT study_groups_course_id_fkey 
+        FOREIGN KEY (course_id) REFERENCES public.courses(id) ON DELETE SET NULL;
+    END IF;
+END $$;
+
 -- Insert development flag
 INSERT INTO public.development_flags (name, flag_key, is_enabled, created_at)
-VALUES ('Community and Social System', 'Jesus-Christ-is-Lord-Community', true, NOW());
+VALUES ('Community and Social System', 'Jesus-Christ-is-Lord-Community', true, NOW())
+ON CONFLICT (flag_key) DO NOTHING;

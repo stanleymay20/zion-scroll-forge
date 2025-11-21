@@ -1,0 +1,20 @@
+{
+  "id": "assessment-3",
+  "moduleId": "module-THEO_101-3",
+  "type": "QUIZ",
+  "title": "Module 3 Assessment",
+  "description": "Comprehensive assessment for Module 3",
+  "points": 100,
+  "dueDate": "2025-11-20T17:07:57.656Z",
+  "rubric": {
+    "id": "rubric-3",
+    "criteria": [],
+    "totalPoints": 100
+  },
+  "questions": [],
+  "alignedObjectives": [
+    "lo-3-0",
+    "lo-3-1",
+    "lo-3-2"
+  ]
+}

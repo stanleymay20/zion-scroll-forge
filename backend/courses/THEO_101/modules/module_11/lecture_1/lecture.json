@@ -1,0 +1,33 @@
+{
+  "id": "lecture-11-1",
+  "moduleId": "module-THEO_101-11",
+  "title": "Module 11: Core Concepts and Applications",
+  "duration": 60,
+  "video": {
+    "id": "video-11-1",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 60,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-11-1",
+    "lectureId": "lecture-11-1",
+    "content": "This section provides an overview of the topic.",
+    "summary": "Summary of the lecture content.",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2"
+    ],
+    "examples": [],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}
