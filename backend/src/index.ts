@@ -71,6 +71,9 @@ import prayerRoutes from './routes/prayer';
 import scriptureMemoryRoutes from './routes/scripture-memory';
 import enrollmentRoutes from './routes/enrollment';
 import profileRoutes from './routes/profile';
+import performanceRoutes from './routes/performance';
+import productionLaunchRoutes from './routes/production-launch';
+import postLaunchRoutes from './routes/post-launch';
 
 // Socket.io service
 import SocketService from './services/SocketService';
@@ -264,6 +267,9 @@ async function startServer() {
   routeWithMonitoring('/api/prayer', prayerRoutes);
   routeWithMonitoring('/api/scripture-memory', scriptureMemoryRoutes);
   routeWithMonitoring('/api/enrollment', enrollmentRoutes);
+  routeWithMonitoring('/api/performance', performanceRoutes);
+  routeWithMonitoring('/api/production-launch', productionLaunchRoutes);
+  routeWithMonitoring('/api/post-launch', postLaunchRoutes);
 
   // Admissions API routes
   routeWithMonitoring('/api/admissions/applications', admissionsApplicationsRoutes);

@@ -12,6 +12,11 @@ export interface CacheOptions {
     tags?: string[];
 }
 
+// Helper function to safely extract error message
+function getErrorMessage(error: unknown): string {
+    return error instanceof Error ? getErrorMessage(error) : String(error);
+}
+
 export class CacheService {
     private redis: Redis;
     private defaultTTL: number = 3600; // 1 hour
@@ -22,11 +27,14 @@ export class CacheService {
             port: parseInt(process.env.REDIS_PORT || '6379'),
             password: process.env.REDIS_PASSWORD,
             db: parseInt(process.env.REDIS_DB || '0'),
-            retryDelayOnFailover: 100,
             maxRetriesPerRequest: 3,
             lazyConnect: true,
             keepAlive: 30000,
-            family: 4
+            family: 4,
+            retryStrategy: (times: number) => {
+                const delay = Math.min(times * 50, 2000);
+                return delay;
+            }
         });
 
         this.redis.on('connect', () => {
@@ -34,7 +42,7 @@ export class CacheService {
         });
 
         this.redis.on('error', (error) => {
-            logger.error('Redis connection error', { error: error.message });
+            logger.error('Redis connection error', { error: getErrorMessage(error) });
         });
 
         this.redis.on('close', () => {
@@ -63,7 +71,7 @@ export class CacheService {
 
             return result;
         } catch (error) {
-            logger.error('Cache get error', { key, error: error.message });
+            logger.error('Cache get error', { key, error: getErrorMessage(error) });
             return null;
         }
     }
@@ -91,7 +99,7 @@ export class CacheService {
             logger.debug('Cache set', { key, ttl, tags: options.tags });
             return true;
         } catch (error) {
-            logger.error('Cache set error', { key, error: error.message });
+            logger.error('Cache set error', { key, error: getErrorMessage(error) });
             return false;
         }
     }
@@ -105,7 +113,7 @@ export class CacheService {
             logger.debug('Cache delete', { key, deleted: result > 0 });
             return result > 0;
         } catch (error) {
-            logger.error('Cache delete error', { key, error: error.message });
+            logger.error('Cache delete error', { key, error: getErrorMessage(error) });
             return false;
         }
     }
@@ -118,7 +126,7 @@ export class CacheService {
             const result = await this.redis.exists(this.formatKey(key));
             return result === 1;
         } catch (error) {
-            logger.error('Cache exists error', { key, error: error.message });
+            logger.error('Cache exists error', { key, error: getErrorMessage(error) });
             return false;
         }
     }
@@ -150,7 +158,7 @@ export class CacheService {
             logger.debug('Cache increment', { key, amount, result });
             return result;
         } catch (error) {
-            logger.error('Cache increment error', { key, error: error.message });
+            logger.error('Cache increment error', { key, error: getErrorMessage(error) });
             return 0;
         }
     }
@@ -163,7 +171,7 @@ export class CacheService {
             const result = await this.redis.expire(this.formatKey(key), ttl);
             return result === 1;
         } catch (error) {
-            logger.error('Cache expire error', { key, error: error.message });
+            logger.error('Cache expire error', { key, error: getErrorMessage(error) });
             return false;
         }
     }
@@ -178,7 +186,7 @@ export class CacheService {
 
             return values.map(value => value ? JSON.parse(value) : null);
         } catch (error) {
-            logger.error('Cache mget error', { keys, error: error.message });
+            logger.error('Cache mget error', { keys, error: getErrorMessage(error) });
             return keys.map(() => null);
         }
     }
@@ -205,7 +213,7 @@ export class CacheService {
             logger.debug('Cache mset', { count: Object.keys(keyValuePairs).length, ttl });
             return true;
         } catch (error) {
-            logger.error('Cache mset error', { error: error.message });
+            logger.error('Cache mset error', { error: getErrorMessage(error) });
             return false;
         }
     }
@@ -234,7 +242,7 @@ export class CacheService {
             logger.info('Cache invalidated by tags', { tags, deletedCount });
             return deletedCount;
         } catch (error) {
-            logger.error('Cache invalidate by tags error', { tags, error: error.message });
+            logger.error('Cache invalidate by tags error', { tags, error: getErrorMessage(error) });
             return 0;
         }
     }
@@ -248,7 +256,7 @@ export class CacheService {
             logger.info('Cache cleared');
             return true;
         } catch (error) {
-            logger.error('Cache clear error', { error: error.message });
+            logger.error('Cache clear error', { error: getErrorMessage(error) });
             return false;
         }
     }
@@ -267,7 +275,7 @@ export class CacheService {
                 connected: this.redis.status === 'ready'
             };
         } catch (error) {
-            logger.error('Cache stats error', { error: error.message });
+            logger.error('Cache stats error', { error: getErrorMessage(error) });
             return null;
         }
     }
@@ -280,7 +288,7 @@ export class CacheService {
             const result = await this.redis.ping();
             return result === 'PONG';
         } catch (error) {
-            logger.error('Cache health check failed', { error: error.message });
+            logger.error('Cache health check failed', { error: getErrorMessage(error) });
             return false;
         }
     }
@@ -346,7 +354,7 @@ export class CacheService {
 export const cacheService = new CacheService();
 
 // Cache decorators
-export function Cacheable(key: string, options: CacheOptions = {}) {
+export function Cacheable(key: string | ((...args: any[]) => string), options: CacheOptions = {}) {
     return function (target: any, propertyName: string, descriptor: PropertyDescriptor) {
         const method = descriptor.value;
 
@@ -373,3 +381,4 @@ export function CacheEvict(tags: string[]) {
         };
     };
 }
+

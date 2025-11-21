@@ -172,11 +172,9 @@ CREATE POLICY "Users can view own transactions"
 CREATE OR REPLACE VIEW v_user_dashboard AS
   SELECT 
     p.id AS user_id,
-    p.email,
     COALESCE(w.balance, 0) AS balance,
     (SELECT COUNT(*) FROM enrollments e WHERE e.user_id = p.id) AS courses_enrolled,
     (SELECT COALESCE(AVG(progress), 0) FROM enrollments e WHERE e.user_id = p.id) AS avg_progress,
-    (SELECT COUNT(*) FROM prayer_journal pr WHERE pr.user_id = p.id AND pr.status = 'answered') AS prayers_answered,
     (SELECT COUNT(*) FROM prayer_journal pr WHERE pr.user_id = p.id) AS total_prayers
   FROM profiles p 
   LEFT JOIN wallets w ON w.user_id = p.id;

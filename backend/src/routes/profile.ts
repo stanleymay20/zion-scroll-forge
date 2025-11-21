@@ -729,6 +729,316 @@ router.get('/me/delete/status', authenticate, async (req, res) => {
   }
 });
 
+// ============================================================================
+// ACADEMIC TRANSCRIPT ENDPOINTS
+// ============================================================================
+
+/**
+ * Get academic transcript
+ */
+router.get('/:userId/transcript', authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const transcript = await profileService.getAcademicTranscript(userId);
+
+    res.json({
+      success: true,
+      data: transcript
+    });
+  } catch (error) {
+    logger.error('Failed to get transcript', { error: error.message, userId: req.params.userId });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve transcript'
+    });
+  }
+});
+
+/**
+ * Download academic transcript
+ */
+router.get('/:userId/transcript/download', authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const format = (req.query.format as string) || 'pdf';
+
+    const result = await profileService.downloadTranscript(userId, format);
+
+    res.setHeader('Content-Type', result.contentType);
+    res.setHeader('Content-Disposition', `attachment; filename="${result.filename}"`);
+    res.send(result.data);
+  } catch (error) {
+    logger.error('Failed to download transcript', { error: error.message, userId: req.params.userId });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to download transcript'
+    });
+  }
+});
+
+// ============================================================================
+// DEGREE AUDIT ENDPOINTS
+// ============================================================================
+
+/**
+ * Get degree audit
+ */
+router.get('/:userId/degree-audit', authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const audit = await profileService.getDegreeAudit(userId);
+
+    res.json({
+      success: true,
+      data: audit
+    });
+  } catch (error) {
+    logger.error('Failed to get degree audit', { error: error.message, userId: req.params.userId });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve degree audit'
+    });
+  }
+});
+
+// ============================================================================
+// COURSE HISTORY ENDPOINTS
+// ============================================================================
+
+/**
+ * Get course history
+ */
+router.get('/:userId/course-history', authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const history = await profileService.getCourseHistory(userId);
+
+    res.json({
+      success: true,
+      data: history
+    });
+  } catch (error) {
+    logger.error('Failed to get course history', { error: error.message, userId: req.params.userId });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve course history'
+    });
+  }
+});
+
+// ============================================================================
+// ACHIEVEMENTS ENDPOINTS
+// ============================================================================
+
+/**
+ * Get achievements
+ */
+router.get('/:userId/achievements', authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const achievements = await profileService.getAchievements(userId);
+
+    res.json({
+      success: true,
+      data: achievements
+    });
+  } catch (error) {
+    logger.error('Failed to get achievements', { error: error.message, userId: req.params.userId });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve achievements'
+    });
+  }
+});
+
+/**
+ * Toggle achievement pin status
+ */
+router.put('/:userId/achievements/:achievementId/pin', authenticate, async (req, res) => {
+  try {
+    const { userId, achievementId } = req.params;
+    const { isPinned } = req.body;
+
+    // Verify user can only pin their own achievements
+    if (userId !== req.user!.id) {
+      return res.status(403).json({
+        success: false,
+        error: 'Unauthorized'
+      });
+    }
+
+    const achievement = await profileService.toggleAchievementPin(achievementId, isPinned);
+
+    res.json({
+      success: true,
+      data: achievement
+    });
+  } catch (error) {
+    logger.error('Failed to toggle achievement pin', { error: error.message, achievementId: req.params.achievementId });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to update achievement'
+    });
+  }
+});
+
+// ============================================================================
+// SKILLS ENDPOINTS
+// ============================================================================
+
+/**
+ * Get skills
+ */
+router.get('/:userId/skills', authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const skills = await profileService.getSkills(userId);
+
+    res.json({
+      success: true,
+      data: skills
+    });
+  } catch (error) {
+    logger.error('Failed to get skills', { error: error.message, userId: req.params.userId });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve skills'
+    });
+  }
+});
+
+/**
+ * Add skill
+ */
+router.post('/:userId/skills', authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { skillName, category, proficiencyLevel } = req.body;
+
+    // Verify user can only add skills to their own profile
+    if (userId !== req.user!.id) {
+      return res.status(403).json({
+        success: false,
+        error: 'Unauthorized'
+      });
+    }
+
+    const skill = await profileService.addSkill(userId, {
+      skillName,
+      category,
+      proficiencyLevel
+    });
+
+    res.json({
+      success: true,
+      data: skill
+    });
+  } catch (error) {
+    logger.error('Failed to add skill', { error: error.message, userId: req.params.userId });
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+/**
+ * Endorse skill
+ */
+router.post('/:userId/skills/:skillId/endorse', authenticate, async (req, res) => {
+  try {
+    const { userId, skillId } = req.params;
+    const { comment } = req.body;
+
+    const skill = await profileService.endorseSkill(skillId, {
+      endorserId: req.user!.id,
+      comment
+    });
+
+    res.json({
+      success: true,
+      data: skill
+    });
+  } catch (error) {
+    logger.error('Failed to endorse skill', { error: error.message, skillId: req.params.skillId });
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// ============================================================================
+// RESUME/CV ENDPOINTS
+// ============================================================================
+
+/**
+ * Get resume data
+ */
+router.get('/:userId/resume-data', authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const resumeData = await profileService.getResumeData(userId);
+
+    res.json({
+      success: true,
+      data: resumeData
+    });
+  } catch (error) {
+    logger.error('Failed to get resume data', { error: error.message, userId: req.params.userId });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to retrieve resume data'
+    });
+  }
+});
+
+/**
+ * Generate resume
+ */
+router.post('/:userId/resume/generate', authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const { template, format } = req.body;
+
+    const result = await profileService.generateResume(userId, {
+      template: template || 'professional',
+      format: format || 'pdf'
+    });
+
+    res.setHeader('Content-Type', result.contentType);
+    res.setHeader('Content-Disposition', `attachment; filename="${result.filename}"`);
+    res.send(result.data);
+  } catch (error) {
+    logger.error('Failed to generate resume', { error: error.message, userId: req.params.userId });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate resume'
+    });
+  }
+});
+
+/**
+ * Preview resume
+ */
+router.get('/:userId/resume/preview', authenticate, async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const template = (req.query.template as string) || 'professional';
+
+    const html = await profileService.previewResume(userId, template);
+
+    res.setHeader('Content-Type', 'text/html');
+    res.send(html);
+  } catch (error) {
+    logger.error('Failed to preview resume', { error: error.message, userId: req.params.userId });
+    res.status(500).json({
+      success: false,
+      error: 'Failed to preview resume'
+    });
+  }
+});
+
 /**
  * Health check
  */

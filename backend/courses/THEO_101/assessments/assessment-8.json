@@ -1,0 +1,20 @@
+{
+  "id": "assessment-8",
+  "moduleId": "module-THEO_101-8",
+  "type": "QUIZ",
+  "title": "Module 8 Assessment",
+  "description": "Comprehensive assessment for Module 8",
+  "points": 100,
+  "dueDate": "2025-11-20T17:07:57.657Z",
+  "rubric": {
+    "id": "rubric-8",
+    "criteria": [],
+    "totalPoints": 100
+  },
+  "questions": [],
+  "alignedObjectives": [
+    "lo-8-0",
+    "lo-8-1",
+    "lo-8-2"
+  ]
+}

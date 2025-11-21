@@ -1,0 +1,23 @@
+{
+  "enabled": true,
+  "name": "Spiritual Alignment Validator v2",
+  "description": "Validates all generated content (courses, lessons, assessments, tutor scripts, system messages) for Christ-centeredness, scriptural consistency, appropriate spiritual tone, academic rigor integration, and healthy identity frameworks. Prevents theological drift, Babylonian flattening, and manipulative content while ensuring faith and excellence coexist.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "backend/src/services/**/*Service.ts",
+      "src/services/**/*.ts",
+      "comprehensive-src/services/**/*.ts",
+      "backend/src/routes/**/*.ts",
+      "src/components/**/*.tsx",
+      "src/pages/**/*.tsx",
+      "courses/**/*.md",
+      "backend/prisma/seeds/**/*.ts"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review the modified file for spiritual alignment according to the SpiritualAlignmentValidator v2 contract:\n\n1. **Christ-Centeredness Check**: \n   - Does spiritual content honor Jesus clearly?\n   - Is there vague \"universal spirituality\" without Christ in explicitly spiritual contexts?\n\n2. **Scriptural Consistency Check**:\n   - Does any content contradict core biblical truth?\n   - Are there dangerous, heretical, or manipulative theological elements?\n\n3. **Spiritual Tone Evaluation**:\n   - Is the tone humble, honoring, non-sensational, and non-manipulative?\n   - Check for prosperity-gospel transactional logic or fear-based manipulation\n\n4. **Academic Rigor Integration**:\n   - Is spiritual content used to excuse poor logic, weak reasoning, or lack of research?\n   - Do faith and rigor coexist properly?\n\n5. **Identity & Calling Framework**:\n   - Does spiritual identity content affirm sonship, stewardship, kingship, service, and love?\n   - Are there shame-based or performance-only identity frameworks?\n\nReturn a structured validation result:\n```typescript\n{\n  isAligned: boolean,\n  issues: [\n    {\n      severity: \"info\" | \"warning\" | \"error\",\n      code: string, // e.g., \"THEO_DRIFT\", \"TONE_MANIPULATIVE\", \"SPIRITUALIZED_LAZINESS\"\n      message: string,\n      suggestion?: string\n    }\n  ]\n}\n```\n\nIf `isAligned === false` or any `severity === \"error\"`, provide specific corrections with improved phrasing that maintains theological integrity while preserving the intended functionality. For warnings, suggest improvements but allow continuation with notification.\n\nConsider the content type context (course, lesson, assessment, tutor-script, system-message) and discipline (Theology, Data Science, Business, etc.) when evaluating alignment strictness."
+  }
+}

@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/147</span>
+                <span class='fraction'>0/150</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/37</span>
+                <span class='fraction'>0/39</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/38</span>
+                <span class='fraction'>0/40</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/143</span>
+                <span class='fraction'>0/146</span>
             </div>
         
             
@@ -437,7 +437,17 @@
 <a name='L372'></a><a href='#L372'>372</a>
 <a name='L373'></a><a href='#L373'>373</a>
 <a name='L374'></a><a href='#L374'>374</a>
-<a name='L375'></a><a href='#L375'>375</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L375'></a><a href='#L375'>375</a>
+<a name='L376'></a><a href='#L376'>376</a>
+<a name='L377'></a><a href='#L377'>377</a>
+<a name='L378'></a><a href='#L378'>378</a>
+<a name='L379'></a><a href='#L379'>379</a>
+<a name='L380'></a><a href='#L380'>380</a>
+<a name='L381'></a><a href='#L381'>381</a>
+<a name='L382'></a><a href='#L382'>382</a>
+<a name='L383'></a><a href='#L383'>383</a>
+<a name='L384'></a><a href='#L384'>384</a>
+<a name='L385'></a><a href='#L385'>385</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -451,6 +461,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -466,8 +481,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -809,6 +827,8 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
@@ -825,6 +845,11 @@ export interface CacheOptions {
     tags?: string[];
 }
 &nbsp;
+// Helper function to safely extract error message
+function <span class="fstat-no" title="function not covered" >getErrorMessage(</span>error: unknown): string {
+<span class="cstat-no" title="statement not covered" >    return error instanceof Error ? getErrorMessage(error) : String(error);</span>
+}
+&nbsp;
 <span class="cstat-no" title="statement not covered" >export class C</span>acheService {
     private redis: Redis;
     private <span class="cstat-no" title="statement not covered" >defaultTTL: number = 3600; </span>// 1 hour
@@ -835,11 +860,14 @@ export interface CacheOptions {
             port: parseInt(process.env.REDIS_PORT || '6379'),
             password: process.env.REDIS_PASSWORD,
             db: parseInt(process.env.REDIS_DB || '0'),
-            retryDelayOnFailover: 100,
             maxRetriesPerRequest: 3,
             lazyConnect: true,
             keepAlive: 30000,
-            family: 4
+            family: 4,
+            retryStrategy: <span class="fstat-no" title="function not covered" >(t</span>imes: number) =&gt; {
+                const delay = <span class="cstat-no" title="statement not covered" >Math.min(times * 50, 2000);</span>
+<span class="cstat-no" title="statement not covered" >                return delay;</span>
+            }
         });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        this.redis.on('connect', <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
@@ -847,7 +875,7 @@ export interface CacheOptions {
         });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        this.redis.on('error', <span class="fstat-no" title="function not covered" >(e</span>rror) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >            logger.error('Redis connection error', { error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Redis connection error', { error: getErrorMessage(error) });</span>
         });
 &nbsp;
 <span class="cstat-no" title="statement not covered" >        this.redis.on('close', <span class="fstat-no" title="function not covered" >() =</span>&gt; {</span>
@@ -876,7 +904,7 @@ export interface CacheOptions {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >            return result;</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache get error', { key, error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache get error', { key, error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return null;</span>
         }
     }
@@ -904,7 +932,7 @@ export interface CacheOptions {
 <span class="cstat-no" title="statement not covered" >            logger.debug('Cache set', { key, ttl, tags: options.tags });</span>
 <span class="cstat-no" title="statement not covered" >            return true;</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache set error', { key, error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache set error', { key, error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return false;</span>
         }
     }
@@ -918,7 +946,7 @@ export interface CacheOptions {
 <span class="cstat-no" title="statement not covered" >            logger.debug('Cache delete', { key, deleted: result &gt; 0 });</span>
 <span class="cstat-no" title="statement not covered" >            return result &gt; 0;</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache delete error', { key, error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache delete error', { key, error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return false;</span>
         }
     }
@@ -931,7 +959,7 @@ export interface CacheOptions {
             const result = <span class="cstat-no" title="statement not covered" >await this.redis.exists(this.formatKey(key));</span>
 <span class="cstat-no" title="statement not covered" >            return result === 1;</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache exists error', { key, error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache exists error', { key, error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return false;</span>
         }
     }
@@ -963,7 +991,7 @@ export interface CacheOptions {
 <span class="cstat-no" title="statement not covered" >            logger.debug('Cache increment', { key, amount, result });</span>
 <span class="cstat-no" title="statement not covered" >            return result;</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache increment error', { key, error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache increment error', { key, error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return 0;</span>
         }
     }
@@ -976,7 +1004,7 @@ export interface CacheOptions {
             const result = <span class="cstat-no" title="statement not covered" >await this.redis.expire(this.formatKey(key), ttl);</span>
 <span class="cstat-no" title="statement not covered" >            return result === 1;</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache expire error', { key, error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache expire error', { key, error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return false;</span>
         }
     }
@@ -991,7 +1019,7 @@ export interface CacheOptions {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >            return values.map(<span class="fstat-no" title="function not covered" >value </span>=&gt; <span class="cstat-no" title="statement not covered" >value ? JSON.parse(value) : null)</span>;</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache mget error', { keys, error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache mget error', { keys, error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return keys.map(<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >null)</span>;</span>
         }
     }
@@ -1018,7 +1046,7 @@ export interface CacheOptions {
 <span class="cstat-no" title="statement not covered" >            logger.debug('Cache mset', { count: Object.keys(keyValuePairs).length, ttl });</span>
 <span class="cstat-no" title="statement not covered" >            return true;</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache mset error', { error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache mset error', { error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return false;</span>
         }
     }
@@ -1047,7 +1075,7 @@ export interface CacheOptions {
 <span class="cstat-no" title="statement not covered" >            logger.info('Cache invalidated by tags', { tags, deletedCount });</span>
 <span class="cstat-no" title="statement not covered" >            return deletedCount;</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache invalidate by tags error', { tags, error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache invalidate by tags error', { tags, error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return 0;</span>
         }
     }
@@ -1061,7 +1089,7 @@ export interface CacheOptions {
 <span class="cstat-no" title="statement not covered" >            logger.info('Cache cleared');</span>
 <span class="cstat-no" title="statement not covered" >            return true;</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache clear error', { error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache clear error', { error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return false;</span>
         }
     }
@@ -1080,7 +1108,7 @@ export interface CacheOptions {
                 connected: this.redis.status === 'ready'
             };
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache stats error', { error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache stats error', { error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return null;</span>
         }
     }
@@ -1093,7 +1121,7 @@ export interface CacheOptions {
             const result = <span class="cstat-no" title="statement not covered" >await this.redis.ping();</span>
 <span class="cstat-no" title="statement not covered" >            return result === 'PONG';</span>
         } catch (error) {
-<span class="cstat-no" title="statement not covered" >            logger.error('Cache health check failed', { error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >            logger.error('Cache health check failed', { error: getErrorMessage(error) });</span>
 <span class="cstat-no" title="statement not covered" >            return false;</span>
         }
     }
@@ -1159,7 +1187,7 @@ export interface CacheOptions {
 export const <span class="cstat-no" title="statement not covered" >cacheService = new CacheService();</span>
 &nbsp;
 // Cache decorators
-<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >C</span>acheable(</span>key: string, options: CacheOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
+<span class="cstat-no" title="statement not covered" >export function <span class="fstat-no" title="function not covered" >C</span>acheable(</span>key: string | ((...args: any[]) =&gt; string), options: CacheOptions = <span class="branch-0 cbranch-no" title="branch not covered" >{})</span> {
 <span class="cstat-no" title="statement not covered" >    return <span class="fstat-no" title="function not covered" >function (t</span>arget: any, propertyName: string, descriptor: PropertyDescriptor) {</span>
         const method = <span class="cstat-no" title="statement not covered" >descriptor.value;</span>
 &nbsp;
@@ -1185,14 +1213,16 @@ export const <span class="cstat-no" title="statement not covered" >cacheService 
 <span class="cstat-no" title="statement not covered" >            return result;</span>
         };
     };
-}</pre></td></tr></table></pre>
+}
+&nbsp;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-19T13:55:33.461Z
+                at 2025-11-21T04:03:59.298Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

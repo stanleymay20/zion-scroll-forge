@@ -1,0 +1,286 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: database-backup
+  namespace: scrolluniversity
+  labels:
+    app: backup
+    component: database
+spec:
+  schedule: "0 */6 * * *"  # Every 6 hours
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: backup
+            component: database
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: backup-service-account
+          containers:
+          - name: backup
+            image: postgres:15-alpine
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              BACKUP_FILE="scrolluniversity-db-$(date +%Y%m%d-%H%M%S).sql.gz"
+              echo "Starting database backup: $BACKUP_FILE"
+              
+              # Create backup
+              pg_dump $DATABASE_URL | gzip > /tmp/$BACKUP_FILE
+              
+              # Upload to S3
+              aws s3 cp /tmp/$BACKUP_FILE s3://$BACKUP_S3_BUCKET/database/$BACKUP_FILE
+              
+              # Verify upload
+              aws s3 ls s3://$BACKUP_S3_BUCKET/database/$BACKUP_FILE
+              
+              # Clean up old backups (keep last 90 days)
+              CUTOFF_DATE=$(date -d "90 days ago" +%Y%m%d)
+              aws s3 ls s3://$BACKUP_S3_BUCKET/database/ | while read -r line; do
+                FILE_DATE=$(echo $line | awk '{print $4}' | grep -oP '\d{8}' | head -1)
+                if [ "$FILE_DATE" -lt "$CUTOFF_DATE" ]; then
+                  FILE_NAME=$(echo $line | awk '{print $4}')
+                  echo "Deleting old backup: $FILE_NAME"
+                  aws s3 rm s3://$BACKUP_S3_BUCKET/database/$FILE_NAME
+                fi
+              done
+              
+              echo "Database backup completed successfully"
+            env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: DATABASE_URL
+            - name: BACKUP_S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: BACKUP_S3_BUCKET
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_DEFAULT_REGION
+              value: "us-east-1"
+            resources:
+              requests:
+                cpu: 500m
+                memory: 1Gi
+              limits:
+                cpu: 2000m
+                memory: 4Gi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: redis-backup
+  namespace: scrolluniversity
+  labels:
+    app: backup
+    component: redis
+spec:
+  schedule: "0 4 * * *"  # Daily at 4 AM
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: backup
+            component: redis
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: backup-service-account
+          containers:
+          - name: backup
+            image: redis:7-alpine
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              BACKUP_FILE="scrolluniversity-redis-$(date +%Y%m%d-%H%M%S).rdb"
+              echo "Starting Redis backup: $BACKUP_FILE"
+              
+              # Trigger Redis save
+              redis-cli -h redis -a $REDIS_PASSWORD BGSAVE
+              
+              # Wait for save to complete
+              while [ $(redis-cli -h redis -a $REDIS_PASSWORD LASTSAVE) -eq $(redis-cli -h redis -a $REDIS_PASSWORD LASTSAVE) ]; do
+                sleep 1
+              done
+              
+              # Copy dump file
+              redis-cli -h redis -a $REDIS_PASSWORD --rdb /tmp/dump.rdb
+              
+              # Compress and upload
+              gzip -c /tmp/dump.rdb > /tmp/$BACKUP_FILE.gz
+              aws s3 cp /tmp/$BACKUP_FILE.gz s3://$BACKUP_S3_BUCKET/redis/$BACKUP_FILE.gz
+              
+              # Verify upload
+              aws s3 ls s3://$BACKUP_S3_BUCKET/redis/$BACKUP_FILE.gz
+              
+              echo "Redis backup completed successfully"
+            env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: REDIS_PASSWORD
+            - name: BACKUP_S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: BACKUP_S3_BUCKET
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_DEFAULT_REGION
+              value: "us-east-1"
+            resources:
+              requests:
+                cpu: 250m
+                memory: 512Mi
+              limits:
+                cpu: 1000m
+                memory: 2Gi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: application-backup
+  namespace: scrolluniversity
+  labels:
+    app: backup
+    component: application
+spec:
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: backup
+            component: application
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: backup-service-account
+          containers:
+          - name: backup
+            image: scrolluniversity-backend:latest
+            command:
+            - /bin/sh
+            - -c
+            - |
+              set -e
+              BACKUP_FILE="scrolluniversity-app-$(date +%Y%m%d-%H%M%S).tar.gz"
+              echo "Starting application backup: $BACKUP_FILE"
+              
+              # Create backup directory
+              mkdir -p /tmp/backup
+              
+              # Backup uploaded files
+              if [ -d "/app/uploads" ]; then
+                tar -czf /tmp/backup/uploads.tar.gz /app/uploads
+              fi
+              
+              # Backup configuration
+              if [ -d "/app/config" ]; then
+                tar -czf /tmp/backup/config.tar.gz /app/config
+              fi
+              
+              # Create final archive
+              cd /tmp/backup
+              tar -czf /tmp/$BACKUP_FILE .
+              
+              # Upload to S3
+              aws s3 cp /tmp/$BACKUP_FILE s3://$BACKUP_S3_BUCKET/application/$BACKUP_FILE
+              
+              # Verify upload
+              aws s3 ls s3://$BACKUP_S3_BUCKET/application/$BACKUP_FILE
+              
+              echo "Application backup completed successfully"
+            env:
+            - name: BACKUP_S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: BACKUP_S3_BUCKET
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: scrolluniversity-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_DEFAULT_REGION
+              value: "us-east-1"
+            resources:
+              requests:
+                cpu: 250m
+                memory: 512Mi
+              limits:
+                cpu: 1000m
+                memory: 2Gi
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backup-service-account
+  namespace: scrolluniversity
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: backup-role
+  namespace: scrolluniversity
+rules:
+- apiGroups: [""]
+  resources: ["pods", "pods/log"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: backup-rolebinding
+  namespace: scrolluniversity
+subjects:
+- kind: ServiceAccount
+  name: backup-service-account
+  namespace: scrolluniversity
+roleRef:
+  kind: Role
+  name: backup-role
+  apiGroup: rbac.authorization.k8s.io

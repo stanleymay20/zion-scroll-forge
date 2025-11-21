@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,10 +7,13 @@ import { queryClient } from "./lib/queryClient";
 import { AuthProvider } from "./contexts/AuthContext";
 import { InstitutionProvider } from "./contexts/InstitutionContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ErrorHandlingProvider } from "./contexts/ErrorHandlingContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import { useRealtimeSubscriptions } from "@/hooks/useRealtime";
 import { MainLayout } from "./components/layout/MainLayout";
+import { MobileAppInstallPrompt } from "@/components/mobile";
+import { PWAInstallPrompt, OfflineIndicator, PWAUpdatePrompt } from "@/components/pwa";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -76,6 +79,7 @@ import EventDetail from "./pages/EventDetail";
 import DegreePrograms from "./pages/DegreePrograms";
 import DegreeProgramDetail from "./pages/DegreeProgramDetail";
 import BillingDashboard from "./pages/BillingDashboard";
+import PaymentBilling from "./pages/PaymentBilling";
 import ScrollCoinWallet from "./pages/ScrollCoinWallet";
 import ScrollCoinLeaderboard from "./pages/ScrollCoinLeaderboard";
 import AITutorsCatalog from "./pages/AITutorsCatalog";
@@ -108,6 +112,13 @@ import AssignmentUpload from "./pages/AssignmentUpload";
 import DegreeAudit from "./pages/DegreeAudit";
 import ScholarshipsPage from "./pages/ScholarshipsPage";
 import RealTimeMessaging from "./pages/RealTimeMessaging";
+import { ScrollBadgeGallery } from "./pages/ScrollBadgeGallery";
+import { PublicBadgeProfile } from "./pages/PublicBadgeProfile";
+import AdmissionsApplication from "./pages/AdmissionsApplication";
+import ApplicationStatus from "./pages/ApplicationStatus";
+import StudentProfile from "./pages/StudentProfile";
+import MobileFeaturesDemo from "./pages/MobileFeaturesDemo";
+import RealtimeDemo from "./pages/RealtimeDemo";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -148,20 +159,59 @@ const RealtimeProvider = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+// Mobile viewport configuration
+const MobileViewportConfig = () => {
+  useEffect(() => {
+    // Set viewport meta tag for mobile devices
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (viewport) {
+      viewport.setAttribute(
+        'content',
+        'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover'
+      );
+    }
+
+    // Prevent zoom on input focus (iOS)
+    const style = document.createElement('style');
+    style.textContent = `
+      @media screen and (max-width: 768px) {
+        input, textarea, select {
+          font-size: 16px !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  return null;
+};
+
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <InstitutionProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <RealtimeProvider>
+      <ErrorHandlingProvider>
+        <AuthProvider>
+          <InstitutionProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <MobileViewportConfig />
+              <BrowserRouter>
+                <RealtimeProvider>
+                  <PWAInstallPrompt />
+                  <PWAUpdatePrompt />
+                  <MobileAppInstallPrompt />
                 <Suspense fallback={<LoadingFallback />}>
                 <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
+            
+            {/* Public Badge Profile */}
+            <Route path="/badges/public/:userId" element={<PublicBadgeProfile />} />
             
             {/* Authentication Routes */}
             <Route path="/auth" element={<Auth />} />
@@ -202,6 +252,10 @@ const App = () => (
               <Route path="courses" element={<Courses />} />
               <Route path="courses/:courseId" element={<CourseDetail />} />
               <Route path="courses/:courseId/learn" element={<CourseLearn />} />
+              
+              {/* Admissions Routes */}
+              <Route path="admissions/apply/:applicationId?" element={<AdmissionsApplication />} />
+              <Route path="admissions/status/:applicationId" element={<ApplicationStatus />} />
               <Route path="courses/:courseId/modules/:moduleId" element={<ModuleDetail />} />
               <Route path="quiz/:quizId" element={<QuizPage />} />
               <Route path="ai-tutors" element={<AITutors />} />
@@ -255,6 +309,7 @@ const App = () => (
             
             {/* Dynamic pages */}
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="profile/:userId" element={<StudentProfile />} />
             <Route path="degrees" element={<DegreePrograms />} />
             <Route path="degrees/:id" element={<DegreeProgramDetail />} />
             <Route path="xr-classrooms" element={<XRClassroomsPage />} />
@@ -264,6 +319,7 @@ const App = () => (
             <Route path="events" element={<Events />} />
             <Route path="events/:id" element={<EventDetail />} />
             <Route path="billing" element={<BillingDashboard />} />
+            <Route path="payment-billing" element={<PaymentBilling />} />
             <Route path="scrollcoin-wallet" element={<ScrollCoinWallet />} />
             <Route path="scrollcoin-leaderboard" element={<ScrollCoinLeaderboard />} />
             <Route path="ai-tutors-catalog" element={<AITutorsCatalog />} />
@@ -289,7 +345,8 @@ const App = () => (
             <Route path="mentorship" element={<ComingSoonPage title="Mentorship" />} />
             <Route path="projects" element={<ComingSoonPage title="Collaborative Projects" />} />
             <Route path="marketplace" element={<ComingSoonPage title="Marketplace" />} />
-            <Route path="badges" element={<ComingSoonPage title="ScrollBadges" />} />
+            <Route path="badges" element={<ScrollBadgeGallery />} />
+            <Route path="my-badges" element={<ScrollBadgeGallery />} />
               <Route path="faculties" element={<FacultyGallery />} />
               <Route path="faculties/compare" element={<FacultyComparison />} />
               <Route path="faculties/:facultyId" element={<FacultyDetail />} />
@@ -301,6 +358,8 @@ const App = () => (
             <Route path="job-board" element={<ComingSoonPage title="Job Board" />} />
             <Route path="research" element={<ComingSoonPage title="Research Hub" />} />
             <Route path="help" element={<ComingSoonPage title="Help Center" />} />
+            <Route path="mobile-demo" element={<MobileFeaturesDemo />} />
+            <Route path="realtime-demo" element={<RealtimeDemo />} />
           </Route>
           
           {/* Catch-all route for 404 */}
@@ -312,6 +371,7 @@ const App = () => (
       </TooltipProvider>
       </InstitutionProvider>
     </AuthProvider>
+    </ErrorHandlingProvider>
   </QueryClientProvider>
   </ErrorBoundary>
 );

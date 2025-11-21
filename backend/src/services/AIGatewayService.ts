@@ -59,6 +59,37 @@ export class AIGatewayService {
     }
 
     /**
+     * Generate AI content (alias for generateCompletion with simplified interface)
+     * Used by ScrollLibrary services
+     */
+    async generateContent(options: {
+        model: string;
+        prompt: string;
+        maxTokens?: number;
+        temperature?: number;
+        systemPrompt?: string;
+    }): Promise<{ content: string; usage: { totalTokens: number; promptTokens: number; completionTokens: number } }> {
+        const response = await this.generateCompletion({
+            model: options.model as AIModel,
+            messages: [
+                ...(options.systemPrompt ? [{ role: 'system' as const, content: options.systemPrompt }] : []),
+                { role: 'user' as const, content: options.prompt }
+            ],
+            maxTokens: options.maxTokens,
+            temperature: options.temperature
+        });
+
+        return {
+            content: response.content,
+            usage: {
+                totalTokens: response.usage.totalTokens,
+                promptTokens: response.usage.promptTokens,
+                completionTokens: response.usage.completionTokens
+            }
+        };
+    }
+
+    /**
      * Generate AI completion
      */
     async generateCompletion(options: AIRequestOptions, userId?: string): Promise<AIResponse> {

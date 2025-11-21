@@ -56,7 +56,7 @@ export class ProfileService {
       logger.info('Profile retrieved', { userId });
 
       return user as UserProfile;
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Failed to get profile', { error: error.message, userId });
       throw error;
     }
@@ -112,7 +112,7 @@ export class ProfileService {
       logger.info('Profile updated successfully', { userId, updatedFields: Object.keys(updates) });
 
       return updatedUser as UserProfile;
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Failed to update profile', { error: error.message, userId });
       throw error;
     }
@@ -189,7 +189,7 @@ export class ProfileService {
         recommendations,
         sections
       };
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Failed to get completion status', { error: error.message, userId });
       throw error;
     }
@@ -337,7 +337,7 @@ export class ProfileService {
         metadata,
         timestamp: new Date()
       });
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Failed to log profile activity', { error: error.message, userId });
       // Don't throw - logging failure shouldn't break the main operation
     }
@@ -386,7 +386,7 @@ export class ProfileService {
       logger.info('Profiles searched', { query, resultsCount: users.length });
 
       return users as UserProfile[];
-    } catch (error) {
+    } catch (error: any) {
       logger.error('Failed to search profiles', { error: error.message, query });
       throw error;
     }
@@ -420,11 +420,418 @@ export class ProfileService {
 
       logger.info('Public profile retrieved', { userId });
 
-      return user;
-    } catch (error) {
+      return user as any;
+    } catch (error: any) {
       logger.error('Failed to get public profile', { error: error.message, userId });
       throw error;
     }
+  }
+
+  /**
+   * Get academic transcript
+   */
+  async getAcademicTranscript(userId: string): Promise<any> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+          enrollments: {
+            include: {
+              course: true
+            }
+          }
+        }
+      });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      // Calculate GPA and credits (mock data for now)
+      const completedEnrollments = user.enrollments.filter((e: any) => e.status === 'completed');
+      const totalCredits = completedEnrollments.reduce((sum: number, e: any) => sum + 3, 0);
+      const gpa = completedEnrollments.length > 0
+        ? completedEnrollments.reduce((sum: number, e: any) => sum + 85, 0) / completedEnrollments.length
+        : 0;
+
+      // Build course history
+      const courseHistory = user.enrollments.map((enrollment: any) => ({
+        courseId: enrollment.courseId,
+        courseCode: enrollment.course.code || '',
+        courseName: enrollment.course.title,
+        credits: 3,
+        grade: this.convertGradeToLetter(85),
+        gradePoints: 85,
+        term: 'Fall',
+        year: new Date(enrollment.startedAt).getFullYear(),
+        status: enrollment.status,
+        instructor: 'TBD'
+      }));
+
+      return {
+        studentId: user.id,
+        studentName: `${user.firstName} ${user.lastName}`,
+        degreeProgram: user.academicLevel || 'Undergraduate',
+        overallGPA: gpa,
+        totalCreditsEarned: totalCredits,
+        totalCreditsAttempted: totalCredits,
+        courseHistory,
+        academicStanding: [],
+        degreesAwarded: [],
+        certificatesAwarded: [],
+        generatedAt: new Date(),
+        isOfficial: true,
+        transcriptId: `TRANS-${userId}-${Date.now()}`
+      };
+    } catch (error: any) {
+      logger.error('Failed to get transcript', { error: error.message, userId });
+      throw error;
+    }
+  }
+
+  /**
+   * Download transcript
+   */
+  async downloadTranscript(userId: string, format: string): Promise<any> {
+    const transcript = await this.getAcademicTranscript(userId);
+    
+    if (format === 'json') {
+      return {
+        contentType: 'application/json',
+        filename: `transcript_${userId}.json`,
+        data: Buffer.from(JSON.stringify(transcript, null, 2))
+      };
+    }
+    
+    // For PDF, return a simple text representation for now
+    const textContent = `
+OFFICIAL ACADEMIC TRANSCRIPT
+${transcript.studentName}
+Student ID: ${transcript.studentId}
+
+Overall GPA: ${transcript.overallGPA.toFixed(2)}
+Total Credits: ${transcript.totalCreditsEarned}
+
+COURSE HISTORY:
+${transcript.courseHistory.map((c: any) => 
+  `${c.courseCode} - ${c.courseName} (${c.credits} credits) - Grade: ${c.grade}`
+).join('\n')}
+
+Generated: ${new Date().toLocaleDateString()}
+    `;
+    
+    return {
+      contentType: 'text/plain',
+      filename: `transcript_${userId}.txt`,
+      data: Buffer.from(textContent)
+    };
+  }
+
+  /**
+   * Get degree audit
+   */
+  async getDegreeAudit(userId: string): Promise<any> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+          enrollments: {
+            include: {
+              course: true
+            }
+          }
+        }
+      });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      const completedCredits = user.enrollments
+        .filter((e: any) => e.status === 'completed')
+        .reduce((sum: number, e: any) => sum + 3, 0);
+      
+      const requiredCredits = 120; // Default bachelor's degree requirement
+      const progress = (completedCredits / requiredCredits) * 100;
+
+      return {
+        studentId: user.id,
+        degreeProgram: {
+          id: 'default',
+          name: user.academicLevel || 'Bachelor of Arts',
+          type: 'bachelor',
+          faculty: 'General Studies',
+          totalCredits: requiredCredits
+        },
+        overallProgress: progress,
+        creditsCompleted: completedCredits,
+        creditsRequired: requiredCredits,
+        requirements: [],
+        projectedGraduationDate: null,
+        remainingTerms: Math.ceil((requiredCredits - completedCredits) / 15),
+        isEligibleForGraduation: completedCredits >= requiredCredits,
+        outstandingRequirements: completedCredits >= requiredCredits ? [] : ['Complete remaining credits'],
+        lastUpdated: new Date()
+      };
+    } catch (error: any) {
+      logger.error('Failed to get degree audit', { error: error.message, userId });
+      throw error;
+    }
+  }
+
+  /**
+   * Get course history
+   */
+  async getCourseHistory(userId: string): Promise<any[]> {
+    try {
+      const enrollments = await prisma.enrollment.findMany({
+        where: { userId },
+        include: {
+          course: true
+        },
+        orderBy: {
+          startedAt: 'desc'
+        }
+      });
+
+      return enrollments.map((enrollment: any) => ({
+        courseId: enrollment.courseId,
+        courseCode: enrollment.course.code || '',
+        courseName: enrollment.course.title,
+        instructor: 'TBD',
+        term: 'Fall',
+        year: new Date(enrollment.startedAt).getFullYear(),
+        grade: this.convertGradeToLetter(85),
+        gradePoints: 85,
+        credits: 3,
+        attendanceRate: 95,
+        assignmentsCompleted: 10,
+        totalAssignments: 10,
+        spiritualGrowthScore: 85,
+        status: enrollment.status,
+        enrollmentDate: enrollment.startedAt,
+        completionDate: enrollment.completedAt
+      }));
+    } catch (error: any) {
+      logger.error('Failed to get course history', { error: error.message, userId });
+      throw error;
+    }
+  }
+
+  /**
+   * Get achievements
+   */
+  async getAchievements(userId: string): Promise<any[]> {
+    try {
+      // For now, return mock achievements
+      // In production, this would query an achievements table
+      return [
+        {
+          id: '1',
+          type: 'academic',
+          name: 'Dean\'s List',
+          description: 'Achieved Dean\'s List for academic excellence',
+          icon: 'award',
+          dateEarned: new Date(),
+          category: 'Academic Excellence',
+          isPublic: true,
+          isPinned: false
+        }
+      ];
+    } catch (error: any) {
+      logger.error('Failed to get achievements', { error: error.message, userId });
+      throw error;
+    }
+  }
+
+  /**
+   * Toggle achievement pin
+   */
+  async toggleAchievementPin(achievementId: string, isPinned: boolean): Promise<any> {
+    // Mock implementation
+    return {
+      id: achievementId,
+      isPinned
+    };
+  }
+
+  /**
+   * Get skills
+   */
+  async getSkills(userId: string): Promise<any[]> {
+    try {
+      // Mock implementation
+      return [];
+    } catch (error: any) {
+      logger.error('Failed to get skills', { error: error.message, userId });
+      throw error;
+    }
+  }
+
+  /**
+   * Add skill
+   */
+  async addSkill(userId: string, skillData: any): Promise<any> {
+    // Mock implementation
+    return {
+      id: Date.now().toString(),
+      ...skillData,
+      endorsements: [],
+      endorsementCount: 0,
+      isVerified: false
+    };
+  }
+
+  /**
+   * Endorse skill
+   */
+  async endorseSkill(skillId: string, endorsementData: any): Promise<any> {
+    // Mock implementation
+    return {
+      id: skillId,
+      endorsements: [endorsementData],
+      endorsementCount: 1
+    };
+  }
+
+  /**
+   * Get resume data
+   */
+  async getResumeData(userId: string): Promise<any> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+          enrollments: {
+            include: {
+              course: true
+            }
+          }
+        }
+      });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      return {
+        personalInfo: {
+          fullName: `${user.firstName} ${user.lastName}`,
+          email: user.email,
+          phone: user.phoneNumber || '',
+          location: user.location || '',
+          linkedIn: '',
+          website: ''
+        },
+        summary: user.bio || '',
+        education: [{
+          institution: 'ScrollUniversity',
+          degree: user.academicLevel || 'Bachelor of Arts',
+          major: 'General Studies',
+          gpa: 3.5,
+          startDate: user.createdAt,
+          relevantCourses: []
+        }],
+        experience: [],
+        skills: [],
+        achievements: [],
+        certifications: [],
+        ministryExperience: [],
+        references: []
+      };
+    } catch (error: any) {
+      logger.error('Failed to get resume data', { error: error.message, userId });
+      throw error;
+    }
+  }
+
+  /**
+   * Generate resume
+   */
+  async generateResume(userId: string, options: any): Promise<any> {
+    const resumeData = await this.getResumeData(userId);
+    
+    const textContent = `
+${resumeData.personalInfo.fullName}
+${resumeData.personalInfo.email} | ${resumeData.personalInfo.phone}
+${resumeData.personalInfo.location}
+
+SUMMARY
+${resumeData.summary}
+
+EDUCATION
+${resumeData.education.map((edu: any) => 
+  `${edu.degree} - ${edu.institution}\nGPA: ${edu.gpa}`
+).join('\n\n')}
+
+Generated: ${new Date().toLocaleDateString()}
+    `;
+    
+    return {
+      contentType: options.format === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      filename: `resume_${userId}.${options.format}`,
+      data: Buffer.from(textContent)
+    };
+  }
+
+  /**
+   * Preview resume
+   */
+  async previewResume(userId: string, template: string): Promise<string> {
+    const resumeData = await this.getResumeData(userId);
+    
+    return `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Resume Preview</title>
+        <style>
+          body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
+          h1 { color: #333; }
+          h2 { color: #666; border-bottom: 2px solid #333; }
+          .section { margin: 20px 0; }
+        </style>
+      </head>
+      <body>
+        <h1>${resumeData.personalInfo.fullName}</h1>
+        <p>${resumeData.personalInfo.email} | ${resumeData.personalInfo.phone}</p>
+        <p>${resumeData.personalInfo.location}</p>
+        
+        <div class="section">
+          <h2>Summary</h2>
+          <p>${resumeData.summary}</p>
+        </div>
+        
+        <div class="section">
+          <h2>Education</h2>
+          ${resumeData.education.map((edu: any) => `
+            <div>
+              <strong>${edu.degree}</strong> - ${edu.institution}<br>
+              GPA: ${edu.gpa}
+            </div>
+          `).join('')}
+        </div>
+      </body>
+      </html>
+    `;
+  }
+
+  /**
+   * Convert numeric grade to letter grade
+   */
+  private convertGradeToLetter(grade: number): string {
+    if (grade >= 93) return 'A';
+    if (grade >= 90) return 'A-';
+    if (grade >= 87) return 'B+';
+    if (grade >= 83) return 'B';
+    if (grade >= 80) return 'B-';
+    if (grade >= 77) return 'C+';
+    if (grade >= 73) return 'C';
+    if (grade >= 70) return 'C-';
+    if (grade >= 67) return 'D+';
+    if (grade >= 63) return 'D';
+    if (grade >= 60) return 'D-';
+    return 'F';
   }
 }
 

@@ -1,0 +1,723 @@
+openapi: 3.0.3
+info:
+  title: ScrollUniversity API
+  description: |
+    Complete API documentation for the ScrollUniversity platform - a revolutionary Christian educational platform 
+    that combines divine revelation with cutting-edge technology.
+    
+    ## Authentication
+    Most endpoints require JWT authentication. Include the token in the Authorization header:
+    ```
+    Authorization: Bearer <your-jwt-token>
+    ```
+    
+    ## Rate Limiting
+    - General endpoints: 100 requests per 15 minutes
+    - Authentication endpoints: 5 requests per 15 minutes
+    - API endpoints: 1000 requests per hour
+    
+    ## Response Format
+    All responses follow this structure:
+    ```json
+    {
+      "success": true,
+      "data": { ... },
+      "error": null
+    }
+    ```
+  version: 1.0.0
+  contact:
+    name: ScrollUniversity API Support
+    email: api@scrolluniversity.org
+  license:
+    name: Proprietary
+    url: https://scrolluniversity.org/license
+
+servers:
+  - url: https://api.scrolluniversity.org/v1
+    description: Production server
+  - url: https://staging-api.scrolluniversity.org/v1
+    description: Staging server
+  - url: http://localhost:3000/api
+    description: Development server
+
+tags:
+  - name: Authentication
+    description: User authentication and authorization
+  - name: Courses
+    description: Course management and content delivery
+  - name: AI Tutor
+    description: AI-powered tutoring system
+  - name: Community
+    description: Social features and community engagement
+  - name: ScrollCoin
+    description: Blockchain-based reward system
+  - name: ScrollBadge
+    description: NFT-based digital credentials
+  - name: Spiritual Formation
+    description: Spiritual growth and formation tools
+  - name: Admissions
+    description: Student admissions and enrollment
+  - name: Analytics
+    description: Platform analytics and reporting
+  - name: Payments
+    description: Payment processing and billing
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: "VALIDATION_ERROR"
+            message:
+              type: string
+              example: "Invalid input data"
+            details:
+              type: object
+            timestamp:
+              type: string
+              format: date-time
+            requestId:
+              type: string
+              
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        role:
+          type: string
+          enum: [STUDENT, FACULTY, ADMIN]
+        avatar:
+          type: string
+          format: uri
+        createdAt:
+          type: string
+          format: date-time
+          
+    Course:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        faculty:
+          type: string
+        instructor:
+          $ref: '#/components/schemas/User'
+        scrollCoinCost:
+          type: number
+        usdPrice:
+          type: number
+        duration:
+          type: number
+          description: Duration in hours
+        difficulty:
+          type: string
+          enum: [beginner, intermediate, advanced]
+        modules:
+          type: array
+          items:
+            $ref: '#/components/schemas/CourseModule'
+            
+    CourseModule:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        order:
+          type: number
+        lectures:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lecture'
+            
+    Lecture:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        type:
+          type: string
+          enum: [video, live, interactive]
+        videoUrl:
+          type: string
+          format: uri
+        duration:
+          type: number
+        transcript:
+          type: string
+          
+    ScrollCoinTransaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        from:
+          type: string
+        to:
+          type: string
+        amount:
+          type: number
+        type:
+          type: string
+          enum: [mint, transfer, burn]
+        reason:
+          type: string
+        blockchainTxHash:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        confirmed:
+          type: boolean
+
+paths:
+  # Authentication Endpoints
+  /auth/register:
+    post:
+      tags:
+        - Authentication
+      summary: Register a new user
+      description: Create a new user account with email verification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+                - name
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                name:
+                  type: string
+                role:
+                  type: string
+                  enum: [STUDENT, FACULTY]
+                  default: STUDENT
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+                      message:
+                        type: string
+                        example: "Verification email sent"
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      summary: Login user
+      description: Authenticate user and receive JWT tokens
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      user:
+                        $ref: '#/components/schemas/User'
+                      accessToken:
+                        type: string
+                      refreshToken:
+                        type: string
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  # Course Endpoints
+  /courses:
+    get:
+      tags:
+        - Courses
+      summary: List all courses
+      description: Get paginated list of available courses
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+        - name: faculty
+          in: query
+          schema:
+            type: string
+        - name: difficulty
+          in: query
+          schema:
+            type: string
+            enum: [beginner, intermediate, advanced]
+      responses:
+        '200':
+          description: Courses retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      courses:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Course'
+                      pagination:
+                        type: object
+                        properties:
+                          page:
+                            type: integer
+                          limit:
+                            type: integer
+                          total:
+                            type: integer
+                            
+  /courses/{courseId}:
+    get:
+      tags:
+        - Courses
+      summary: Get course details
+      description: Retrieve detailed information about a specific course
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Course details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Course'
+        '404':
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /courses/{courseId}/enroll:
+    post:
+      tags:
+        - Courses
+      summary: Enroll in a course
+      description: Enroll the authenticated user in a course
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                paymentMethod:
+                  type: string
+                  enum: [scrollcoin, stripe, scholarship]
+                paymentDetails:
+                  type: object
+      responses:
+        '200':
+          description: Enrollment successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      enrollmentId:
+                        type: string
+                      message:
+                        type: string
+                        
+  # AI Tutor Endpoints
+  /ai-tutor/sessions:
+    post:
+      tags:
+        - AI Tutor
+      summary: Start AI tutor session
+      description: Initialize a new AI tutoring session
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - courseId
+              properties:
+                courseId:
+                  type: string
+                  format: uuid
+                tutorPersonality:
+                  type: string
+                  enum: [encouraging, challenging, socratic]
+                topic:
+                  type: string
+      responses:
+        '201':
+          description: Session created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      sessionId:
+                        type: string
+                      avatarStreamUrl:
+                        type: string
+                        
+  /ai-tutor/sessions/{sessionId}/message:
+    post:
+      tags:
+        - AI Tutor
+      summary: Send message to AI tutor
+      description: Send a question or message to the AI tutor
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: sessionId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  type: string
+                requestSlides:
+                  type: boolean
+                  default: false
+      responses:
+        '200':
+          description: Response received
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      response:
+                        type: string
+                      videoUrl:
+                        type: string
+                      slides:
+                        type: array
+                        items:
+                          type: string
+                          
+  # ScrollCoin Endpoints
+  /scrollcoin/balance:
+    get:
+      tags:
+        - ScrollCoin
+      summary: Get ScrollCoin balance
+      description: Retrieve the authenticated user's ScrollCoin balance
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Balance retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      balance:
+                        type: number
+                      walletAddress:
+                        type: string
+                        
+  /scrollcoin/transactions:
+    get:
+      tags:
+        - ScrollCoin
+      summary: Get transaction history
+      description: Retrieve ScrollCoin transaction history
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+      responses:
+        '200':
+          description: Transactions retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      transactions:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ScrollCoinTransaction'
+                          
+  /scrollcoin/transfer:
+    post:
+      tags:
+        - ScrollCoin
+      summary: Transfer ScrollCoin
+      description: Transfer ScrollCoin to another user
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - toUserId
+                - amount
+              properties:
+                toUserId:
+                  type: string
+                  format: uuid
+                amount:
+                  type: number
+                  minimum: 0.01
+                note:
+                  type: string
+      responses:
+        '200':
+          description: Transfer successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/ScrollCoinTransaction'
+                    
+  # Spiritual Formation Endpoints
+  /spiritual-formation/devotions/today:
+    get:
+      tags:
+        - Spiritual Formation
+      summary: Get today's devotion
+      description: Retrieve the daily devotion for the authenticated user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Devotion retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      date:
+                        type: string
+                        format: date
+                      scripture:
+                        type: object
+                      reflection:
+                        type: string
+                      prayerPrompt:
+                        type: string
+                      audioUrl:
+                        type: string
+                        
+  /spiritual-formation/prayer-journal:
+    post:
+      tags:
+        - Spiritual Formation
+      summary: Create prayer journal entry
+      description: Add a new entry to the user's prayer journal
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+              properties:
+                content:
+                  type: string
+                category:
+                  type: string
+                isPrivate:
+                  type: boolean
+                  default: true
+      responses:
+        '201':
+          description: Entry created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      content:
+                        type: string
+                      createdAt:
+                        type: string
+                        format: date-time
+
+security:
+  - bearerAuth: []

@@ -1,0 +1,152 @@
+{
+  "id": "module-THEO_101-2",
+  "courseId": "course_1763658475870_qzmf959co",
+  "weekNumber": 2,
+  "title": "Module 2: Core Concepts and Applications",
+  "learningObjectives": [
+    {
+      "id": "lo-2-0",
+      "description": "Understand key concepts in module 2",
+      "bloomLevel": "APPLY",
+      "assessmentMethods": [
+        "Quiz",
+        "Assignment"
+      ]
+    },
+    {
+      "id": "lo-2-1",
+      "description": "Apply principles to real-world scenarios",
+      "bloomLevel": "APPLY",
+      "assessmentMethods": [
+        "Quiz",
+        "Assignment"
+      ]
+    },
+    {
+      "id": "lo-2-2",
+      "description": "Integrate spiritual formation with academic learning",
+      "bloomLevel": "APPLY",
+      "assessmentMethods": [
+        "Quiz",
+        "Assignment"
+      ]
+    }
+  ],
+  "lectures": [
+    {
+      "id": "lecture-2-1",
+      "moduleId": "module-THEO_101-2",
+      "title": "Module 2: Core Concepts and Applications",
+      "duration": 60,
+      "video": {
+        "id": "video-2-1",
+        "url": "",
+        "resolution": "1080p",
+        "format": "mp4",
+        "streamingUrls": [],
+        "thumbnails": [],
+        "duration": 60,
+        "fileSize": 0
+      },
+      "transcript": "",
+      "captions": [],
+      "notes": {
+        "id": "notes-2-1",
+        "lectureId": "lecture-2-1",
+        "content": "This section provides an overview of the topic.",
+        "summary": "Summary of the lecture content.",
+        "keyConcepts": [
+          "Key takeaway 1",
+          "Key takeaway 2"
+        ],
+        "examples": [],
+        "practiceProblems": [],
+        "pdfUrl": "",
+        "pageCount": 0
+      },
+      "resources": []
+    },
+    {
+      "id": "lecture-2-2",
+      "moduleId": "module-THEO_101-2",
+      "title": "Module 2: Core Concepts and Applications",
+      "duration": 60,
+      "video": {
+        "id": "video-2-2",
+        "url": "",
+        "resolution": "1080p",
+        "format": "mp4",
+        "streamingUrls": [],
+        "thumbnails": [],
+        "duration": 60,
+        "fileSize": 0
+      },
+      "transcript": "",
+      "captions": [],
+      "notes": {
+        "id": "notes-2-2",
+        "lectureId": "lecture-2-2",
+        "content": "This section provides an overview of the topic.",
+        "summary": "Summary of the lecture content.",
+        "keyConcepts": [
+          "Key takeaway 1",
+          "Key takeaway 2"
+        ],
+        "examples": [],
+        "practiceProblems": [],
+        "pdfUrl": "",
+        "pageCount": 0
+      },
+      "resources": []
+    },
+    {
+      "id": "lecture-2-3",
+      "moduleId": "module-THEO_101-2",
+      "title": "Module 2: Core Concepts and Applications",
+      "duration": 60,
+      "video": {
+        "id": "video-2-3",
+        "url": "",
+        "resolution": "1080p",
+        "format": "mp4",
+        "streamingUrls": [],
+        "thumbnails": [],
+        "duration": 60,
+        "fileSize": 0
+      },
+      "transcript": "",
+      "captions": [],
+      "notes": {
+        "id": "notes-2-3",
+        "lectureId": "lecture-2-3",
+        "content": "This section provides an overview of the topic.",
+        "summary": "Summary of the lecture content.",
+        "keyConcepts": [
+          "Key takeaway 1",
+          "Key takeaway 2"
+        ],
+        "examples": [],
+        "practiceProblems": [],
+        "pdfUrl": "",
+        "pageCount": 0
+      },
+      "resources": []
+    }
+  ],
+  "materials": [],
+  "assessments": [],
+  "spiritualIntegration": {
+    "id": "si-2",
+    "moduleId": "module-THEO_101-2",
+    "biblicalFoundation": {
+      "scriptures": [],
+      "theologicalThemes": [],
+      "christCenteredPerspective": ""
+    },
+    "worldviewPerspective": "",
+    "reflectionQuestions": [],
+    "prayerPoints": [],
+    "characterDevelopment": []
+  },
+  "status": "DRAFT"
+}

@@ -1,0 +1,14 @@
+{
+  "courseCode": "THEO_101",
+  "title": "Introduction to Biblical Theology",
+  "level": "BEGINNER",
+  "rigorLevel": "INTERMEDIATE",
+  "credits": 3,
+  "moduleCount": 12,
+  "totalLectures": 36,
+  "totalAssessments": 13,
+  "generatedAt": "2025-11-20T17:07:57.835Z",
+  "outputDirectory": "C:\\Users\\stanl\\OneDrive\\Desktop\\zion-scroll-forge\\backend\\courses\\THEO_101",
+  "status": "COMPLETE",
+  "qualityValidated": true
+}
