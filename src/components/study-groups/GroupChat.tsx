@@ -9,8 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useToast } from '@/hooks/use-toast';
-import { useChatSocket } from '@/hooks/useChatSocket';
+import { Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface Message {
   id: string;
@@ -29,76 +29,19 @@ interface GroupChatProps {
 export const GroupChat: React.FC<GroupChatProps> = ({ groupId }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
-  const [loading, setLoading] = useState(true);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { toast } = useToast();
-  
-  // Placeholder for chat functionality - requires backend setup
-  const isConnected = false;
+  const [loading] = useState(true);
 
   useEffect(() => {
-    fetchMessages();
+    // Placeholder - chat functionality requires WebSocket backend
   }, [groupId]);
-
-  const fetchMessages = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(`/api/chat/rooms/group-${groupId}/messages`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
-      if (!response.ok) throw new Error('Failed to fetch messages');
-
-      const data = await response.json();
-      setMessages(data.messages || []);
-      scrollToBottom();
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to load messages',
-        variant: 'destructive'
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!newMessage.trim()) return;
-
-    try {
-      const response = await fetch('/api/chat/messages', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          roomId: `group-${groupId}`,
-          content: newMessage
-        })
-      });
-
-      if (!response.ok) throw new Error('Failed to send message');
-
-      setNewMessage('');
-    } catch (error) {
-      console.error('Error sending message:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to send message',
-        variant: 'destructive'
-      });
-    }
+    // Placeholder - requires backend
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    // Placeholder
   };
 
   const formatTime = (date: Date) => {
