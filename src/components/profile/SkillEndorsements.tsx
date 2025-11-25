@@ -72,9 +72,10 @@ const SkillEndorsements: React.FC<SkillEndorsementsProps> = ({
   const loadSkills = async () => {
     try {
       setLoading(true);
+      const { data: session } = await supabase.auth.getSession();
       const response = await fetch(`/api/profile/${studentId}/skills`, {
         headers: {
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session?.session?.access_token}`
         }
       });
       
@@ -110,11 +111,12 @@ const SkillEndorsements: React.FC<SkillEndorsementsProps> = ({
 
   const handleAddSkill = async () => {
     try {
+      const { data: session } = await supabase.auth.getSession();
       const response = await fetch(`/api/profile/${studentId}/skills`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session?.session?.access_token}`
         },
         body: JSON.stringify({
           skillName: newSkillName,

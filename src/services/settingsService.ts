@@ -240,5 +240,27 @@ export function getSupportedLanguages() {
  * Get time zones
  */
 export function getTimeZones() {
-  return Intl.supportedValuesOf('timeZone');
+  // Fallback list of common timezones for older browsers
+  const fallbackTimezones = [
+    'America/New_York',
+    'America/Chicago',
+    'America/Denver',
+    'America/Los_Angeles',
+    'Europe/London',
+    'Europe/Paris',
+    'Asia/Tokyo',
+    'Australia/Sydney',
+  ];
+  
+  try {
+    // @ts-ignore - supportedValuesOf is available in newer browsers
+    if (Intl.supportedValuesOf) {
+      // @ts-ignore
+      return Intl.supportedValuesOf('timeZone');
+    }
+  } catch (e) {
+    // Fallback for older browsers
+  }
+  
+  return fallbackTimezones;
 }

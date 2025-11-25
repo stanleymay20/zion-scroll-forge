@@ -51,9 +51,10 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
   const loadAchievements = async () => {
     try {
       setLoading(true);
+      const { data: session } = await supabase.auth.getSession();
       const response = await fetch(`/api/profile/${studentId}/achievements`, {
         headers: {
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session?.session?.access_token}`
         }
       });
       
@@ -94,11 +95,12 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
 
   const handleTogglePin = async (achievementId: string, isPinned: boolean) => {
     try {
+      const { data: session } = await supabase.auth.getSession();
       const response = await fetch(`/api/profile/${studentId}/achievements/${achievementId}/pin`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session?.session?.access_token}`
         },
         body: JSON.stringify({ isPinned: !isPinned })
       });

@@ -20,7 +20,6 @@ import { CourseReviews } from "@/components/course/CourseReviews";
 import { CoursePreviewVideo } from "@/components/course/CoursePreviewVideo";
 import { InstructorProfileCard } from "@/components/course/InstructorProfileCard";
 import { CourseEnrollmentFlow } from "@/components/course/CourseEnrollmentFlow";
-import { CourseRecommendations } from "@/components/course/CourseRecommendations";
 
 export default function CourseDetail() {
   const { courseId } = useParams();

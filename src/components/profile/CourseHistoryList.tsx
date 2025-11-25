@@ -38,9 +38,10 @@ const CourseHistoryList: React.FC<CourseHistoryListProps> = ({ studentId }) => {
   const loadCourseHistory = async () => {
     try {
       setLoading(true);
+      const { data: session } = await supabase.auth.getSession();
       const response = await fetch(`/api/profile/${studentId}/course-history`, {
         headers: {
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session?.session?.access_token}`
         }
       });
       

@@ -45,10 +45,11 @@ const StudentProfilePage: React.FC = () => {
     try {
       setLoading(true);
       const targetUserId = userId || user?.id;
+      const { data: session } = await supabase.auth.getSession();
       
       const response = await fetch(`/api/profile/${targetUserId}`, {
         headers: {
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session?.session?.access_token}`
         }
       });
       
@@ -65,11 +66,12 @@ const StudentProfilePage: React.FC = () => {
 
   const handleProfileUpdate = async (updates: Partial<StudentProfile>) => {
     try {
+      const { data: session } = await supabase.auth.getSession();
       const response = await fetch(`/api/profile/${user?.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session?.session?.access_token}`
         },
         body: JSON.stringify(updates)
       });
