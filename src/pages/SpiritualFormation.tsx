@@ -42,9 +42,10 @@ export default function SpiritualFormation(): JSX.Element {
         setLoading(true);
         setError(null);
 
+        const { data: session } = await supabase.auth.getSession();
         const response = await fetch(`/api/spiritual-formation/dashboard/${user.id}`, {
           headers: {
-            'Authorization': `Bearer ${user.token}`
+            'Authorization': `Bearer ${session?.session?.access_token}`
           }
         });
 

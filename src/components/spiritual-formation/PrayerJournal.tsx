@@ -47,7 +47,7 @@ export function PrayerJournal({
   const [newEntry, setNewEntry] = useState({
     title: '',
     content: '',
-    category: 'thanksgiving' as PrayerCategory,
+    category: 'personal' as PrayerCategory,
     isPrivate: true,
     tags: [] as string[]
   });
@@ -87,7 +87,7 @@ export function PrayerJournal({
       setNewEntry({
         title: '',
         content: '',
-        category: 'thanksgiving',
+        category: 'personal',
         isPrivate: true,
         tags: []
       });

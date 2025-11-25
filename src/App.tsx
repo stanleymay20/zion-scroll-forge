@@ -79,7 +79,6 @@ import EventDetail from "./pages/EventDetail";
 import DegreePrograms from "./pages/DegreePrograms";
 import DegreeProgramDetail from "./pages/DegreeProgramDetail";
 import BillingDashboard from "./pages/BillingDashboard";
-import PaymentBilling from "./pages/PaymentBilling";
 import ScrollCoinWallet from "./pages/ScrollCoinWallet";
 import ScrollCoinLeaderboard from "./pages/ScrollCoinLeaderboard";
 import AITutorsCatalog from "./pages/AITutorsCatalog";
@@ -114,11 +113,8 @@ import ScholarshipsPage from "./pages/ScholarshipsPage";
 import RealTimeMessaging from "./pages/RealTimeMessaging";
 import { ScrollBadgeGallery } from "./pages/ScrollBadgeGallery";
 import { PublicBadgeProfile } from "./pages/PublicBadgeProfile";
-import AdmissionsApplication from "./pages/AdmissionsApplication";
-import ApplicationStatus from "./pages/ApplicationStatus";
 import StudentProfile from "./pages/StudentProfile";
 import MobileFeaturesDemo from "./pages/MobileFeaturesDemo";
-import RealtimeDemo from "./pages/RealtimeDemo";
 import CourseCatalog from "./pages/CourseCatalog";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import MyCourses from "./pages/MyCourses";
@@ -257,9 +253,7 @@ const App = () => (
               <Route path="courses/:courseId" element={<CourseDetail />} />
               <Route path="courses/:courseId/learn" element={<CourseLearn />} />
               
-              {/* Admissions Routes */}
-              <Route path="admissions/apply/:applicationId?" element={<AdmissionsApplication />} />
-              <Route path="admissions/status/:applicationId" element={<ApplicationStatus />} />
+              {/* Admissions Routes removed - not implemented */}
               <Route path="courses/:courseId/modules/:moduleId" element={<ModuleDetail />} />
               <Route path="quiz/:quizId" element={<QuizPage />} />
               <Route path="ai-tutors" element={<AITutors />} />

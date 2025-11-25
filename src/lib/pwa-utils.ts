@@ -250,11 +250,11 @@ export async function subscribeToPushNotifications(): Promise<PushSubscription |
     
     if (!subscription) {
       // Subscribe to push notifications
+      const vapidKey = import.meta.env.VITE_VAPID_PUBLIC_KEY || '';
+      const appServerKey = urlBase64ToUint8Array(vapidKey) as BufferSource;
       subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(
-          process.env.VITE_VAPID_PUBLIC_KEY || ''
-        )
+        applicationServerKey: appServerKey
       });
       
       console.log('Push notification subscription created');

@@ -131,11 +131,12 @@ const ProfileEditor: React.FC<ProfileEditorProps> = ({ profile, onSave, onCancel
       if (avatarFile) {
         const formData = new FormData();
         formData.append('avatar', avatarFile);
+        const { data: session } = await supabase.auth.getSession();
         
         const uploadResponse = await fetch('/api/profile/avatar', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${user?.token}`
+            'Authorization': `Bearer ${session?.session?.access_token}`
           },
           body: formData
         });

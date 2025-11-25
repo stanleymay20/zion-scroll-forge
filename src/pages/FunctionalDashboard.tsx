@@ -10,8 +10,8 @@ import {
   ChevronRight, Star, Play
 } from "lucide-react";
 import { useMyEnrollments } from "@/hooks/useCourses";
-import { useScrollCoinBalance, useScrollCoinTransactions } from "@/hooks/useScrollCoin";
-import { useSpiritualMilestones } from "@/hooks/useSpiritualFormation";
+import { useWallet } from "@/hooks/useScrollCoin";
+import { useSpiritualMetrics } from "@/hooks/useSpiritualFormation";
 import { useCommunityPosts } from "@/hooks/useCommunity";
 import { useInstitution } from "@/contexts/InstitutionContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -21,15 +21,13 @@ import { format } from "date-fns";
 const FunctionalDashboard = () => {
   const { user } = useAuth();
   const { activeInstitution } = useInstitution();
-  const { data: enrollments = [], isLoading: enrollmentsLoading } = useMyEnrollments();
-  const { data: scrollCoinBalance = 0 } = useScrollCoinBalance();
-  const { data: recentTransactions = [] } = useScrollCoinTransactions(5);
-  const { data: spiritualData } = useSpiritualMilestones();
-  const { data: communityPosts = [] } = useCommunityPosts(activeInstitution?.id);
+  const { data: enrollments = [], isLoading: enrollmentsLoading } = useUserEnrollments();
+  const { data: walletData } = useWallet();
+  const scrollCoinBalance = walletData?.wallet?.balance || 0;
+  const recentTransactions = walletData?.transactions?.slice(0, 5) || [];
+  const { data: spiritualData } = useSpiritualMetrics();
 
-  const recentMilestones = spiritualData?.milestones?.filter(m => 
-    m.user_milestones?.length > 0
-  ).slice(0, 3) || [];
+  const recentMilestones: any[] = [];
 
   const calculateOverallProgress = () => {
     if (enrollments.length === 0) return 0;
