@@ -36,11 +36,29 @@ export const useAIChat = () => {
       queryClient.invalidateQueries({ queryKey: ['scroll_analytics'] });
     },
     onError: (error: any) => {
-      toast({
-        title: 'Error',
-        description: error.message || 'Failed to communicate with AI tutor',
-        variant: 'destructive',
-      });
+      // Handle specific error codes with appropriate messages
+      if (error.code === 'CREDITS_REQUIRED') {
+        toast({
+          title: '💳 AI Credits Needed',
+          description: 'Please add credits to your workspace to use AI tutors. Go to Settings → Workspace → Usage.',
+          variant: 'destructive',
+          duration: 8000,
+        });
+      } else if (error.code === 'RATE_LIMITED') {
+        toast({
+          title: '⏱️ Rate Limited',
+          description: 'Too many requests. Please wait a moment before trying again.',
+          variant: 'destructive',
+          duration: 5000,
+        });
+      } else {
+        toast({
+          title: '❌ Error',
+          description: error.message || 'Failed to communicate with AI tutor. Please try again.',
+          variant: 'destructive',
+          duration: 5000,
+        });
+      }
     },
   });
 };

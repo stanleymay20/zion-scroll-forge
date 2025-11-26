@@ -175,8 +175,37 @@ RESPONSE FORMAT:
     });
 
     if (!aiResponse.ok) {
-      const error = await aiResponse.text();
-      console.error('AI Gateway error:', error);
+      const errorText = await aiResponse.text();
+      console.error('AI Gateway error:', errorText);
+      
+      if (aiResponse.status === 402) {
+        return new Response(
+          JSON.stringify({ 
+            error: 'CREDITS_REQUIRED',
+            message: '⚠️ AI Credits Required: Please add credits to your Lovable workspace to continue using AI tutors. Go to Settings → Workspace → Usage to add credits.',
+            userFriendlyMessage: 'AI credits needed - please add credits in workspace settings'
+          }),
+          { 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 402 
+          }
+        );
+      }
+      
+      if (aiResponse.status === 429) {
+        return new Response(
+          JSON.stringify({ 
+            error: 'RATE_LIMITED',
+            message: '⚠️ Too Many Requests: Please wait a moment before sending another message.',
+            userFriendlyMessage: 'Please wait a moment before trying again'
+          }),
+          { 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+            status: 429 
+          }
+        );
+      }
+      
       throw new Error(`AI Gateway error: ${aiResponse.status}`);
     }
 
