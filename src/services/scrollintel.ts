@@ -68,7 +68,25 @@ export const chatWithAI = underChrist(
       }
     });
 
-    if (error) throw error;
+    if (error) {
+      // Check if it's a credits or rate limit error from the response
+      if (data?.error === 'CREDITS_REQUIRED' || data?.error === 'RATE_LIMITED') {
+        const customError: any = new Error(data.userFriendlyMessage || data.message);
+        customError.code = data.error;
+        customError.fullMessage = data.message;
+        throw customError;
+      }
+      throw error;
+    }
+    
+    // Check for error in successful response (402/429 from edge function)
+    if (data?.error) {
+      const customError: any = new Error(data.userFriendlyMessage || data.message);
+      customError.code = data.error;
+      customError.fullMessage = data.message;
+      throw customError;
+    }
+    
     return data;
   }
 );
