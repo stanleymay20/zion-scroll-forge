@@ -240,12 +240,6 @@ export default function CourseDetailPage() {
             <CourseReviews courseId={courseId!} />
           </TabsContent>
         </Tabs>
-
-        {/* Recommendations */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-6">Recommended Courses</h2>
-          <CourseRecommendations currentCourseId={courseId!} limit={3} />
-        </div>
       </div>
     </div>
   );
