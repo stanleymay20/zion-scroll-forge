@@ -6,6 +6,41 @@
 import DailyDevotionService from '../DailyDevotionService';
 import ScriptureIntegrationService from '../ScriptureIntegrationService';
 import DevotionRecommendationService from '../DevotionRecommendationService';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { beforeEach } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { beforeEach } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
+import { beforeEach } from 'node:test';
+import { describe } from 'node:test';
 
 describe('DailyDevotionService', () => {
   let devotionService: DailyDevotionService;
@@ -46,7 +81,7 @@ describe('DailyDevotionService', () => {
       const userId = 'test-user-123';
       const devotionId = 'devotion-123';
 
-      const completion = await devotionService.completeDevot ion(
+      const completion = await devotionService.completeDevotion(
         userId,
         devotionId,
         'Great devotion!',

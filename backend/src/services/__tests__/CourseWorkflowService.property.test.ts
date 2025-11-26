@@ -1,5 +1,5 @@
 import fc from 'fast-check';
-import { PrismaClient } from '@prisma/client';
+import { getPrismaTestClient } from '../../__tests__/test-db-setup';
 import CourseWorkflowService from '../CourseWorkflowService';
 import {
   CourseInfo,
@@ -9,7 +9,7 @@ import {
   CourseLevel
 } from '../../types/course-content.types';
 
-const prisma = new PrismaClient();
+const prisma = getPrismaTestClient();
 const workflowService = new CourseWorkflowService();
 
 // Generators for property-based testing

@@ -1,0 +1,67 @@
+// Core Models to Add to schema.prisma
+// These are referenced throughout the application but missing from the schema
+
+model User {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  username          String   @unique
+  passwordHash      String
+  firstName         String
+  lastName          String
+  role              String   // STUDENT, FACULTY, ADMIN, STAFF
+  scrollCalling     String?
+  spiritualGifts    String[]
+  kingdomVision     String?
+  scrollAlignment   Float    @default(0)
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Faculty {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  icon        String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  courses     Course[]
+
+  @@map("faculties")
+}
+
+model Course {
+  id              String   @id @default(uuid())
+  code            String   @unique
+  title           String
+  description     String
+  facultyId       String   @map("faculty_id")
+  credits         Int      @default(3)
+  level           String   // BEGINNER, INTERMEDIATE, ADVANCED
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  faculty         Faculty  @relation(fields: [facultyId], references: [id])
+  modules         CourseModule[]
+
+  @@map("courses")
+}
+
+model Enrollment {
+  id              String   @id @default(uuid())
+  userId          String   @map("user_id")
+  courseId        String   @map("course_id")
+  status          String   // ENROLLED, COMPLETED, DROPPED
+  enrolledAt      DateTime @default(now()) @map("enrolled_at")
+  completedAt     DateTime? @map("completed_at")
+  grade           String?
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}

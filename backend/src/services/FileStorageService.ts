@@ -66,6 +66,7 @@ export default class FileStorageService {
 
       const response: FileUploadResponse = {
         url: urlData.publicUrl,
+        path: path,
         filename: sanitizedFilename,
         size: request.file.length,
         mimetype: request.mimetype,

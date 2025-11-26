@@ -1,0 +1,41 @@
+{
+  "id": "lecture-10-2",
+  "moduleId": "module-SCROLLAI100-10",
+  "title": "Module 10: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-10-2",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-10-2",
+    "lectureId": "lecture-10-2",
+    "content": "",
+    "summary": "\": \"In this lecture, we have navigated the fundamental concepts of artificial intelligence and robotics, examined their implications through the lens of faith, and identified ethical considerations that arise from their use. By integrating our academic inquiry with biblical wisdom, we are called to be stewards of technology that honors God and serves humanity.\",\n  \"keyTakeaways\": [\n    \"Understanding the distinctions between Narrow AI and General AI is crucial for ethical AI development.\",\n    \"Robotics represents a tangible application of AI, raising important ethical questions about the future of work.\",\n    \"Data ethics rooted in Christian values can guide the responsible use of AI technologies.\"\n  ],\n  \"furtherReading\": [\n    \"Binns, Reuben. 'Fairness in Machine Learning: Lessons from Political Philosophy.'\",\n    \"Müller, Vincent C., and Nick Bostrom. 'Future Progress in Artificial Intelligence: A Survey of Expert Opinion.'\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

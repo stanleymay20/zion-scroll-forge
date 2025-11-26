@@ -1,0 +1,41 @@
+{
+  "id": "lecture-2-3",
+  "moduleId": "module-SCROLLAI100-2",
+  "title": "Module 2: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-2-3",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-2-3",
+    "lectureId": "lecture-2-3",
+    "content": "",
+    "summary": "\": \"Today, we have examined the core concepts of intelligence and robotics, emphasizing the distinction between human and artificial intelligence while integrating ethical considerations rooted in our faith. We explored the principles of robotics, the ethical implications of AI, and their practical applications in various sectors. As we move forward, let us continue to seek wisdom in integrating our academic pursuits with our spiritual convictions.\",\n  \"keyTakeaways\": [\n    \"Understanding the distinction between human intelligence and AI is crucial for ethical technological development.\",\n    \"Robotics principles can be harmonized with biblical stewardship and responsibility.\",\n    \"Ethical considerations must guide the integration of AI and robotics into society.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach.\",\n    \"Bostrom, N. (2014). Superintelligence: Paths, Dangers, Strategies.\",\n    \"Keller, T. (2016). Making Sense of God: An Invitation to the Skeptical.\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

@@ -5,6 +5,9 @@ import { AIGatewayService } from './AIGatewayService';
 import { VectorStoreService } from './VectorStoreService';
 import { AICacheService } from './AICacheService';
 import { AIQualityService } from './AIQualityService';
+import ScrollPedagogyValidator from './ScrollPedagogyValidator';
+import ContentVersionControl from './ContentVersionControl';
+import ContentCoherenceChecker from './ContentCoherenceChecker';
 import { logger } from '../utils/logger';
 import {
   LearningObjective,
@@ -30,12 +33,18 @@ export default class ContentCreationService {
   private vectorStore: VectorStoreService;
   private cache: AICacheService;
   private qualityService: AIQualityService;
+  private pedagogyValidator: ScrollPedagogyValidator;
+  private versionControl: ContentVersionControl;
+  private coherenceChecker: ContentCoherenceChecker;
 
   constructor() {
     this.aiGateway = new AIGatewayService();
     this.vectorStore = new VectorStoreService();
     this.cache = new AICacheService();
     this.qualityService = new AIQualityService();
+    this.pedagogyValidator = new ScrollPedagogyValidator();
+    this.versionControl = new ContentVersionControl();
+    this.coherenceChecker = new ContentCoherenceChecker();
   }
 
   /**
@@ -110,6 +119,44 @@ export default class ContentCreationService {
           language: 'en'
         }
       };
+
+      // Validate pedagogical flow (6-step model)
+      const pedagogyValidation = await this.pedagogyValidator.validatePedagogicalFlow(
+        finalLectureContent,
+        'lecture'
+      );
+
+      if (!pedagogyValidation.isValid) {
+        logger.warn('Lecture failed pedagogy validation', {
+          lectureId: finalLectureContent.lectureId,
+          score: pedagogyValidation.overallScore,
+          violations: pedagogyValidation.violations.length
+        });
+
+        // Add pedagogy validation results to metadata
+        finalLectureContent.metadata.pedagogyScore = pedagogyValidation.overallScore;
+        finalLectureContent.metadata.pedagogyViolations = pedagogyValidation.violations.map(v => v.issue);
+      } else {
+        logger.info('Lecture passed pedagogy validation', {
+          lectureId: finalLectureContent.lectureId,
+          score: pedagogyValidation.overallScore
+        });
+        finalLectureContent.metadata.pedagogyScore = pedagogyValidation.overallScore;
+      }
+
+      // Create initial version
+      await this.versionControl.createVersion(
+        finalLectureContent.lectureId,
+        'lecture',
+        finalLectureContent,
+        {
+          title: finalLectureContent.title,
+          tags: request.moduleOutline.topics,
+          pedagogyScore: pedagogyValidation.overallScore,
+          reviewStatus: 'PENDING_REVIEW'
+        },
+        'AI'
+      );
 
       const processingTime = Date.now() - startTime;
       const totalCost = aiResponse.cost.totalCost;
@@ -434,7 +481,7 @@ export default class ContentCreationService {
 
   private buildLecturePrompt(request: LectureGenerationRequest): string {
     return `
-Generate a comprehensive university-level lecture for ScrollUniversity following our elite pedagogical standards.
+Generate a comprehensive 2000+ word university-level lecture for ScrollUniversity with SPECIFIC, DETAILED content.
 
 COURSE CONTEXT:
 - Course: ${request.courseOutline.title}
@@ -445,47 +492,93 @@ COURSE CONTEXT:
 - Difficulty: ${request.difficulty}
 - Duration: 60-90 minutes
 
+CRITICAL REQUIREMENTS - READ CAREFULLY:
+
+1. SPECIFIC CONTENT ONLY - NO GENERIC PLACEHOLDERS:
+   ❌ NEVER use: "Concept 1", "Concept 2", "Example 1-1", "Practice problem 1"
+   ✅ ALWAYS use: Actual concept names, real examples, specific problems
+   
+2. MINIMUM CONTENT LENGTH:
+   - Introduction: 300+ words with compelling hook
+   - Each main section: 400+ words with detailed explanations
+   - Examples: 200+ words each with specific details
+   - Summary: 200+ words synthesizing key points
+   - TOTAL: 2000+ words minimum
+
+3. REAL SUBJECT-SPECIFIC TERMINOLOGY:
+   - Use actual technical terms from ${request.courseOutline.title}
+   - Define and explain each term in detail
+   - Provide context and applications
+   - Include industry-standard terminology
+
+4. DETAILED EXAMPLES:
+   - Each example must have: specific scenario, step-by-step walkthrough, real data/code
+   - NO generic "Example 1" - give it a descriptive name
+   - Include actual numbers, formulas, code snippets, or detailed scenarios
+   - Explain WHY and HOW, not just WHAT
+
+5. SPECIFIC PRACTICE PROBLEMS:
+   - Create actual problems with specific parameters
+   - Provide detailed solutions with step-by-step explanations
+   - Include hints that reference specific concepts
+   - NO "Practice problem 1" - describe the actual problem
+
 PEDAGOGICAL REQUIREMENTS (6-Step Flow):
-1. IGNITION: Hook + Revelation Trigger (compelling opening)
-2. DOWNLOAD: Clear concept teaching with examples
-3. DEMONSTRATION: Worked examples and case studies
-4. ACTIVATION: Student practice opportunities
-5. REFLECTION: Identity & integration questions
-6. COMMISSION: Next steps and assignments
+1. IGNITION: Compelling story or question that hooks students (300+ words)
+2. DOWNLOAD: Deep concept teaching with 4-6 specific concepts (1200+ words)
+3. DEMONSTRATION: 3+ worked examples with detailed walkthroughs (600+ words)
+4. ACTIVATION: 3+ specific practice problems (400+ words)
+5. REFLECTION: 5+ thought-provoking questions connecting to calling
+6. COMMISSION: Specific next steps and assignments
 
-CONTENT REQUIREMENTS:
-- Comprehensive introduction that hooks students
-- 4-6 main content sections with deep academic rigor
-- Real-world examples and practical applications
-- Interactive elements and engagement points
-- Clear summary and key takeaways
-- Further reading recommendations
-
-QUALITY STANDARDS:
-- University-level academic depth
-- Practical application focus
-- Engaging and accessible language
-- Clear structure and flow
-- Evidence-based content
-
-Generate the lecture content in JSON format with the following structure:
+CONTENT STRUCTURE:
 {
-  "title": "Engaging lecture title",
-  "introduction": "Compelling introduction following IGNITION principle",
+  "title": "Specific, engaging title (not generic)",
+  "introduction": "300+ word compelling introduction with specific hook, context, and preview",
   "mainContent": [
     {
       "sectionNumber": 1,
-      "title": "Section title",
-      "content": "Comprehensive section content",
-      "subsections": [],
-      "visualAids": ["Description of visual aids needed"],
-      "interactiveElements": ["Interactive activities"]
+      "title": "Specific section title (not 'Section 1')",
+      "content": "400+ words of detailed explanation with specific terminology, definitions, examples, and applications. Include actual concepts, not placeholders.",
+      "subsections": [
+        {
+          "title": "Specific subsection title",
+          "content": "200+ words of detailed content"
+        }
+      ],
+      "visualAids": ["Specific description of charts, diagrams, or visuals needed"],
+      "interactiveElements": ["Specific activities with clear instructions"]
     }
   ],
-  "summary": "Comprehensive summary",
-  "keyTakeaways": ["Key takeaway 1", "Key takeaway 2", "Key takeaway 3"],
-  "furtherReading": ["Resource 1", "Resource 2"]
+  "summary": "200+ word comprehensive summary synthesizing all key points",
+  "keyTakeaways": [
+    "Specific takeaway with actual concept name and application",
+    "Another specific takeaway with details",
+    "Third specific takeaway with context"
+  ],
+  "examples": [
+    {
+      "title": "Descriptive example title (not 'Example 1')",
+      "description": "200+ word detailed scenario with specific context",
+      "explanation": "Step-by-step walkthrough with actual data/code/details"
+    }
+  ],
+  "furtherReading": [
+    "Specific book/article title with author and relevance",
+    "Another specific resource with context"
+  ]
 }
+
+VALIDATION CHECKLIST:
+✅ Total content is 2000+ words
+✅ NO generic placeholders like "Concept X" or "Example Y"
+✅ ALL concepts have specific names and detailed explanations
+✅ ALL examples have specific scenarios and detailed walkthroughs
+✅ ALL practice problems have specific parameters and solutions
+✅ Uses actual terminology from ${request.courseOutline.title}
+✅ Includes biblical integration with specific scripture applications
+
+Generate comprehensive, specific, detailed content now:
     `.trim();
   }
 
@@ -526,15 +619,35 @@ Create content that is academically rigorous, practically applicable, and spirit
   }
 
   private async parseLectureResponse(aiContent: string, request: LectureGenerationRequest): Promise<Partial<LectureContent>> {
+    if (!aiContent || aiContent.trim().length === 0) {
+      throw new Error(`AI returned empty content for ${request.moduleOutline.title}. This violates quality standards.`);
+    }
+
+    // CRITICAL: Validate content is not template/placeholder
+    this.validateNotTemplateContent(aiContent, request.moduleOutline.title);
+
+    // Validate minimum content length
+    if (aiContent.length < 2000) {
+      throw new Error(
+        `AI generated insufficient content (${aiContent.length} chars) for ${request.moduleOutline.title}.\n` +
+        `Minimum 2000 characters required for comprehensive lectures.\n` +
+        `Content preview: ${aiContent.substring(0, 300)}...`
+      );
+    }
+
     try {
       // Try to parse JSON response
       const parsed = JSON.parse(aiContent);
+      
+      // Validate parsed content structure
+      this.validateLectureContent(parsed, request.moduleOutline.title);
+      
       return parsed;
     } catch (error) {
       // If JSON parsing fails, create structured content from text
       logger.warn('AI response not in JSON format, parsing as text', { error });
       
-      return {
+      const structured = {
         title: request.moduleOutline.title,
         introduction: this.extractSection(aiContent, 'introduction') || `Introduction to ${request.moduleOutline.title}`,
         mainContent: this.parseMainContent(aiContent),
@@ -542,6 +655,92 @@ Create content that is academically rigorous, practically applicable, and spirit
         keyTakeaways: this.extractKeyTakeaways(aiContent),
         furtherReading: this.extractFurtherReading(aiContent)
       };
+      
+      // Validate structured content
+      this.validateLectureContent(structured, request.moduleOutline.title);
+      
+      return structured;
+    }
+  }
+
+  /**
+   * Validate that content is not generic template/placeholder
+   */
+  private validateNotTemplateContent(content: string, lectureTitle: string): void {
+    const templatePatterns = [
+      { pattern: /Concept\s+\d+-\d+/gi, name: 'Concept X-Y' },
+      { pattern: /Example\s+\d+-\d+/gi, name: 'Example X-Y' },
+      { pattern: /Practice\s+problem\s+\d+/gi, name: 'Practice problem X' },
+      { pattern: /Term\s+\d+-\d+/gi, name: 'Term X-Y' },
+      { pattern: /Hint\s+\d+/gi, name: 'Hint X' },
+      { pattern: /Practical\s+example/gi, name: 'Practical example' },
+      { pattern: /Detailed\s+explanation/gi, name: 'Detailed explanation' },
+      { pattern: /Solution\s+provided/gi, name: 'Solution provided' },
+      { pattern: /Comprehensive\s+lecture\s+content\s+for/gi, name: 'Template intro' }
+    ];
+
+    const violations: string[] = [];
+    
+    for (const { pattern, name } of templatePatterns) {
+      const matches = content.match(pattern);
+      if (matches && matches.length > 0) {
+        violations.push(`- Found ${matches.length} instances of "${name}" pattern`);
+      }
+    }
+
+    if (violations.length > 0) {
+      throw new Error(
+        `❌ TEMPLATE CONTENT DETECTED in "${lectureTitle}".\n\n` +
+        `System configured to reject generic placeholders and demand specific content.\n\n` +
+        `Violations found:\n${violations.join('\n')}\n\n` +
+        `Requirements:\n` +
+        `✅ Use specific terminology (e.g., "Neural Networks", "Machine Learning Algorithms")\n` +
+        `✅ Provide real examples with detailed scenarios\n` +
+        `✅ Create specific practice problems with actual parameters\n` +
+        `✅ Include detailed explanations with subject-specific content\n\n` +
+        `Content preview: ${content.substring(0, 300)}...`
+      );
+    }
+  }
+
+  /**
+   * Validate lecture content structure and quality
+   */
+  private validateLectureContent(content: any, lectureTitle: string): void {
+    const errors: string[] = [];
+
+    // Check for required fields and minimum lengths
+    if (!content.introduction || content.introduction.length < 300) {
+      errors.push(`Introduction must be at least 300 characters (got ${content.introduction?.length || 0})`);
+    }
+
+    if (!content.mainContent || !Array.isArray(content.mainContent) || content.mainContent.length < 3) {
+      errors.push(`Must have at least 3 main content sections (got ${content.mainContent?.length || 0})`);
+    }
+
+    if (!content.summary || content.summary.length < 200) {
+      errors.push(`Summary must be at least 200 characters (got ${content.summary?.length || 0})`);
+    }
+
+    if (!content.keyTakeaways || !Array.isArray(content.keyTakeaways) || content.keyTakeaways.length < 3) {
+      errors.push(`Must have at least 3 key takeaways (got ${content.keyTakeaways?.length || 0})`);
+    }
+
+    // Validate key takeaways are specific and detailed
+    if (content.keyTakeaways && Array.isArray(content.keyTakeaways)) {
+      content.keyTakeaways.forEach((takeaway: string, idx: number) => {
+        if (typeof takeaway === 'string' && takeaway.length < 50) {
+          errors.push(`Key takeaway ${idx + 1} is too short (${takeaway.length} chars). Must be detailed and specific.`);
+        }
+      });
+    }
+
+    if (errors.length > 0) {
+      throw new Error(
+        `❌ CONTENT QUALITY VALIDATION FAILED for "${lectureTitle}":\n\n` +
+        errors.join('\n') +
+        `\n\nContent must meet minimum quality standards for comprehensive educational material.`
+      );
     }
   }
 
@@ -793,5 +992,138 @@ Return as JSON array of strings.
 
   private generateResourceId(): string {
     return `resource_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  /**
+   * Validate content against 6-step pedagogical flow
+   */
+  async validatePedagogicalFlow(
+    content: any,
+    contentType: 'lecture' | 'module' | 'course'
+  ) {
+    return await this.pedagogyValidator.validatePedagogicalFlow(content, contentType);
+  }
+
+  /**
+   * Check coherence across multiple content pieces
+   */
+  async checkContentCoherence(
+    contentPieces: Array<{ id: string; type: string; content: any }>,
+    context?: { courseId?: string; moduleId?: string }
+  ) {
+    return await this.coherenceChecker.checkCoherence(contentPieces, context);
+  }
+
+  /**
+   * Create new version of content
+   */
+  async createContentVersion(
+    contentId: string,
+    contentType: 'lecture' | 'module' | 'course' | 'assessment' | 'resource',
+    content: any,
+    metadata: any,
+    createdBy: string
+  ) {
+    return await this.versionControl.createVersion(
+      contentId,
+      contentType,
+      content,
+      metadata,
+      createdBy
+    );
+  }
+
+  /**
+   * Get content version history
+   */
+  async getContentVersionHistory(contentId: string) {
+    return await this.versionControl.getVersionHistory(contentId);
+  }
+
+  /**
+   * Rollback content to previous version
+   */
+  async rollbackContent(
+    contentId: string,
+    targetVersionId: string,
+    reason: string,
+    requestedBy: string
+  ) {
+    return await this.versionControl.rollbackToVersion({
+      contentId,
+      targetVersionId,
+      reason,
+      requestedBy,
+      preserveApprovals: false
+    });
+  }
+
+  /**
+   * Compare two versions of content
+   */
+  async compareContentVersions(
+    contentId: string,
+    version1: number,
+    version2: number
+  ) {
+    return await this.versionControl.compareVersions(contentId, version1, version2);
+  }
+
+  /**
+   * Get change history for content
+   */
+  async getContentChangeHistory(
+    contentId: string,
+    options?: {
+      startDate?: Date;
+      endDate?: Date;
+      changedBy?: string;
+    }
+  ) {
+    return await this.versionControl.getChangeHistory(contentId, options);
+  }
+
+  /**
+   * Enforce 6-step pedagogical flow in content generation
+   */
+  private async enforcePedagogicalFlow(content: any): Promise<any> {
+    // Extract pedagogical flow components
+    const flow = this.pedagogyValidator.extractPedagogicalFlow(content);
+
+    // Ensure all components are present
+    const enhancedContent = { ...content };
+
+    // Add missing components with placeholders
+    if (!flow.ignition || !flow.ignition.hook) {
+      logger.warn('Missing ignition component, adding placeholder');
+      enhancedContent.ignitionPlaceholder = 'Add compelling hook and revelation trigger';
+    }
+
+    if (!flow.activation || !flow.activation.practiceActivities || flow.activation.practiceActivities.length === 0) {
+      logger.warn('Missing activation component, adding placeholder');
+      enhancedContent.activationPlaceholder = 'Add student practice activities';
+    }
+
+    if (!flow.reflection || !flow.reflection.identityQuestions || flow.reflection.identityQuestions.length === 0) {
+      logger.warn('Missing reflection component, adding placeholder');
+      enhancedContent.reflectionPlaceholder = 'Add identity and calling reflection questions';
+    }
+
+    if (!flow.commission || !flow.commission.nextSteps || flow.commission.nextSteps.length === 0) {
+      logger.warn('Missing commission component, adding placeholder');
+      enhancedContent.commissionPlaceholder = 'Add clear next steps and assignments';
+    }
+
+    return enhancedContent;
+  }
+
+  /**
+   * Validate content progression level
+   */
+  async validateProgressionLevel(
+    content: any,
+    targetLevel: number
+  ) {
+    return await this.pedagogyValidator.validateProgressionLevel(content, targetLevel);
   }
 }

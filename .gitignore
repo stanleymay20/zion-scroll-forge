@@ -1,24 +1,400 @@
-# Logs
-logs
+# ============================================
+# CRITICAL SECURITY - SECRETS & CREDENTIALS
+# ============================================
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+!.env.production.example
+*.env
+*.env.local
+*.env.development
+*.env.test
+*.env.production
+*.env.staging
+
+# API Keys and Credentials
+**/api-keys.json
+**/credentials.json
+**/secrets.json
+**/.secrets
+**/.credentials
+
+# Database credentials
+database.json
+db-config.json
+connection-strings.txt
+
+# Blockchain private keys
+**/*.pem
+**/*.key
+**/private-keys/
+**/wallets/
+**/.ethereum/
+**/keystore/
+
+# JWT and authentication secrets
+jwt-secret.txt
+auth-secret.txt
+session-secret.txt
+
+# Cloud provider credentials
+**/.aws/
+**/.gcp/
+**/.azure/
+**/gcloud-credentials.json
+**/aws-credentials.json
+
+# Supabase secrets
+supabase/.env
+supabase/.env.local
+**/supabase-service-role-key.txt
+
+# OpenAI and AI service keys
+openai-key.txt
+anthropic-key.txt
+openrouter-key.txt
+deepseek-key.txt
+
+# Stripe and payment secrets
+stripe-secret-key.txt
+stripe-webhook-secret.txt
+payment-credentials.json
+
+# ============================================
+# DEPENDENCIES & BUILD ARTIFACTS
+# ============================================
+
+# Node modules
+node_modules/
+**/node_modules/
+jspm_packages/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+out/
+.next/
+.nuxt/
+.cache/
+.parcel-cache/
+.vite/
+
+# Compiled files
+*.js.map
+*.css.map
+*.tsbuildinfo
+.eslintcache
+
+# Bun
+bun.lockb
+.bun/
+
+# ============================================
+# LOGS & DEBUGGING
+# ============================================
+
+# Log files
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+*.log.*
 
-node_modules
-dist
-dist-ssr
+# Debug files
+debug/
+*.debug
+.pnpm-debug.log
+
+# Error reports
+error-reports/
+crash-reports/
+
+# ============================================
+# DATABASE & STORAGE
+# ============================================
+
+# SQLite databases
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.db-shm
+*.db-wal
+
+# PostgreSQL
+*.dump
+*.sql.gz
+pg_dump_*
+
+# Prisma
+prisma/.env
+prisma/dev.db
+prisma/migrations/**/migration.lock
+
+# Redis dumps
+dump.rdb
+*.rdb
+
+# Backup files
+*.backup
+*.bak
+backups/
+**/backup/
+
+# ============================================
+# TEMPORARY & CACHE FILES
+# ============================================
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.*.swp
+.*.swo
+
+# Cache directories
+.cache/
+.temp/
+tmp/
+temp/
 *.local
 
-# Editor directories and files
+# ============================================
+# EDITOR & IDE
+# ============================================
+
+# VSCode
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+!.vscode/settings.json.example
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+.idea_modules/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# Other editors
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# ============================================
+# TESTING & COVERAGE
+# ============================================
+
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov
+.coverage
+htmlcov/
+junit.xml
+
+# Test databases
+test.db
+test.sqlite
+**/test-data/
+
+# ============================================
+# DOCKER & CONTAINERS
+# ============================================
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# Kubernetes secrets
+k8s/secrets/
+k8s/**/secrets.yaml
+k8s/**/*-secret.yaml
+
+# ============================================
+# CERTIFICATES & KEYS
+# ============================================
+
+# SSL/TLS certificates
+*.pem
+*.crt
+*.cer
+*.der
+*.p12
+*.pfx
+*.key
+*.pub
+*.csr
+certs/
+certificates/
+ssl/
+
+# SSH keys
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+known_hosts
+
+# ============================================
+# MEDIA & LARGE FILES
+# ============================================
+
+# Large media files (use Git LFS if needed)
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.flv
+*.wmv
+*.webm
+
+# Large archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+*.iso
+
+# ============================================
+# COURSE CONTENT & GENERATED DATA
+# ============================================
+
+# Generated course content (if sensitive)
+courses/**/generated/
+courses/**/temp/
+**/course-generation-logs/
+
+# User uploaded content
+uploads/
+user-uploads/
+**/uploaded-files/
+
+# AI generated content logs
+ai-generation-logs/
+**/ai-output/
+
+# ============================================
+# BLOCKCHAIN & WEB3
+# ============================================
+
+# Hardhat
+cache/
+artifacts/
+typechain/
+typechain-types/
+
+# Truffle
+build/contracts/
+
+# Foundry
+out/
+cache_forge/
+
+# ============================================
+# MONITORING & ANALYTICS
+# ============================================
+
+# Monitoring data
+monitoring-data/
+metrics/
+*.metrics
+
+# Analytics
+analytics-data/
+**/analytics-logs/
+
+# ============================================
+# MISCELLANEOUS
+# ============================================
+
+# Package manager locks (keep package-lock.json, remove others if needed)
+# yarn.lock
+# pnpm-lock.yaml
+
+# Local environment
+.local/
+local/
+
+# Sentry
+.sentryclirc
+
+# Vercel
+.vercel
+
+# Netlify
+.netlify
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+terraform.tfvars
+
+# Ansible
+*.retry
+
+# ============================================
+# PROJECT SPECIFIC
+# ============================================
+
+# ScrollUniversity specific
+phase1-batch-log.txt
+**/generation-logs/
+**/batch-logs/
+**/execution-logs/
+
+# Supabase local
+supabase/.branches/
+supabase/.temp/
+
+# Backend specific
+backend/.env
+backend/.env.local
+backend/.env.production
+backend/uploads/
+backend/logs/
+
+# Frontend specific
+public/uploads/
+public/user-content/
+
+# Scripts output
+scripts/output/
+scripts/logs/

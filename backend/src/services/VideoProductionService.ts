@@ -11,6 +11,7 @@ import { PrismaClient } from '@prisma/client';
 import { AIGatewayService } from './AIGatewayService';
 import TranslationService from './TranslationService';
 import FileStorageService from './FileStorageService';
+import { FileType } from '../types/course.types';
 import {
   RecordingSession,
   LectureInfo,
@@ -51,9 +52,9 @@ export default class VideoProductionService {
       const lecture = await this.prisma.lecture.findUnique({
         where: { id: lectureInfo.lectureId },
         include: {
-          module: {
+          CourseModule: {
             include: {
-              course: true
+              Course: true
             }
           }
         }
@@ -81,7 +82,7 @@ export default class VideoProductionService {
         scheduledDate: lectureInfo.requestedDate,
         duration: lectureInfo.duration,
         studioLocation: lectureInfo.studioLocation || 'Main Studio',
-        equipment: this.getRequiredEquipment(lectureInfo.recordingType),
+        equipment: this.getRequiredEquipment(lectureInfo.recordingType || 'STANDARD'),
         status: 'SCHEDULED',
         recordingType: lectureInfo.recordingType || 'STANDARD',
         technicalRequirements: {
@@ -241,24 +242,26 @@ export default class VideoProductionService {
       const vttContent = await this.generateVTTFormat(transcript, video.duration);
 
       // Store caption files
-      const captionUrl = await this.fileStorage.uploadFile(
-        Buffer.from(vttContent),
-        `captions/${videoId}_${language}.vtt`,
-        'text/vtt'
-      );
+      const captionUpload = await this.fileStorage.uploadFile({
+        file: Buffer.from(vttContent),
+        filename: `captions/${videoId}_${language}.vtt`,
+        mimetype: 'text/vtt',
+        type: FileType.DOCUMENT
+      });
 
-      const transcriptUrl = await this.fileStorage.uploadFile(
-        Buffer.from(transcript),
-        `transcripts/${videoId}_${language}.txt`,
-        'text/plain'
-      );
+      const transcriptUpload = await this.fileStorage.uploadFile({
+        file: Buffer.from(transcript),
+        filename: `transcripts/${videoId}_${language}.txt`,
+        mimetype: 'text/plain',
+        type: FileType.DOCUMENT
+      });
 
       const captions: Captions = {
         videoId,
         language,
         languageCode: language,
-        captionUrl,
-        transcriptUrl,
+        captionUrl: captionUpload.url,
+        transcriptUrl: transcriptUpload.url,
         format: 'VTT',
         transcript,
         wordCount: transcript.split(/\s+/).length,
@@ -271,7 +274,6 @@ export default class VideoProductionService {
       await this.prisma.lecture.update({
         where: { id: videoId },
         data: {
-          closedCaptions: captionUrl,
           transcript
         }
       });
@@ -380,7 +382,7 @@ export default class VideoProductionService {
           content: originalCaptions.transcript,
           sourceLanguage: 'en',
           targetLanguage: language as any,
-          contentType: 'educational',
+          contentType: 'lecture',
           preserveFormatting: true
         });
 
@@ -390,16 +392,17 @@ export default class VideoProductionService {
           video.duration
         );
 
-        const subtitleUrl = await this.fileStorage.uploadFile(
-          Buffer.from(vttContent),
-          `captions/${videoId}_${language}.vtt`,
-          'text/vtt'
-        );
+        const subtitleUpload = await this.fileStorage.uploadFile({
+          file: Buffer.from(vttContent),
+          filename: `captions/${videoId}_${language}.vtt`,
+          mimetype: 'text/vtt',
+          type: FileType.DOCUMENT
+        });
 
         translations.push({
           language: this.getLanguageName(language),
           languageCode: language,
-          subtitleUrl,
+          subtitleUrl: subtitleUpload.url,
           translatedTranscript: translatedContent.translatedText
         });
 
@@ -493,20 +496,24 @@ export default class VideoProductionService {
     fileSize: number;
   } | null> {
     const lecture = await this.prisma.lecture.findUnique({
-      where: { id: videoId }
+      where: { id: videoId },
+      include: {
+        VideoAsset: true
+      }
     });
 
-    if (!lecture || !lecture.videoUrl) {
+    if (!lecture || !lecture.VideoAsset || lecture.VideoAsset.length === 0) {
       return null;
     }
 
+    const videoAsset = lecture.VideoAsset[0];
     return {
       id: videoId,
-      url: lecture.videoUrl,
-      duration: lecture.duration * 60, // Convert minutes to seconds
-      resolution: '1080p',
-      format: 'MP4',
-      fileSize: 0 // Would be retrieved from storage
+      url: videoAsset.url,
+      duration: videoAsset.duration,
+      resolution: videoAsset.resolution,
+      format: videoAsset.format,
+      fileSize: Number(videoAsset.file_size)
     };
   }
 
@@ -568,10 +575,35 @@ export default class VideoProductionService {
    * Update video record
    */
   private async updateVideoRecord(video: ProcessedVideo): Promise<void> {
+    // Update or create VideoAsset for the lecture
+    await this.prisma.videoAsset.upsert({
+      where: { 
+        lecture_id: video.id 
+      },
+      update: {
+        url: video.processedUrl,
+        duration: video.duration,
+        resolution: video.resolution,
+        format: video.format,
+        file_size: video.fileSize,
+        processed: true
+      },
+      create: {
+        lecture_id: video.id,
+        url: video.processedUrl,
+        duration: video.duration,
+        resolution: video.resolution,
+        format: video.format,
+        file_size: video.fileSize,
+        processed: true,
+        thumbnails: []
+      }
+    });
+
+    // Update lecture duration
     await this.prisma.lecture.update({
       where: { id: video.id },
       data: {
-        videoUrl: video.processedUrl,
         duration: Math.ceil(video.duration / 60) // Convert seconds to minutes
       }
     });
@@ -708,3 +740,4 @@ export default class VideoProductionService {
     return error;
   }
 }
+

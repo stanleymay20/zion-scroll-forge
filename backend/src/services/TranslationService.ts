@@ -22,7 +22,7 @@ import {
 import { AIGatewayService } from './AIGatewayService';
 import { AICacheService } from './AICacheService';
 import { VectorStoreService } from './VectorStoreService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 export default class TranslationService {
   private aiGateway: AIGatewayService;
@@ -48,10 +48,13 @@ export default class TranslationService {
 
       // Check cache first
       const cacheKey = this.generateCacheKey(request);
-      const cached = await this.cache.get(cacheKey);
+      const cached = await this.cache.getCachedResponse({
+        model: 'gpt-4',
+        messages: [{ role: 'user', content: request.content }]
+      });
       if (cached) {
         logger.info('Translation found in cache');
-        return cached as TranslatedContent;
+        return JSON.parse(cached.content) as TranslatedContent;
       }
 
       // Build translation prompt based on content type
@@ -59,7 +62,7 @@ export default class TranslationService {
 
       // Call AI service
       const response = await this.aiGateway.generateCompletion({
-        prompt,
+        messages: [{ role: 'user', content: prompt }],
         model: 'gpt-4',
         temperature: 0.3, // Lower temperature for accuracy
         maxTokens: 4000
@@ -94,8 +97,11 @@ export default class TranslationService {
         }
       };
 
-      // Cache the result
-      await this.cache.set(cacheKey, result, 86400); // 24 hours
+      // Cache the result using cacheResponse
+      await this.cache.cacheResponse({
+        messages: [{ role: 'user', content: prompt }],
+        model: 'gpt-4'
+      }, response);
 
       logger.info('Translation completed', {
         confidence: result.confidence,
@@ -159,8 +165,8 @@ Provide the localized content in JSON format:
         adaptedExamples: parsed.adaptedExamples || [],
         culturalNotes: parsed.culturalNotes || [],
         learningObjectivesPreserved: parsed.learningObjectivesPreserved,
-        confidence: response.confidence || 0.85,
-        reviewRequired: !parsed.learningObjectivesPreserved || response.confidence < 0.85
+        confidence: parsed.confidence || 0.85,
+        reviewRequired: !parsed.learningObjectivesPreserved || (parsed.confidence && parsed.confidence < 0.85)
       };
 
       logger.info('Localization completed', {
@@ -260,7 +266,7 @@ Provide the translation in JSON format:
       if (request.courseContext) {
         const contextResults = await this.vectorStore.search(request.question, {
           filter: { courseId: request.courseContext },
-          limit: 3
+          topK: 3
         });
         context = contextResults.map(r => r.content).join('\n\n');
       }

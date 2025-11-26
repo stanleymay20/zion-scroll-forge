@@ -1,0 +1,176 @@
+{
+  "id": "module-SCROLLAI100-1",
+  "courseId": "course_1763867951215_00ndyljoi",
+  "weekNumber": 1,
+  "title": "Module 1: Core Concepts and Applications",
+  "learningObjectives": [
+    {
+      "id": "lo-1-0",
+      "description": "Understand key concepts in module 1",
+      "bloomLevel": "APPLY",
+      "assessmentMethods": [
+        "Quiz",
+        "Assignment"
+      ]
+    },
+    {
+      "id": "lo-1-1",
+      "description": "Apply principles to real-world scenarios",
+      "bloomLevel": "APPLY",
+      "assessmentMethods": [
+        "Quiz",
+        "Assignment"
+      ]
+    },
+    {
+      "id": "lo-1-2",
+      "description": "Integrate spiritual formation with academic learning",
+      "bloomLevel": "APPLY",
+      "assessmentMethods": [
+        "Quiz",
+        "Assignment"
+      ]
+    }
+  ],
+  "lectures": [
+    {
+      "id": "lecture-1-1",
+      "moduleId": "module-SCROLLAI100-1",
+      "title": "Module 1: Core Concepts and Applications",
+      "duration": 55,
+      "video": {
+        "id": "video-1-1",
+        "url": "",
+        "resolution": "1080p",
+        "format": "mp4",
+        "streamingUrls": [],
+        "thumbnails": [],
+        "duration": 55,
+        "fileSize": 0
+      },
+      "transcript": "",
+      "captions": [],
+      "notes": {
+        "id": "notes-1-1",
+        "lectureId": "lecture-1-1",
+        "content": "",
+        "summary": "\": \"In this lecture, we have explored the core concepts of artificial intelligence and robotics, the ethical implications of these technologies, and how we can integrate biblical wisdom into our understanding and application of them. By mastering these principles, we are not only preparing ourselves for the future of work and innovation but also ensuring that our contributions align with our faith and values.\",\n  \"keyTakeaways\": [\n    \"AI and robotics are powerful tools that can enhance our lives but come with significant ethical responsibilities.\",\n    \"Biblical principles can guide our approach to technology, ensuring that we act as responsible stewards of God's creation.\",\n    \"Practical application of these technologies requires both intellectual understanding and spiritual discernment.\"\n  ],\n  \"furtherReading\": [\n    \"M. J. O'Reilly, 'Artificial Intelligence and Christian Ethics: A New Approach to Ethics in the Age of AI'\",\n    \"R. S. Wright, 'The Robot's Ethical Dilemma: Navigating the Future of AI and Ethics in Society'\"\n  ]\n}\n```",
+        "keyConcepts": [
+          "Key takeaway 1",
+          "Key takeaway 2",
+          "Key takeaway 3"
+        ],
+        "examples": [
+          {
+            "id": "ex-0",
+            "title": "Example 1",
+            "description": "Practical example to be developed",
+            "explanation": "Detailed explanation to be added"
+          }
+        ],
+        "practiceProblems": [],
+        "pdfUrl": "",
+        "pageCount": 0
+      },
+      "resources": []
+    },
+    {
+      "id": "lecture-1-2",
+      "moduleId": "module-SCROLLAI100-1",
+      "title": "Module 1: Core Concepts and Applications",
+      "duration": 55,
+      "video": {
+        "id": "video-1-2",
+        "url": "",
+        "resolution": "1080p",
+        "format": "mp4",
+        "streamingUrls": [],
+        "thumbnails": [],
+        "duration": 55,
+        "fileSize": 0
+      },
+      "transcript": "",
+      "captions": [],
+      "notes": {
+        "id": "notes-1-2",
+        "lectureId": "lecture-1-2",
+        "content": "",
+        "summary": "\": \"In this lecture, we explored the fundamental concepts of AI and Robotics, including their types, ethical implications, foundational components, and the integration of AI within robotics. We also reflected on how these advancements relate to our Christian faith, emphasizing the importance of stewardship and ethics in technology. As we navigate this rapidly changing landscape, it is crucial to approach these innovations with a thoughtful and responsible mindset.\",\n  \"keyTakeaways\": [\n    \"Understanding the difference between Narrow and General AI is crucial for recognizing the current capabilities and future possibilities of AI technology.\",\n    \"Robotics is a multidisciplinary field that combines various engineering principles, and its applications are transforming industries.\",\n    \"The integration of AI in robotics enhances functionalities, leading to more intelligent systems capable of complex decision-making.\",\n    \"As Christians, we are called to approach technology with a sense of stewardship and ethical responsibility, ensuring our advancements serve humanity.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach. Pearson.\",\n    \"Sicard, B. (2022). Robotics and AI: Social Impacts and Ethical Considerations. Springer.\"\n  ]\n}\n```",
+        "keyConcepts": [
+          "Key takeaway 1",
+          "Key takeaway 2",
+          "Key takeaway 3"
+        ],
+        "examples": [
+          {
+            "id": "ex-0",
+            "title": "Example 1",
+            "description": "Practical example to be developed",
+            "explanation": "Detailed explanation to be added"
+          }
+        ],
+        "practiceProblems": [],
+        "pdfUrl": "",
+        "pageCount": 0
+      },
+      "resources": []
+    },
+    {
+      "id": "lecture-1-3",
+      "moduleId": "module-SCROLLAI100-1",
+      "title": "Module 1: Core Concepts and Applications",
+      "duration": 55,
+      "video": {
+        "id": "video-1-3",
+        "url": "",
+        "resolution": "1080p",
+        "format": "mp4",
+        "streamingUrls": [],
+        "thumbnails": [],
+        "duration": 55,
+        "fileSize": 0
+      },
+      "transcript": "",
+      "captions": [],
+      "notes": {
+        "id": "notes-1-3",
+        "lectureId": "lecture-1-3",
+        "content": "",
+        "summary": "\": \"In this lecture, we have explored the fundamental concepts of intelligence and robotics. We defined intelligence, examined the evolution of robotics, discussed core technologies like machine learning, and engaged with ethical considerations that arise in the development of intelligent systems. As we integrate these insights, we are called to be stewards of technology that reflect our values and enhance human dignity.\",\n  \"keyTakeaways\": [\n    \"Intelligence encompasses cognitive, emotional, and social dimensions, all essential to understanding AI.\",\n    \"The evolution of robotics has been significantly influenced by advancements in AI, enhancing machine capabilities.\",\n    \"Ethical considerations are crucial in the development of AI and robotics, requiring a balance between innovation and moral responsibility.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach.\",\n    \"Bostrom, N. (2014). Superintelligence: Paths, Dangers, Strategies.\",\n    \"Winston, P. H. (2014). Artificial Intelligence.\",\n    \"The Bible (Proverbs 1:7; Proverbs 2:6) - Reflecting on the importance of wisdom in all pursuits.\"\n  ]\n}\n```",
+        "keyConcepts": [
+          "Key takeaway 1",
+          "Key takeaway 2",
+          "Key takeaway 3"
+        ],
+        "examples": [
+          {
+            "id": "ex-0",
+            "title": "Example 1",
+            "description": "Practical example to be developed",
+            "explanation": "Detailed explanation to be added"
+          }
+        ],
+        "practiceProblems": [],
+        "pdfUrl": "",
+        "pageCount": 0
+      },
+      "resources": []
+    }
+  ],
+  "materials": [],
+  "assessments": [],
+  "spiritualIntegration": {
+    "id": "si-1",
+    "moduleId": "module-SCROLLAI100-1",
+    "biblicalFoundation": {
+      "scriptures": [],
+      "theologicalThemes": [],
+      "christCenteredPerspective": ""
+    },
+    "worldviewPerspective": "",
+    "reflectionQuestions": [],
+    "prayerPoints": [],
+    "characterDevelopment": []
+  },
+  "status": "DRAFT"
+}

@@ -3,7 +3,20 @@
  * "Let every course be a scroll that opens the kingdom to hungry hearts"
  */
 
-import { Difficulty, UserRole } from '@prisma/client';
+// Difficulty and UserRole enums defined locally since they may not be in Prisma
+export enum Difficulty {
+  BEGINNER = 'BEGINNER',
+  INTERMEDIATE = 'INTERMEDIATE',
+  ADVANCED = 'ADVANCED',
+  EXPERT = 'EXPERT'
+}
+
+export enum UserRole {
+  STUDENT = 'STUDENT',
+  FACULTY = 'FACULTY',
+  ADMIN = 'ADMIN',
+  STAFF = 'STAFF'
+}
 
 // ============================================================================
 // Course Types
@@ -275,6 +288,10 @@ export interface PDFGenerationRequest {
     includeScriptures?: boolean;
     format?: 'A4' | 'LETTER';
     orientation?: 'portrait' | 'landscape';
+    template?: string;
+    includeTableOfContents?: boolean;
+    includeHeader?: boolean;
+    includeFooter?: boolean;
   };
 }
 
@@ -360,4 +377,24 @@ export interface CourseAnalytics {
     videoCompletionRate: number;
     assignmentSubmissionRate: number;
   };
+}
+
+// ============================================================================
+// File Storage Types
+// ============================================================================
+
+export interface FileUploadRequest {
+  file: Buffer;
+  filename: string;
+  mimetype: string;
+  type: FileType;
+  metadata?: Record<string, any>;
+}
+
+export interface FileUploadResponse {
+  url: string;
+  filename: string;
+  size: number;
+  path: string;
+  mimetype: string;
 }

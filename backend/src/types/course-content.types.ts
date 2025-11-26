@@ -5,6 +5,8 @@
  * including Course, Module, Lecture, Assessment, QualityReview, and PilotProgram models.
  */
 
+import { ContentQualityReport } from "@prisma/client";
+
 // ============================================================================
 // Enums
 // ============================================================================
@@ -204,6 +206,8 @@ export interface Deliverable {
   completedDate?: Date;
   status: string;
   assignedTo: string;
+  required: boolean;
+  completed: boolean;
 }
 
 export interface TeamMember {
@@ -485,31 +489,7 @@ export interface ChecklistResult {
   notes: string;
 }
 
-export interface VideoQualityReport {
-  audioQuality: number;
-  visualClarity: number;
-  engagement: number;
-  technicalIssues: string[];
-  recommendations: string[];
-}
-
-export interface ContentQualityReport {
-  accuracy: number;
-  clarity: number;
-  depth: number;
-  scholarlyStandards: number;
-  issues: string[];
-  recommendations: string[];
-}
-
-export interface AssessmentQualityReport {
-  rigorLevel: number;
-  alignment: number;
-  fairness: number;
-  clarity: number;
-  issues: string[];
-  recommendations: string[];
-}
+// Detailed quality reports defined later in file
 
 // ============================================================================
 // Pilot Program Models
@@ -633,7 +613,7 @@ export interface Gap {
   area: string;
   description: string;
   severity: string;
-  remediation: string;
+  remediation?: string;
 }
 
 export interface PortfolioAsset {
@@ -991,12 +971,6 @@ export interface ApprovalData {
   comments?: string;
 }
 
-export interface ValidationResult {
-  valid: boolean;
-  errors: string[];
-  warnings: string[];
-}
-
 export interface ProjectStatusData {
   projectId: string;
   currentPhase: Phase;
@@ -1243,4 +1217,256 @@ export interface ApprovalDecision {
   qualityScore: number;
   feedback: string;
   conditions: string[];
+}
+
+// ============================================================================
+// Written Materials Types
+// ============================================================================
+
+export interface LectureNotesRequest {
+  lectureId: string;
+  title: string;
+  topic: string;
+  content: string;
+  learningObjectives: string[];
+  keyTerms: string[];
+  targetAudience?: string;
+  existingContent?: string;
+  includeBiblicalIntegration?: boolean;
+}
+
+export interface LectureNotes {
+  id: string;
+  lectureId: string;
+  content: string;
+  summary: string;
+  keyConcepts: string[];
+  examples: Example[];
+  practiceProblems: PracticeProblem[];
+  pdfUrl: string;
+  pageCount: number;
+  // Extended fields (optional for compatibility)
+  title?: string;
+  introduction?: string;
+  detailedContent?: string;
+  keyTerms?: KeyTerm[];
+  furtherReading?: string[];
+  spiritualApplication?: string;
+  wordCount?: number;
+  realWorldApplications?: string[];
+  biblicalIntegration?: any;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface KeyTerm {
+  id: string;
+  term: string;
+  definition: string;
+  context: string;
+}
+
+export interface Example {
+  id: string;
+  title: string;
+  description: string;
+  explanation: string;
+}
+
+export interface PracticeProblem {
+  id: string;
+  question: string;
+  problem: string;
+  solution: string;
+  difficulty: string;
+  hints: string[];
+}
+
+export interface PDFDocument {
+  id: string;
+  title: string;
+  content: string;
+  url: string;
+  metadata: {
+    author: string;
+    createdAt: Date;
+    pageCount: number;
+  };
+  notesId?: string;
+  size?: number;
+  filename?: string;
+  format?: string;
+  formatting?: any;
+}
+
+export interface SupplementalResource {
+  id: string;
+  title: string;
+  type: 'article' | 'video' | 'book' | 'website';
+  url: string;
+  description: string;
+  moduleId?: string;
+  author?: string;
+  publicationDate?: Date;
+  accessLevel?: string;
+}
+
+export interface CitationValidation {
+  valid?: boolean;
+  citations?: Citation[];
+  errors?: string[];
+  documentId?: string;
+  totalCitations?: number;
+  validCitations?: number | Citation[];
+  invalidCitations?: number | Citation[];
+  citationResults?: any[];
+  formattingStyle?: string;
+  allValid?: boolean;
+  validatedAt?: Date;
+}
+
+export interface Citation {
+  id: string;
+  text: string;
+  source: string;
+  format: 'APA' | 'MLA' | 'Chicago';
+}
+
+export interface ResourceCurationRequest {
+  topic: string;
+  level: CourseLevel;
+  count: number;
+  types: string[];
+  moduleId: string;
+  learningObjectives: string[];
+  academicLevel?: string;
+  maxResources?: number;
+}
+
+
+// ============================================================================
+// Depth and Rigor Enforcer Models
+// ============================================================================
+
+export interface RigorValidation {
+  courseId: string;
+  declaredLevel: RigorLevel;
+  actualLevel: RigorLevel;
+  depthScore: number;
+  vocabularyAppropriate: boolean;
+  assessmentDifficultyMatches: boolean;
+  valid: boolean;
+  issues: string[];
+}
+
+export interface DepthAssessment {
+  moduleId: string;
+  discipline: Discipline;
+  hasProperTheories: boolean;
+  hasFrameworks: boolean;
+  hasFormulas: boolean;
+  hasWorkedExamples: boolean;
+  depthScore: number;
+  meetsStandards: boolean;
+}
+
+export interface TechnicalValidation {
+  contentId: string;
+  technicalAccuracy: number;
+  theoreticalDepth: number;
+  practicalApplication: number;
+  spiritualIntegrationQuality: number;
+  overallQuality: number;
+  issues: string[];
+}
+
+export interface Institution {
+  name: string;
+  country: string;
+  ranking: number;
+}
+
+export interface Comparison {
+  institution: string;
+  metric: string;
+  ourScore: number;
+  theirScore: number;
+  difference: number;
+}
+
+export interface BenchmarkReport {
+  courseId: string;
+  comparedInstitutions: Institution[];
+  contentDepthComparison: Comparison[];
+  assessmentRigorComparison: Comparison[];
+  meetsOrExceedsStandards: boolean;
+  recommendations: string[];
+}
+
+export interface RejectionNotice {
+  courseId: string;
+  rejectedAt: Date;
+  reason: string;
+  requiredActions: string[];
+  appealProcess: string;
+}
+
+// ============================================================================
+// Scroll Pedagogy Enforcer Types
+// ============================================================================
+
+export interface FlowValidation {
+  lessonId: string;
+  hasIgnition: boolean;
+  hasDownload: boolean;
+  hasDemonstration: boolean;
+  hasActivation: boolean;
+  hasReflection: boolean;
+  hasCommission: boolean;
+  allStepsPresent: boolean;
+  flowQuality: number;
+  missingSteps: string[];
+}
+
+export interface ToneValidation {
+  tutorResponseId: string;
+  isWarm: boolean;
+  isWise: boolean;
+  isPropheticButGrounded: boolean;
+  hasDualExplanation: boolean;
+  toneScore: number;
+  issues: string[];
+}
+
+export interface AssessmentDistribution {
+  courseId: string;
+  formativeCount: number;
+  summativeCount: number;
+  reflectiveCount: number;
+  distributionBalanced: boolean;
+  recommendations: string[];
+}
+
+export interface ProgressionMapping {
+  courseId: string;
+  targetLevel: ProgressionLevel;
+  contentMappedToLevel: boolean;
+  assessmentsMappedToLevel: boolean;
+  levelAppropriate: boolean;
+  gaps: string[];
+}
+
+export interface Conflict {
+  type: 'spiritual_vs_pedagogy' | 'pedagogy_vs_depth' | 'pedagogy_vs_technical' | 'pedagogy_vs_speed' | 'depth_vs_speed' | 'technical_vs_speed';
+  options: [string, string];
+  context: string;
+}
+
+export interface PriorityDecision {
+  conflictType: string;
+  chosenOption: string;
+  rationale: string;
+  priorityLevel: number;
+  requiresManualReview: boolean;
+  decidedAt: Date;
 }

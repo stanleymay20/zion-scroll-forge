@@ -8,7 +8,8 @@
 import { logger } from '../utils/logger';
 import {
   PDFGenerationRequest,
-  PDFGenerationResponse
+  PDFGenerationResponse,
+  FileType
 } from '../types/course.types';
 import FileStorageService from './FileStorageService';
 
@@ -58,7 +59,7 @@ export default class PDFGenerationService {
         file: pdfBuffer,
         filename,
         mimetype: 'application/pdf',
-        type: 'PDF'
+        type: FileType.PDF
       });
 
       const response: PDFGenerationResponse = {

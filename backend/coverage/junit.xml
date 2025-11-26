@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="9" failures="0" errors="0" time="8.078">
-  <testsuite name="Property 23: Video Quality Verification" errors="0" failures="0" skipped="0" timestamp="2025-11-21T04:03:26" time="7.758" tests="9">
-    <testcase classname="Property 23: Video Quality Verification" name="should verify audio quality, visual clarity, and engagement for all videos" time="0.805">
+<testsuites name="jest tests" tests="4" failures="1" errors="0" time="2.283">
+  <testsuite name="Offline-Online Synchronization - Property-Based Tests" errors="0" failures="1" skipped="0" timestamp="2025-11-26T12:50:03" time="2.007" tests="4">
+    <testcase classname="Offline-Online Synchronization - Property-Based Tests › Property 8: Offline-Online State Synchronization" name="should preserve all offline changes when going back online" time="0.1">
+      <failure>Error: Property failed after 1 tests
+{ seed: 1739749292, path: &quot;0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1:1&quot;, endOnFailure: true }
+Counterexample: [{&quot;id&quot;:&quot;          &quot;,&quot;contentId&quot;:&quot;00000000-0000-1000-8000-000000000000&quot;,&quot;userId&quot;:&quot;00000000-0000-1000-8000-000000000000&quot;,&quot;data&quot;:{&quot;title&quot;:&quot;     &quot;,&quot;content&quot;:&quot;          &quot;,&quot;type&quot;:&quot;document&quot;,&quot;toolId&quot;:&quot;vscode-web&quot;,&quot;discipline&quot;:&quot;computer-science&quot;,&quot;format&quot;:&quot;js&quot;},&quot;metadata&quot;:{&quot;title&quot;:&quot;     &quot;,&quot;type&quot;:&quot;document&quot;,&quot;size&quot;:100,&quot;downloadedAt&quot;:new Date(&quot;1970-01-01T00:00:00.000Z&quot;),&quot;lastAccessedAt&quot;:new Date(&quot;2025-11-26T12:50:04.674Z&quot;),&quot;accessCount&quot;:49,&quot;priority&quot;:1},&quot;syncStatus&quot;:{&quot;status&quot;:&quot;synced&quot;,&quot;lastSync&quot;:new Date(&quot;1970-01-01T00:00:00.000Z&quot;),&quot;pendingChanges&quot;:[{&quot;field&quot;:&quot;&quot;,&quot;oldValue&quot;:{},&quot;newValue&quot;:{},&quot;timestamp&quot;:new Date(&quot;1970-01-01T00:00:00.000Z&quot;)}]},&quot;expiresAt&quot;:new Date(&quot;2025-11-26T12:50:04.574Z&quot;)},[{&quot;contentId&quot;:&quot;00000000-0000-1000-8000-000000000000&quot;,&quot;changes&quot;:[{&quot;field&quot;:&quot; &quot;,&quot;oldValue&quot;:{},&quot;newValue&quot;:[],&quot;timestamp&quot;:new Date(&quot;1970-01-01T00:00:00.000Z&quot;)}],&quot;lastModified&quot;:new Date(&quot;1970-01-01T00:00:00.000Z&quot;)}],&quot;00000000-0000-1000-8000-000000000000&quot;]
+Shrunk 77 time(s)
+
+Hint: Enable verbose mode in order to have the list of all failing values encountered during the run
+    at buildError (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\fast-check\lib\cjs\check\runner\utils\RunDetailsFormatter.js:162:19)
+    at asyncThrowIfFailed (C:\Users\stanl\OneDrive\Desktop\zion-scroll-forge\backend\node_modules\fast-check\lib\cjs\check\runner\utils\RunDetailsFormatter.js:176:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)</failure>
     </testcase>
-    <testcase classname="Property 23: Video Quality Verification" name="should detect audio quality issues for low bitrate videos" time="0.015">
+    <testcase classname="Offline-Online Synchronization - Property-Based Tests › Property 8: Offline-Online State Synchronization" name="should handle conflicts gracefully without data corruption" time="0.073">
     </testcase>
-    <testcase classname="Property 23: Video Quality Verification" name="should detect visual quality issues for low resolution videos" time="0.015">
+    <testcase classname="Offline-Online Synchronization - Property-Based Tests › Property 8: Offline-Online State Synchronization" name="should maintain data consistency across multiple offline-online cycles" time="0.05">
     </testcase>
-    <testcase classname="Property 24: Written Material Quality Checks" name="should check accuracy, clarity, and depth for all written materials" time="3.406">
-    </testcase>
-    <testcase classname="Property 24: Written Material Quality Checks" name="should detect depth issues for documents that are too short" time="1.993">
-    </testcase>
-    <testcase classname="Property 25: Assessment Rigor Validation" name="should validate rigor level and alignment for all assessments" time="0.05">
-    </testcase>
-    <testcase classname="Property 25: Assessment Rigor Validation" name="should detect alignment issues for assessments without aligned objectives" time="0.044">
-    </testcase>
-    <testcase classname="Property 25: Assessment Rigor Validation" name="should detect rubric issues for assessments without rubrics" time="0.04">
-    </testcase>
-    <testcase classname="Property 26: Course Approval on Passing Checks" name="should approve courses only when all quality checks pass" time="0.45">
+    <testcase classname="Offline-Online Synchronization - Property-Based Tests › Property 8: Offline-Online State Synchronization" name="should handle storage quota limits during offline-online synchronization" time="0.207">
     </testcase>
   </testsuite>
 </testsuites>

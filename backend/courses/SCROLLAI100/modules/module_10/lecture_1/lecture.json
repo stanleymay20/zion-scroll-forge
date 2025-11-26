@@ -1,0 +1,41 @@
+{
+  "id": "lecture-10-1",
+  "moduleId": "module-SCROLLAI100-10",
+  "title": "Module 10: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-10-1",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-10-1",
+    "lectureId": "lecture-10-1",
+    "content": "",
+    "summary": "\": \"In today's lecture, we have navigated through the core concepts of artificial intelligence and robotics, addressing their definitions, roles in society, and the ethical considerations that arise. We also integrated biblical wisdom, emphasizing our responsibility as stewards of technology. Finally, we looked ahead to the future of these fields and the importance of preparing ourselves for the challenges and opportunities that lie ahead.\",\n  \"keyTakeaways\": [\n    \"AI and robotics are integral to modern society, impacting various sectors and our daily lives.\",\n    \"Ethical considerations and biblical principles must guide our technological innovations.\",\n    \"Future advancements in AI and robotics present both challenges and opportunities for responsible stewardship.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, Stuart J., and Peter Norvig. *Artificial Intelligence: A Modern Approach*.\",\n    \"Peters, John. *The Ethics of Robotics and AI: A Christian Perspective*.\",\n    \"Cameron, David. *Robotics and the Future of Work*.\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

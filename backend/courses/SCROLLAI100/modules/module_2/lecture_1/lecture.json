@@ -1,0 +1,41 @@
+{
+  "id": "lecture-2-1",
+  "moduleId": "module-SCROLLAI100-2",
+  "title": "Module 2: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-2-1",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-2-1",
+    "lectureId": "lecture-2-1",
+    "content": "",
+    "summary": "\": \"In this lecture, we have traversed the core concepts and applications of artificial intelligence and robotics, understanding their potential to transform society while recognizing the ethical implications that accompany such advancements. We learned about the foundational elements of AI, the role of robotics, and the necessity of integrating biblical wisdom into our approaches to technology. As we move forward, let us commit to being responsible stewards of the innovations we create.\",\n  \"keyTakeaways\": [\n    \"AI and robotics are reshaping industries and enhancing human capabilities.\",\n    \"Ethical considerations are paramount in the development and deployment of technology.\",\n    \"A biblical worldview can provide moral guidance in navigating technological advancements.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, Stuart, and Norvig, Peter. 'Artificial Intelligence: A Modern Approach.' 4th ed. Pearson.\",\n    \"Susskind, Richard, and Daniel Susskind. 'The Future of the Professions: How Technology Will Transform the Work of Human Experts.' Harvard University Press.\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

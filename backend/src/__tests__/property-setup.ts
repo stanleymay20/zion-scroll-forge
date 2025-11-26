@@ -4,6 +4,7 @@
  */
 
 import * as fc from 'fast-check';
+import './test-db-setup'; // Import database setup
 
 // Configure fast-check globally
 fc.configureGlobal({

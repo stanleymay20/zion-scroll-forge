@@ -1,0 +1,41 @@
+{
+  "id": "lecture-6-2",
+  "moduleId": "module-SCROLLAI100-6",
+  "title": "Module 6: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-6-2",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-6-2",
+    "lectureId": "lecture-6-2",
+    "content": "",
+    "summary": "\": \"Today, we traversed the intricate landscape of artificial intelligence and robotics, understanding core concepts while integrating ethical considerations rooted in our faith. We examined practical applications and the responsibilities we carry as stewards of technology.\",\n  \"keyTakeaways\": [\n    \"AI and robotics are transforming various sectors, but ethical considerations must guide their development.\",\n    \"Understanding the learning processes of AI is crucial for responsible application.\",\n    \"As Christians, we are called to engage with technology thoughtfully, balancing innovation with moral integrity.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, Stuart and Norvig, Peter. \\\"Artificial Intelligence: A Modern Approach.\\\"\",\n    \"Moor, James H. \\\"Why We Need Better Ethical Guidelines for AI.\\\"\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

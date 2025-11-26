@@ -1,0 +1,41 @@
+{
+  "id": "lecture-7-3",
+  "moduleId": "module-SCROLLAI100-7",
+  "title": "Module 7: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-7-3",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-7-3",
+    "lectureId": "lecture-7-3",
+    "content": "",
+    "summary": "\": \"Today, we have explored the core concepts of artificial intelligence and robotics, their ethical implications, and their applications in modern society. We have seen how these technologies can reflect our values as Christians and how we can responsibly steward these tools for the benefit of humanity. As we move forward, let us carry the knowledge that technology is not inherently good or bad; it is how we choose to use it that matters.\",\n  \"keyTakeaways\": [\n    \"AI and robotics present numerous opportunities and challenges that require thoughtful engagement.\",\n    \"Ethical considerations in technology development can be informed by biblical principles.\",\n    \"Practical applications of AI and robotics must prioritize human dignity and community well-being.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, Stuart J., and Peter Norvig. 'Artificial Intelligence: A Modern Approach.'\",\n    \"Bostrom, Nick. 'Superintelligence: Paths, Dangers, Strategies.'\",\n    \"Sullins, John P. 'Robot Ethics: The Ethical and Social Implications of Robotics.'\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

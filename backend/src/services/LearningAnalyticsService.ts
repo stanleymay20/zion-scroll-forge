@@ -163,7 +163,7 @@ export default class LearningAnalyticsService {
     }
 
     // Get enrollments
-    const enrollments = await prisma.enrollment.findMany({
+    const enrollments = await prisma.courseEnrollment.findMany({
       where: courseId ? { ...whereClause, courseId } : whereClause,
       include: {
         course: true,

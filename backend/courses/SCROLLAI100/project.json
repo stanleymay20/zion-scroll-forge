@@ -1,0 +1,399 @@
+{
+  "id": "course_1763867951215_00ndyljoi",
+  "courseInfo": {
+    "title": "ScrollAI, Intelligence & Robotics 100",
+    "code": "SCROLLAI100",
+    "description": "Comprehensive ScrollAI, Intelligence & Robotics course covering ScrollAI, Intelligence & Robotics 100",
+    "faculty": [],
+    "credits": 3,
+    "level": "BEGINNER",
+    "prerequisites": []
+  },
+  "currentPhase": "PLANNING",
+  "phases": [
+    {
+      "phase": "PLANNING",
+      "status": "IN_PROGRESS",
+      "approvals": [],
+      "deliverables": [
+        {
+          "id": "deliverable_1763867951279_f7u34z6qk",
+          "phase_progress_id": "phase_1763867951256_oerv8gdb1",
+          "name": "Course Outline",
+          "description": "Complete course structure with modules and learning objectives",
+          "due_date": "2025-11-30T03:19:11.279Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.281Z",
+          "updated_at": "2025-11-23T03:19:11.279Z"
+        },
+        {
+          "id": "deliverable_1763867951292_kyc8pfhfm",
+          "phase_progress_id": "phase_1763867951256_oerv8gdb1",
+          "name": "Faculty Assignment",
+          "description": "Subject matter experts assigned to course",
+          "due_date": "2025-11-30T03:19:11.292Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.294Z",
+          "updated_at": "2025-11-23T03:19:11.292Z"
+        },
+        {
+          "id": "deliverable_1763867951300_ms1tre13b",
+          "phase_progress_id": "phase_1763867951256_oerv8gdb1",
+          "name": "Budget Approval",
+          "description": "Course development budget approved",
+          "due_date": "2025-11-30T03:19:11.300Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.301Z",
+          "updated_at": "2025-11-23T03:19:11.300Z"
+        },
+        {
+          "id": "deliverable_1763867951305_v20e0ccf7",
+          "phase_progress_id": "phase_1763867951256_oerv8gdb1",
+          "name": "Timeline Definition",
+          "description": "Development timeline with milestones",
+          "due_date": "2025-11-30T03:19:11.305Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.307Z",
+          "updated_at": "2025-11-23T03:19:11.305Z"
+        }
+      ]
+    },
+    {
+      "phase": "CONTENT_DEVELOPMENT",
+      "status": "NOT_STARTED",
+      "approvals": [],
+      "deliverables": [
+        {
+          "id": "deliverable_1763867951321_4a0szcn7j",
+          "phase_progress_id": "phase_1763867951312_yj2aj0kgi",
+          "name": "Module Content",
+          "description": "All module content written and reviewed",
+          "due_date": "2025-11-30T03:19:11.321Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.322Z",
+          "updated_at": "2025-11-23T03:19:11.321Z"
+        },
+        {
+          "id": "deliverable_1763867951328_u9n7t8y30",
+          "phase_progress_id": "phase_1763867951312_yj2aj0kgi",
+          "name": "Lecture Scripts",
+          "description": "Video lecture scripts completed",
+          "due_date": "2025-11-30T03:19:11.328Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.330Z",
+          "updated_at": "2025-11-23T03:19:11.328Z"
+        },
+        {
+          "id": "deliverable_1763867951332_bb9sn2ilb",
+          "phase_progress_id": "phase_1763867951312_yj2aj0kgi",
+          "name": "Assessment Design",
+          "description": "Quizzes, assignments, and projects designed",
+          "due_date": "2025-11-30T03:19:11.332Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.333Z",
+          "updated_at": "2025-11-23T03:19:11.332Z"
+        },
+        {
+          "id": "deliverable_1763867951337_1fu731u7j",
+          "phase_progress_id": "phase_1763867951312_yj2aj0kgi",
+          "name": "Spiritual Integration",
+          "description": "Biblical foundation and worldview integration completed",
+          "due_date": "2025-11-30T03:19:11.337Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.338Z",
+          "updated_at": "2025-11-23T03:19:11.337Z"
+        }
+      ]
+    },
+    {
+      "phase": "PRODUCTION",
+      "status": "NOT_STARTED",
+      "approvals": [],
+      "deliverables": [
+        {
+          "id": "deliverable_1763867951344_e2ihf8sm2",
+          "phase_progress_id": "phase_1763867951341_ddto3lxfb",
+          "name": "Video Recording",
+          "description": "All lecture videos recorded",
+          "due_date": "2025-11-30T03:19:11.344Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.345Z",
+          "updated_at": "2025-11-23T03:19:11.344Z"
+        },
+        {
+          "id": "deliverable_1763867951346_qsrlqbxs7",
+          "phase_progress_id": "phase_1763867951341_ddto3lxfb",
+          "name": "Video Editing",
+          "description": "Videos edited with graphics and animations",
+          "due_date": "2025-11-30T03:19:11.346Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.347Z",
+          "updated_at": "2025-11-23T03:19:11.346Z"
+        },
+        {
+          "id": "deliverable_1763867951349_rbamj2i4w",
+          "phase_progress_id": "phase_1763867951341_ddto3lxfb",
+          "name": "Written Materials",
+          "description": "Lecture notes and PDFs generated",
+          "due_date": "2025-11-30T03:19:11.349Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.351Z",
+          "updated_at": "2025-11-23T03:19:11.349Z"
+        },
+        {
+          "id": "deliverable_1763867951353_qw3mgb3y2",
+          "phase_progress_id": "phase_1763867951341_ddto3lxfb",
+          "name": "Captions Generated",
+          "description": "Closed captions and transcripts created",
+          "due_date": "2025-11-30T03:19:11.353Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.354Z",
+          "updated_at": "2025-11-23T03:19:11.353Z"
+        }
+      ]
+    },
+    {
+      "phase": "QUALITY_REVIEW",
+      "status": "NOT_STARTED",
+      "approvals": [],
+      "deliverables": [
+        {
+          "id": "deliverable_1763867951360_la5l8awet",
+          "phase_progress_id": "phase_1763867951357_oxobbf566",
+          "name": "Content Review",
+          "description": "Academic content reviewed for accuracy",
+          "due_date": "2025-11-30T03:19:11.360Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.361Z",
+          "updated_at": "2025-11-23T03:19:11.360Z"
+        },
+        {
+          "id": "deliverable_1763867951362_zhj16516f",
+          "phase_progress_id": "phase_1763867951357_oxobbf566",
+          "name": "Theological Review",
+          "description": "Spiritual content reviewed for alignment",
+          "due_date": "2025-11-30T03:19:11.362Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.363Z",
+          "updated_at": "2025-11-23T03:19:11.362Z"
+        },
+        {
+          "id": "deliverable_1763867951364_4wvm7eo42",
+          "phase_progress_id": "phase_1763867951357_oxobbf566",
+          "name": "Technical Review",
+          "description": "Videos and materials tested for quality",
+          "due_date": "2025-11-30T03:19:11.364Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.365Z",
+          "updated_at": "2025-11-23T03:19:11.364Z"
+        },
+        {
+          "id": "deliverable_1763867951367_ifp00ifpm",
+          "phase_progress_id": "phase_1763867951357_oxobbf566",
+          "name": "QA Approval",
+          "description": "Quality assurance sign-off received",
+          "due_date": "2025-11-30T03:19:11.367Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.368Z",
+          "updated_at": "2025-11-23T03:19:11.367Z"
+        }
+      ]
+    },
+    {
+      "phase": "PILOT_TESTING",
+      "status": "NOT_STARTED",
+      "approvals": [],
+      "deliverables": [
+        {
+          "id": "deliverable_1763867951376_27b301pil",
+          "phase_progress_id": "phase_1763867951372_torr54v68",
+          "name": "Pilot Cohort",
+          "description": "Pilot students recruited and enrolled",
+          "due_date": "2025-11-30T03:19:11.376Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.377Z",
+          "updated_at": "2025-11-23T03:19:11.376Z"
+        },
+        {
+          "id": "deliverable_1763867951379_0ey8870ve",
+          "phase_progress_id": "phase_1763867951372_torr54v68",
+          "name": "Feedback Collection",
+          "description": "Student feedback gathered for all modules",
+          "due_date": "2025-11-30T03:19:11.379Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.380Z",
+          "updated_at": "2025-11-23T03:19:11.379Z"
+        },
+        {
+          "id": "deliverable_1763867951382_m8etwebtd",
+          "phase_progress_id": "phase_1763867951372_torr54v68",
+          "name": "Issue Resolution",
+          "description": "Identified issues prioritized and fixed",
+          "due_date": "2025-11-30T03:19:11.382Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.382Z",
+          "updated_at": "2025-11-23T03:19:11.382Z"
+        },
+        {
+          "id": "deliverable_1763867951386_c5vw10t1b",
+          "phase_progress_id": "phase_1763867951372_torr54v68",
+          "name": "Launch Approval",
+          "description": "Pilot results reviewed and launch approved",
+          "due_date": "2025-11-30T03:19:11.386Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.387Z",
+          "updated_at": "2025-11-23T03:19:11.386Z"
+        }
+      ]
+    },
+    {
+      "phase": "LAUNCH",
+      "status": "NOT_STARTED",
+      "approvals": [],
+      "deliverables": [
+        {
+          "id": "deliverable_1763867951392_794waj6aw",
+          "phase_progress_id": "phase_1763867951389_jpkg8yy7w",
+          "name": "Platform Deployment",
+          "description": "Course deployed to production platform",
+          "due_date": "2025-11-30T03:19:11.392Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.393Z",
+          "updated_at": "2025-11-23T03:19:11.392Z"
+        },
+        {
+          "id": "deliverable_1763867951394_pivxdcu7q",
+          "phase_progress_id": "phase_1763867951389_jpkg8yy7w",
+          "name": "Marketing Materials",
+          "description": "Course catalog and promotional materials ready",
+          "due_date": "2025-11-30T03:19:11.394Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.395Z",
+          "updated_at": "2025-11-23T03:19:11.394Z"
+        },
+        {
+          "id": "deliverable_1763867951397_m83s5l1ah",
+          "phase_progress_id": "phase_1763867951389_jpkg8yy7w",
+          "name": "Enrollment Open",
+          "description": "Course available for student enrollment",
+          "due_date": "2025-11-30T03:19:11.397Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.398Z",
+          "updated_at": "2025-11-23T03:19:11.397Z"
+        },
+        {
+          "id": "deliverable_1763867951399_68071hawt",
+          "phase_progress_id": "phase_1763867951389_jpkg8yy7w",
+          "name": "Monitoring Setup",
+          "description": "Analytics and feedback systems active",
+          "due_date": "2025-11-30T03:19:11.399Z",
+          "completed_date": null,
+          "status": "NOT_STARTED",
+          "assigned_to": "TBD",
+          "required": true,
+          "completed": false,
+          "created_at": "2025-11-23T03:19:11.400Z",
+          "updated_at": "2025-11-23T03:19:11.399Z"
+        }
+      ]
+    }
+  ],
+  "team": [],
+  "timeline": null,
+  "budget": null,
+  "status": "ACTIVE",
+  "createdAt": "2025-11-23T03:19:11.217Z",
+  "updatedAt": "2025-11-23T03:19:11.215Z"
+}

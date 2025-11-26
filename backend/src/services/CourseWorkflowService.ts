@@ -5,7 +5,6 @@ import {
   Phase,
   PhaseStatus,
   PhaseTransition,
-  ValidationResult,
   ProjectStatus,
   ApprovalData,
   Deliverable,
@@ -46,34 +45,42 @@ export default class CourseWorkflowService {
       ];
 
       // Initialize phase progress for each phase
+      const now = new Date();
       const phaseProgress: PhaseProgress[] = phases.map((phase, index) => ({
         phase,
         status: index === 0 ? PhaseStatus.IN_PROGRESS : PhaseStatus.NOT_STARTED,
-        startDate: index === 0 ? new Date() : undefined,
+        startDate: now,
         completionDate: undefined,
         approvals: [],
         deliverables: this.getPhaseDeliverables(phase)
       }));
 
-      // Create course project in database
-      const project = await prisma.CourseProject.create({
-        data: {
-          id: `course_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
-          title: courseInfo.title,
-          code: courseInfo.code,
-          description: courseInfo.description,
-          credits: courseInfo.credits,
-          level: courseInfo.level,
-          prerequisites: courseInfo.prerequisites,
-          currentPhase: Phase.PLANNING,
-          status: ProjectStatus.ACTIVE,
-          updatedAt: new Date()
-        }
+      // Check if course project already exists
+      let project = await prisma.courseProject.findUnique({
+        where: { code: courseInfo.code }
       });
 
-      // Create phase progress records
-      for (const pp of phaseProgress) {
-        const phaseProgressRecord = await prisma.PhaseProgress.create({
+      if (!project) {
+        // Create course project in database
+        project = await prisma.courseProject.create({
+          data: {
+            id: `course_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
+            title: courseInfo.title,
+            code: courseInfo.code,
+            description: courseInfo.description,
+            credits: courseInfo.credits,
+            level: courseInfo.level,
+            prerequisites: courseInfo.prerequisites,
+            currentPhase: Phase.PLANNING,
+            status: ProjectStatus.ACTIVE,
+            updatedAt: new Date()
+          }
+        });
+        logger.info('Course project created successfully', { projectId: project.id });
+        
+        // Create phase progress records (only for new projects)
+        for (const pp of phaseProgress) {
+        const phaseProgressRecord = await prisma.phaseProgress.create({
           data: {
             id: `phase_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
             course_project_id: project.id,
@@ -86,7 +93,7 @@ export default class CourseWorkflowService {
 
         // Create deliverables for this phase
         for (const d of pp.deliverables) {
-          await prisma.Deliverable.create({
+          await prisma.deliverable.create({
             data: {
               id: `deliverable_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
               phase_progress_id: phaseProgressRecord.id,
@@ -103,13 +110,13 @@ export default class CourseWorkflowService {
 
       // Create team members
       for (const f of courseInfo.faculty) {
-        await prisma.TeamMember.create({
+        await prisma.teamMember.create({
           data: {
             id: `team_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
             course_project_id: project.id,
-            user_id: f.id,
+            user_id: f.id || `user_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
             name: f.name || 'Faculty Member',
-            role: f.role,
+            role: f.role || 'Faculty',
             responsibilities: [],
             assigned_date: new Date()
           }
@@ -117,7 +124,7 @@ export default class CourseWorkflowService {
       }
 
       // Create timeline
-      const timeline = await prisma.Timeline.create({
+      const timeline = await prisma.timeline.create({
         data: {
           id: `timeline_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
           course_project_id: project.id,
@@ -129,7 +136,7 @@ export default class CourseWorkflowService {
 
       // Create milestones
       for (let i = 0; i < phases.length; i++) {
-        await prisma.Milestone.create({
+        await prisma.milestone.create({
           data: {
             id: `milestone_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
             timeline_id: timeline.id,
@@ -141,9 +148,12 @@ export default class CourseWorkflowService {
           }
         });
       }
+      } else {
+        logger.info('Course project already exists, reusing', { projectId: project.id });
+      }
 
       // Fetch the complete project with all relations
-      const completeProject = await prisma.CourseProject.findUnique({
+      const completeProject = await prisma.courseProject.findUnique({
         where: { id: project.id },
         include: {
           PhaseProgress: {
@@ -189,7 +199,7 @@ export default class CourseWorkflowService {
       logger.info('Advancing phase', { projectId, approvalData });
 
       // Get current project state
-      const project = await prisma.CourseProject.findUnique({
+      const project = await prisma.courseProject.findUnique({
         where: { id: projectId },
         include: {
           PhaseProgress: {
@@ -223,12 +233,12 @@ export default class CourseWorkflowService {
 
       // Validate phase completion before advancing
       const validation = await this.validatePhaseCompletion(projectId, currentPhase);
-      if (!validation.valid) {
-        throw new Error(`Phase completion validation failed: ${validation.errors.join(', ')}`);
+      if (!validation.passed) {
+        throw new Error(`Phase completion validation failed: ${validation.errors?.map((e: any) => e.message).join(', ') || 'Unknown validation errors'}`);
       }
 
       // Record approval
-      await prisma.Approval.create({
+      await prisma.approval.create({
         data: {
           id: `approval_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
           phase_progress_id: currentPhaseData.id,
@@ -258,7 +268,7 @@ export default class CourseWorkflowService {
 
       if (currentIndex === phases.length - 1) {
         // Already at final phase, mark project as complete
-        await prisma.CourseProject.update({
+        await prisma.courseProject.update({
           where: { id: projectId },
           data: {
             status: ProjectStatus.COMPLETED,
@@ -266,7 +276,7 @@ export default class CourseWorkflowService {
           }
         });
 
-        await prisma.PhaseProgress.update({
+        await prisma.phaseProgress.update({
           where: { id: currentPhaseData.id },
           data: {
             status: PhaseStatus.COMPLETED,
@@ -290,7 +300,7 @@ export default class CourseWorkflowService {
       const nextPhase = phases[currentIndex + 1];
 
       // Update current phase to completed
-      await prisma.PhaseProgress.update({
+      await prisma.phaseProgress.update({
         where: { id: currentPhaseData.id },
         data: {
           status: PhaseStatus.COMPLETED,
@@ -302,7 +312,7 @@ export default class CourseWorkflowService {
       // Update next phase to in progress
       const nextPhaseData = project.PhaseProgress.find(p => p.phase === nextPhase);
       if (nextPhaseData) {
-        await prisma.PhaseProgress.update({
+        await prisma.phaseProgress.update({
           where: { id: nextPhaseData.id },
           data: {
             status: PhaseStatus.IN_PROGRESS,
@@ -313,7 +323,7 @@ export default class CourseWorkflowService {
       }
 
       // Update project current phase
-      await prisma.CourseProject.update({
+      await prisma.courseProject.update({
         where: { id: projectId },
         data: {
           currentPhase: nextPhase,
@@ -347,11 +357,11 @@ export default class CourseWorkflowService {
    * Validates: Requirements 1.4, 6.1
    * Property 4: Quality Checklist Application
    */
-  async validatePhaseCompletion(projectId: string, phase: Phase): Promise<ValidationResult> {
+  async validatePhaseCompletion(projectId: string, phase: Phase): Promise<any> {
     try {
       logger.info('Validating phase completion', { projectId, phase });
 
-      const project = await prisma.CourseProject.findUnique({
+      const project = await prisma.courseProject.findUnique({
         where: { id: projectId },
         include: {
           PhaseProgress: {
@@ -364,18 +374,36 @@ export default class CourseWorkflowService {
 
       if (!project) {
         return {
-          valid: false,
-          errors: [`Course project not found: ${projectId}`],
-          warnings: []
+          contentId: projectId,
+          passed: false,
+          strictnessProfile: 'MODERATE' as any,
+          errors: [{
+            type: 'TECHNICAL' as any,
+            severity: 'CRITICAL' as any,
+            message: `Course project not found: ${projectId}`,
+            location: { file: 'CourseWorkflowService', section: 'validatePhaseReadiness', context: 'project lookup' }
+          }],
+          warnings: [],
+          correctionAttempted: false,
+          correctionSuccessful: false
         };
       }
 
       const phaseData = project.PhaseProgress.find(p => p.phase === phase);
       if (!phaseData) {
         return {
-          valid: false,
-          errors: [`Phase data not found: ${phase}`],
-          warnings: []
+          contentId: projectId,
+          passed: false,
+          strictnessProfile: 'MODERATE' as any,
+          errors: [{
+            type: 'TECHNICAL' as any,
+            severity: 'CRITICAL' as any,
+            message: `Phase data not found: ${phase}`,
+            location: { file: 'CourseWorkflowService', section: 'validatePhaseReadiness', context: 'phase lookup' }
+          }],
+          warnings: [],
+          correctionAttempted: false,
+          correctionSuccessful: false
         };
       }
 
@@ -403,7 +431,7 @@ export default class CourseWorkflowService {
 
         case Phase.CONTENT_DEVELOPMENT:
           // Validate content exists
-          const moduleCount = await prisma.CourseModule.count({
+          const moduleCount = await prisma.courseModule.count({
             where: { course_project_id: projectId }
           });
           if (moduleCount < 4 || moduleCount > 12) {
@@ -418,7 +446,7 @@ export default class CourseWorkflowService {
 
         case Phase.QUALITY_REVIEW:
           // Validate quality review completed
-          const qualityReview = await prisma.QualityReview.findFirst({
+          const qualityReview = await prisma.qualityReview.findFirst({
             where: {
               course_project_id: projectId,
               approved: true
@@ -431,7 +459,7 @@ export default class CourseWorkflowService {
 
         case Phase.PILOT_TESTING:
           // Validate pilot program completed
-          const pilotProgram = await prisma.PilotProgram.findFirst({
+          const pilotProgram = await prisma.pilotProgram.findFirst({
             where: {
               course_project_id: projectId,
               launch_approved: true
@@ -462,16 +490,38 @@ export default class CourseWorkflowService {
       logger.info('Phase validation completed', { projectId, phase, valid, errorCount: errors.length });
 
       return {
-        valid,
-        errors,
-        warnings
+        contentId: projectId,
+        passed: valid,
+        strictnessProfile: 'MODERATE' as any,
+        errors: errors.map(msg => ({
+          type: 'TECHNICAL' as any,
+          severity: 'HIGH' as any,
+          message: msg,
+          location: { file: 'CourseWorkflowService', section: 'validatePhaseReadiness', context: phase }
+        })),
+        warnings: warnings.map(msg => ({
+          type: 'TECHNICAL',
+          message: msg,
+          location: { file: 'CourseWorkflowService', section: 'validatePhaseReadiness', context: phase }
+        })),
+        correctionAttempted: false,
+        correctionSuccessful: false
       };
     } catch (error) {
       logger.error('Error validating phase completion', { error, projectId, phase });
       return {
-        valid: false,
-        errors: [`Validation error: ${error instanceof Error ? error.message : 'Unknown error'}`],
-        warnings: []
+        contentId: projectId,
+        passed: false,
+        strictnessProfile: 'MODERATE' as any,
+        errors: [{
+          type: 'TECHNICAL' as any,
+          severity: 'CRITICAL' as any,
+          message: `Validation error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+          location: { file: 'CourseWorkflowService', section: 'validatePhaseReadiness', context: 'exception' }
+        }],
+        warnings: [],
+        correctionAttempted: false,
+        correctionSuccessful: false
       };
     }
   }
@@ -484,11 +534,11 @@ export default class CourseWorkflowService {
    * 
    * Validates: Requirements 8.1, 8.4
    */
-  async getProjectStatus(projectId: string): Promise<ProjectStatus> {
+  async getProjectStatus(projectId: string): Promise<any> {
     try {
       logger.info('Getting project status', { projectId });
 
-      const project = await prisma.CourseProject.findUnique({
+      const project = await prisma.courseProject.findUnique({
         where: { id: projectId },
         include: {
           PhaseProgress: {
@@ -533,31 +583,30 @@ export default class CourseWorkflowService {
       }
 
       // Check for overdue milestones
-      const timeline = project.Timeline[0];
-      const overdueMilestones = timeline?.Milestone.filter(
-        m => !m.completed_date && m.dueDate < new Date()
-      ) || [];
-      if (overdueMilestones.length > 0) {
-        blockers.push(`${overdueMilestones.length} milestones overdue`);
+      let timeline = null;
+      if (project.Timeline && Array.isArray(project.Timeline) && project.Timeline.length > 0) {
+        timeline = project.Timeline[0];
+        if (timeline && timeline.Milestone && Array.isArray(timeline.Milestone)) {
+          const overdueMilestones = timeline.Milestone.filter(
+            (m: any) => !m.completed_date && m.due_date < new Date()
+          );
+          if (overdueMilestones.length > 0) {
+            blockers.push(`${overdueMilestones.length} milestones overdue`);
+          }
+        }
       }
 
       logger.info('Project status retrieved', { projectId, progressPercentage });
 
       return {
-        projectId,
-        currentPhase: project.currentPhase as Phase,
-        status: project.status as ProjectStatus,
-        progressPercentage,
-        completedPhases,
-        totalPhases,
-        completedDeliverables,
-        totalDeliverables,
-        startDate: project.createdAt,
-        estimatedEndDate: timeline?.targetLaunchDate,
-        actualEndDate: project.actualLaunchDate,
-        blockers,
-        teamSize: project.TeamMember.length,
-        lastUpdated: project.updatedAt
+        success: true,
+        data: {
+          project: project as any,
+          progress: progressPercentage,
+          currentPhase: project.currentPhase as Phase,
+          nextMilestone: timeline?.Milestone.find((m: any) => !m.completed_date) as any,
+          blockers
+        }
       };
     } catch (error) {
       logger.error('Error getting project status', { error, projectId });
@@ -568,42 +617,43 @@ export default class CourseWorkflowService {
   // Helper methods
 
   private getPhaseDeliverables(phase: Phase): Deliverable[] {
+    const now = new Date();
     const deliverables: Record<Phase, Deliverable[]> = {
       [Phase.PLANNING]: [
-        { name: 'Course Outline', description: 'Complete course structure with modules and learning objectives', required: true, completed: false },
-        { name: 'Faculty Assignment', description: 'Subject matter experts assigned to course', required: true, completed: false },
-        { name: 'Budget Approval', description: 'Course development budget approved', required: true, completed: false },
-        { name: 'Timeline Definition', description: 'Development timeline with milestones', required: true, completed: false }
+        { id: 'plan-1', name: 'Course Outline', description: 'Complete course structure with modules and learning objectives', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'plan-2', name: 'Faculty Assignment', description: 'Subject matter experts assigned to course', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'plan-3', name: 'Budget Approval', description: 'Course development budget approved', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'plan-4', name: 'Timeline Definition', description: 'Development timeline with milestones', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false }
       ],
       [Phase.CONTENT_DEVELOPMENT]: [
-        { name: 'Module Content', description: 'All module content written and reviewed', required: true, completed: false },
-        { name: 'Lecture Scripts', description: 'Video lecture scripts completed', required: true, completed: false },
-        { name: 'Assessment Design', description: 'Quizzes, assignments, and projects designed', required: true, completed: false },
-        { name: 'Spiritual Integration', description: 'Biblical foundation and worldview integration completed', required: true, completed: false }
+        { id: 'dev-1', name: 'Module Content', description: 'All module content written and reviewed', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'dev-2', name: 'Lecture Scripts', description: 'Video lecture scripts completed', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'dev-3', name: 'Assessment Design', description: 'Quizzes, assignments, and projects designed', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'dev-4', name: 'Spiritual Integration', description: 'Biblical foundation and worldview integration completed', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false }
       ],
       [Phase.PRODUCTION]: [
-        { name: 'Video Recording', description: 'All lecture videos recorded', required: true, completed: false },
-        { name: 'Video Editing', description: 'Videos edited with graphics and animations', required: true, completed: false },
-        { name: 'Written Materials', description: 'Lecture notes and PDFs generated', required: true, completed: false },
-        { name: 'Captions Generated', description: 'Closed captions and transcripts created', required: true, completed: false }
+        { id: 'prod-1', name: 'Video Recording', description: 'All lecture videos recorded', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'prod-2', name: 'Video Editing', description: 'Videos edited with graphics and animations', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'prod-3', name: 'Written Materials', description: 'Lecture notes and PDFs generated', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'prod-4', name: 'Captions Generated', description: 'Closed captions and transcripts created', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false }
       ],
       [Phase.QUALITY_REVIEW]: [
-        { name: 'Content Review', description: 'Academic content reviewed for accuracy', required: true, completed: false },
-        { name: 'Theological Review', description: 'Spiritual content reviewed for alignment', required: true, completed: false },
-        { name: 'Technical Review', description: 'Videos and materials tested for quality', required: true, completed: false },
-        { name: 'QA Approval', description: 'Quality assurance sign-off received', required: true, completed: false }
+        { id: 'qa-1', name: 'Content Review', description: 'Academic content reviewed for accuracy', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'qa-2', name: 'Theological Review', description: 'Spiritual content reviewed for alignment', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'qa-3', name: 'Technical Review', description: 'Videos and materials tested for quality', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'qa-4', name: 'QA Approval', description: 'Quality assurance sign-off received', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false }
       ],
       [Phase.PILOT_TESTING]: [
-        { name: 'Pilot Cohort', description: 'Pilot students recruited and enrolled', required: true, completed: false },
-        { name: 'Feedback Collection', description: 'Student feedback gathered for all modules', required: true, completed: false },
-        { name: 'Issue Resolution', description: 'Identified issues prioritized and fixed', required: true, completed: false },
-        { name: 'Launch Approval', description: 'Pilot results reviewed and launch approved', required: true, completed: false }
+        { id: 'pilot-1', name: 'Pilot Cohort', description: 'Pilot students recruited and enrolled', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'pilot-2', name: 'Feedback Collection', description: 'Student feedback gathered for all modules', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'pilot-3', name: 'Issue Resolution', description: 'Identified issues prioritized and fixed', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'pilot-4', name: 'Launch Approval', description: 'Pilot results reviewed and launch approved', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false }
       ],
       [Phase.LAUNCH]: [
-        { name: 'Platform Deployment', description: 'Course deployed to production platform', required: true, completed: false },
-        { name: 'Marketing Materials', description: 'Course catalog and promotional materials ready', required: true, completed: false },
-        { name: 'Enrollment Open', description: 'Course available for student enrollment', required: true, completed: false },
-        { name: 'Monitoring Setup', description: 'Analytics and feedback systems active', required: true, completed: false }
+        { id: 'launch-1', name: 'Platform Deployment', description: 'Course deployed to production platform', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'launch-2', name: 'Marketing Materials', description: 'Course catalog and promotional materials ready', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'launch-3', name: 'Enrollment Open', description: 'Course available for student enrollment', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false },
+        { id: 'launch-4', name: 'Monitoring Setup', description: 'Analytics and feedback systems active', dueDate: now, completedDate: undefined, status: 'PENDING', assignedTo: 'team', required: true, completed: false }
       ]
     };
 
@@ -634,8 +684,11 @@ export default class CourseWorkflowService {
         code: dbProject.code,
         description: dbProject.description,
         faculty: dbProject.TeamMember.map((t: any) => ({
-          id: t.userId,
-          role: t.role
+          id: t.user_id,
+          name: t.name,
+          email: t.email || `${t.name.toLowerCase().replace(/\s+/g, '.')}@scrolluniversity.edu`,
+          role: t.role,
+          expertise: []
         })),
         credits: dbProject.credits,
         level: dbProject.level,
@@ -647,12 +700,12 @@ export default class CourseWorkflowService {
         status: p.status as PhaseStatus,
         startDate: p.startDate,
         completionDate: p.completionDate,
-        approvals: p.Approval,
-        deliverables: p.Deliverable
+        approvals: p.Approval || [],
+        deliverables: p.Deliverable || []
       })),
       team: dbProject.TeamMember,
-      timeline: dbProject.Timeline[0],
-      budget: dbProject.Budget?.[0],
+      timeline: dbProject.Timeline && dbProject.Timeline.length > 0 ? dbProject.Timeline[0] : null as any,
+      budget: dbProject.Budget?.[0] || null as any,
       status: dbProject.status as ProjectStatus,
       createdAt: dbProject.createdAt,
       updatedAt: dbProject.updatedAt

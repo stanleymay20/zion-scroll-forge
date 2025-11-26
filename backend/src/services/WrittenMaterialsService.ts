@@ -15,7 +15,9 @@ import {
   PDFDocument,
   SupplementalResource,
   CitationValidation,
-  ResourceCurationRequest
+  ResourceCurationRequest,
+  Example,
+  PracticeProblem
 } from '../types/course-content.types';
 
 export default class WrittenMaterialsService {
@@ -108,24 +110,24 @@ export default class WrittenMaterialsService {
       const notes: LectureNotes = {
         id: this.generateNotesId(),
         lectureId: request.lectureId,
-        title: topic,
+        content: content,
         summary: this.extractSection(content, 'summary') || 'Summary of key concepts',
         keyConcepts: this.extractList(content, 'key concepts') || [],
-        detailedContent: content,
         examples: this.extractExamples(content) || [],
         practiceProblems: this.extractProblems(content) || [],
+        pdfUrl: '',
+        pageCount: this.estimatePageCount(content),
+        title: topic,
+        detailedContent: content,
         realWorldApplications: this.extractApplications(content) || [],
         biblicalIntegration: request.includeBiblicalIntegration ? {
           scriptureReferences: [],
           spiritualApplication: 'To be developed',
           reflectionQuestions: []
         } : undefined,
-        pageCount: this.estimatePageCount(content),
         wordCount: this.countWords(content),
         createdAt: new Date(),
-        updatedAt: new Date(),
-        version: '1.0',
-        status: 'DRAFT'
+        updatedAt: new Date()
       };
 
       // Enforce output quality - comprehensive notes must meet minimum standards
@@ -133,11 +135,11 @@ export default class WrittenMaterialsService {
       const MIN_WORD_COUNT = 2000; // Minimum ~4 pages of content
       const MIN_CONTENT_LENGTH = 500; // Minimum character count for detailed content
       
-      if (notes.wordCount < MIN_WORD_COUNT) {
+      if (notes.wordCount && notes.wordCount < MIN_WORD_COUNT) {
         throw new Error(`Generated notes are too short (${notes.wordCount} words). Comprehensive lecture notes must be at least ${MIN_WORD_COUNT} words to meet requirements 3.1 and 3.2.`);
       }
       
-      if (notes.detailedContent.length < MIN_CONTENT_LENGTH) {
+      if (notes.detailedContent && notes.detailedContent.length < MIN_CONTENT_LENGTH) {
         throw new Error(`Generated content is too short (${notes.detailedContent.length} characters). Comprehensive lecture notes must have substantial detailed content.`);
       }
       
@@ -189,41 +191,24 @@ export default class WrittenMaterialsService {
           template: options?.template || 'default',
           includeTableOfContents: options?.includeTableOfContents ?? true,
           includeHeader: options?.includeHeader ?? true,
-          includeFooter: options?.includeFooter ?? true,
-          formatting: {
-            font: 'Times New Roman',
-            fontSize: 12,
-            lineSpacing: 1.5,
-            margins: {
-              top: 1,
-              bottom: 1,
-              left: 1,
-              right: 1
-            }
-          }
+          includeFooter: options?.includeFooter ?? true
         }
       });
 
       const pdfDocument: PDFDocument = {
         id: this.generatePDFId(),
-        notesId,
+        title: `Lecture Notes: ${notesId}`,
+        content: `Generated PDF content for notes ${notesId}`,
         url: pdfResponse?.url || `https://example.com/pdf/${notesId}.pdf`,
-        filename: pdfResponse?.filename || `notes_${notesId}.pdf`,
-        size: pdfResponse?.size || 1024,
-        format: 'PDF',
-        formatting: {
-          font: 'Times New Roman',
-          fontSize: 12,
-          lineSpacing: 1.5,
-          margins: {
-            top: 1,
-            bottom: 1,
-            left: 1,
-            right: 1
-          }
+        metadata: {
+          author: 'ScrollUniversity',
+          createdAt: new Date(),
+          pageCount: 10
         },
-        generatedAt: pdfResponse?.generatedAt || new Date(),
-        version: '1.0'
+        notesId,
+        size: pdfResponse?.size || 1024,
+        filename: pdfResponse?.filename || `notes_${notesId}.pdf`,
+        format: 'PDF'
       };
 
       logger.info('PDF document created successfully', {
@@ -437,17 +422,29 @@ export default class WrittenMaterialsService {
       .map(line => line.replace(/^-\s*/, '').trim());
   }
 
-  private extractExamples(content: string): Array<{ title: string; description: string }> {
+  private extractExamples(content: string): Example[] {
     // Simple extraction - in production, use more sophisticated parsing
     return [
-      { title: 'Example 1', description: 'Extracted from content' }
+      { 
+        id: `example_${Date.now()}`,
+        title: 'Example 1', 
+        description: 'Extracted from content',
+        explanation: 'Detailed explanation of the example'
+      }
     ];
   }
 
-  private extractProblems(content: string): Array<{ problem: string; solution: string }> {
+  private extractProblems(content: string): PracticeProblem[] {
     // Simple extraction - in production, use more sophisticated parsing
     return [
-      { problem: 'Practice problem 1', solution: 'Solution 1' }
+      { 
+        id: `problem_${Date.now()}`,
+        question: 'Practice problem 1',
+        problem: 'Practice problem 1',
+        solution: 'Solution 1',
+        difficulty: 'MEDIUM',
+        hints: ['Consider the key concepts', 'Review the examples']
+      }
     ];
   }
 
@@ -479,14 +476,12 @@ export default class WrittenMaterialsService {
         resources.push({
           id: this.generateResourceId(),
           moduleId,
-          type: 'ARTICLE',
+          type: 'article',
           title: line.replace(/^\d+\.\s*/, '').trim(),
           author: 'Various Authors',
-          source: 'Academic Source',
           url: 'https://example.com',
           description: 'Curated resource',
-          relevanceScore: 0.9,
-          addedAt: new Date()
+          publicationDate: new Date()
         });
       }
     }

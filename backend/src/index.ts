@@ -48,6 +48,7 @@ import scrollbadgesRoutes from './routes/scrollbadges';
 import spiritualFormationRoutes from './routes/spiritual-formation';
 import partnerIntegrationRoutes from './routes/partner-integration';
 import criticalThinkingRoutes from './routes/critical-thinking';
+import scrollosToolsRoutes from './routes/scrollos-tools';
 import launchRoutes from './routes/launch';
 import curriculumGridRoutes from './routes/curriculum-grid';
 import architectureComparisonRoutes from './routes/architecture-comparison';
@@ -74,6 +75,9 @@ import profileRoutes from './routes/profile';
 import performanceRoutes from './routes/performance';
 import productionLaunchRoutes from './routes/production-launch';
 import postLaunchRoutes from './routes/post-launch';
+import zapierWebhooksRoutes from './routes/zapier-webhooks';
+import degreeProgramRoutes from './routes/degree-programs';
+import portalMobileIntegrationRoutes from './routes/portal-mobile-integration';
 
 // Socket.io service
 import SocketService from './services/SocketService';
@@ -243,6 +247,7 @@ async function startServer() {
   routeWithMonitoring('/api/spiritual-formation', spiritualFormationRoutes);
   routeWithMonitoring('/api/partner-integration', partnerIntegrationRoutes);
   routeWithMonitoring('/api/critical-thinking', criticalThinkingRoutes);
+  routeWithMonitoring('/api/scrollos', scrollosToolsRoutes);
   routeWithMonitoring('/api/launch', launchRoutes);
   routeWithMonitoring('/api/curriculum-grid', curriculumGridRoutes);
   routeWithMonitoring('/api/architecture-comparison', architectureComparisonRoutes);
@@ -270,6 +275,9 @@ async function startServer() {
   routeWithMonitoring('/api/performance', performanceRoutes);
   routeWithMonitoring('/api/production-launch', productionLaunchRoutes);
   routeWithMonitoring('/api/post-launch', postLaunchRoutes);
+  routeWithMonitoring('/api/webhooks/zapier', zapierWebhooksRoutes);
+  routeWithMonitoring('/api/degree-programs', degreeProgramRoutes);
+  routeWithMonitoring('/api/portal-mobile', portalMobileIntegrationRoutes);
 
   // Admissions API routes
   routeWithMonitoring('/api/admissions/applications', admissionsApplicationsRoutes);

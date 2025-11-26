@@ -1,0 +1,20 @@
+{
+  "id": "assessment-3",
+  "moduleId": "module-SCROLLAI100-3",
+  "type": "QUIZ",
+  "title": "Module 3 Assessment",
+  "description": "Comprehensive assessment for Module 3",
+  "points": 100,
+  "dueDate": "2025-11-23T07:51:51.946Z",
+  "rubric": {
+    "id": "rubric-3",
+    "criteria": [],
+    "totalPoints": 100
+  },
+  "questions": [],
+  "alignedObjectives": [
+    "lo-3-0",
+    "lo-3-1",
+    "lo-3-2"
+  ]
+}

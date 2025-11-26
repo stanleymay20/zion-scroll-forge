@@ -1,0 +1,64 @@
+{
+  "courses": [
+    {
+      "code": "KINGBIZ_301",
+      "title": "Kingdom Business Principles",
+      "description": "Biblical foundations for business, entrepreneurship, and marketplace ministry",
+      "credits": 4,
+      "level": "Advanced",
+      "moduleCount": 4,
+      "lecturesPerModule": 3,
+      "spiritualFocus": "Marketplace Ministry & Stewardship",
+      "realWorldApplication": "Kingdom Business Leadership",
+      "domainExpertise": "Biblical business principles, entrepreneurship, marketplace ministry, stewardship"
+    },
+    {
+      "code": "SCROLLFOUND_101",
+      "title": "Foundations of ScrollUniversity",
+      "description": "Introduction to ScrollUniversity mission, vision, and educational philosophy",
+      "credits": 3,
+      "level": "Foundation",
+      "moduleCount": 4,
+      "lecturesPerModule": 3,
+      "spiritualFocus": "Kingdom Education & Calling Discovery",
+      "realWorldApplication": "Kingdom Leadership Development",
+      "domainExpertise": "Christian higher education, spiritual formation, calling discernment"
+    },
+    {
+      "code": "SPIRFORM_101",
+      "title": "Spiritual Formation Foundations",
+      "description": "Core practices and principles of Christian spiritual formation",
+      "credits": 3,
+      "level": "Foundation",
+      "moduleCount": 4,
+      "lecturesPerModule": 3,
+      "spiritualFocus": "Personal Transformation & Discipleship",
+      "realWorldApplication": "Spiritual Leadership & Mentoring",
+      "domainExpertise": "Spiritual disciplines, prayer, Scripture meditation, Christian formation"
+    },
+    {
+      "code": "BIBWORLD_201",
+      "title": "Biblical Worldview",
+      "description": "Comprehensive study of a Christian worldview and its application",
+      "credits": 3,
+      "level": "Intermediate",
+      "moduleCount": 4,
+      "lecturesPerModule": 3,
+      "spiritualFocus": "Kingdom Thinking & Cultural Engagement",
+      "realWorldApplication": "Worldview Analysis & Apologetics",
+      "domainExpertise": "Christian worldview, apologetics, cultural analysis, biblical integration"
+    },
+    {
+      "code": "SACREDAI_201",
+      "title": "Sacred AI Engineering",
+      "description": "Integrating artificial intelligence with Christian ethics and kingdom purposes",
+      "credits": 4,
+      "level": "Intermediate",
+      "moduleCount": 4,
+      "lecturesPerModule": 3,
+      "spiritualFocus": "Technology Stewardship & Ethical AI",
+      "realWorldApplication": "Christian AI Development",
+      "domainExpertise": "AI ethics, machine learning, Christian technology stewardship, prophetic AI"
+    }
+  ]
+}

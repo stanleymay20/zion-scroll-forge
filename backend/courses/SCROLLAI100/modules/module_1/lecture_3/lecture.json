@@ -1,0 +1,41 @@
+{
+  "id": "lecture-1-3",
+  "moduleId": "module-SCROLLAI100-1",
+  "title": "Module 1: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-1-3",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-1-3",
+    "lectureId": "lecture-1-3",
+    "content": "",
+    "summary": "\": \"In this lecture, we have explored the fundamental concepts of intelligence and robotics. We defined intelligence, examined the evolution of robotics, discussed core technologies like machine learning, and engaged with ethical considerations that arise in the development of intelligent systems. As we integrate these insights, we are called to be stewards of technology that reflect our values and enhance human dignity.\",\n  \"keyTakeaways\": [\n    \"Intelligence encompasses cognitive, emotional, and social dimensions, all essential to understanding AI.\",\n    \"The evolution of robotics has been significantly influenced by advancements in AI, enhancing machine capabilities.\",\n    \"Ethical considerations are crucial in the development of AI and robotics, requiring a balance between innovation and moral responsibility.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach.\",\n    \"Bostrom, N. (2014). Superintelligence: Paths, Dangers, Strategies.\",\n    \"Winston, P. H. (2014). Artificial Intelligence.\",\n    \"The Bible (Proverbs 1:7; Proverbs 2:6) - Reflecting on the importance of wisdom in all pursuits.\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

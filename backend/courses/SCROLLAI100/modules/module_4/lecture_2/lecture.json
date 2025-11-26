@@ -1,0 +1,41 @@
+{
+  "id": "lecture-4-2",
+  "moduleId": "module-SCROLLAI100-4",
+  "title": "Module 4: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-4-2",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-4-2",
+    "lectureId": "lecture-4-2",
+    "content": "",
+    "summary": "\": \"In this lecture, we explored the foundational concepts of AI and robotics, their practical applications, and the ethical considerations prompted by their integration into our lives. By framing these discussions within a biblical context, we emphasized the importance of stewardship and moral responsibility as we navigate these transformative technologies.\",\n  \"keyTakeaways\": [\n    \"AI and robotics not only enhance our capabilities but challenge our moral frameworks.\",\n    \"Integration of biblical wisdom is essential for responsible technology development and usage.\",\n    \"Practical applications of AI and robotics can significantly impact society, emphasizing the need for ethical considerations.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, Stuart, and Norvig, Peter. Artificial Intelligence: A Modern Approach.\",\n    \"Bostrom, Nick. Superintelligence: Paths, Dangers, Strategies.\",\n    \"C.S. Lewis. The Abolition of Man.\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

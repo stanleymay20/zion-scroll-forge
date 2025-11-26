@@ -1,0 +1,41 @@
+{
+  "id": "lecture-1-2",
+  "moduleId": "module-SCROLLAI100-1",
+  "title": "Module 1: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-1-2",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-1-2",
+    "lectureId": "lecture-1-2",
+    "content": "",
+    "summary": "\": \"In this lecture, we explored the fundamental concepts of AI and Robotics, including their types, ethical implications, foundational components, and the integration of AI within robotics. We also reflected on how these advancements relate to our Christian faith, emphasizing the importance of stewardship and ethics in technology. As we navigate this rapidly changing landscape, it is crucial to approach these innovations with a thoughtful and responsible mindset.\",\n  \"keyTakeaways\": [\n    \"Understanding the difference between Narrow and General AI is crucial for recognizing the current capabilities and future possibilities of AI technology.\",\n    \"Robotics is a multidisciplinary field that combines various engineering principles, and its applications are transforming industries.\",\n    \"The integration of AI in robotics enhances functionalities, leading to more intelligent systems capable of complex decision-making.\",\n    \"As Christians, we are called to approach technology with a sense of stewardship and ethical responsibility, ensuring our advancements serve humanity.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach. Pearson.\",\n    \"Sicard, B. (2022). Robotics and AI: Social Impacts and Ethical Considerations. Springer.\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

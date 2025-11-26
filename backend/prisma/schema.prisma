@@ -156,6 +156,7 @@ model CourseModule {
   updated_at           DateTime               @updatedAt
   Assessment           Assessment[]
   CourseProject        CourseProject          @relation(fields: [course_project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Course               Course?                @relation(fields: [courseId], references: [id])
   LearningObjective    LearningObjective[]
   Lecture              Lecture[]
   Material             Material[]
@@ -165,29 +166,29 @@ model CourseModule {
 }
 
 model CourseProject {
-  id                String           @id @default(uuid())
-  title             String
-  code              String           @unique
-  description       String
-  credits           Int
-  level             CourseLevel
-  prerequisites     String[]
-  currentPhase      Phase            @default(PLANNING) @map("current_phase")
-  status            ProjectStatus    @default(ACTIVE)
-  targetLaunchDate  DateTime?        @map("target_launch_date")
-  actualLaunchDate  DateTime?        @map("actual_launch_date")
-  completedAt       DateTime?        @map("completed_at")
-  createdAt         DateTime         @default(now()) @map("created_at")
-  updatedAt         DateTime         @updatedAt @map("updated_at")
-  Budget             Budget[]
-  CourseFeedback     CourseFeedback[]
-  CourseModule       CourseModule[]
-  PhaseProgress      PhaseProgress[]
-  PilotProgram       PilotProgram[]
-  PortfolioAsset     PortfolioAsset[]
-  QualityReview      QualityReview[]
-  TeamMember         TeamMember[]
-  Timeline           Timeline[]
+  id               String           @id @default(uuid())
+  title            String
+  code             String           @unique
+  description      String
+  credits          Int
+  level            CourseLevel
+  prerequisites    String[]
+  currentPhase     Phase            @default(PLANNING) @map("current_phase")
+  status           ProjectStatus    @default(ACTIVE)
+  targetLaunchDate DateTime?        @map("target_launch_date")
+  actualLaunchDate DateTime?        @map("actual_launch_date")
+  completedAt      DateTime?        @map("completed_at")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+  Budget           Budget[]
+  CourseFeedback   CourseFeedback[]
+  CourseModule     CourseModule[]
+  PhaseProgress    PhaseProgress[]
+  PilotProgram     PilotProgram[]
+  PortfolioAsset   PortfolioAsset[]
+  QualityReview    QualityReview[]
+  TeamMember       TeamMember[]
+  Timeline         Timeline?
 
   @@index([code], map: "idx_course_project_code")
   @@index([status], map: "idx_course_project_status")
@@ -691,6 +692,454 @@ model VideoQualityReport {
   QualityReview     QualityReview @relation(fields: [quality_review_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
+model ScrollBook {
+  id              String                 @id @default(uuid())
+  title           String
+  subtitle        String?
+  subject         String
+  level           AcademicLevel
+  courseReference String?                @map("course_reference")
+  integrityHash   String                 @map("integrity_hash")
+  publishedAt     DateTime?              @map("published_at")
+  createdAt       DateTime               @default(now()) @map("created_at")
+  updatedAt       DateTime               @updatedAt @map("updated_at")
+  metadata        ScrollBookMetadata?
+  chapters        ScrollChapter[]
+  courseMaterials ScrollCourseMaterial[]
+  diagrams        ScrollDiagram[]
+  exports         ScrollExportRequest[]
+  readingSessions ScrollReadingSession[]
+  searchResults   ScrollSearchResult[]
+
+  @@index([subject], map: "idx_scroll_book_subject")
+  @@index([level], map: "idx_scroll_book_level")
+  @@index([courseReference], map: "idx_scroll_book_course_ref")
+}
+
+model ScrollBookMetadata {
+  id                   String     @id @default(uuid())
+  bookId               String     @unique @map("book_id")
+  authorAgent          String     @map("author_agent")
+  version              String
+  scrollIntegrityHash  String     @map("scroll_integrity_hash")
+  generationDate       DateTime   @map("generation_date")
+  lastValidated        DateTime   @map("last_validated")
+  qualityScore         Float      @map("quality_score")
+  theologicalAlignment Float      @map("theological_alignment")
+  book                 ScrollBook @relation(fields: [bookId], references: [id], onDelete: Cascade)
+}
+
+model ScrollChapter {
+  id              String                 @id @default(uuid())
+  bookId          String                 @map("book_id")
+  title           String
+  orderIndex      Int                    @map("order_index")
+  content         String
+  readingTime     Int                    @map("reading_time")
+  createdAt       DateTime               @default(now()) @map("created_at")
+  updatedAt       DateTime               @updatedAt @map("updated_at")
+  annotations     ScrollAnnotation[]
+  audioNarrations ScrollAudioNarration[]
+  book            ScrollBook             @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  diagrams        ScrollDiagram[]
+  exercises       ScrollExercise[]
+  knowledgeNodes  ScrollKnowledgeNode[]
+  references      ScrollReference[]
+  summaries       ScrollSummary[]
+
+  @@index([bookId], map: "idx_scroll_chapter_book")
+  @@index([orderIndex], map: "idx_scroll_chapter_order")
+}
+
+model ScrollDiagram {
+  id         String            @id @default(uuid())
+  bookId     String?           @map("book_id")
+  chapterId  String?           @map("chapter_id")
+  type       DiagramType
+  content    String
+  caption    String
+  createdAt  DateTime          @default(now()) @map("created_at")
+  book       ScrollBook?       @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  chapter    ScrollChapter?    @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  studyPacks ScrollStudyPack[] @relation("ScrollDiagramToScrollStudyPack")
+}
+
+model ScrollReference {
+  id        String        @id @default(uuid())
+  chapterId String        @map("chapter_id")
+  type      ReferenceType
+  citation  String
+  url       String?
+  createdAt DateTime      @default(now()) @map("created_at")
+  chapter   ScrollChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+}
+
+model ScrollSummary {
+  id        String        @id @default(uuid())
+  chapterId String        @map("chapter_id")
+  type      SummaryType
+  content   String
+  createdAt DateTime      @default(now()) @map("created_at")
+  chapter   ScrollChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+}
+
+model ScrollExercise {
+  id        String        @id @default(uuid())
+  chapterId String        @map("chapter_id")
+  type      ExerciseType
+  content   String
+  solution  String?
+  createdAt DateTime      @default(now()) @map("created_at")
+  chapter   ScrollChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+}
+
+model ScrollCourseMaterial {
+  id               String                        @id @default(uuid())
+  courseId         String                        @map("course_id")
+  textbookId       String?                       @map("textbook_id")
+  workbookId       String?                       @map("workbook_id")
+  lectureSlides    String[]                      @map("lecture_slides")
+  studyPackId      String?                       @map("study_pack_id")
+  createdAt        DateTime                      @default(now()) @map("created_at")
+  updatedAt        DateTime                      @updatedAt @map("updated_at")
+  studyPack        ScrollStudyPack?              @relation(fields: [studyPackId], references: [id])
+  textbook         ScrollBook?                   @relation(fields: [textbookId], references: [id])
+  pastQuestions    ScrollQuestion[]
+  readingList      ScrollReadingListItem[]
+  versions         ScrollMaterialVersion[]
+  pastQuestionsNew ScrollPastQuestion[]
+  studentAccess    ScrollStudentMaterialAccess[]
+
+  @@index([courseId], map: "idx_scroll_course_material_course")
+}
+
+model ScrollKnowledgeNode {
+  id                  String               @id @default(uuid())
+  chapterId           String?              @map("chapter_id")
+  concept             String
+  definition          String
+  embeddings          Float[]
+  relatedBooks        String[]             @map("related_books")
+  relatedChapters     String[]             @map("related_chapters")
+  createdAt           DateTime             @default(now()) @map("created_at")
+  updatedAt           DateTime             @updatedAt @map("updated_at")
+  chapter             ScrollChapter?       @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  relationships       ScrollRelationship[] @relation("SourceNode")
+  targetRelationships ScrollRelationship[] @relation("TargetNode")
+  sources             ScrollSource[]
+
+  @@index([concept], map: "idx_scroll_knowledge_node_concept")
+}
+
+model ScrollRelationship {
+  id           String              @id @default(uuid())
+  sourceNodeId String              @map("source_node_id")
+  targetNodeId String              @map("target_node_id")
+  type         RelationType
+  strength     Float
+  createdAt    DateTime            @default(now()) @map("created_at")
+  sourceNode   ScrollKnowledgeNode @relation("SourceNode", fields: [sourceNodeId], references: [id], onDelete: Cascade)
+  targetNode   ScrollKnowledgeNode @relation("TargetNode", fields: [targetNodeId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceNodeId, targetNodeId, type])
+}
+
+model ScrollSource {
+  id               String              @id @default(uuid())
+  knowledgeNodeId  String              @map("knowledge_node_id")
+  title            String
+  author           String
+  type             SourceType
+  url              String?
+  credibilityScore Float               @map("credibility_score")
+  createdAt        DateTime            @default(now()) @map("created_at")
+  knowledgeNode    ScrollKnowledgeNode @relation(fields: [knowledgeNodeId], references: [id], onDelete: Cascade)
+}
+
+model ScrollStudyPack {
+  id                String                 @id @default(uuid())
+  courseId          String                 @map("course_id")
+  summaryBooklet    String                 @map("summary_booklet")
+  createdAt         DateTime               @default(now()) @map("created_at")
+  cheatSheets       ScrollCheatSheet[]
+  courseMaterials   ScrollCourseMaterial[]
+  flashcards        ScrollFlashcard[]
+  practiceQuestions ScrollQuestion[]
+  quizzes           ScrollQuiz[]
+  diagrams          ScrollDiagram[]        @relation("ScrollDiagramToScrollStudyPack")
+
+  @@index([courseId], map: "idx_scroll_study_pack_course")
+}
+
+model ScrollQuestion {
+  id               String                @id @default(uuid())
+  courseMaterialId String?               @map("course_material_id")
+  studyPackId      String?               @map("study_pack_id")
+  quizId           String?               @map("quiz_id")
+  type             QuestionType
+  content          String
+  options          String[]
+  correctAnswer    String?               @map("correct_answer")
+  explanation      String?
+  createdAt        DateTime              @default(now()) @map("created_at")
+  courseMaterial   ScrollCourseMaterial? @relation(fields: [courseMaterialId], references: [id], onDelete: Cascade)
+  quiz             ScrollQuiz?           @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  studyPack        ScrollStudyPack?      @relation(fields: [studyPackId], references: [id], onDelete: Cascade)
+}
+
+model ScrollFlashcard {
+  id          String          @id @default(uuid())
+  studyPackId String          @map("study_pack_id")
+  front       String
+  back        String
+  category    String
+  createdAt   DateTime        @default(now()) @map("created_at")
+  studyPack   ScrollStudyPack @relation(fields: [studyPackId], references: [id], onDelete: Cascade)
+}
+
+model ScrollCheatSheet {
+  id          String          @id @default(uuid())
+  studyPackId String          @map("study_pack_id")
+  title       String
+  content     String
+  category    String
+  createdAt   DateTime        @default(now()) @map("created_at")
+  studyPack   ScrollStudyPack @relation(fields: [studyPackId], references: [id], onDelete: Cascade)
+}
+
+model ScrollQuiz {
+  id          String           @id @default(uuid())
+  studyPackId String           @map("study_pack_id")
+  title       String
+  timeLimit   Int?             @map("time_limit")
+  createdAt   DateTime         @default(now()) @map("created_at")
+  questions   ScrollQuestion[]
+  studyPack   ScrollStudyPack  @relation(fields: [studyPackId], references: [id], onDelete: Cascade)
+}
+
+model ScrollReadingListItem {
+  id               String               @id @default(uuid())
+  courseMaterialId String               @map("course_material_id")
+  title            String
+  author           String
+  type             ReadingItemType
+  url              String?
+  required         Boolean
+  createdAt        DateTime             @default(now()) @map("created_at")
+  courseMaterial   ScrollCourseMaterial @relation(fields: [courseMaterialId], references: [id], onDelete: Cascade)
+}
+
+model ScrollSearchQuery {
+  id        String               @id @default(uuid())
+  userId    String               @map("user_id")
+  query     String
+  type      SearchType
+  filters   Json?
+  limit     Int?
+  createdAt DateTime             @default(now()) @map("created_at")
+  results   ScrollSearchResult[]
+
+  @@index([userId], map: "idx_scroll_search_query_user")
+  @@index([type], map: "idx_scroll_search_query_type")
+}
+
+model ScrollSearchResult {
+  id                 String            @id @default(uuid())
+  searchQueryId      String            @map("search_query_id")
+  bookId             String            @map("book_id")
+  chapterId          String?           @map("chapter_id")
+  title              String
+  excerpt            String
+  relevanceScore     Float             @map("relevance_score")
+  propheticRelevance Float?            @map("prophetic_relevance")
+  conceptConnections String[]          @map("concept_connections")
+  createdAt          DateTime          @default(now()) @map("created_at")
+  book               ScrollBook        @relation(fields: [bookId], references: [id], onDelete: Cascade)
+  searchQuery        ScrollSearchQuery @relation(fields: [searchQueryId], references: [id], onDelete: Cascade)
+
+  @@index([searchQueryId], map: "idx_scroll_search_result_query")
+  @@index([relevanceScore], map: "idx_scroll_search_result_relevance")
+}
+
+model ScrollReadingSession {
+  id             String             @id @default(uuid())
+  userId         String             @map("user_id")
+  bookId         String             @map("book_id")
+  chapterId      String?            @map("chapter_id")
+  scrollPosition Int                @map("scroll_position")
+  percentage     Float
+  startedAt      DateTime           @default(now()) @map("started_at")
+  lastAccessedAt DateTime           @updatedAt @map("last_accessed_at")
+  annotations    ScrollAnnotation[]
+  bookmarks      ScrollBookmark[]
+  book           ScrollBook         @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "idx_scroll_reading_session_user")
+  @@index([bookId], map: "idx_scroll_reading_session_book")
+}
+
+model ScrollAnnotation {
+  id               String               @id @default(uuid())
+  readingSessionId String               @map("reading_session_id")
+  chapterId        String               @map("chapter_id")
+  text             String
+  note             String
+  startOffset      Int                  @map("start_offset")
+  endOffset        Int                  @map("end_offset")
+  createdAt        DateTime             @default(now()) @map("created_at")
+  chapter          ScrollChapter        @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  readingSession   ScrollReadingSession @relation(fields: [readingSessionId], references: [id], onDelete: Cascade)
+}
+
+model ScrollBookmark {
+  id               String               @id @default(uuid())
+  readingSessionId String               @map("reading_session_id")
+  title            String
+  chapterId        String               @map("chapter_id")
+  scrollPosition   Int                  @map("scroll_position")
+  percentage       Float
+  createdAt        DateTime             @default(now()) @map("created_at")
+  readingSession   ScrollReadingSession @relation(fields: [readingSessionId], references: [id], onDelete: Cascade)
+}
+
+model ScrollAudioNarration {
+  id         String        @id @default(uuid())
+  chapterId  String        @map("chapter_id")
+  audioUrl   String        @map("audio_url")
+  duration   Int
+  transcript String
+  createdAt  DateTime      @default(now()) @map("created_at")
+  chapter    ScrollChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+}
+
+model ScrollAnimation {
+  id        String        @id @default(uuid())
+  conceptId String        @map("concept_id")
+  type      AnimationType
+  content   String
+  duration  Int
+  createdAt DateTime      @default(now()) @map("created_at")
+}
+
+model ScrollExportRequest {
+  id          String       @id @default(uuid())
+  bookId      String       @map("book_id")
+  userId      String       @map("user_id")
+  format      ExportFormat
+  options     Json?
+  status      ExportStatus @default(PENDING)
+  downloadUrl String?      @map("download_url")
+  fileSize    BigInt?      @map("file_size")
+  error       String?
+  createdAt   DateTime     @default(now()) @map("created_at")
+  completedAt DateTime?    @map("completed_at")
+  book        ScrollBook   @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@index([userId], map: "idx_scroll_export_request_user")
+  @@index([status], map: "idx_scroll_export_request_status")
+}
+
+model ScrollAgentTask {
+  id          String        @id @default(uuid())
+  agentId     String        @map("agent_id")
+  type        AgentTaskType
+  input       Json
+  output      Json?
+  status      TaskStatus    @default(PENDING)
+  error       String?
+  createdAt   DateTime      @default(now()) @map("created_at")
+  completedAt DateTime?     @map("completed_at")
+
+  @@index([agentId], map: "idx_scroll_agent_task_agent")
+  @@index([status], map: "idx_scroll_agent_task_status")
+  @@index([type], map: "idx_scroll_agent_task_type")
+}
+
+model ScrollStudentMaterialAccess {
+  id                 String               @id @default(uuid())
+  studentId          String               @map("student_id")
+  courseMaterialId   String               @map("course_material_id")
+  accessGrantedAt    DateTime             @default(now()) @map("access_granted_at")
+  lastAccessedAt     DateTime             @default(now()) @map("last_accessed_at")
+  cacheInvalidatedAt DateTime?            @map("cache_invalidated_at")
+  courseMaterial     ScrollCourseMaterial @relation(fields: [courseMaterialId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, courseMaterialId], map: "unique_student_material_access")
+  @@index([studentId], map: "idx_scroll_student_access_student")
+  @@index([courseMaterialId], map: "idx_scroll_student_access_material")
+  @@map("scroll_student_material_access")
+}
+
+model ScrollStudentProgress {
+  id                   String   @id @default(uuid())
+  studentId            String   @map("student_id")
+  courseId             String   @map("course_id")
+  materialsAccessed    String[] @map("materials_accessed")
+  completionPercentage Float    @default(0) @map("completion_percentage")
+  lastAccessedAt       DateTime @default(now()) @map("last_accessed_at")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  @@unique([studentId, courseId], map: "unique_student_course_progress")
+  @@index([studentId], map: "idx_scroll_student_progress_student")
+  @@index([courseId], map: "idx_scroll_student_progress_course")
+  @@map("scroll_student_progress")
+}
+
+model ScrollMaterialUpdateNotification {
+  id               String    @id @default(uuid())
+  studentId        String    @map("student_id")
+  courseMaterialId String    @map("course_material_id")
+  updateType       String    @map("update_type")
+  version          String
+  notifiedAt       DateTime  @default(now()) @map("notified_at")
+  acknowledged     Boolean   @default(false)
+  acknowledgedAt   DateTime? @map("acknowledged_at")
+
+  @@index([studentId], map: "idx_scroll_update_notification_student")
+  @@index([acknowledged], map: "idx_scroll_update_notification_ack")
+  @@map("scroll_material_update_notifications")
+}
+
+model ScrollMaterialVersion {
+  id               String               @id @default(uuid())
+  courseMaterialId String               @map("course_material_id")
+  materialType     String               @map("material_type")
+  version          String
+  updatedAt        DateTime             @default(now()) @map("updated_at")
+  courseMaterial   ScrollCourseMaterial @relation(fields: [courseMaterialId], references: [id], onDelete: Cascade)
+
+  @@index([courseMaterialId], map: "idx_scroll_material_version_material")
+  @@map("scroll_material_versions")
+}
+
+model ScrollCompletionAnalytics {
+  studentId            String   @map("student_id")
+  courseId             String   @map("course_id")
+  completionPercentage Float    @map("completion_percentage")
+  lastUpdated          DateTime @default(now()) @map("last_updated")
+
+  @@id([studentId, courseId])
+  @@index([studentId], map: "idx_scroll_completion_analytics_student")
+  @@index([courseId], map: "idx_scroll_completion_analytics_course")
+  @@map("scroll_completion_analytics")
+}
+
+model ScrollPastQuestion {
+  id               String               @id @default(uuid())
+  courseMaterialId String               @map("course_material_id")
+  type             QuestionType
+  content          String
+  options          String[]
+  correctAnswer    String?              @map("correct_answer")
+  explanation      String?
+  createdAt        DateTime             @default(now()) @map("created_at")
+  courseMaterial   ScrollCourseMaterial @relation(fields: [courseMaterialId], references: [id], onDelete: Cascade)
+
+  @@index([courseMaterialId], map: "idx_scroll_past_question_material")
+  @@map("scroll_past_questions")
+}
+
 enum AssessmentType {
   QUIZ
   ESSAY
@@ -780,8 +1229,6 @@ enum SystemType {
   COMMUNITY
 }
 
-
-
 enum RigorLevel {
   BEGINNER
   INTERMEDIATE
@@ -809,421 +1256,6 @@ enum ProgressionLevel {
   SYSTEM_DESIGN_GOVERNANCE
   MULTIPLICATION_TEACHING
 }
-
-// ScrollLibrary Models
-
-model ScrollBook {
-  id                String              @id @default(uuid())
-  title             String
-  subtitle          String?
-  subject           String
-  level             AcademicLevel
-  courseReference   String?             @map("course_reference")
-  integrityHash     String              @map("integrity_hash")
-  publishedAt       DateTime?           @map("published_at")
-  createdAt         DateTime            @default(now()) @map("created_at")
-  updatedAt         DateTime            @updatedAt @map("updated_at")
-  
-  // Relationships
-  chapters          ScrollChapter[]
-  diagrams          ScrollDiagram[]
-  metadata          ScrollBookMetadata?
-  courseMaterials   ScrollCourseMaterial[]
-  searchResults     ScrollSearchResult[]
-  readingSessions   ScrollReadingSession[]
-  exports           ScrollExportRequest[]
-
-  @@index([subject], map: "idx_scroll_book_subject")
-  @@index([level], map: "idx_scroll_book_level")
-  @@index([courseReference], map: "idx_scroll_book_course_ref")
-}
-
-model ScrollBookMetadata {
-  id                    String    @id @default(uuid())
-  bookId                String    @unique @map("book_id")
-  authorAgent           String    @map("author_agent")
-  version               String
-  scrollIntegrityHash   String    @map("scroll_integrity_hash")
-  generationDate        DateTime  @map("generation_date")
-  lastValidated         DateTime  @map("last_validated")
-  qualityScore          Float     @map("quality_score")
-  theologicalAlignment  Float     @map("theological_alignment")
-  
-  // Relationships
-  book                  ScrollBook @relation(fields: [bookId], references: [id], onDelete: Cascade)
-}
-
-model ScrollChapter {
-  id            String              @id @default(uuid())
-  bookId        String              @map("book_id")
-  title         String
-  orderIndex    Int                 @map("order_index")
-  content       String              // Markdown format
-  readingTime   Int                 @map("reading_time") // minutes
-  createdAt     DateTime            @default(now()) @map("created_at")
-  updatedAt     DateTime            @updatedAt @map("updated_at")
-  
-  // Relationships
-  book          ScrollBook          @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  diagrams      ScrollDiagram[]
-  references    ScrollReference[]
-  summaries     ScrollSummary[]
-  exercises     ScrollExercise[]
-  knowledgeNodes ScrollKnowledgeNode[]
-  audioNarrations ScrollAudioNarration[]
-  annotations   ScrollAnnotation[]
-  
-  @@index([bookId], map: "idx_scroll_chapter_book")
-  @@index([orderIndex], map: "idx_scroll_chapter_order")
-}
-
-model ScrollDiagram {
-  id        String      @id @default(uuid())
-  bookId    String?     @map("book_id")
-  chapterId String?     @map("chapter_id")
-  type      DiagramType
-  content   String      // JSON or Mermaid syntax
-  caption   String
-  createdAt DateTime    @default(now()) @map("created_at")
-  
-  // Relationships
-  book      ScrollBook?    @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  chapter   ScrollChapter? @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  studyPacks ScrollStudyPack[]
-}
-
-model ScrollReference {
-  id        String        @id @default(uuid())
-  chapterId String        @map("chapter_id")
-  type      ReferenceType
-  citation  String
-  url       String?
-  createdAt DateTime      @default(now()) @map("created_at")
-  
-  // Relationships
-  chapter   ScrollChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-}
-
-model ScrollSummary {
-  id        String        @id @default(uuid())
-  chapterId String        @map("chapter_id")
-  type      SummaryType
-  content   String
-  createdAt DateTime      @default(now()) @map("created_at")
-  
-  // Relationships
-  chapter   ScrollChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-}
-
-model ScrollExercise {
-  id        String        @id @default(uuid())
-  chapterId String        @map("chapter_id")
-  type      ExerciseType
-  content   String
-  solution  String?
-  createdAt DateTime      @default(now()) @map("created_at")
-  
-  // Relationships
-  chapter   ScrollChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-}
-
-model ScrollCourseMaterial {
-  id            String              @id @default(uuid())
-  courseId      String              @map("course_id")
-  textbookId    String?             @map("textbook_id")
-  workbookId    String?             @map("workbook_id")
-  lectureSlides String[]            @map("lecture_slides")
-  studyPackId   String?             @map("study_pack_id")
-  createdAt     DateTime            @default(now()) @map("created_at")
-  updatedAt     DateTime            @updatedAt @map("updated_at")
-  
-  // Relationships
-  textbook      ScrollBook?         @relation(fields: [textbookId], references: [id])
-  studyPack     ScrollStudyPack?    @relation(fields: [studyPackId], references: [id])
-  pastQuestions ScrollQuestion[]
-  pastQuestionsNew ScrollPastQuestion[]
-  readingList   ScrollReadingListItem[]
-  studentAccess ScrollStudentMaterialAccess[]
-  versions      ScrollMaterialVersion[]
-  
-  @@index([courseId], map: "idx_scroll_course_material_course")
-}
-
-model ScrollKnowledgeNode {
-  id            String                    @id @default(uuid())
-  chapterId     String?                   @map("chapter_id")
-  concept       String
-  definition    String
-  embeddings    Float[]                   // Vector representation
-  relatedBooks  String[]                  @map("related_books")
-  relatedChapters String[]                @map("related_chapters")
-  createdAt     DateTime                  @default(now()) @map("created_at")
-  updatedAt     DateTime                  @updatedAt @map("updated_at")
-  
-  // Relationships
-  chapter       ScrollChapter?            @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-  relationships ScrollRelationship[]      @relation("SourceNode")
-  targetRelationships ScrollRelationship[] @relation("TargetNode")
-  sources       ScrollSource[]
-  
-  @@index([concept], map: "idx_scroll_knowledge_node_concept")
-}
-
-model ScrollRelationship {
-  id            String              @id @default(uuid())
-  sourceNodeId  String              @map("source_node_id")
-  targetNodeId  String              @map("target_node_id")
-  type          RelationType
-  strength      Float               // 0-1
-  createdAt     DateTime            @default(now()) @map("created_at")
-  
-  // Relationships
-  sourceNode    ScrollKnowledgeNode @relation("SourceNode", fields: [sourceNodeId], references: [id], onDelete: Cascade)
-  targetNode    ScrollKnowledgeNode @relation("TargetNode", fields: [targetNodeId], references: [id], onDelete: Cascade)
-  
-  @@unique([sourceNodeId, targetNodeId, type])
-}
-
-model ScrollSource {
-  id                String              @id @default(uuid())
-  knowledgeNodeId   String              @map("knowledge_node_id")
-  title             String
-  author            String
-  type              SourceType
-  url               String?
-  credibilityScore  Float               @map("credibility_score")
-  createdAt         DateTime            @default(now()) @map("created_at")
-  
-  // Relationships
-  knowledgeNode     ScrollKnowledgeNode @relation(fields: [knowledgeNodeId], references: [id], onDelete: Cascade)
-}
-
-model ScrollStudyPack {
-  id              String                @id @default(uuid())
-  courseId        String                @map("course_id")
-  summaryBooklet  String                @map("summary_booklet") // PDF URL
-  createdAt       DateTime              @default(now()) @map("created_at")
-  
-  // Relationships
-  courseMaterials ScrollCourseMaterial[]
-  practiceQuestions ScrollQuestion[]
-  flashcards      ScrollFlashcard[]
-  diagrams        ScrollDiagram[]
-  cheatSheets     ScrollCheatSheet[]
-  quizzes         ScrollQuiz[]
-  
-  @@index([courseId], map: "idx_scroll_study_pack_course")
-}
-
-model ScrollQuestion {
-  id                String                @id @default(uuid())
-  courseMaterialId  String?               @map("course_material_id")
-  studyPackId       String?               @map("study_pack_id")
-  quizId            String?               @map("quiz_id")
-  type              QuestionType
-  content           String
-  options           String[]
-  correctAnswer     String?               @map("correct_answer")
-  explanation       String?
-  createdAt         DateTime              @default(now()) @map("created_at")
-  
-  // Relationships
-  courseMaterial    ScrollCourseMaterial? @relation(fields: [courseMaterialId], references: [id], onDelete: Cascade)
-  studyPack         ScrollStudyPack?      @relation(fields: [studyPackId], references: [id], onDelete: Cascade)
-  quiz              ScrollQuiz?           @relation(fields: [quizId], references: [id], onDelete: Cascade)
-}
-
-model ScrollFlashcard {
-  id          String          @id @default(uuid())
-  studyPackId String          @map("study_pack_id")
-  front       String
-  back        String
-  category    String
-  createdAt   DateTime        @default(now()) @map("created_at")
-  
-  // Relationships
-  studyPack   ScrollStudyPack @relation(fields: [studyPackId], references: [id], onDelete: Cascade)
-}
-
-model ScrollCheatSheet {
-  id          String          @id @default(uuid())
-  studyPackId String          @map("study_pack_id")
-  title       String
-  content     String
-  category    String
-  createdAt   DateTime        @default(now()) @map("created_at")
-  
-  // Relationships
-  studyPack   ScrollStudyPack @relation(fields: [studyPackId], references: [id], onDelete: Cascade)
-}
-
-model ScrollQuiz {
-  id          String            @id @default(uuid())
-  studyPackId String            @map("study_pack_id")
-  title       String
-  timeLimit   Int?              @map("time_limit") // minutes
-  createdAt   DateTime          @default(now()) @map("created_at")
-  
-  // Relationships
-  studyPack   ScrollStudyPack   @relation(fields: [studyPackId], references: [id], onDelete: Cascade)
-  questions   ScrollQuestion[]
-}
-
-model ScrollReadingListItem {
-  id                String                @id @default(uuid())
-  courseMaterialId  String                @map("course_material_id")
-  title             String
-  author            String
-  type              ReadingItemType
-  url               String?
-  required          Boolean
-  createdAt         DateTime              @default(now()) @map("created_at")
-  
-  // Relationships
-  courseMaterial    ScrollCourseMaterial  @relation(fields: [courseMaterialId], references: [id], onDelete: Cascade)
-}
-
-model ScrollSearchQuery {
-  id        String              @id @default(uuid())
-  userId    String              @map("user_id")
-  query     String
-  type      SearchType
-  filters   Json?               // SearchFilters as JSON
-  limit     Int?
-  createdAt DateTime            @default(now()) @map("created_at")
-  
-  // Relationships
-  results   ScrollSearchResult[]
-  
-  @@index([userId], map: "idx_scroll_search_query_user")
-  @@index([type], map: "idx_scroll_search_query_type")
-}
-
-model ScrollSearchResult {
-  id                  String            @id @default(uuid())
-  searchQueryId       String            @map("search_query_id")
-  bookId              String            @map("book_id")
-  chapterId           String?           @map("chapter_id")
-  title               String
-  excerpt             String
-  relevanceScore      Float             @map("relevance_score")
-  propheticRelevance  Float?            @map("prophetic_relevance")
-  conceptConnections  String[]          @map("concept_connections")
-  createdAt           DateTime          @default(now()) @map("created_at")
-  
-  // Relationships
-  searchQuery         ScrollSearchQuery @relation(fields: [searchQueryId], references: [id], onDelete: Cascade)
-  book                ScrollBook        @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  
-  @@index([searchQueryId], map: "idx_scroll_search_result_query")
-  @@index([relevanceScore], map: "idx_scroll_search_result_relevance")
-}
-
-model ScrollReadingSession {
-  id              String              @id @default(uuid())
-  userId          String              @map("user_id")
-  bookId          String              @map("book_id")
-  chapterId       String?             @map("chapter_id")
-  scrollPosition  Int                 @map("scroll_position")
-  percentage      Float
-  startedAt       DateTime            @default(now()) @map("started_at")
-  lastAccessedAt  DateTime            @updatedAt @map("last_accessed_at")
-  
-  // Relationships
-  book            ScrollBook          @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  annotations     ScrollAnnotation[]
-  bookmarks       ScrollBookmark[]
-  
-  @@index([userId], map: "idx_scroll_reading_session_user")
-  @@index([bookId], map: "idx_scroll_reading_session_book")
-}
-
-model ScrollAnnotation {
-  id                String                @id @default(uuid())
-  readingSessionId  String                @map("reading_session_id")
-  chapterId         String                @map("chapter_id")
-  text              String
-  note              String
-  startOffset       Int                   @map("start_offset")
-  endOffset         Int                   @map("end_offset")
-  createdAt         DateTime              @default(now()) @map("created_at")
-  
-  // Relationships
-  readingSession    ScrollReadingSession  @relation(fields: [readingSessionId], references: [id], onDelete: Cascade)
-  chapter           ScrollChapter         @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-}
-
-model ScrollBookmark {
-  id                String                @id @default(uuid())
-  readingSessionId  String                @map("reading_session_id")
-  title             String
-  chapterId         String                @map("chapter_id")
-  scrollPosition    Int                   @map("scroll_position")
-  percentage        Float
-  createdAt         DateTime              @default(now()) @map("created_at")
-  
-  // Relationships
-  readingSession    ScrollReadingSession  @relation(fields: [readingSessionId], references: [id], onDelete: Cascade)
-}
-
-model ScrollAudioNarration {
-  id          String        @id @default(uuid())
-  chapterId   String        @map("chapter_id")
-  audioUrl    String        @map("audio_url")
-  duration    Int           // seconds
-  transcript  String
-  createdAt   DateTime      @default(now()) @map("created_at")
-  
-  // Relationships
-  chapter     ScrollChapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
-}
-
-model ScrollAnimation {
-  id        String        @id @default(uuid())
-  conceptId String        @map("concept_id")
-  type      AnimationType
-  content   String        // JSON or URL
-  duration  Int           // seconds
-  createdAt DateTime      @default(now()) @map("created_at")
-}
-
-model ScrollExportRequest {
-  id          String        @id @default(uuid())
-  bookId      String        @map("book_id")
-  userId      String        @map("user_id")
-  format      ExportFormat
-  options     Json?         // ExportOptions as JSON
-  status      ExportStatus  @default(PENDING)
-  downloadUrl String?       @map("download_url")
-  fileSize    BigInt?       @map("file_size")
-  error       String?
-  createdAt   DateTime      @default(now()) @map("created_at")
-  completedAt DateTime?     @map("completed_at")
-  
-  // Relationships
-  book        ScrollBook    @relation(fields: [bookId], references: [id], onDelete: Cascade)
-  
-  @@index([userId], map: "idx_scroll_export_request_user")
-  @@index([status], map: "idx_scroll_export_request_status")
-}
-
-model ScrollAgentTask {
-  id          String        @id @default(uuid())
-  agentId     String        @map("agent_id")
-  type        AgentTaskType
-  input       Json
-  output      Json?
-  status      TaskStatus    @default(PENDING)
-  error       String?
-  createdAt   DateTime      @default(now()) @map("created_at")
-  completedAt DateTime?     @map("completed_at")
-  
-  @@index([agentId], map: "idx_scroll_agent_task_agent")
-  @@index([status], map: "idx_scroll_agent_task_status")
-  @@index([type], map: "idx_scroll_agent_task_type")
-}
-
-// ScrollLibrary Enums
 
 enum AcademicLevel {
   BEGINNER
@@ -1325,98 +1357,358 @@ enum TaskStatus {
 }
 
 
+// ============================================================================
+// CORE APPLICATION MODELS
+// Added to fix missing base models that the entire application depends on
+// ============================================================================
+
+model User {
+  id                String   @id @default(uuid())
+  email             String   @unique
+  username          String   @unique
+  passwordHash      String   @map("password_hash")
+  firstName         String   @map("first_name")
+  lastName          String   @map("last_name")
+  role              String   // STUDENT, FACULTY, ADMIN, STAFF
+  scrollCalling     String?  @map("scroll_calling")
+  spiritualGifts    String[] @map("spiritual_gifts")
+  kingdomVision     String?  @map("kingdom_vision")
+  scrollAlignment   Float    @default(0) @map("scroll_alignment")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Faculty {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  icon        String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  courses        Course[]
+  degreePrograms DegreeProgram[]
+
+  @@map("faculties")
+}
+
+model Course {
+  id              String   @id @default(uuid())
+  code            String   @unique
+  title           String
+  description     String
+  facultyId       String   @map("faculty_id")
+  credits         Int      @default(3)
+  level           String   // BEGINNER, INTERMEDIATE, ADVANCED
+  prerequisites   String[] @default([])
+  corequisites    String[] @default([])
+  isActive        Boolean  @default(true) @map("is_active")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  faculty         Faculty        @relation(fields: [facultyId], references: [id])
+  modules         CourseModule[]
+
+  @@map("courses")
+}
+
+model Enrollment {
+  id              String    @id @default(uuid())
+  userId          String    @map("user_id")
+  courseId        String    @map("course_id")
+  status          String    // ENROLLED, COMPLETED, DROPPED
+  enrolledAt      DateTime  @default(now()) @map("enrolled_at")
+  completedAt     DateTime? @map("completed_at")
+  grade           String?
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+// Course Improvement System Models
+model CourseImprovementTask {
+  id                String   @id
+  courseId          String
+  title             String
+  description       String
+  priority          String   // 'critical' | 'high' | 'medium' | 'low'
+  impactScore       Float
+  affectedStudents  Int
+  status            String   // 'pending' | 'in_progress' | 'completed'
+  assignedTo        String?
+  dueDate           DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([courseId])
+  @@index([status])
+  @@index([priority])
+}
+
+model ContentFlag {
+  id                  String    @id
+  courseId            String
+  contentId           String
+  contentType         String    // 'lecture' | 'notes' | 'assessment' | 'resource'
+  reason              String    // 'age' | 'external_change' | 'feedback' | 'technology_update'
+  severity            String    // 'urgent' | 'important' | 'routine'
+  flaggedAt           DateTime  @default(now())
+  scheduledUpdateDate DateTime?
+  resolvedAt          DateTime?
+
+  @@index([courseId])
+  @@index([contentId])
+  @@index([severity])
+}
+
 
 // ============================================================================
-// ScrollLibrary Course Integration - Missing Models
+// DEGREE PROGRAM SYSTEM
+// Complete academic pathway from Certificate to Doctorate
 // ============================================================================
 
-model ScrollStudentMaterialAccess {
-  id                  String               @id @default(uuid())
-  studentId           String               @map("student_id")
-  courseMaterialId    String               @map("course_material_id")
-  accessGrantedAt     DateTime             @default(now()) @map("access_granted_at")
-  lastAccessedAt      DateTime             @default(now()) @map("last_accessed_at")
-  cacheInvalidatedAt  DateTime?            @map("cache_invalidated_at")
-  
-  // Relationships
-  courseMaterial      ScrollCourseMaterial @relation(fields: [courseMaterialId], references: [id], onDelete: Cascade)
-  
-  @@unique([studentId, courseMaterialId], map: "unique_student_material_access")
-  @@index([studentId], map: "idx_scroll_student_access_student")
-  @@index([courseMaterialId], map: "idx_scroll_student_access_material")
-  @@map("scroll_student_material_access")
+enum DegreeType {
+  CERTIFICATE
+  DIPLOMA
+  ASSOCIATE
+  BACHELOR
+  MASTER
+  DOCTORATE
 }
 
-model ScrollStudentProgress {
-  id                    String   @id @default(uuid())
-  studentId             String   @map("student_id")
-  courseId              String   @map("course_id")
-  materialsAccessed     String[] @map("materials_accessed")
-  completionPercentage  Float    @default(0) @map("completion_percentage")
-  lastAccessedAt        DateTime @default(now()) @map("last_accessed_at")
-  createdAt             DateTime @default(now()) @map("created_at")
-  updatedAt             DateTime @updatedAt @map("updated_at")
-  
-  @@unique([studentId, courseId], map: "unique_student_course_progress")
-  @@index([studentId], map: "idx_scroll_student_progress_student")
-  @@index([courseId], map: "idx_scroll_student_progress_course")
-  @@map("scroll_student_progress")
+enum RequirementCategory {
+  CORE
+  MAJOR
+  MINOR
+  ELECTIVE
+  SPIRITUAL_FORMATION
+  CAPSTONE
+  GENERAL_EDUCATION
 }
 
-model ScrollMaterialUpdateNotification {
-  id                String               @id @default(uuid())
-  studentId         String               @map("student_id")
-  courseMaterialId  String               @map("course_material_id")
-  updateType        String               @map("update_type")
-  version           String
-  notifiedAt        DateTime             @default(now()) @map("notified_at")
-  acknowledged      Boolean              @default(false)
-  acknowledgedAt    DateTime?            @map("acknowledged_at")
-  
-  @@index([studentId], map: "idx_scroll_update_notification_student")
-  @@index([acknowledged], map: "idx_scroll_update_notification_ack")
-  @@map("scroll_material_update_notifications")
+enum DegreeEnrollmentStatus {
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  WITHDRAWN
+  DISMISSED
 }
 
-model ScrollMaterialVersion {
-  id                String               @id @default(uuid())
-  courseMaterialId  String               @map("course_material_id")
-  materialType      String               @map("material_type")
-  version           String
-  updatedAt         DateTime             @default(now()) @map("updated_at")
-  
-  // Relationships
-  courseMaterial    ScrollCourseMaterial @relation(fields: [courseMaterialId], references: [id], onDelete: Cascade)
-  
-  @@index([courseMaterialId], map: "idx_scroll_material_version_material")
-  @@map("scroll_material_versions")
+enum HonorsLevel {
+  SUMMA_CUM_LAUDE  // 3.9+
+  MAGNA_CUM_LAUDE  // 3.7-3.89
+  CUM_LAUDE        // 3.5-3.69
+  NONE
 }
 
-model ScrollCompletionAnalytics {
-  studentId             String   @map("student_id")
-  courseId              String   @map("course_id")
-  completionPercentage  Float    @map("completion_percentage")
-  lastUpdated           DateTime @default(now()) @map("last_updated")
-  
-  @@id([studentId, courseId])
-  @@index([studentId], map: "idx_scroll_completion_analytics_student")
-  @@index([courseId], map: "idx_scroll_completion_analytics_course")
-  @@map("scroll_completion_analytics")
+model DegreeProgram {
+  id                      String   @id @default(uuid())
+  name                    String
+  code                    String   @unique
+  degreeType              DegreeType @map("degree_type")
+  facultyId               String   @map("faculty_id")
+  description             String
+  totalCredits            Int      @map("total_credits")
+  minimumGpa              Float    @default(2.0) @map("minimum_gpa")
+  estimatedDurationMonths Int      @map("estimated_duration_months")
+  isActive                Boolean  @default(true) @map("is_active")
+  accreditationStatus     String?  @map("accreditation_status")
+  createdAt               DateTime @default(now()) @map("created_at")
+  updatedAt               DateTime @updatedAt @map("updated_at")
+
+  faculty                      Faculty                        @relation(fields: [facultyId], references: [id])
+  requirements                 DegreeRequirement[]
+  enrollments                  DegreeEnrollment[]
+  spiritualFormationRequirements SpiritualFormationRequirement[]
+
+  @@index([facultyId], map: "idx_degree_program_faculty")
+  @@index([degreeType], map: "idx_degree_program_type")
+  @@index([isActive], map: "idx_degree_program_active")
+  @@map("degree_programs")
 }
 
-model ScrollPastQuestion {
-  id                String               @id @default(uuid())
-  courseMaterialId  String               @map("course_material_id")
-  type              QuestionType
-  content           String
-  options           String[]
-  correctAnswer     String?              @map("correct_answer")
-  explanation       String?
-  createdAt         DateTime             @default(now()) @map("created_at")
-  
-  // Relationships
-  courseMaterial    ScrollCourseMaterial @relation(fields: [courseMaterialId], references: [id], onDelete: Cascade)
-  
-  @@index([courseMaterialId], map: "idx_scroll_past_question_material")
-  @@map("scroll_past_questions")
+model DegreeRequirement {
+  id               String              @id @default(uuid())
+  degreeProgramId  String              @map("degree_program_id")
+  category         RequirementCategory
+  name             String
+  description      String
+  creditHours      Int                 @map("credit_hours")
+  requiredCourses  String[]            @map("required_courses")
+  electiveOptions  String[]            @map("elective_options")
+  minimumGrade     String?             @map("minimum_grade")
+  orderIndex       Int                 @default(0) @map("order_index")
+  createdAt        DateTime            @default(now()) @map("created_at")
+  updatedAt        DateTime            @updatedAt @map("updated_at")
+
+  degreeProgram DegreeProgram                @relation(fields: [degreeProgramId], references: [id], onDelete: Cascade)
+  progress      DegreeRequirementProgress[]
+
+  @@index([degreeProgramId], map: "idx_degree_requirement_program")
+  @@index([category], map: "idx_degree_requirement_category")
+  @@map("degree_requirements")
+}
+
+model DegreeEnrollment {
+  id                     String                  @id @default(uuid())
+  userId                 String                  @map("user_id")
+  degreeProgramId        String                  @map("degree_program_id")
+  status                 DegreeEnrollmentStatus  @default(ACTIVE)
+  enrolledAt             DateTime                @default(now()) @map("enrolled_at")
+  expectedGraduationDate DateTime?               @map("expected_graduation_date")
+  actualGraduationDate   DateTime?               @map("actual_graduation_date")
+  cumulativeGpa          Float?                  @map("cumulative_gpa")
+  creditsCompleted       Int                     @default(0) @map("credits_completed")
+  creditsInProgress      Int                     @default(0) @map("credits_in_progress")
+  academicStanding       String?                 @map("academic_standing")
+  createdAt              DateTime                @default(now()) @map("created_at")
+  updatedAt              DateTime                @updatedAt @map("updated_at")
+
+  degreeProgram              DegreeProgram                   @relation(fields: [degreeProgramId], references: [id])
+  requirementProgress        DegreeRequirementProgress[]
+  spiritualFormationProgress SpiritualFormationProgress[]
+  graduationApplications     GraduationApplication[]
+  transcripts                OfficialTranscript[]
+  diplomas                   Diploma[]
+
+  @@unique([userId, degreeProgramId], map: "unique_user_degree_program")
+  @@index([userId], map: "idx_degree_enrollment_user")
+  @@index([degreeProgramId], map: "idx_degree_enrollment_program")
+  @@index([status], map: "idx_degree_enrollment_status")
+  @@map("degree_enrollments")
+}
+
+model DegreeRequirementProgress {
+  id                   String    @id @default(uuid())
+  degreeEnrollmentId   String    @map("degree_enrollment_id")
+  degreeRequirementId  String    @map("degree_requirement_id")
+  completed            Boolean   @default(false)
+  creditsCompleted     Int       @default(0) @map("credits_completed")
+  completedCourses     String[]  @map("completed_courses")
+  inProgressCourses    String[]  @map("in_progress_courses")
+  completionDate       DateTime? @map("completion_date")
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
+
+  degreeEnrollment  DegreeEnrollment  @relation(fields: [degreeEnrollmentId], references: [id], onDelete: Cascade)
+  degreeRequirement DegreeRequirement @relation(fields: [degreeRequirementId], references: [id], onDelete: Cascade)
+
+  @@unique([degreeEnrollmentId, degreeRequirementId], map: "unique_enrollment_requirement")
+  @@index([degreeEnrollmentId], map: "idx_requirement_progress_enrollment")
+  @@index([degreeRequirementId], map: "idx_requirement_progress_requirement")
+  @@map("degree_requirement_progress")
+}
+
+model SpiritualFormationRequirement {
+  id              String   @id @default(uuid())
+  degreeProgramId String   @map("degree_program_id")
+  name            String
+  description     String
+  type            String
+  minimumScore    Int?     @map("minimum_score")
+  required        Boolean  @default(true)
+  orderIndex      Int      @default(0) @map("order_index")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  degreeProgram DegreeProgram                    @relation(fields: [degreeProgramId], references: [id], onDelete: Cascade)
+  progress      SpiritualFormationProgress[]
+
+  @@index([degreeProgramId], map: "idx_spiritual_requirement_program")
+  @@map("spiritual_formation_requirements")
+}
+
+model SpiritualFormationProgress {
+  id                     String    @id @default(uuid())
+  degreeEnrollmentId     String    @map("degree_enrollment_id")
+  spiritualRequirementId String    @map("spiritual_requirement_id")
+  completed              Boolean   @default(false)
+  score                  Int?
+  completionDate         DateTime? @map("completion_date")
+  notes                  String?
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
+
+  degreeEnrollment       DegreeEnrollment              @relation(fields: [degreeEnrollmentId], references: [id], onDelete: Cascade)
+  spiritualRequirement   SpiritualFormationRequirement @relation(fields: [spiritualRequirementId], references: [id], onDelete: Cascade)
+
+  @@unique([degreeEnrollmentId, spiritualRequirementId], map: "unique_enrollment_spiritual_requirement")
+  @@index([degreeEnrollmentId], map: "idx_spiritual_progress_enrollment")
+  @@map("spiritual_formation_progress")
+}
+
+model GraduationApplication {
+  id                  String       @id @default(uuid())
+  degreeEnrollmentId  String       @map("degree_enrollment_id")
+  applicationDate     DateTime     @default(now()) @map("application_date")
+  ceremonyDate        DateTime?    @map("ceremony_date")
+  status              String       @default("PENDING")
+  eligibilityChecked  Boolean      @default(false) @map("eligibility_checked")
+  approvedBy          String?      @map("approved_by")
+  approvedAt          DateTime?    @map("approved_at")
+  diplomaIssued       Boolean      @default(false) @map("diploma_issued")
+  diplomaIssuedAt     DateTime?    @map("diploma_issued_at")
+  honorsLevel         HonorsLevel  @default(NONE) @map("honors_level")
+  notes               String?
+  createdAt           DateTime     @default(now()) @map("created_at")
+  updatedAt           DateTime     @updatedAt @map("updated_at")
+
+  degreeEnrollment DegreeEnrollment @relation(fields: [degreeEnrollmentId], references: [id], onDelete: Cascade)
+  diploma          Diploma?
+
+  @@index([degreeEnrollmentId], map: "idx_graduation_application_enrollment")
+  @@index([status], map: "idx_graduation_application_status")
+  @@map("graduation_applications")
+}
+
+model OfficialTranscript {
+  id                 String    @id @default(uuid())
+  userId             String    @map("user_id")
+  degreeEnrollmentId String?   @map("degree_enrollment_id")
+  transcriptType     String    @default("OFFICIAL") @map("transcript_type")
+  issuedAt           DateTime  @default(now()) @map("issued_at")
+  issuedBy           String    @map("issued_by")
+  cumulativeGpa      Float     @map("cumulative_gpa")
+  totalCredits       Int       @map("total_credits")
+  blockchainHash     String?   @map("blockchain_hash")
+  verificationUrl    String?   @map("verification_url")
+  pdfUrl             String?   @map("pdf_url")
+  createdAt          DateTime  @default(now()) @map("created_at")
+
+  degreeEnrollment DegreeEnrollment? @relation(fields: [degreeEnrollmentId], references: [id], onDelete: SetNull)
+
+  @@index([userId], map: "idx_transcript_user")
+  @@index([degreeEnrollmentId], map: "idx_transcript_enrollment")
+  @@map("official_transcripts")
+}
+
+model Diploma {
+  id                      String       @id @default(uuid())
+  graduationApplicationId String       @unique @map("graduation_application_id")
+  degreeEnrollmentId      String       @map("degree_enrollment_id")
+  userId                  String       @map("user_id")
+  degreeTitle             String       @map("degree_title")
+  degreeType              DegreeType   @map("degree_type")
+  facultyName             String       @map("faculty_name")
+  graduationDate          DateTime     @map("graduation_date")
+  finalGpa                Float        @map("final_gpa")
+  honorsLevel             HonorsLevel  @default(NONE) @map("honors_level")
+  blockchainHash          String?      @map("blockchain_hash")
+  ipfsHash                String?      @map("ipfs_hash")
+  verificationUrl         String?      @map("verification_url")
+  pdfUrl                  String?      @map("pdf_url")
+  issuedAt                DateTime     @default(now()) @map("issued_at")
+  createdAt               DateTime     @default(now()) @map("created_at")
+
+  graduationApplication GraduationApplication @relation(fields: [graduationApplicationId], references: [id])
+  degreeEnrollment      DegreeEnrollment      @relation(fields: [degreeEnrollmentId], references: [id])
+
+  @@index([userId], map: "idx_diploma_user")
+  @@index([degreeEnrollmentId], map: "idx_diploma_enrollment")
+  @@map("diplomas")
 }

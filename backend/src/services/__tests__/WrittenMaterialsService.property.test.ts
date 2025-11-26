@@ -10,9 +10,45 @@ import WrittenMaterialsService from '../WrittenMaterialsService';
 import { LectureNotesRequest, ResourceCurationRequest } from '../../types/course-content.types';
 
 // Mock dependencies
-jest.mock('../AIGatewayService');
-jest.mock('../PDFGenerationService');
-jest.mock('../FileStorageService');
+jest.mock('../AIGatewayService', () => ({
+  aiGatewayService: {
+    generateCompletion: jest.fn().mockResolvedValue({
+      content: 'Generated comprehensive lecture notes content with summaries, key concepts, examples, practice problems, and real-world applications. This content is detailed and spans multiple pages with in-depth explanations.',
+      usage: { totalTokens: 1000 }
+    })
+  }
+}));
+
+jest.mock('../PDFGenerationService', () => {
+  return jest.fn().mockImplementation(() => ({
+    generatePDF: jest.fn().mockResolvedValue({
+      id: 'pdf-123',
+      url: 'https://cdn.example.com/pdfs/notes-123.pdf',
+      filename: 'lecture-notes.pdf',
+      format: 'PDF',
+      formatting: {
+        font: 'Times New Roman',
+        fontSize: 12,
+        lineSpacing: 1.5,
+        margins: {
+          top: 1,
+          bottom: 1,
+          left: 1,
+          right: 1
+        }
+      }
+    })
+  }));
+});
+
+jest.mock('../FileStorageService', () => {
+  return jest.fn().mockImplementation(() => ({
+    uploadFile: jest.fn().mockResolvedValue({
+      url: 'https://storage.example.com/files/123',
+      key: 'files/123'
+    })
+  }));
+});
 
 describe('WrittenMaterialsService Property-Based Tests', () => {
   let service: WrittenMaterialsService;

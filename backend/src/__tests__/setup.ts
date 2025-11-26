@@ -3,7 +3,12 @@
  * Global test configuration and mocks
  */
 
+import { config } from 'dotenv';
+import { resolve } from 'path';
 import { PrismaClient } from '@prisma/client';
+
+// Load test environment variables
+config({ path: resolve(__dirname, '../../.env.test') });
 
 // Mock Prisma Client globally
 jest.mock('@prisma/client', () => ({
@@ -38,11 +43,14 @@ jest.mock('../services/AIGatewayService', () => ({
 // Global test timeout for property-based tests
 jest.setTimeout(60000);
 
-// Setup environment variables for testing
-process.env.NODE_ENV = 'test';
-process.env.DATABASE_URL = 'postgresql://test:test@localhost:5432/scrolluniversity_test';
-process.env.OPENAI_API_KEY = 'test-key';
-process.env.CLAUDE_API_KEY = 'test-key';
+// Setup environment variables for testing (fallbacks if .env.test not loaded)
+process.env.NODE_ENV = process.env.NODE_ENV || 'test';
+process.env.DATABASE_URL = process.env.DATABASE_URL || 'postgresql://test:test@localhost:5432/scrolluniversity_test';
+process.env.OPENAI_API_KEY = process.env.OPENAI_API_KEY || 'test-key';
+process.env.CLAUDE_API_KEY = process.env.CLAUDE_API_KEY || 'test-key';
+process.env.SUPABASE_URL = process.env.SUPABASE_URL || 'https://test-project.supabase.co';
+process.env.SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'test-supabase-anon-key';
+process.env.PINECONE_API_KEY = process.env.PINECONE_API_KEY || 'test-pinecone-key';
 
 // Global test utilities
 global.testUtils = {

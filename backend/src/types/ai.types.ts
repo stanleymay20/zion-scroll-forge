@@ -3,7 +3,7 @@
  * "The Spirit of truth will guide you into all truth" - John 16:13
  */
 
-export type AIProvider = 'openai' | 'anthropic';
+export type AIProvider = 'openai' | 'anthropic' | 'openrouter' | 'deepseek';
 
 export type AIModel = 
     | 'gpt-4-turbo'

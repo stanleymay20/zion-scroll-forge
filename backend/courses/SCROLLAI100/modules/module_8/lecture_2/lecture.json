@@ -1,0 +1,41 @@
+{
+  "id": "lecture-8-2",
+  "moduleId": "module-SCROLLAI100-8",
+  "title": "Module 8: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-8-2",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-8-2",
+    "lectureId": "lecture-8-2",
+    "content": "",
+    "summary": "\": \"In this lecture, we have explored the core concepts of AI and robotics, from definitions and types of AI to the ethical implications of machine learning and robotics. We have seen how these technological advancements can either reflect the creativity of God or challenge our understanding of what it means to be created in His image. By integrating biblical wisdom into our discussions, we are reminded of our role as stewards of technology, called to reflect Christ in our innovations.\",\n  \"keyTakeaways\": [\n    \"AI and robotics reflect both human creativity and the divine image, necessitating a careful approach to their development.\",\n    \"Understanding the types and mechanisms of AI is crucial for responsible application in society.\",\n    \"Ethical considerations rooted in biblical principles guide our responsibility in creating and implementing intelligent technologies.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, S., & Norvig, P. (2020). Artificial Intelligence: A Modern Approach.\",\n    \"Bostrom, N. (2014). Superintelligence: Paths, Dangers, Strategies.\",\n    \"Wright, N.T. (2010). Simply Jesus: A New Vision of Who He Was, What He Did, and Why He Matters.\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

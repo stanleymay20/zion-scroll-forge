@@ -1,0 +1,41 @@
+{
+  "id": "lecture-10-3",
+  "moduleId": "module-SCROLLAI100-10",
+  "title": "Module 10: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-10-3",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-10-3",
+    "lectureId": "lecture-10-3",
+    "content": "",
+    "summary": "\": \"In this lecture, we have navigated the core concepts of AI and robotics, understanding their foundations, practical applications, and ethical implications through a Christian lens. We have discussed how these technologies can transform our world for the better, while also recognizing our responsibility to ensure they align with our values.\",\n  \"keyTakeaways\": [\n    \"AI and robotics are essential tools that can significantly impact various sectors of society.\",\n    \"Understanding the ethical implications of AI and robotics is crucial for responsible stewardship.\",\n    \"As Christians, we are called to integrate our faith with technology, ensuring that advancements serve humanity and honor God.\"\n  ],\n  \"furtherReading\": [\n    \"‘Artificial Intelligence: A Guide to Intelligent Systems’ by Michael Negnevitsky\",\n    \"‘Robotics and Automation Handbook’ by Thomas R. Kurfess\",\n    \"‘The Tech-Wise Family: Everyday Steps for Putting Technology in Its Proper Place’ by Andy Crouch\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

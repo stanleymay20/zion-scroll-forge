@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { logger, PerformanceMonitor } from '../utils/productionLogger';
 import { cacheService } from './CacheService';
 import { aiConfig } from '../config/ai.config';
+import { openRouterService, OpenRouterMessage } from './OpenRouterService';
 import {
     AIProvider,
     AIModel,
@@ -128,7 +129,15 @@ export class AIGatewayService {
 
             // Route to appropriate provider
             let response: AIResponse;
-            if (modelConfig.provider === 'openai') {
+            
+            // Check primary provider from environment
+            const primaryProvider = process.env.AI_PROVIDER || 'openai';
+            
+            if (primaryProvider === 'deepseek' || modelConfig.provider === 'deepseek') {
+                response = await this.generateDeepSeekCompletion(options, modelConfig, requestId);
+            } else if (primaryProvider === 'openrouter') {
+                response = await this.generateOpenRouterCompletion(options, modelConfig, requestId);
+            } else if (modelConfig.provider === 'openai') {
                 response = await this.generateOpenAICompletion(options, modelConfig, requestId);
             } else {
                 response = await this.generateAnthropicCompletion(options, modelConfig, requestId);
@@ -184,6 +193,127 @@ export class AIGatewayService {
                 userId
             });
             throw this.handleError(error, options.model);
+        }
+    }
+
+    /**
+     * Generate OpenRouter completion
+     */
+    private async generateOpenRouterCompletion(
+        options: AIRequestOptions,
+        modelConfig: any,
+        requestId: string
+    ): Promise<AIResponse> {
+        try {
+            const messages: OpenRouterMessage[] = options.messages.map(msg => ({
+                role: msg.role as 'system' | 'user' | 'assistant',
+                content: msg.content
+            }));
+
+            const model = process.env.AI_MODEL_PRIMARY || 'openai/gpt-4o-mini';
+            
+            const content = await openRouterService.generateContent(messages, model, {
+                max_tokens: options.maxTokens ?? modelConfig.maxTokens,
+                temperature: options.temperature ?? modelConfig.temperature,
+                top_p: options.topP,
+                frequency_penalty: options.frequencyPenalty,
+                presence_penalty: options.presencePenalty
+            });
+
+            // Estimate token usage (OpenRouter doesn't always return exact counts in response)
+            const estimatedTokens = Math.ceil(content.length / 4);
+            const usage = {
+                promptTokens: Math.ceil(estimatedTokens * 0.3),
+                completionTokens: Math.ceil(estimatedTokens * 0.7),
+                totalTokens: estimatedTokens
+            };
+
+            // Calculate cost (OpenRouter is much cheaper)
+            const cost = {
+                inputCost: usage.promptTokens * 0.000001, // $0.001 per 1K tokens
+                outputCost: usage.completionTokens * 0.000001,
+                totalCost: usage.totalTokens * 0.000001
+            };
+
+            return {
+                id: `openrouter-${requestId}`,
+                model: model,
+                content: content,
+                finishReason: 'stop',
+                usage,
+                cost,
+                metadata: {
+                    provider: 'openrouter',
+                    timestamp: new Date(),
+                    latency: 0,
+                    cached: false
+                }
+            };
+        } catch (error: any) {
+            logger.error('OpenRouter completion error', {
+                requestId,
+                error: error.message
+            });
+            throw error;
+        }
+    }
+
+    /**
+     * Generate DeepSeek completion
+     */
+    private async generateDeepSeekCompletion(
+        options: AIRequestOptions,
+        modelConfig: any,
+        requestId: string
+    ): Promise<AIResponse> {
+        try {
+            // DeepSeek uses OpenAI-compatible API
+            const deepseekClient = new OpenAI({
+                apiKey: aiConfig.deepseek.apiKey,
+                baseURL: aiConfig.deepseek.baseURL,
+                timeout: aiConfig.deepseek.timeout,
+                maxRetries: aiConfig.deepseek.maxRetries
+            });
+
+            const completion = await deepseekClient.chat.completions.create({
+                model: modelConfig.name,
+                messages: options.messages as any,
+                temperature: options.temperature ?? modelConfig.temperature,
+                max_tokens: options.maxTokens ?? modelConfig.maxTokens,
+                top_p: options.topP ?? modelConfig.topP,
+                frequency_penalty: options.frequencyPenalty ?? modelConfig.frequencyPenalty,
+                presence_penalty: options.presencePenalty ?? modelConfig.presencePenalty,
+                stop: options.stop
+            });
+
+            const usage = {
+                promptTokens: completion.usage?.prompt_tokens || 0,
+                completionTokens: completion.usage?.completion_tokens || 0,
+                totalTokens: completion.usage?.total_tokens || 0
+            };
+
+            const cost = this.calculateCost(usage, modelConfig);
+
+            return {
+                id: completion.id,
+                model: completion.model,
+                content: completion.choices[0]?.message?.content || '',
+                finishReason: completion.choices[0]?.finish_reason as any,
+                usage,
+                cost,
+                metadata: {
+                    provider: 'deepseek',
+                    timestamp: new Date(),
+                    latency: 0,
+                    cached: false
+                }
+            };
+        } catch (error: any) {
+            logger.error('DeepSeek completion error', {
+                requestId,
+                error: error.message
+            });
+            throw error;
         }
     }
 

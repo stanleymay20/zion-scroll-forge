@@ -5,7 +5,7 @@
 
 export interface AIModelConfig {
     name: string;
-    provider: 'openai' | 'anthropic';
+    provider: 'openai' | 'anthropic' | 'deepseek' | 'openrouter';
     maxTokens: number;
     temperature: number;
     topP?: number;
@@ -26,6 +26,18 @@ export interface AIServiceConfig {
     anthropic: {
         apiKey: string;
         baseURL?: string;
+        timeout: number;
+        maxRetries: number;
+    };
+    deepseek: {
+        apiKey: string;
+        baseURL: string;
+        timeout: number;
+        maxRetries: number;
+    };
+    openrouter: {
+        apiKey: string;
+        baseURL: string;
         timeout: number;
         maxRetries: number;
     };
@@ -74,6 +86,18 @@ export const aiConfig: AIServiceConfig = {
         baseURL: process.env.ANTHROPIC_BASE_URL,
         timeout: parseInt(process.env.ANTHROPIC_TIMEOUT || '60000'),
         maxRetries: parseInt(process.env.ANTHROPIC_MAX_RETRIES || '3')
+    },
+    deepseek: {
+        apiKey: process.env.DEEPSEEK_API_KEY || '',
+        baseURL: 'https://api.deepseek.com/v1',
+        timeout: parseInt(process.env.DEEPSEEK_TIMEOUT || '600000'),
+        maxRetries: parseInt(process.env.DEEPSEEK_MAX_RETRIES || '3')
+    },
+    openrouter: {
+        apiKey: process.env.OPENROUTER_API_KEY || '',
+        baseURL: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
+        timeout: parseInt(process.env.OPENROUTER_TIMEOUT || '600000'),
+        maxRetries: parseInt(process.env.OPENROUTER_MAX_RETRIES || '3')
     },
     models: {
         'gpt-4-turbo': {
@@ -132,6 +156,22 @@ export const aiConfig: AIServiceConfig = {
             temperature: 0.7,
             costPer1kInputTokens: 0.00025,
             costPer1kOutputTokens: 0.00125
+        },
+        'deepseek-chat': {
+            name: 'deepseek-chat',
+            provider: 'deepseek',
+            maxTokens: 8192,
+            temperature: 0.7,
+            costPer1kInputTokens: 0.00014,
+            costPer1kOutputTokens: 0.00028
+        },
+        'deepseek-coder': {
+            name: 'deepseek-coder',
+            provider: 'deepseek',
+            maxTokens: 8192,
+            temperature: 0.7,
+            costPer1kInputTokens: 0.00014,
+            costPer1kOutputTokens: 0.00028
         }
     },
     rateLimit: {

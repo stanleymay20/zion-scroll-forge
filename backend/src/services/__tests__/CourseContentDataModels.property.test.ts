@@ -19,6 +19,14 @@ import {
   CourseProject,
   PhaseProgress,
 } from '../../types/course-content.types';
+import { it } from 'node:test';
+import { it } from 'node:test';
+import { it } from 'node:test';
+import { it } from 'node:test';
+import { it } from 'node:test';
+import { it } from 'node:test';
+import { it } from 'node:test';
+import { describe } from 'node:test';
 
 describe('Property 1: Course Project Initialization Completeness', () => {
   /**
@@ -140,9 +148,9 @@ describe('Property 1: Course Project Initialization Completeness', () => {
     };
   };
 
-  it('should create projects with all required phases for any valid course info', () => {
-    fc.assert(
-      fc.property(courseInfoGenerator(), (courseInfo) => {
+  it('should create projects with all required phases for any valid course info', async () => {
+    await fc.assert(
+      fc.asyncProperty(courseInfoGenerator(), async (courseInfo) => {
         // Act: Create course project
         const project = createCourseProject(courseInfo);
 
@@ -212,9 +220,9 @@ describe('Property 1: Course Project Initialization Completeness', () => {
     );
   });
 
-  it('should create phases in correct order', () => {
-    fc.assert(
-      fc.property(courseInfoGenerator(), (courseInfo) => {
+  it('should create phases in correct order', async () => {
+    await fc.assert(
+      fc.asyncProperty(courseInfoGenerator(), async (courseInfo) => {
         const project = createCourseProject(courseInfo);
 
         // Verify phases are in the correct order
@@ -235,9 +243,9 @@ describe('Property 1: Course Project Initialization Completeness', () => {
     );
   });
 
-  it('should initialize first phase as IN_PROGRESS and others as NOT_STARTED', () => {
-    fc.assert(
-      fc.property(courseInfoGenerator(), (courseInfo) => {
+  it('should initialize first phase as IN_PROGRESS and others as NOT_STARTED', async () => {
+    await fc.assert(
+      fc.asyncProperty(courseInfoGenerator(), async (courseInfo) => {
         const project = createCourseProject(courseInfo);
 
         // First phase should be IN_PROGRESS
@@ -252,9 +260,9 @@ describe('Property 1: Course Project Initialization Completeness', () => {
     );
   });
 
-  it('should create milestones with proper dependencies', () => {
-    fc.assert(
-      fc.property(courseInfoGenerator(), (courseInfo) => {
+  it('should create milestones with proper dependencies', async () => {
+    await fc.assert(
+      fc.asyncProperty(courseInfoGenerator(), async (courseInfo) => {
         const project = createCourseProject(courseInfo);
 
         // First milestone should have no dependencies
@@ -272,9 +280,9 @@ describe('Property 1: Course Project Initialization Completeness', () => {
     );
   });
 
-  it('should preserve all course info fields in the project', () => {
-    fc.assert(
-      fc.property(courseInfoGenerator(), (courseInfo) => {
+  it('should preserve all course info fields in the project', async () => {
+    await fc.assert(
+      fc.asyncProperty(courseInfoGenerator(), async (courseInfo) => {
         const project = createCourseProject(courseInfo);
 
         // Verify all course info fields are preserved
@@ -298,9 +306,9 @@ describe('Property 1: Course Project Initialization Completeness', () => {
     );
   });
 
-  it('should create valid timestamps', () => {
-    fc.assert(
-      fc.property(courseInfoGenerator(), (courseInfo) => {
+  it('should create valid timestamps', async () => {
+    await fc.assert(
+      fc.asyncProperty(courseInfoGenerator(), async (courseInfo) => {
         const project = createCourseProject(courseInfo);
 
         // Verify timestamps are valid dates
@@ -325,9 +333,9 @@ describe('Property 1: Course Project Initialization Completeness', () => {
     );
   });
 
-  it('should create budget with positive allocations', () => {
-    fc.assert(
-      fc.property(courseInfoGenerator(), (courseInfo) => {
+  it('should create budget with positive allocations', async () => {
+    await fc.assert(
+      fc.asyncProperty(courseInfoGenerator(), async (courseInfo) => {
         const project = createCourseProject(courseInfo);
 
         // Verify budget has positive total allocation

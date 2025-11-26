@@ -14,7 +14,7 @@ export interface CacheOptions {
 
 // Helper function to safely extract error message
 function getErrorMessage(error: unknown): string {
-    return error instanceof Error ? getErrorMessage(error) : String(error);
+    return error instanceof Error ? error.message : String(error);
 }
 
 export class CacheService {

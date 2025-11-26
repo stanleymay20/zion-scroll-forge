@@ -1,0 +1,92 @@
+{
+  "catalogName": "ScrollUniversity Pilot Catalog",
+  "version": "1.0.0",
+  "generationStrategy": "one-course-at-a-time",
+  "qualityStandard": "royal-standard",
+  "courses": [
+    {
+      "code": "SCROLLFOUND_101",
+      "title": "Foundations of Scroll Thinking",
+      "faculty": "ScrollFoundations",
+      "level": 100,
+      "credits": 3,
+      "priority": 1,
+      "estimatedGenerationTime": "4-6 hours",
+      "status": "pending"
+    },
+    {
+      "code": "SCROLLBIB_101",
+      "title": "Bible Foundations for Scroll Leaders",
+      "faculty": "ScrollTheology & Bible Intelligence",
+      "level": 100,
+      "credits": 3,
+      "priority": 2,
+      "estimatedGenerationTime": "4-6 hours",
+      "status": "pending"
+    },
+    {
+      "code": "SCROLLAI_101",
+      "title": "Introduction to Scroll AI & Agents",
+      "faculty": "ScrollTech & AI Innovation",
+      "level": 100,
+      "credits": 3,
+      "priority": 3,
+      "estimatedGenerationTime": "4-6 hours",
+      "status": "pending"
+    },
+    {
+      "code": "SCROLLECON_101",
+      "title": "Kingdom Economics & Stewardship",
+      "faculty": "ScrollBusiness & Economics",
+      "level": 100,
+      "credits": 3,
+      "priority": 4,
+      "estimatedGenerationTime": "4-6 hours",
+      "status": "pending"
+    },
+    {
+      "code": "SCROLLMED_101",
+      "title": "Spiritual Health & Mental Resilience",
+      "faculty": "ScrollHealth & Wellness",
+      "level": 100,
+      "credits": 3,
+      "priority": 5,
+      "estimatedGenerationTime": "4-6 hours",
+      "status": "pending"
+    },
+    {
+      "code": "SCROLLWORSHIP_101",
+      "title": "Worship & Creative Arts for Kingdom Impact",
+      "faculty": "ScrollArts & Worship",
+      "level": 100,
+      "credits": 3,
+      "priority": 6,
+      "estimatedGenerationTime": "4-6 hours",
+      "status": "pending"
+    },
+    {
+      "code": "SCROLLMISSION_101",
+      "title": "Missional Leadership & Global Impact",
+      "faculty": "ScrollMissions & Leadership",
+      "level": 100,
+      "credits": 3,
+      "priority": 7,
+      "estimatedGenerationTime": "4-6 hours",
+      "status": "pending"
+    },
+    {
+      "code": "SCROLLTECH_101",
+      "title": "Technology for Kingdom Transformation",
+      "faculty": "ScrollTech & Innovation",
+      "level": 100,
+      "credits": 3,
+      "priority": 8,
+      "estimatedGenerationTime": "4-6 hours",
+      "status": "pending"
+    }
+  ],
+  "totalCourses": 8,
+  "estimatedTotalTime": "32-48 hours",
+  "estimatedCost": "$16-40",
+  "launchTarget": "Week 3-4"
+}

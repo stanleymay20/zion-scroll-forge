@@ -1,0 +1,41 @@
+{
+  "id": "lecture-3-3",
+  "moduleId": "module-SCROLLAI100-3",
+  "title": "Module 3: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-3-3",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-3-3",
+    "lectureId": "lecture-3-3",
+    "content": "",
+    "summary": "\": \"In this lecture, we explored the foundational concepts of AI and robotics, analyzed their ethical implications through a biblical lens, and examined real-world applications and challenges. Recognizing the interplay between technology and faith is crucial as we navigate the future of these fields.\",\n  \"keyTakeaways\": [\n    \"Understanding AI and robotics requires a balance between technical knowledge and ethical considerations.\",\n    \"A biblical worldview provides a framework for navigating the ethical challenges posed by AI and robotics.\",\n    \"Real-world applications of AI and robotics must be approached with a mindset of stewardship and responsibility.\"\n  ],\n  \"furtherReading\": [\n    \"Russell, Stuart, and Norvig, Peter. *Artificial Intelligence: A Modern Approach.*\",\n    \"Bostrom, Nick. *Superintelligence: Paths, Dangers, Strategies.*\",\n    \"Heath, Joseph, and Andrew Potter. *Influence: The Psychology of Persuasion.*\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

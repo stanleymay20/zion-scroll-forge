@@ -41,6 +41,9 @@ import {
 import * as fs from 'fs';
 import * as path from 'path';
 import { logger } from '../src/utils/logger';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 interface CourseGenerationConfig {
   courseCode: string;
@@ -713,11 +716,76 @@ const COURSE_CONFIGS: Record<string, CourseGenerationConfig> = {
   }
 };
 
+// Generate course configuration dynamically from course code
+function generateCourseConfig(courseCode: string): CourseGenerationConfig {
+  const parts = courseCode.split('_');
+  const facultyCode = parts[0];
+  const level = parseInt(parts[1]);
+  
+  // Determine course level based on course number
+  let courseLevel: CourseLevel;
+  let rigorLevel: RigorLevel;
+  let credits: number;
+  
+  if (level < 200) {
+    courseLevel = CourseLevel.BEGINNER;
+    rigorLevel = RigorLevel.INTERMEDIATE;
+    credits = 3;
+  } else if (level < 300) {
+    courseLevel = CourseLevel.INTERMEDIATE;
+    rigorLevel = RigorLevel.ADVANCED;
+    credits = 3;
+  } else if (level < 400) {
+    courseLevel = CourseLevel.ADVANCED;
+    rigorLevel = RigorLevel.STRATEGIC;
+    credits = 4;
+  } else {
+    courseLevel = CourseLevel.ADVANCED;
+    rigorLevel = RigorLevel.STRATEGIC;
+    credits = 4;
+  }
+  
+  // Generate title from course code if not provided
+  const title = `${facultyCode} ${level} - Advanced Course`;
+  
+  return {
+    courseCode,
+    title,
+    description: `Comprehensive ${facultyCode} course integrating biblical principles with academic excellence and spiritual formation.`,
+    level: courseLevel,
+    rigorLevel,
+    credits,
+    moduleCount: level < 300 ? 10 : 12,
+    lecturesPerModule: 3,
+    faculty: [{
+      id: `faculty-${facultyCode.toLowerCase()}`,
+      name: `Dr. ${facultyCode} Professor`,
+      email: `professor@scrolluniversity.edu`,
+      role: `Professor of ${facultyCode}`,
+      expertise: [`${facultyCode} Studies`, 'Biblical Integration', 'Spiritual Formation']
+    }],
+    prerequisites: level > 100 ? [`${facultyCode}_${level - 100}`] : [],
+    learningOutcomes: [
+      `Master core concepts in ${facultyCode}`,
+      'Apply biblical principles to field of study',
+      'Develop Christ-centered professional practice'
+    ],
+    spiritualFormationGoals: [
+      'Deepen relationship with Christ',
+      'Grow in wisdom and discernment',
+      'Develop kingdom-focused perspective'
+    ],
+    realWorldApplications: [
+      'Ministry leadership',
+      'Professional practice',
+      'Kingdom transformation'
+    ]
+  };
+}
+
 // Main execution
 async function main(): Promise<void> {
-  console.log('Script started...');
   const args = process.argv.slice(2);
-  console.log('Arguments:', args);
   
   if (args.length === 0) {
     console.log('📚 Available Course Configurations:');
@@ -731,16 +799,18 @@ async function main(): Promise<void> {
     });
     console.log('Usage: ts-node backend/scripts/generate-complete-course.ts <course-code>');
     console.log('Example: ts-node backend/scripts/generate-complete-course.ts THEO_101');
+    console.log('Example: ts-node backend/scripts/generate-complete-course.ts SCROLLMED_101');
     process.exit(0);
   }
 
   const courseCode = args[0].toUpperCase();
-  const config = COURSE_CONFIGS[courseCode];
-
+  
+  // Try to get predefined config first, otherwise generate dynamically
+  let config = COURSE_CONFIGS[courseCode];
+  
   if (!config) {
-    console.error(`❌ Error: Course configuration '${courseCode}' not found`);
-    console.log('\nAvailable courses:', Object.keys(COURSE_CONFIGS).join(', '));
-    process.exit(1);
+    console.log(`⚙️  Generating dynamic configuration for ${courseCode}...`);
+    config = generateCourseConfig(courseCode);
   }
 
   const generator = new CompleteCourseGenerator();
@@ -751,6 +821,9 @@ async function main(): Promise<void> {
     process.exit(0);
   } catch (error) {
     console.error('\n❌ Error during course generation:', error);
+    if (error instanceof Error) {
+      console.error('Stack trace:', error.stack);
+    }
     process.exit(1);
   }
 }

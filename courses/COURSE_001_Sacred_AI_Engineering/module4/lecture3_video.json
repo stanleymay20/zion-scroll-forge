@@ -1,0 +1,32 @@
+{
+  "title": "Module 4 - Lecture 3",
+  "duration": "45-60 minutes",
+  "segments": [
+    {
+      "type": "introduction",
+      "duration": "5 minutes",
+      "content": "Welcome and lecture overview with spiritual grounding"
+    },
+    {
+      "type": "main_teaching",
+      "duration": "30-40 minutes",
+      "content": "Core content delivery following Scroll Pedagogy flow"
+    },
+    {
+      "type": "demonstration",
+      "duration": "10 minutes",
+      "content": "Worked examples and practical application"
+    },
+    {
+      "type": "conclusion",
+      "duration": "5 minutes",
+      "content": "Summary, reflection prompts, and next steps"
+    }
+  ],
+  "interactiveElements": [
+    "Knowledge check questions",
+    "Pause for reflection",
+    "Discussion prompts",
+    "Prayer moments"
+  ]
+}

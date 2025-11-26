@@ -1,0 +1,41 @@
+{
+  "id": "lecture-9-3",
+  "moduleId": "module-SCROLLAI100-9",
+  "title": "Module 9: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-9-3",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-9-3",
+    "lectureId": "lecture-9-3",
+    "content": "",
+    "summary": "\": \"Today, we have explored the core concepts of intelligence and robotics, from understanding the distinctions in types of intelligence to applying biblical wisdom in our technological advancements. We discussed the principles of robotics and engaged in real-world scenarios that challenge us to think critically about our future as tech creators and stewards.\",\n  \"keyTakeaways\": [\n    \"Intelligence encompasses a wide range of human and artificial capabilities, each with unique characteristics.\",\n    \"Robotics offers transformative applications across various industries, but also raises ethical considerations.\",\n    \"Integrating biblical wisdom into our understanding of technology guides us to be responsible stewards in a rapidly evolving world.\"\n  ],\n  \"furtherReading\": [\n    \"Sherry Turkle - 'Alone Together: Why We Expect More from Technology and Less from Each Other'\",\n    \"Nick Bostrom - 'Superintelligence: Paths, Dangers, Strategies'\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}

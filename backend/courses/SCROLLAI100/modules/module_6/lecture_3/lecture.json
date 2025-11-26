@@ -1,0 +1,41 @@
+{
+  "id": "lecture-6-3",
+  "moduleId": "module-SCROLLAI100-6",
+  "title": "Module 6: Core Concepts and Applications",
+  "duration": 55,
+  "video": {
+    "id": "video-6-3",
+    "url": "",
+    "resolution": "1080p",
+    "format": "mp4",
+    "streamingUrls": [],
+    "thumbnails": [],
+    "duration": 55,
+    "fileSize": 0
+  },
+  "transcript": "",
+  "captions": [],
+  "notes": {
+    "id": "notes-6-3",
+    "lectureId": "lecture-6-3",
+    "content": "",
+    "summary": "\": \"As we have explored the complex interplay between AI, robotics, and spirituality, it is crucial to recognize that our engagement with these technologies is not merely a technical endeavor but a profound opportunity for spiritual growth and ethical responsibility. By integrating biblical wisdom with academic excellence, we can navigate the future of intelligence and robotics with integrity and purpose.\",\n  \"keyTakeaways\": [\n    \"Intelligence encompasses both cognitive abilities and spiritual discernment, reflecting a blend of secular and biblical perspectives.\",\n    \"Ethical considerations in AI design must align with biblical principles of justice and stewardship.\",\n    \"The future of AI and robotics presents opportunities for collaborative creation, emphasizing partnership rather than competition.\"\n  ],\n  \"furtherReading\": [\n    \"Bostrom, Nick. 'Superintelligence: Paths, Dangers, Strategies.'\",\n    \"Wright, N.T. 'Simply Jesus: A New Vision of Who He Was, What He Did, and Why He Matters.'\"\n  ]\n}\n```",
+    "keyConcepts": [
+      "Key takeaway 1",
+      "Key takeaway 2",
+      "Key takeaway 3"
+    ],
+    "examples": [
+      {
+        "id": "ex-0",
+        "title": "Example 1",
+        "description": "Practical example to be developed",
+        "explanation": "Detailed explanation to be added"
+      }
+    ],
+    "practiceProblems": [],
+    "pdfUrl": "",
+    "pageCount": 0
+  },
+  "resources": []
+}
