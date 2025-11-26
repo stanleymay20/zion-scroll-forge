@@ -9,10 +9,9 @@ import {
   BarChart3, Target, Calendar, Bell, Plus, Eye,
   ChevronRight, Star, Play
 } from "lucide-react";
-import { useMyEnrollments } from "@/hooks/useCourses";
+import { useUserEnrollments } from "@/hooks/useCourses";
 import { useWallet } from "@/hooks/useScrollCoin";
 import { useSpiritualMetrics } from "@/hooks/useSpiritualFormation";
-import { useCommunityPosts } from "@/hooks/useCommunity";
 import { useInstitution } from "@/contexts/InstitutionContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
@@ -116,7 +115,7 @@ const FunctionalDashboard = () => {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{communityPosts.length}</div>
+            <div className="text-2xl font-bold">0</div>
             <p className="text-xs text-muted-foreground">
               Recent posts in your community
             </p>
@@ -203,7 +202,7 @@ const FunctionalDashboard = () => {
                     {recentTransactions.map((transaction) => (
                       <div key={transaction.id} className="flex items-center justify-between">
                         <div className="space-y-1">
-                          <p className="text-sm font-medium">{transaction.reason}</p>
+                          <p className="text-sm font-medium">{transaction.description}</p>
                           <p className="text-xs text-muted-foreground">
                             {format(new Date(transaction.created_at), 'MMM d, h:mm a')}
                           </p>
@@ -388,51 +387,9 @@ const FunctionalDashboard = () => {
               <CardDescription>Recent posts and discussions</CardDescription>
             </CardHeader>
             <CardContent>
-              {communityPosts.length > 0 ? (
-                <div className="space-y-4">
-                  {communityPosts.slice(0, 3).map((post) => (
-                    <div key={post.id} className="border rounded-lg p-4">
-                      <div className="flex items-start space-x-3">
-                        <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                          <Users className="h-4 w-4" />
-                        </div>
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center space-x-2">
-                            <span className="font-medium">
-                              {post.profiles?.first_name} {post.profiles?.last_name}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              {format(new Date(post.created_at), 'MMM d')}
-                            </span>
-                          </div>
-                          <p className="text-sm">{post.content.substring(0, 150)}...</p>
-                          <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                            <span>{post.like_count} likes</span>
-                            <span>{post.comment_count} comments</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  <Button variant="outline" className="w-full" asChild>
-                    <Link to="/community">
-                      View Full Community Feed
-                      <ChevronRight className="h-4 w-4 ml-2" />
-                    </Link>
-                  </Button>
-                </div>
-              ) : (
-                <div className="text-center py-12">
-                  <MessageSquare className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-xl font-medium mb-2">Join the Conversation</h3>
-                  <p className="text-muted-foreground mb-6">
-                    Connect with fellow students and share your journey
-                  </p>
-                  <Button asChild>
-                    <Link to="/community">Explore Community</Link>
-                  </Button>
-                </div>
-              )}
+              <div className="text-center py-8 text-muted-foreground">
+                <p>No community posts yet</p>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>

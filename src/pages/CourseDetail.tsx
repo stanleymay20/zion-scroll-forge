@@ -512,11 +512,6 @@ export default function CourseDetail() {
         <CourseReviews courseId={courseId!} />
       </div>
 
-      {/* Course Recommendations */}
-      <div className="mt-8">
-        <CourseRecommendations currentCourseId={courseId} limit={6} />
-      </div>
-
       {/* Enrollment Flow Dialog */}
       <CourseEnrollmentFlow
         course={{

@@ -321,7 +321,6 @@ const App = () => (
             <Route path="events" element={<Events />} />
             <Route path="events/:id" element={<EventDetail />} />
             <Route path="billing" element={<BillingDashboard />} />
-            <Route path="payment-billing" element={<PaymentBilling />} />
             <Route path="scrollcoin-wallet" element={<ScrollCoinWallet />} />
             <Route path="scrollcoin-leaderboard" element={<ScrollCoinLeaderboard />} />
             <Route path="ai-tutors-catalog" element={<AITutorsCatalog />} />
@@ -361,7 +360,6 @@ const App = () => (
             <Route path="research" element={<ComingSoonPage title="Research Hub" />} />
             <Route path="help" element={<ComingSoonPage title="Help Center" />} />
             <Route path="mobile-demo" element={<MobileFeaturesDemo />} />
-            <Route path="realtime-demo" element={<RealtimeDemo />} />
           </Route>
           
           {/* Catch-all route for 404 */}

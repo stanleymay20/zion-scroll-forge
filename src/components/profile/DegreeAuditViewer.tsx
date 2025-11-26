@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { supabase } from '@/integrations/supabase/client';
 import {
   Accordion,
   AccordionContent,
@@ -37,9 +38,10 @@ const DegreeAuditViewer: React.FC<DegreeAuditViewerProps> = ({ studentId }) => {
   const loadDegreeAudit = async () => {
     try {
       setLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
       const response = await fetch(`/api/profile/${studentId}/degree-audit`, {
         headers: {
-          'Authorization': `Bearer ${user?.token}`
+          'Authorization': `Bearer ${session?.access_token}`
         }
       });
       
