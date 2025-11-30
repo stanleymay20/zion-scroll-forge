@@ -15,7 +15,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export default class ModerationAppealsService {
+export class ModerationAppealsService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -440,3 +440,5 @@ Return JSON with analysis and improvement suggestions.`;
     }
   }
 }
+
+export default ModerationAppealsService;

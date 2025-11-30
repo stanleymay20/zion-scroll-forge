@@ -13,7 +13,7 @@ import {
 } from '../types/course.types';
 import FileStorageService from './FileStorageService';
 
-export default class PDFGenerationService {
+export class PDFGenerationService {
   private fileStorage: FileStorageService;
 
   constructor() {
@@ -163,3 +163,5 @@ export default class PDFGenerationService {
     }
   }
 }
+
+export default PDFGenerationService;

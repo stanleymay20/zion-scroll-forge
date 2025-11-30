@@ -2,7 +2,7 @@
 // "Trust in the LORD with all your heart and lean not on your own understanding" - Proverbs 3:5
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import {
   CourseRecommendation,
   RecommendationCriteria
@@ -397,4 +397,5 @@ export class CourseRecommendationEngineService {
   }
 }
 
-export default new CourseRecommendationEngineService();
+export { CourseRecommendationEngineService };
+export default CourseRecommendationEngineService;

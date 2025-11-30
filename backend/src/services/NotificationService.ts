@@ -16,11 +16,11 @@ import {
   NotificationEngagement,
 } from '../types/notification.types';
 import { notificationConfig } from '../config/notification.config';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class NotificationService {
+export class NotificationService {
   /**
    * Create a new notification
    */
@@ -561,3 +561,5 @@ export default class NotificationService {
     return initialDelay * Math.pow(backoffMultiplier, retryCount);
   }
 }
+
+export default NotificationService;

@@ -14,7 +14,7 @@ import {
   VideoQuality
 } from '../types/video-streaming.types';
 
-export default class VideoAnalyticsService {
+export class VideoAnalyticsService {
   private prisma: PrismaClient;
 
   constructor() {
@@ -383,3 +383,5 @@ export default class VideoAnalyticsService {
     }
   }
 }
+
+export default VideoAnalyticsService;

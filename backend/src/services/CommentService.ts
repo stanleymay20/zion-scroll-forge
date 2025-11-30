@@ -9,7 +9,7 @@ import {
   CommentWithAuthor,
   CreateCommentRequest
 } from '../types/community.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 

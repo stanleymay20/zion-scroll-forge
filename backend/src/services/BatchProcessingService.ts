@@ -7,7 +7,7 @@ import {
   BatchRequest,
   BatchResult
 } from '../types/cost-optimization.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import { AIGatewayService } from './AIGatewayService';
 
 interface QueuedRequest {
@@ -20,7 +20,7 @@ interface QueuedRequest {
   reject: (error: any) => void;
 }
 
-export default class BatchProcessingService {
+export class BatchProcessingService {
   private queue: QueuedRequest[] = [];
   private processing: boolean = false;
   private aiGateway: AIGatewayService;
@@ -419,3 +419,5 @@ export default class BatchProcessingService {
     logger.info('Batch queue cleared');
   }
 }
+
+export default BatchProcessingService;

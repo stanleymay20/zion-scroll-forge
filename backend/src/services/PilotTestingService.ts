@@ -130,7 +130,7 @@ interface RecruitmentCriteria {
   };
 }
 
-export default class PilotTestingService {
+export class PilotTestingService {
   /**
    * Recruit pilot students for cohort formation
    * Requirements: 10.1 (implied for pilot program setup)
@@ -577,3 +577,5 @@ export default class PilotTestingService {
     return [];
   }
 }
+
+export default PilotTestingService;

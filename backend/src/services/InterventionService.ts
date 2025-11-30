@@ -26,7 +26,7 @@ interface StruggleIndicator {
   detectedAt: Date;
 }
 
-export default class InterventionService {
+export class InterventionService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -836,3 +836,5 @@ export default class InterventionService {
     });
   }
 }
+
+export default InterventionService;

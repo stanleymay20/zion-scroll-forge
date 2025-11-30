@@ -2,7 +2,7 @@
 // "For I know the plans I have for you, declares the LORD" - Jeremiah 29:11
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import {
   StudentSuccessMetrics,
   SuccessTrackingConfig

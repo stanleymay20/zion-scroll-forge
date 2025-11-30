@@ -8,19 +8,19 @@ import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import cluster from 'cluster';
 import os from 'os';
+import cors from 'cors';
+import helmet from 'helmet';
 import gracefulShutdown from 'http-graceful-shutdown';
 
 // Production middleware
 import {
   securityHeaders,
-  corsConfig,
-  compressionConfig,
-  generalRateLimit,
-  authRateLimit,
-  admissionsRateLimit,
   requestLogger,
-  productionErrorHandler,
-  sanitizeInput
+  errorBoundary,
+  sanitizeRequest,
+  configureCORS,
+  configureHelmet,
+  configureRateLimit
 } from './middleware/productionSecurity';
 
 import { logger } from './utils/productionLogger';
@@ -48,6 +48,8 @@ import scrollbadgesRoutes from './routes/scrollbadges';
 import spiritualFormationRoutes from './routes/spiritual-formation';
 import partnerIntegrationRoutes from './routes/partner-integration';
 import criticalThinkingRoutes from './routes/critical-thinking';
+import monitoringRoutes from './routes/monitoring';
+import academicYearMonitoringRoutes from './routes/academic-year-monitoring';
 import scrollosToolsRoutes from './routes/scrollos-tools';
 import launchRoutes from './routes/launch';
 import curriculumGridRoutes from './routes/curriculum-grid';
@@ -78,6 +80,11 @@ import postLaunchRoutes from './routes/post-launch';
 import zapierWebhooksRoutes from './routes/zapier-webhooks';
 import degreeProgramRoutes from './routes/degree-programs';
 import portalMobileIntegrationRoutes from './routes/portal-mobile-integration';
+import academicCalendarRoutes from './routes/academic-calendar';
+import studentLifecycleRoutes from './routes/student-lifecycle';
+import facultyOperationsRoutes from './routes/faculty-operations';
+import courseExecutionRoutes from './routes/course-execution';
+import workflowNotificationRoutes from './routes/workflow-notifications';
 
 // Socket.io service
 import SocketService from './services/SocketService';
@@ -129,10 +136,10 @@ async function startServer() {
 
   // Security middleware (must be first)
   app.use(securityHeaders);
-  app.use(corsConfig);
-  app.use(compressionConfig);
+  app.use(cors(configureCORS()));
+  app.use(configureHelmet());
   app.use(requestLogger);
-  app.use(sanitizeInput);
+  app.use(sanitizeRequest);
 
   // Body parsing middleware
   app.use(express.json({ 
@@ -145,9 +152,10 @@ async function startServer() {
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
   // Rate limiting
-  app.use('/api/auth', authRateLimit);
-  app.use('/api/admissions', admissionsRateLimit);
-  app.use('/api', generalRateLimit);
+  const rateLimit = configureRateLimit();
+  app.use('/api/auth', rateLimit);
+  app.use('/api/admissions', rateLimit);
+  app.use('/api', rateLimit);
 
   // Health check endpoint (no auth required)
   app.get('/health', async (req, res) => {
@@ -158,7 +166,8 @@ async function startServer() {
       
       res.status(statusCode).json(health);
     } catch (error) {
-      logger.error('Health check endpoint failed', { error: error.message });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Health check endpoint failed', { error: errorMessage });
       res.status(503).json({
         status: 'unhealthy',
         error: 'Health check failed',
@@ -173,7 +182,8 @@ async function startServer() {
       const metrics = monitoringService.getDashboardMetrics();
       res.json(metrics);
     } catch (error) {
-      logger.error('Metrics endpoint failed', { error: error.message });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Metrics endpoint failed', { error: errorMessage });
       res.status(500).json({ error: 'Metrics unavailable' });
     }
   });
@@ -278,6 +288,13 @@ async function startServer() {
   routeWithMonitoring('/api/webhooks/zapier', zapierWebhooksRoutes);
   routeWithMonitoring('/api/degree-programs', degreeProgramRoutes);
   routeWithMonitoring('/api/portal-mobile', portalMobileIntegrationRoutes);
+  routeWithMonitoring('/api/academic-calendar', academicCalendarRoutes);
+  routeWithMonitoring('/api/student-lifecycle', studentLifecycleRoutes);
+  routeWithMonitoring('/api/faculty', facultyOperationsRoutes);
+  routeWithMonitoring('/api/courses', courseExecutionRoutes);
+  routeWithMonitoring('/api', workflowNotificationRoutes);
+  routeWithMonitoring('/api/monitoring', monitoringRoutes);
+  routeWithMonitoring('/api/academic-year-monitoring', academicYearMonitoringRoutes);
 
   // Admissions API routes
   routeWithMonitoring('/api/admissions/applications', admissionsApplicationsRoutes);
@@ -321,14 +338,15 @@ async function startServer() {
   });
 
   // Global error handler (must be last)
-  app.use(productionErrorHandler);
+  app.use(errorBoundary);
 
   // Database connection test
   try {
     await prisma.$connect();
     logger.info('Database connected successfully');
   } catch (error) {
-    logger.error('Database connection failed', { error: error.message });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    logger.error('Database connection failed', { error: errorMessage });
     process.exit(1);
   }
 
@@ -341,7 +359,8 @@ async function startServer() {
       logger.warn('Cache connection failed, continuing without cache');
     }
   } catch (error) {
-    logger.warn('Cache initialization failed', { error: error.message });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    logger.warn('Cache initialization failed', { error: errorMessage });
   }
 
   // Start server
@@ -359,7 +378,8 @@ async function startServer() {
       await SocketService.initialize(server);
       logger.info('Socket.io initialized successfully');
     } catch (error) {
-      logger.error('Failed to initialize Socket.io', { error: error.message });
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      logger.error('Failed to initialize Socket.io', { error: errorMessage });
     }
     
     // Record server start metric
@@ -403,7 +423,8 @@ async function startServer() {
         monitoringService.recordEvent('server.shutdown', { signal });
         
       } catch (error) {
-        logger.error('Error during shutdown', { error: error.message });
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        logger.error('Error during shutdown', { error: errorMessage });
       }
     },
     finally: () => {

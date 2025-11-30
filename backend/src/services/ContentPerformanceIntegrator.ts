@@ -10,7 +10,7 @@ import { PrismaClient } from '@prisma/client';
 import ContentEngagementTracker, { ContentEngagementMetrics } from './ContentEngagementTracker';
 import ContentEffectivenessEvaluator, { ContentEffectivenessMetrics } from './ContentEffectivenessEvaluator';
 import AnalyticsDashboardService from './AnalyticsDashboardService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
@@ -72,7 +72,7 @@ export interface ContentPerformanceReport {
   }>;
 }
 
-export default class ContentPerformanceIntegrator {
+export class ContentPerformanceIntegrator {
   private engagementTracker: ContentEngagementTracker;
   private effectivenessEvaluator: ContentEffectivenessEvaluator;
   private analyticsService: AnalyticsDashboardService;
@@ -602,3 +602,5 @@ export default class ContentPerformanceIntegrator {
     return insights;
   }
 }
+
+export default ContentPerformanceIntegrator;

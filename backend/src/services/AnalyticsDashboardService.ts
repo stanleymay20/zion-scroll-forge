@@ -20,11 +20,11 @@ import {
   GetMetricsRequest,
   GetMetricsResponse,
 } from '../types/analytics.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class AnalyticsDashboardService {
+export class AnalyticsDashboardService {
   /**
    * Get real-time metrics
    */
@@ -800,3 +800,5 @@ export default class AnalyticsDashboardService {
     return [7, 14, 21, 30];
   }
 }
+
+export default AnalyticsDashboardService;

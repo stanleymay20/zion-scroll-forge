@@ -25,7 +25,7 @@ import {
   CourseFeedback
 } from '../types/course-content.types';
 
-export default class RealWorldDeploymentService {
+export class RealWorldDeploymentService {
   /**
    * Creates a deployment pathway for a concept-to-application mapping
    * 
@@ -334,3 +334,5 @@ export default class RealWorldDeploymentService {
     return outcomeData;
   }
 }
+
+export default RealWorldDeploymentService;

@@ -6,7 +6,7 @@
 import express, { Request, Response } from 'express';
 import StripePaymentService from '../services/StripePaymentService';
 import { authenticateToken } from '../middleware/auth';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 const paymentService = new StripePaymentService();

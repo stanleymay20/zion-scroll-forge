@@ -34,7 +34,7 @@ import { AcademicDiscipline, SupportedFormat } from '../../../src/types/scrollos
 import crypto from 'crypto';
 import path from 'path';
 
-export default class ScrollCloudStorageService {
+export class ScrollCloudStorageService {
   private supabase: SupabaseClient;
   private prisma: PrismaClient;
   private readonly bucketName: string;
@@ -726,3 +726,5 @@ export default class ScrollCloudStorageService {
     };
   }
 }
+
+export default ScrollCloudStorageService;

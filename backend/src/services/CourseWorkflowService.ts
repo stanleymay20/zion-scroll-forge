@@ -20,7 +20,7 @@ const prisma = new PrismaClient();
  * Orchestrates the multi-phase course development process with approval gates.
  * Manages course project lifecycle from planning through launch.
  */
-export default class CourseWorkflowService {
+export class CourseWorkflowService {
   /**
    * Creates a new course development project with all phases initialized
    * 
@@ -712,3 +712,5 @@ export default class CourseWorkflowService {
     };
   }
 }
+
+export default CourseWorkflowService;

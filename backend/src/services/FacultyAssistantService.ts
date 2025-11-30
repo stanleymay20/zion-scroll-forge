@@ -29,7 +29,7 @@ import { AIGatewayService } from './AIGatewayService';
 import { VectorStoreService } from './VectorStoreService';
 import { AICacheService } from './AICacheService';
 
-export default class FacultyAssistantService {
+export class FacultyAssistantService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
   private cache: AICacheService;
@@ -916,3 +916,5 @@ Respond with JSON only.`;
     return;
   }
 }
+
+export default FacultyAssistantService;

@@ -15,7 +15,7 @@ import {
 } from '../types/accessibility.types';
 import { AIGatewayService } from './AIGatewayService';
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 

@@ -2,7 +2,7 @@
 // "Plans fail for lack of counsel, but with many advisers they succeed" - Proverbs 15:22
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import {
   AdvisorAssignment,
   AdvisorInfo

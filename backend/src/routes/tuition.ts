@@ -4,9 +4,17 @@
  */
 
 import express from 'express';
-import { UserRole } from '@prisma/client';
 import { requireRole } from '../middleware/auth';
 import { logger } from '../utils/logger';
+
+// User roles as constants
+const UserRole = {
+  STUDENT: 'STUDENT',
+  FACULTY: 'FACULTY',
+  ADMIN: 'ADMIN',
+  STAFF: 'STAFF',
+  CHANCELLOR: 'CHANCELLOR',
+} as const;
 
 const router = express.Router();
 

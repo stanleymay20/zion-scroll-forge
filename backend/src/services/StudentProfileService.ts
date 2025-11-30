@@ -2,7 +2,7 @@
 // "I praise you because I am fearfully and wonderfully made" - Psalm 139:14
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import {
   StudentProfile,
   ProfileVerificationResult

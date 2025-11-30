@@ -21,7 +21,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class ScheduleOptimizationService {
+export class ScheduleOptimizationService {
   /**
    * Optimize course schedule
    */
@@ -488,3 +488,5 @@ export default class ScheduleOptimizationService {
     return `schedule-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default ScheduleOptimizationService;

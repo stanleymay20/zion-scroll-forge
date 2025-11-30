@@ -10,12 +10,12 @@ import {
   ScholarshipRecommendation,
   ScholarshipData
 } from '../types/scholarship.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import EligibilityCheckService from './EligibilityCheckService';
 
 const prisma = new PrismaClient();
 
-export default class ScholarshipRecommendationService {
+export class ScholarshipRecommendationService {
   private eligibilityService: EligibilityCheckService;
 
   constructor() {
@@ -339,3 +339,5 @@ export default class ScholarshipRecommendationService {
     };
   }
 }
+
+export default ScholarshipRecommendationService;

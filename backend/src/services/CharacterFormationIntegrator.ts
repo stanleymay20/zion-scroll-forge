@@ -12,7 +12,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 import SpiritualGrowthAnalyticsService from './SpiritualGrowthAnalyticsService';
 
 const prisma = new PrismaClient();
@@ -167,7 +167,7 @@ interface CharacterGrowthMeasurement {
   recommendations: string[];
 }
 
-export default class CharacterFormationIntegrator {
+export class CharacterFormationIntegrator {
   private aiGateway: AIGatewayService;
   private spiritualAnalytics: SpiritualGrowthAnalyticsService;
 
@@ -705,3 +705,5 @@ Format as JSON.`;
     };
   }
 }
+
+export default CharacterFormationIntegrator;

@@ -6,11 +6,11 @@
 import { PrismaClient } from '@prisma/client';
 import { NotificationBatch, Notification } from '../types/notification.types';
 import { notificationConfig } from '../config/notification.config';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class NotificationBatchingService {
+export class NotificationBatchingService {
   /**
    * Process pending batches
    */
@@ -263,3 +263,5 @@ export default class NotificationBatchingService {
     }
   }
 }
+
+export default NotificationBatchingService;

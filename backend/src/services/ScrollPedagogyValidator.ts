@@ -133,7 +133,7 @@ export interface ProgressionLevelMapping {
  * ScrollPedagogy Validator Service
  * Validates content against the 6-step pedagogical flow
  */
-export default class ScrollPedagogyValidator {
+export class ScrollPedagogyValidator {
   private readonly MINIMUM_COMPONENT_SCORE = 70;
   private readonly MINIMUM_OVERALL_SCORE = 75;
 
@@ -650,3 +650,5 @@ export default class ScrollPedagogyValidator {
     };
   }
 }
+
+export default ScrollPedagogyValidator;

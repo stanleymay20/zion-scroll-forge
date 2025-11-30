@@ -56,7 +56,7 @@ export interface DegreeProgressSummary {
   estimatedCompletionDate: Date | null;
 }
 
-export default class DegreeProgramService {
+export class DegreeProgramService {
   /**
    * Create a new degree program
    */
@@ -427,3 +427,5 @@ export default class DegreeProgramService {
     }
   }
 }
+
+export default DegreeProgramService;

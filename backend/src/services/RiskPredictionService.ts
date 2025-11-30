@@ -33,7 +33,7 @@ interface StudentData {
   supportSystem: number;
 }
 
-export default class RiskPredictionService {
+export class RiskPredictionService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -834,3 +834,5 @@ export default class RiskPredictionService {
     };
   }
 }
+
+export default RiskPredictionService;

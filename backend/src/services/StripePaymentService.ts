@@ -40,28 +40,41 @@ import {
   PaymentError,
 } from '../types/payment.types';
 import { stripeConfig, validateStripeConfig, WEBHOOK_EVENTS, PAYMENT_CONFIG } from '../config/stripe.config';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class StripePaymentService {
-  private stripe: Stripe;
+export class StripePaymentService {
+  private stripe: Stripe | null = null;
+  private isConfigured: boolean = false;
 
   constructor() {
     validateStripeConfig();
-    this.stripe = new Stripe(stripeConfig.apiKey, {
-      apiVersion: stripeConfig.apiVersion as Stripe.LatestApiVersion,
-      maxNetworkRetries: stripeConfig.maxNetworkRetries,
-      timeout: stripeConfig.timeout,
-    });
     
-    logger.info('StripePaymentService initialized');
+    if (stripeConfig.apiKey) {
+      this.stripe = new Stripe(stripeConfig.apiKey, {
+        apiVersion: stripeConfig.apiVersion as Stripe.LatestApiVersion,
+        maxNetworkRetries: stripeConfig.maxNetworkRetries,
+        timeout: stripeConfig.timeout,
+      });
+      this.isConfigured = true;
+      logger.info('StripePaymentService initialized with API key');
+    } else {
+      logger.warn('StripePaymentService initialized without API key - payment features disabled');
+    }
+  }
+  
+  private ensureConfigured(): void {
+    if (!this.isConfigured || !this.stripe) {
+      throw new Error('Stripe is not configured. Please set STRIPE_SECRET_KEY environment variable.');
+    }
   }
 
   /**
    * Create a payment intent for one-time payments
    */
   async createPaymentIntent(request: CreatePaymentIntentRequest): Promise<PaymentIntentResponse> {
+    this.ensureConfigured();
     try {
       logger.info('Creating payment intent', { userId: request.userId, amount: request.amount });
 
@@ -733,3 +746,5 @@ export default class StripePaymentService {
     }
   }
 }
+
+export default StripePaymentService;

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">7.24% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/138</span>
+                <span class='fraction'>10/138</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.85% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/35</span>
+                <span class='fraction'>1/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">14.28% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/14</span>
+                <span class='fraction'>2/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">7.51% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/133</span>
+                <span class='fraction'>10/133</span>
             </div>
         
             
@@ -699,10 +699,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -715,18 +715,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1318,7 +1318,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * ScrollCoin Service
  * "By the Spirit of Wisdom, we establish a kingdom economy on Earth"
@@ -1327,10 +1327,10 @@
  * transfers, burning, and wallet management with fraud prevention.
  */
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
-<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
-<span class="cstat-no" title="statement not covered" >import scrollCoinConfig from '../config/scrollcoin.config';</span>
-<span class="cstat-no" title="statement not covered" >import {</span>
+import { PrismaClient } from '@prisma/client';
+import { logger } from '../utils/logger';
+import scrollCoinConfig from '../config/scrollcoin.config';
+import {
   ScrollCoinTransactionData,
   ScrollCoinTransactionType,
   TransactionStatus,
@@ -1343,18 +1343,18 @@
   BlockchainTransactionReceipt
 } from '../types/scrollcoin.types';
 &nbsp;
-const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
+const prisma = new PrismaClient();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export class S</span>crollCoinService {
+export class ScrollCoinService {
   private static instance: ScrollCoinService;
 &nbsp;
-<span class="fstat-no" title="function not covered" >  private constructor() {}</span>
+  private constructor() {}
 &nbsp;
-  public <span class="fstat-no" title="function not covered" >static </span>getInstance(): ScrollCoinService {
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!ScrollCoinService.instance) {</span>
-<span class="cstat-no" title="statement not covered" >      ScrollCoinService.instance = new ScrollCoinService();</span>
+  public static getInstance(): ScrollCoinService {
+    if (!ScrollCoinService.instance) {
+      ScrollCoinService.instance = new ScrollCoinService();
     }
-<span class="cstat-no" title="statement not covered" >    return ScrollCoinService.instance;</span>
+    return ScrollCoinService.instance;
   }
 &nbsp;
   /**
@@ -1946,7 +1946,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   }
 }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default ScrollCoinService.getInstance();</span>
+export default ScrollCoinService.getInstance();
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1954,7 +1954,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-26T12:50:26.706Z
+                at 2025-11-30T22:23:09.019Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

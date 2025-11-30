@@ -135,7 +135,7 @@ export interface KingdomPrincipleCheck {
  * Cross-Cultural Consistency Checker Service
  * Ensures consistency across cultural variants
  */
-export default class CrossCulturalConsistencyChecker {
+export class CrossCulturalConsistencyChecker {
   private checkHistory: Map<string, ConsistencyCheckResult> = new Map();
 
   /**
@@ -644,3 +644,5 @@ export default class CrossCulturalConsistencyChecker {
     return `issue_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default CrossCulturalConsistencyChecker;

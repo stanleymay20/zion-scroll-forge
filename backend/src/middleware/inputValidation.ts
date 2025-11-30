@@ -4,7 +4,37 @@
  */
 
 import { body, param, query, ValidationChain } from 'express-validator';
-import { ApplicationStatus, ProgramType, AcademicLevel, UserRole } from '@prisma/client';
+
+// Define enums as constants since they may not be in Prisma schema
+const UserRole = {
+  STUDENT: 'STUDENT',
+  FACULTY: 'FACULTY',
+  ADMIN: 'ADMIN',
+  STAFF: 'STAFF'
+} as const;
+
+const AcademicLevel = {
+  UNDERGRADUATE: 'UNDERGRADUATE',
+  GRADUATE: 'GRADUATE',
+  DOCTORAL: 'DOCTORAL',
+  CERTIFICATE: 'CERTIFICATE'
+} as const;
+
+const ProgramType = {
+  DEGREE: 'DEGREE',
+  CERTIFICATE: 'CERTIFICATE',
+  DIPLOMA: 'DIPLOMA',
+  COURSE: 'COURSE'
+} as const;
+
+const ApplicationStatus = {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED',
+  WAITLISTED: 'WAITLISTED'
+} as const;
 
 // Common validation patterns
 const patterns = {

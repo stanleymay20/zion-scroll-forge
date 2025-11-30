@@ -21,7 +21,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export default class ModerationAIService {
+export class ModerationAIService {
   private contentScanner: ContentScanningService;
   private theologicalReviewer: TheologicalReviewService;
   private toneAnalyzer: ToneAnalysisService;
@@ -469,3 +469,5 @@ export default class ModerationAIService {
     }
   }
 }
+
+export default ModerationAIService;

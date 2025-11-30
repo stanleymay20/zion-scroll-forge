@@ -11,7 +11,7 @@ import {
 } from '../types/moderation.types';
 import { AIGatewayService } from './AIGatewayService';
 
-export default class ToneAnalysisService {
+export class ToneAnalysisService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -470,3 +470,5 @@ Return JSON:
     }
   }
 }
+
+export default ToneAnalysisService;

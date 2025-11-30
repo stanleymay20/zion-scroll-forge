@@ -3,10 +3,10 @@
  * Handles audio narration generation for devotions
  */
 
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 import { DailyDevotion, ScripturePassage } from '../types/devotion.types';
 
-export default class DevotionAudioService {
+export class DevotionAudioService {
   private aiGateway: AIGatewayService;
   private ttsProvider: string;
   private storageBasePath: string;
@@ -286,3 +286,5 @@ export default class DevotionAudioService {
     }
   }
 }
+
+export default DevotionAudioService;

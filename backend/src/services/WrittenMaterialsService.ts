@@ -20,7 +20,7 @@ import {
   PracticeProblem
 } from '../types/course-content.types';
 
-export default class WrittenMaterialsService {
+export class WrittenMaterialsService {
   private pdfService: PDFGenerationService;
   private fileStorage: FileStorageService;
 
@@ -489,3 +489,5 @@ export default class WrittenMaterialsService {
     return resources;
   }
 }
+
+export default WrittenMaterialsService;

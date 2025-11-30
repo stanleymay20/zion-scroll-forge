@@ -21,13 +21,13 @@ import { ResumeReviewService } from './ResumeReviewService';
 import { MockInterviewService } from './MockInterviewService';
 import { EmployerMatchingService } from './EmployerMatchingService';
 import { CareerAnalyticsService } from './CareerAnalyticsService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 /**
  * CareerServicesAIService
  * Orchestrates all career services AI functionality
  */
-export default class CareerServicesAIService {
+export class CareerServicesAIService {
   private careerMatchingService: CareerMatchingService;
   private resumeReviewService: ResumeReviewService;
   private mockInterviewService: MockInterviewService;
@@ -203,3 +203,5 @@ export default class CareerServicesAIService {
     return sum / scores.length / 100;
   }
 }
+
+export default CareerServicesAIService;

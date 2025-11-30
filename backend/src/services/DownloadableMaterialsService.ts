@@ -18,7 +18,7 @@ import {
 } from '../types/video-streaming.types';
 import FileStorageService from './FileStorageService';
 
-export default class DownloadableMaterialsService {
+export class DownloadableMaterialsService {
   private prisma: PrismaClient;
   private fileStorage: FileStorageService;
   private offlinePackages: Map<string, OfflinePackageStatus>;
@@ -402,3 +402,5 @@ export default class DownloadableMaterialsService {
     }
   }
 }
+
+export default DownloadableMaterialsService;

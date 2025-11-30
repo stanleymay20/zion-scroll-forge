@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">12.32% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/72</span>
+                <span class='fraction'>9/73</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">14.81% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/27</span>
+                <span class='fraction'>4/27</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">10% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>1/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">12.5% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/71</span>
+                <span class='fraction'>9/72</span>
             </div>
         
             
@@ -284,34 +284,36 @@
 <a name='L219'></a><a href='#L219'>219</a>
 <a name='L220'></a><a href='#L220'>220</a>
 <a name='L221'></a><a href='#L221'>221</a>
-<a name='L222'></a><a href='#L222'>222</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L222'></a><a href='#L222'>222</a>
+<a name='L223'></a><a href='#L223'>223</a>
+<a name='L224'></a><a href='#L224'>224</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -503,8 +505,10 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * File Storage Service
  * "Store the scrolls in the cloud, accessible to all who seek wisdom"
@@ -512,27 +516,27 @@
  * Handles file uploads, storage, and retrieval using Supabase Storage
  */
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { createClient, SupabaseClient } from '@supabase/supabase-js';</span>
-<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { logger } from '../utils/logger';
 import {
   FileUploadRequest,
   FileUploadResponse,
   FileType
 } from '../types/course.types';
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default class F</span>ileStorageService {
+export class FileStorageService {
   private supabase: SupabaseClient;
-  private readonly <span class="cstat-no" title="statement not covered" >bucketName = 'course-content';</span>
+  private readonly bucketName = 'course-content';
 &nbsp;
-<span class="fstat-no" title="function not covered" >  constructor() {</span>
-    const supabaseUrl = <span class="cstat-no" title="statement not covered" >process.env.SUPABASE_URL || '';</span>
-    const supabaseKey = <span class="cstat-no" title="statement not covered" >process.env.SUPABASE_SERVICE_ROLE_KEY || '';</span>
+  constructor() {
+    const supabaseUrl = process.env.SUPABASE_URL || <span class="branch-1 cbranch-no" title="branch not covered" >'';</span>
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || <span class="branch-1 cbranch-no" title="branch not covered" >'';</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    <span class="missing-if-branch" title="if path not taken" >I</span>if (!supabaseUrl || !supabaseKey) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (!supabaseUrl || !supabaseKey) {
 <span class="cstat-no" title="statement not covered" >      logger.warn('Supabase credentials not configured, file storage will not work');</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    this.supabase = createClient(supabaseUrl, supabaseKey);</span>
+    this.supabase = createClient(supabaseUrl, supabaseKey);
   }
 &nbsp;
   /**
@@ -726,6 +730,8 @@ import {
 <span class="cstat-no" title="statement not covered" >    return parts.join('/');</span>
   }
 }
+&nbsp;
+export default FileStorageService;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -733,7 +739,7 @@ import {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-26T12:50:25.146Z
+                at 2025-11-30T22:23:03.756Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -37,7 +37,7 @@ interface WelcomeEmail {
   data: Record<string, any>;
 }
 
-export default class UserOnboardingService {
+export class UserOnboardingService {
   /**
    * Start onboarding flow for new user
    */
@@ -499,3 +499,5 @@ The ScrollUniversity Team
     return null;
   }
 }
+
+export default UserOnboardingService;

@@ -14,8 +14,8 @@ import {
   ContentCategory,
   SeverityLevel
 } from '../types/community.types';
-import logger from '../utils/logger';
-import AIGatewayService from './AIGatewayService';
+import { logger } from '../utils/logger';
+import { AIGatewayService } from './AIGatewayService';
 
 const prisma = new PrismaClient();
 

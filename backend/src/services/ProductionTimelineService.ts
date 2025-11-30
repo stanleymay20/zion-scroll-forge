@@ -160,7 +160,7 @@ export interface BottleneckAnalysis {
   estimatedDelay: number; // in days
 }
 
-export default class ProductionTimelineService {
+export class ProductionTimelineService {
   private notificationService: NotificationService;
 
   constructor() {
@@ -690,3 +690,5 @@ export default class ProductionTimelineService {
     return milestones;
   }
 }
+
+export default ProductionTimelineService;

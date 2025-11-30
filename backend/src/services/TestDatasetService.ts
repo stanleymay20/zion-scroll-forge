@@ -10,11 +10,11 @@ import {
   AIServiceType,
   TestCategory,
 } from '../types/qa.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class TestDatasetService {
+export class TestDatasetService {
   /**
    * Create a new test case
    */
@@ -641,3 +641,5 @@ export default class TestDatasetService {
     }
   }
 }
+
+export default TestDatasetService;

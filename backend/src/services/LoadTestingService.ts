@@ -55,7 +55,7 @@ interface ErrorSummary {
   message: string;
 }
 
-export default class LoadTestingService {
+export class LoadTestingService {
   /**
    * Run comprehensive load test
    */
@@ -389,3 +389,5 @@ ${result.recommendations.map((r, i) => `${i + 1}. ${r}`).join('\n')}
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
+
+export default LoadTestingService;

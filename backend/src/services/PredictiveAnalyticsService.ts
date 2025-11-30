@@ -13,11 +13,11 @@ import {
   StudentSuccessPrediction,
   RevenueForecast,
 } from '../types/analytics.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class PredictiveAnalyticsService {
+export class PredictiveAnalyticsService {
   /**
    * Predict student success
    */
@@ -509,3 +509,5 @@ export default class PredictiveAnalyticsService {
     return recommendations;
   }
 }
+
+export default PredictiveAnalyticsService;

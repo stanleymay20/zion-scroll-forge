@@ -103,7 +103,7 @@ export interface ChangeTrackingOptions {
  * Content Version Control Service
  * Manages versioning, change tracking, and rollback for all content
  */
-export default class ContentVersionControl {
+export class ContentVersionControl {
   private versions: Map<string, ContentVersion[]> = new Map();
   private changeHistory: Map<string, ContentChange[]> = new Map();
 
@@ -566,3 +566,5 @@ export default class ContentVersionControl {
     return `change_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default ContentVersionControl;

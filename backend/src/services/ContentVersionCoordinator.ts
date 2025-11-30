@@ -93,7 +93,7 @@ export interface SyncSummary {
  * Content Version Coordinator Service
  * Manages global content synchronization across regions
  */
-export default class ContentVersionCoordinator {
+export class ContentVersionCoordinator {
   private versionControl: ContentVersionControl;
   private globalVersions: Map<string, GlobalContentVersion> = new Map();
 
@@ -562,3 +562,5 @@ export default class ContentVersionCoordinator {
     return `adaptation_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default ContentVersionCoordinator;

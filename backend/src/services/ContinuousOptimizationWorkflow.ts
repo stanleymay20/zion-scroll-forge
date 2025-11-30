@@ -7,7 +7,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import ContentOptimizationRecommender, { OptimizationPlan } from './ContentOptimizationRecommender';
 import EffectivenessFactorAnalyzer, { FactorAnalysisReport } from './EffectivenessFactorAnalyzer';
 import ContentEngagementTracker from './ContentEngagementTracker';
@@ -63,7 +63,7 @@ export interface ImprovementTracking {
   lessonsLearned: string[];
 }
 
-export default class ContinuousOptimizationWorkflow {
+export class ContinuousOptimizationWorkflow {
   private recommender: ContentOptimizationRecommender;
   private analyzer: EffectivenessFactorAnalyzer;
   private engagementTracker: ContentEngagementTracker;
@@ -458,3 +458,5 @@ export default class ContinuousOptimizationWorkflow {
     return practices;
   }
 }
+
+export default ContinuousOptimizationWorkflow;

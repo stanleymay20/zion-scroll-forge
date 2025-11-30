@@ -15,7 +15,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class DailyDevotionService {
+export class DailyDevotionService {
   /**
    * Get devotion for a specific date
    */
@@ -382,3 +382,5 @@ export default class DailyDevotionService {
     }
   }
 }
+
+export default DailyDevotionService;

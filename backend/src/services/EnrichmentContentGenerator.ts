@@ -144,7 +144,7 @@ export interface GenerateEnrichmentResponse {
   processingTime: number;
 }
 
-export default class EnrichmentContentGenerator {
+export class EnrichmentContentGenerator {
   private aiGateway: AIGatewayService;
   private analyticsService: LearningAnalyticsService;
 
@@ -645,3 +645,5 @@ Return JSON:
     return `application_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default EnrichmentContentGenerator;

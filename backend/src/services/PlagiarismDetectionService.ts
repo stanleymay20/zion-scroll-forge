@@ -21,7 +21,7 @@ import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class PlagiarismDetectionService {
+export class PlagiarismDetectionService {
   private vectorStore: VectorStoreService;
 
   constructor() {
@@ -417,3 +417,5 @@ export default class PlagiarismDetectionService {
     }
   }
 }
+
+export default PlagiarismDetectionService;

@@ -6,7 +6,7 @@
 import express, { Request, Response } from 'express';
 import { AccessibilityAIService } from '../services/AccessibilityAIService';
 import { authenticateToken } from '../middleware/auth';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 const accessibilityService = new AccessibilityAIService();

@@ -23,7 +23,7 @@ import {
 } from '../types/chat.types';
 import { chatServiceConfig } from '../config/socket.config';
 import ChatFileService from './ChatFileService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import crypto from 'crypto';
 
 const prisma = new PrismaClient();

@@ -82,7 +82,7 @@ export interface IntegrationRecommendation {
   priority: 'critical' | 'high' | 'medium' | 'low';
 }
 
-export default class PropheticAIIntegrator {
+export class PropheticAIIntegrator {
   private aiGateway: AIGatewayService;
   private spiritualFormation: SpiritualFormationAIService;
   private spiritualValidator: SpiritualAlignmentValidatorService;
@@ -569,3 +569,5 @@ export interface SpiritualEnhancement {
   location: string;
   impact: 'high' | 'medium' | 'low';
 }
+
+export default PropheticAIIntegrator;

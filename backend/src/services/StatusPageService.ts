@@ -50,7 +50,7 @@ interface UptimeStats {
   last90Days: number;
 }
 
-export default class StatusPageService {
+export class StatusPageService {
   /**
    * Get current system status
    */
@@ -559,3 +559,5 @@ export default class StatusPageService {
     return html;
   }
 }
+
+export default StatusPageService;

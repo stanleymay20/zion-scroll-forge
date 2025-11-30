@@ -113,7 +113,7 @@ interface KnowledgeIncorporationResult {
   qualityImprovement: number;
 }
 
-export default class ExpertCollaborationCoordinator {
+export class ExpertCollaborationCoordinator {
   private aiGateway: AIGatewayService;
   private contentService: ContentCreationService;
   private facultyService: FacultyAssistantService;
@@ -526,3 +526,5 @@ Provide a revised version that addresses the feedback while maintaining quality 
     };
   }
 }
+
+export default ExpertCollaborationCoordinator;

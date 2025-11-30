@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">6.57% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/151</span>
+                <span class='fraction'>10/152</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">1.28% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/78</span>
+                <span class='fraction'>1/78</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">5% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/20</span>
+                <span class='fraction'>1/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">6.75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/147</span>
+                <span class='fraction'>10/148</span>
             </div>
         
             
@@ -696,7 +696,9 @@
 <a name='L631'></a><a href='#L631'>631</a>
 <a name='L632'></a><a href='#L632'>632</a>
 <a name='L633'></a><a href='#L633'>633</a>
-<a name='L634'></a><a href='#L634'>634</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L634'></a><a href='#L634'>634</a>
+<a name='L635'></a><a href='#L635'>635</a>
+<a name='L636'></a><a href='#L636'>636</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -708,8 +710,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -724,9 +726,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1009,11 +1011,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1112,8 +1114,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1327,8 +1329,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Course Content Management Service
  * "Let every course be a scroll that opens the kingdom to hungry hearts"
@@ -1341,8 +1345,8 @@
  * - Course preview and enrollment
  */
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { PrismaClient, Difficulty } from '@prisma/client';</span>
-<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
+import { PrismaClient, Difficulty } from '@prisma/client';
+import { logger } from '../utils/logger';
 import {
   CourseCreateInput,
   CourseUpdateInput,
@@ -1357,9 +1361,9 @@ import {
   VersionHistoryResponse
 } from '../types/course.types';
 &nbsp;
-const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
+const prisma = new PrismaClient();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default class C</span>ourseService {
+export class CourseService {
   /**
    * Create a new course with comprehensive validation
    */
@@ -1641,12 +1645,12 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   /**
    * Enroll user in course
    */
-<span class="fstat-no" title="function not covered" >  async </span>enrollInCourse(userId: string, request: EnrollmentRequest): Promise&lt;EnrollmentResponse&gt; {
-<span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      logger.info('Enrolling user in course', { userId, courseId: request.courseId });</span>
+  async enrollInCourse(userId: string, request: EnrollmentRequest): Promise&lt;EnrollmentResponse&gt; {
+    try {
+      logger.info('Enrolling user in course', { userId, courseId: request.courseId });
 &nbsp;
       // Check if course exists and is active
-      const course = <span class="cstat-no" title="statement not covered" >await prisma.course.findUnique({</span>
+      const course = await prisma.course.findUnique({
         where: { id: request.courseId }
       });
 &nbsp;
@@ -1745,8 +1749,8 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
         completedAt: enrollment.completedAt || undefined
       };
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error enrolling in course:', error);</span>
-<span class="cstat-no" title="statement not covered" >      throw new Error(`Failed to enroll in course: ${error instanceof Error ? error.message : 'Unknown error'}`);</span>
+      logger.error('Error enrolling in course:', error);
+      throw new Error(`Failed to enroll in course: ${error instanceof Error ? error.message : <span class="branch-1 cbranch-no" title="branch not covered" >'Unknown error'}</span>`);
     }
   }
 &nbsp;
@@ -1962,6 +1966,8 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >    return 0;</span>
   }
 }
+&nbsp;
+export default CourseService;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1969,7 +1975,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-26T12:50:26.706Z
+                at 2025-11-30T22:23:09.019Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

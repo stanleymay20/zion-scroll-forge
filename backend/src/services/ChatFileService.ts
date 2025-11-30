@@ -7,7 +7,7 @@
 import { PrismaClient } from '@prisma/client';
 import { MessageAttachment, ScanStatus } from '../types/chat.types';
 import { chatServiceConfig } from '../config/socket.config';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import crypto from 'crypto';
 import path from 'path';
 

@@ -12,9 +12,9 @@ import {
   TranscriptSegment,
   CaptionTrack
 } from '../types/video-streaming.types';
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 
-export default class TranscriptGenerationService {
+export class TranscriptGenerationService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -277,3 +277,5 @@ export default class TranscriptGenerationService {
     }
   }
 }
+
+export default TranscriptGenerationService;

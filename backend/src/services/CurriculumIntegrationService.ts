@@ -64,7 +64,7 @@ export interface ContentSchedule {
   };
 }
 
-export default class CurriculumIntegrationService {
+export class CurriculumIntegrationService {
   /**
    * Analyze curriculum to identify content needs
    */
@@ -447,3 +447,5 @@ export default class CurriculumIntegrationService {
     }
   }
 }
+
+export default CurriculumIntegrationService;

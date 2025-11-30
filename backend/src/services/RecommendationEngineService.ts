@@ -31,7 +31,7 @@ interface ResourceCandidate {
   url?: string;
 }
 
-export default class RecommendationEngineService {
+export class RecommendationEngineService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
 
@@ -824,3 +824,5 @@ Format: One title per line, concise and clear.`;
       .slice(0, maxCount);
   }
 }
+
+export default RecommendationEngineService;

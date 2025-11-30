@@ -43,7 +43,7 @@ export interface AdaptationSummary {
   estimatedImpact: string;
 }
 
-export default class AdaptiveContentDeliveryIntegrator {
+export class AdaptiveContentDeliveryIntegrator {
   private personalizationEngine: ContentPersonalizationEngine;
   private difficultyService: DifficultyAdaptationService;
   private enrichmentGenerator: EnrichmentContentGenerator;
@@ -348,3 +348,5 @@ export default class AdaptiveContentDeliveryIntegrator {
     };
   }
 }
+
+export default AdaptiveContentDeliveryIntegrator;

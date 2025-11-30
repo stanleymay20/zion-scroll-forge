@@ -188,7 +188,7 @@ export interface ValidationRule {
  * Interactive Element Builder Service
  * Creates interactive exercises and simulations for active learning
  */
-export default class InteractiveElementBuilder {
+export class InteractiveElementBuilder {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -864,3 +864,5 @@ function solution() {
     ];
   }
 }
+
+export default InteractiveElementBuilder;

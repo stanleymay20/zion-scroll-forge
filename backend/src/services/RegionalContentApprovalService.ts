@@ -130,7 +130,7 @@ export interface WorkflowSummary {
  * Regional Content Approval Service
  * Manages approval workflows for regional content variants
  */
-export default class RegionalContentApprovalService {
+export class RegionalContentApprovalService {
   private reviewWorkflowService: ReviewWorkflowService;
   private workflows: Map<string, RegionalApprovalWorkflow> = new Map();
   private workflowsByVariant: Map<string, string> = new Map();
@@ -603,3 +603,5 @@ export default class RegionalContentApprovalService {
     return `review_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default RegionalContentApprovalService;

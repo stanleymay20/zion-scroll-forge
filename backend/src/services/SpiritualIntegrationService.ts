@@ -64,7 +64,7 @@ export interface ReflectionQuestionsGeneration {
   quality: number;
 }
 
-export default class SpiritualIntegrationService {
+export class SpiritualIntegrationService {
   private theologicalAlignmentService: TheologicalAlignmentService;
   private spiritualFormationAIService: SpiritualFormationAIService;
 
@@ -544,3 +544,5 @@ Format as JSON array of objects with:
     return Math.min(quality, 100);
   }
 }
+
+export default SpiritualIntegrationService;

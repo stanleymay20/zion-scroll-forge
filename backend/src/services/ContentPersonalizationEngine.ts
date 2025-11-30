@@ -117,7 +117,7 @@ export interface PersonalizeContentResponse {
   processingTime: number;
 }
 
-export default class ContentPersonalizationEngine {
+export class ContentPersonalizationEngine {
   private aiGateway: AIGatewayService;
   private studentProfileService: typeof StudentProfileService;
   private analyticsService: LearningAnalyticsService;
@@ -791,3 +791,5 @@ Return JSON:
     return `app_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default ContentPersonalizationEngine;

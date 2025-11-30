@@ -12,7 +12,7 @@ import ScholarshipAnalyticsService from '../services/ScholarshipAnalyticsService
 import ScholarshipRecommendationService from '../services/ScholarshipRecommendationService';
 import ScholarshipNotificationService from '../services/ScholarshipNotificationService';
 import { authenticateToken, requireRole } from '../middleware/auth';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 

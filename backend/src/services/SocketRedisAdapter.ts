@@ -6,7 +6,7 @@
 
 import { createAdapter } from '@socket.io/redis-adapter';
 import { createClient, RedisClientType } from 'redis';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 export class SocketRedisAdapter {
   private pubClient: RedisClientType;

@@ -11,9 +11,9 @@ import {
 } from '../types/translation.types';
 import { AIGatewayService } from './AIGatewayService';
 import { VectorStoreService } from './VectorStoreService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
-export default class TheologicalTranslationService {
+export class TheologicalTranslationService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
 
@@ -403,3 +403,5 @@ Provide in JSON format:
     return experts;
   }
 }
+
+export default TheologicalTranslationService;

@@ -31,7 +31,7 @@ interface CourseNode {
   spiritualGrowth: number;
 }
 
-export default class DegreePlanGenerationService {
+export class DegreePlanGenerationService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -492,3 +492,5 @@ export default class DegreePlanGenerationService {
     return `plan-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default DegreePlanGenerationService;

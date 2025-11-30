@@ -4,10 +4,18 @@
  */
 
 import express from 'express';
-import { UserRole } from '@prisma/client';
-import { userManagementService } from '../../../src/services/UserManagementService';
-import { authMiddleware, requireRole, requireScrollAlignment } from '../middleware/auth';
+import { userManagementService } from '../services/UserManagementService';
+import { authenticate as authMiddleware, requireRole, requireScrollAlignment } from '../middleware/auth';
 import { logger } from '../utils/logger';
+
+// User roles as constants since they're stored as strings in the database
+const UserRole = {
+  STUDENT: 'STUDENT',
+  FACULTY: 'FACULTY',
+  ADMIN: 'ADMIN',
+  STAFF: 'STAFF',
+  CHANCELLOR: 'CHANCELLOR',
+} as const;
 
 const router = express.Router();
 

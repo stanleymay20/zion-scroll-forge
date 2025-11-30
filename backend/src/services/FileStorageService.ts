@@ -13,7 +13,7 @@ import {
   FileType
 } from '../types/course.types';
 
-export default class FileStorageService {
+export class FileStorageService {
   private supabase: SupabaseClient;
   private readonly bucketName = 'course-content';
 
@@ -219,3 +219,5 @@ export default class FileStorageService {
     return parts.join('/');
   }
 }
+
+export default FileStorageService;

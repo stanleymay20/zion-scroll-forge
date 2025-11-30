@@ -13,13 +13,13 @@ import {
   ApplicationStatus,
   ApplicationSearchFilters
 } from '../types/scholarship.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import EligibilityCheckService from './EligibilityCheckService';
 import ScholarshipNotificationService from './ScholarshipNotificationService';
 
 const prisma = new PrismaClient();
 
-export default class ScholarshipApplicationService {
+export class ScholarshipApplicationService {
   private eligibilityService: EligibilityCheckService;
   private notificationService: ScholarshipNotificationService;
 
@@ -385,3 +385,5 @@ export default class ScholarshipApplicationService {
     };
   }
 }
+
+export default ScholarshipApplicationService;

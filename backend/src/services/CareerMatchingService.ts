@@ -13,8 +13,8 @@ import {
   ProficiencyLevel,
   LearningResource,
 } from '../types/career-services.types';
-import AIGatewayService from './AIGatewayService';
-import logger from '../utils/logger';
+import { AIGatewayService } from './AIGatewayService';
+import { logger } from '../utils/logger';
 
 /**
  * CareerMatchingService

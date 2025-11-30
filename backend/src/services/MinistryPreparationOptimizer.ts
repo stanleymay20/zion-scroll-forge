@@ -7,7 +7,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 import CallingDiscernmentService from './CallingDiscernmentService';
 import ContentCreationService from './ContentCreationService';
 
@@ -95,7 +95,7 @@ export interface OptimizationResponse {
   error?: string;
 }
 
-export default class MinistryPreparationOptimizer {
+export class MinistryPreparationOptimizer {
   private aiGateway: AIGatewayService;
   private callingDiscernment: CallingDiscernmentService;
   private contentCreation: ContentCreationService;
@@ -414,3 +414,5 @@ Format as JSON.`;
     };
   }
 }
+
+export default MinistryPreparationOptimizer;

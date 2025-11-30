@@ -5,7 +5,7 @@ import express, { Request, Response } from 'express';
 import ContentCreationService from '../services/ContentCreationService';
 import FacultyReviewService from '../services/FacultyReviewService';
 import { authenticateToken, requireRole } from '../middleware/auth';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import {
   LectureGenerationRequest,
   AssessmentGenerationRequest,

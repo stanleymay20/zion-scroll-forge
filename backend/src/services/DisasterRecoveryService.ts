@@ -68,7 +68,7 @@ interface RecoveryTest {
   improvements: string[];
 }
 
-export default class DisasterRecoveryService {
+export class DisasterRecoveryService {
   /**
    * Get comprehensive disaster recovery plan
    */
@@ -694,3 +694,5 @@ This plan should be reviewed and updated:
     return doc;
   }
 }
+
+export default DisasterRecoveryService;

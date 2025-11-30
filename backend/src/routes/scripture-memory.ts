@@ -6,7 +6,7 @@
 import express, { Request, Response } from 'express';
 import scriptureMemoryService from '../services/ScriptureMemoryService';
 import { authenticateToken } from '../middleware/auth';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 

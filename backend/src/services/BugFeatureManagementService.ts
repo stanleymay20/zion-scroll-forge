@@ -20,7 +20,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class BugFeatureManagementService {
+export class BugFeatureManagementService {
   // ============================================================================
   // Bug Tracking Methods
   // ============================================================================
@@ -531,3 +531,5 @@ export default class BugFeatureManagementService {
     };
   }
 }
+
+export default BugFeatureManagementService;

@@ -40,7 +40,7 @@ interface PenetrationTestResult {
   timestamp: Date;
 }
 
-export default class SecurityAuditService {
+export class SecurityAuditService {
   /**
    * Perform comprehensive security audit
    */
@@ -465,3 +465,5 @@ ${auditResult.recommendations.map((r, i) => `${i + 1}. ${r}`).join('\n')}
     return report;
   }
 }
+
+export default SecurityAuditService;

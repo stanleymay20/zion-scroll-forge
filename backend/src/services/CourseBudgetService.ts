@@ -8,7 +8,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
@@ -129,7 +129,7 @@ export interface FinancialReport {
   generatedAt: Date;
 }
 
-export default class CourseBudgetService {
+export class CourseBudgetService {
   /**
    * Allocate budget for a course with category allocation
    * Requirement 9.1: WHEN a course is budgeted THEN the System SHALL allocate funds 
@@ -679,3 +679,5 @@ export default class CourseBudgetService {
     }
   }
 }
+
+export default CourseBudgetService;

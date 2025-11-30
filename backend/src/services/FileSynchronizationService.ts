@@ -19,7 +19,7 @@ import {
 import { EventEmitter } from 'events';
 import crypto from 'crypto';
 
-export default class FileSynchronizationService extends EventEmitter {
+export class FileSynchronizationService extends EventEmitter {
   private prisma: PrismaClient;
   private activeSyncOperations: Map<string, SyncOperation> = new Map();
   private syncQueue: SyncOperation[] = [];
@@ -616,3 +616,5 @@ export default class FileSynchronizationService extends EventEmitter {
     logger.info('File Synchronization Service cleaned up');
   }
 }
+
+export default FileSynchronizationService;

@@ -79,7 +79,7 @@ export interface CitationGenerationRequest {
   };
 }
 
-export default class SourceAttributionManager {
+export class SourceAttributionManager {
   private aiGateway: AIGatewayService;
   private attributionThreshold: number = 0.90;
 
@@ -718,3 +718,5 @@ Return only the formatted citation text, nothing else.`;
     }
   }
 }
+
+export default SourceAttributionManager;

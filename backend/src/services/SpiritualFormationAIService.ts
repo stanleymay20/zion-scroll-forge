@@ -3,8 +3,8 @@
  * Provides AI-powered spiritual formation tracking and analysis
  */
 
-import AIGatewayService from './AIGatewayService';
-import VectorStoreService from './VectorStoreService';
+import { AIGatewayService, aiGatewayService } from './AIGatewayService';
+import { VectorStoreService, vectorStoreService } from './VectorStoreService';
 import {
   SpiritualCheckIn,
   SpiritualAnalysis,
@@ -24,7 +24,7 @@ import {
   Resource
 } from '../types/spiritual-formation.types';
 
-export default class SpiritualFormationAIService {
+export class SpiritualFormationAIService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
 
@@ -32,8 +32,8 @@ export default class SpiritualFormationAIService {
     aiGateway?: AIGatewayService,
     vectorStore?: VectorStoreService
   ) {
-    this.aiGateway = aiGateway || new AIGatewayService();
-    this.vectorStore = vectorStore || new VectorStoreService();
+    this.aiGateway = aiGateway || aiGatewayService;
+    this.vectorStore = vectorStore || vectorStoreService;
   }
 
   /**
@@ -624,3 +624,5 @@ Format as JSON.`;
     }));
   }
 }
+
+export default SpiritualFormationAIService;

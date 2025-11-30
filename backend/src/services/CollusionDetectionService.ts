@@ -20,7 +20,7 @@ import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class CollusionDetectionService {
+export class CollusionDetectionService {
   private vectorStore: VectorStoreService;
 
   constructor() {
@@ -539,3 +539,5 @@ export default class CollusionDetectionService {
     }
   }
 }
+
+export default CollusionDetectionService;

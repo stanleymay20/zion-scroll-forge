@@ -15,7 +15,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class PostLaunchMonitoringService {
+export class PostLaunchMonitoringService {
   /**
    * Get real-time metrics for monitoring dashboard
    */
@@ -505,3 +505,5 @@ export default class PostLaunchMonitoringService {
     }
   }
 }
+
+export default PostLaunchMonitoringService;

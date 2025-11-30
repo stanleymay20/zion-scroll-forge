@@ -13,9 +13,9 @@ import {
 import { AIGatewayService } from './AIGatewayService';
 import { VectorStoreService } from './VectorStoreService';
 import { LocalizationService } from './LocalizationService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
-export default class MultilingualTutorService {
+export class MultilingualTutorService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
   private localization: LocalizationService;
@@ -394,3 +394,5 @@ Provide your tutoring response in JSON format:
     return mapping[culture] || 'north_america';
   }
 }
+
+export default MultilingualTutorService;

@@ -21,7 +21,7 @@ import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class IntegrityCaseManagementService {
+export class IntegrityCaseManagementService {
   /**
    * Create a new integrity violation case
    */
@@ -585,3 +585,5 @@ export default class IntegrityCaseManagementService {
     };
   }
 }
+
+export default IntegrityCaseManagementService;

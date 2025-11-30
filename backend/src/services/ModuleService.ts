@@ -15,7 +15,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class ModuleService {
+export class ModuleService {
   /**
    * Create a new module
    */
@@ -137,3 +137,5 @@ export default class ModuleService {
     }
   }
 }
+
+export default ModuleService;

@@ -3,7 +3,7 @@
  * Provides personalized devotion recommendations
  */
 
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 import VectorStoreService from './VectorStoreService';
 import {
   DailyDevotion,
@@ -12,7 +12,7 @@ import {
   DevotionAnalytics
 } from '../types/devotion.types';
 
-export default class DevotionRecommendationService {
+export class DevotionRecommendationService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
 
@@ -391,3 +391,5 @@ Format as JSON array with devotionId, score (0-1), reason, and relevantTo fields
     return seasonalTopics[season] || seasonalTopics['ordinary'];
   }
 }
+
+export default DevotionRecommendationService;

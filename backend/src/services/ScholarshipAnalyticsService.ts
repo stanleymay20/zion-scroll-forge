@@ -7,11 +7,11 @@
 
 import { PrismaClient } from '@prisma/client';
 import { ScholarshipAnalytics } from '../types/scholarship.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class ScholarshipAnalyticsService {
+export class ScholarshipAnalyticsService {
   /**
    * Get analytics for a specific scholarship
    */
@@ -364,3 +364,5 @@ export default class ScholarshipAnalyticsService {
     return lines.join('\n');
   }
 }
+
+export default ScholarshipAnalyticsService;

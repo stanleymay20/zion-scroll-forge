@@ -16,7 +16,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class LectureService {
+export class LectureService {
   /**
    * Create a new lecture
    */
@@ -125,3 +125,5 @@ export default class LectureService {
     }
   }
 }
+
+export default LectureService;

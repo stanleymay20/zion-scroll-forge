@@ -10,7 +10,7 @@ import CourseRecommendationEngineService from '../services/CourseRecommendationE
 import AcademicAdvisorService from '../services/AcademicAdvisorService';
 import OrientationModuleService from '../services/OrientationModuleService';
 import StudentSuccessTrackingService from '../services/StudentSuccessTrackingService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 

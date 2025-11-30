@@ -13,7 +13,7 @@ import {
 } from '../types/course.types';
 import FileStorageService from './FileStorageService';
 
-export default class VideoProcessingService {
+export class VideoProcessingService {
   private fileStorage: FileStorageService;
 
   constructor() {
@@ -197,3 +197,5 @@ export default class VideoProcessingService {
     }
   }
 }
+
+export default VideoProcessingService;

@@ -16,7 +16,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export default class ContentScanningService {
+export class ContentScanningService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -443,3 +443,5 @@ Return JSON:
     }
   }
 }
+
+export default ContentScanningService;

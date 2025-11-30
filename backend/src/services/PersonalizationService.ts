@@ -23,7 +23,7 @@ import {
 } from '../types/personalization.types';
 import { logger } from '../utils/logger';
 
-export default class PersonalizationService {
+export class PersonalizationService {
   private analytics: LearningAnalyticsService;
   private recommendations: RecommendationEngineService;
   private interventions: InterventionService;
@@ -260,3 +260,5 @@ export default class PersonalizationService {
     }
   }
 }
+
+export default PersonalizationService;

@@ -11,9 +11,9 @@ import {
   PerformanceMetrics,
   OptimizationRecommendation
 } from '../types/cost-optimization.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
-export default class PromptOptimizationService {
+export class PromptOptimizationService {
   private templates: Map<string, PromptTemplate> = new Map();
   private abTestResults: Map<string, ABTestResult> = new Map();
 
@@ -298,3 +298,5 @@ export default class PromptOptimizationService {
     ];
   }
 }
+
+export default PromptOptimizationService;

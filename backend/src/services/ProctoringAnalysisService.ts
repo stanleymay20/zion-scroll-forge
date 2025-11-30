@@ -23,7 +23,7 @@ import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class ProctoringAnalysisService {
+export class ProctoringAnalysisService {
   /**
    * Create a new proctoring session
    */
@@ -662,3 +662,5 @@ export default class ProctoringAnalysisService {
     };
   }
 }
+
+export default ProctoringAnalysisService;

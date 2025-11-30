@@ -2,7 +2,7 @@
 // "I will instruct you and teach you in the way you should go" - Psalm 32:8
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import {
   OnboardingProgress,
   OnboardingStep,

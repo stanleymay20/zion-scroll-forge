@@ -5,10 +5,20 @@
 
 import express from 'express';
 import { Request, Response } from 'express';
-import { scrollBadgeSystem } from '../../../src/services/ScrollBadgeSystem';
-import { BadgeMintRequest, BadgeType } from '../../../src/types/scrollbadge';
-import { authMiddleware } from '../middleware/auth';
-import { validateRequest } from '../middleware/validation';
+import scrollBadgeSystem from '../services/ScrollBadgeService';
+import { BadgeMintRequest, BadgeType } from '../types/scrollbadge.types';
+import { authenticate as authMiddleware } from '../middleware/auth';
+
+// Simple validation middleware placeholder
+const validateRequest = (schema: any) => {
+  return (req: Request, res: Response, next: any) => {
+    const { error } = schema.validate(req.body);
+    if (error) {
+      return res.status(400).json({ success: false, error: error.details[0].message });
+    }
+    next();
+  };
+};
 import Joi from 'joi';
 
 const router = express.Router();

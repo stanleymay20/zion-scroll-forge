@@ -85,7 +85,7 @@ export interface CoordinationStatus {
  * Global Content Coordination Integrator
  * Orchestrates all global content coordination services
  */
-export default class GlobalContentCoordinationIntegrator {
+export class GlobalContentCoordinationIntegrator {
   private versionCoordinator: ContentVersionCoordinator;
   private variantManager: CulturalVariantManager;
   private consistencyChecker: CrossCulturalConsistencyChecker;
@@ -427,3 +427,5 @@ export default class GlobalContentCoordinationIntegrator {
     };
   }
 }
+
+export default GlobalContentCoordinationIntegrator;

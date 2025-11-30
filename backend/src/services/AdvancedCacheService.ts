@@ -8,10 +8,10 @@ import {
   CacheEntry,
   CacheMetrics
 } from '../types/cost-optimization.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import { VectorStoreService } from './VectorStoreService';
 
-export default class AdvancedCacheService {
+export class AdvancedCacheService {
   private cache: Map<string, CacheEntry> = new Map();
   private vectorStore: VectorStoreService;
   private config: CacheConfig;
@@ -345,3 +345,5 @@ export default class AdvancedCacheService {
     };
   }
 }
+
+export default AdvancedCacheService;

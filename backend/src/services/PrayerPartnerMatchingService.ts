@@ -16,7 +16,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class PrayerPartnerMatchingService {
+export class PrayerPartnerMatchingService {
   /**
    * Find potential prayer partners for a user
    */
@@ -336,3 +336,5 @@ export default class PrayerPartnerMatchingService {
     }
   }
 }
+
+export default PrayerPartnerMatchingService;

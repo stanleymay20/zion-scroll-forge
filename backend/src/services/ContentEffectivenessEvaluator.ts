@@ -7,7 +7,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
@@ -97,7 +97,7 @@ export interface ContentImpactAnalysis {
   overallImpactScore: number;
 }
 
-export default class ContentEffectivenessEvaluator {
+export class ContentEffectivenessEvaluator {
   /**
    * Evaluate content effectiveness
    */
@@ -769,3 +769,5 @@ export default class ContentEffectivenessEvaluator {
     return [];
   }
 }
+
+export default ContentEffectivenessEvaluator;

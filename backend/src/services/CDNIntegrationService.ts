@@ -13,7 +13,7 @@ import {
   CDNAnalytics
 } from '../types/video-streaming.types';
 
-export default class CDNIntegrationService {
+export class CDNIntegrationService {
   private config: CDNConfig;
 
   constructor() {
@@ -327,3 +327,5 @@ export default class CDNIntegrationService {
     }
   }
 }
+
+export default CDNIntegrationService;

@@ -77,7 +77,7 @@ export interface TerminologyMap {
  * Content Coherence Checker Service
  * Validates coherence and consistency across modules and courses
  */
-export default class ContentCoherenceChecker {
+export class ContentCoherenceChecker {
   private aiGateway: AIGatewayService;
   private terminologyMaps: Map<string, TerminologyMap> = new Map();
   private contentRelationships: Map<string, ContentRelationship[]> = new Map();
@@ -604,3 +604,5 @@ export default class ContentCoherenceChecker {
     return 'poor';
   }
 }
+
+export default ContentCoherenceChecker;

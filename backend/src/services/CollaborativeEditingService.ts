@@ -153,7 +153,7 @@ interface EditConflict {
   timestamp: Date;
 }
 
-export default class CollaborativeEditingService {
+export class CollaborativeEditingService {
   private reviewWorkflow: ReviewWorkflowService;
   private activeSessions: Map<string, EditingSession>;
 
@@ -649,3 +649,5 @@ export default class CollaborativeEditingService {
     return ChangeType.MODIFICATION;
   }
 }
+
+export default CollaborativeEditingService;

@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">14.47% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/76</span>
+                <span class='fraction'>11/76</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">9.09% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/11</span>
+                <span class='fraction'>1/11</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">14.47% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/76</span>
+                <span class='fraction'>11/76</span>
             </div>
         
             
@@ -305,22 +305,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -534,29 +534,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Chat File Attachment Service
  * Handles file uploads, virus scanning, and storage for chat messages
  * "Test everything; hold fast what is good" - 1 Thessalonians 5:21
  */
 &nbsp;
-<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
-<span class="cstat-no" title="statement not covered" >import { MessageAttachment, ScanStatus } from '../types/chat.types';</span>
-<span class="cstat-no" title="statement not covered" >import { chatServiceConfig } from '../config/socket.config';</span>
-<span class="cstat-no" title="statement not covered" >import logger from '../utils/logger';</span>
-<span class="cstat-no" title="statement not covered" >import crypto from 'crypto';</span>
-<span class="cstat-no" title="statement not covered" >import path from 'path';</span>
+import { PrismaClient } from '@prisma/client';
+import { MessageAttachment, ScanStatus } from '../types/chat.types';
+import { chatServiceConfig } from '../config/socket.config';
+import { logger } from '../utils/logger';
+import crypto from 'crypto';
+import path from 'path';
 &nbsp;
-const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
+const prisma = new PrismaClient();
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export class C</span>hatFileService {
+export class ChatFileService {
   private allowedMimeTypes: Set&lt;string&gt;;
   private maxFileSize: number;
 &nbsp;
-<span class="fstat-no" title="function not covered" >  constructor() {</span>
-<span class="cstat-no" title="statement not covered" >    this.maxFileSize = chatServiceConfig.maxAttachmentSize;</span>
-<span class="cstat-no" title="statement not covered" >    this.allowedMimeTypes = new Set(chatServiceConfig.allowedFileTypes);</span>
+  constructor() {
+    this.maxFileSize = chatServiceConfig.maxAttachmentSize;
+    this.allowedMimeTypes = new Set(chatServiceConfig.allowedFileTypes);
   }
 &nbsp;
   /**
@@ -770,7 +770,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   }
 }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default new ChatFileService();</span>
+export default new ChatFileService();
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -778,7 +778,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-26T12:50:26.706Z
+                at 2025-11-30T22:23:09.019Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

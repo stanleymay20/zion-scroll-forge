@@ -7,7 +7,7 @@
  */
 
 import express, { Request, Response } from 'express';
-import { authenticateToken, requireRole } from '../middleware/auth';
+import { authenticate as authenticateToken, requireRole } from '../middleware/auth';
 import ScrollCoinService from '../services/ScrollCoinService';
 import WalletManagementService from '../services/WalletManagementService';
 import FraudPreventionService from '../services/FraudPreventionService';

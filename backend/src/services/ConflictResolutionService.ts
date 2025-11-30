@@ -134,7 +134,7 @@ interface ChangeRecord {
   approved: boolean;
 }
 
-export default class ConflictResolutionService {
+export class ConflictResolutionService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -539,3 +539,5 @@ Apply the feedback while maintaining content coherence and quality.`;
     return `change_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default ConflictResolutionService;

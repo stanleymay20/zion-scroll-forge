@@ -5,7 +5,7 @@
 
 import { ScripturePassage, BibleTranslation, AVAILABLE_TRANSLATIONS } from '../types/devotion.types';
 
-export default class ScriptureIntegrationService {
+export class ScriptureIntegrationService {
   private apiKey: string;
   private apiBaseUrl: string;
 
@@ -273,3 +273,5 @@ export default class ScriptureIntegrationService {
     }
   }
 }
+
+export default ScriptureIntegrationService;

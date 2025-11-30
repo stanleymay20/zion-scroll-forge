@@ -14,13 +14,13 @@ import {
   ReportSchedule,
 } from '../types/analytics.types';
 import AnalyticsDashboardService from './AnalyticsDashboardService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import * as fs from 'fs';
 import * as path from 'path';
 
 const prisma = new PrismaClient();
 
-export default class ReportGenerationService {
+export class ReportGenerationService {
   private analyticsService: AnalyticsDashboardService;
   private reportsDir: string;
 
@@ -547,3 +547,5 @@ export default class ReportGenerationService {
     }
   }
 }
+
+export default ReportGenerationService;

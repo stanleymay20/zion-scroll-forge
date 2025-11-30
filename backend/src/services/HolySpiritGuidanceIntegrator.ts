@@ -93,7 +93,7 @@ export interface SpiritualDiscernmentResult {
   nextSteps: string[];
 }
 
-export default class HolySpiritGuidanceIntegrator {
+export class HolySpiritGuidanceIntegrator {
   private aiGateway: AIGatewayService;
   private spiritualFormation: SpiritualFormationAIService;
   private propheticIntegrator: PropheticAIIntegrator;
@@ -679,3 +679,5 @@ export interface PrayerCoverage {
   ongoingStrategies: string[];
   timestamp: Date;
 }
+
+export default HolySpiritGuidanceIntegrator;

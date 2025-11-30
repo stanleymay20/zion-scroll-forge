@@ -9,7 +9,7 @@ import NotificationBatchingService from '../services/NotificationBatchingService
 import NotificationTemplateService from '../services/NotificationTemplateService';
 import NotificationAnalyticsService from '../services/NotificationAnalyticsService';
 import { authenticate } from '../middleware/auth';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 const notificationService = new NotificationService();

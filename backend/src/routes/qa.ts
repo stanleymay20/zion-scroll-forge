@@ -9,7 +9,7 @@ import QualityMetricsService from '../services/QualityMetricsService';
 import TheologicalAlignmentService from '../services/TheologicalAlignmentService';
 import ReviewWorkflowService from '../services/ReviewWorkflowService';
 import { authenticateToken, requireRole } from '../middleware/auth';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 

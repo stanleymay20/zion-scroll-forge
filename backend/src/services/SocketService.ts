@@ -9,7 +9,7 @@ import { Server as SocketIOServer, Socket } from 'socket.io';
 import { socketConfig } from '../config/socket.config';
 import socketRedisAdapter from './SocketRedisAdapter';
 import ChatService from './ChatService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import jwt from 'jsonwebtoken';
 import {
   SocketAuthPayload,

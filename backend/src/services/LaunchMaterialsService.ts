@@ -80,7 +80,7 @@ interface PageMetadata {
   ogImage: string;
 }
 
-export default class LaunchMaterialsService {
+export class LaunchMaterialsService {
   /**
    * Get launch landing page
    */
@@ -818,3 +818,5 @@ P.S. Don't miss our launch webinar on [Date] where we'll showcase the platform a
     };
   }
 }
+
+export default LaunchMaterialsService;

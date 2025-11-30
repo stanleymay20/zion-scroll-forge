@@ -19,7 +19,7 @@ import {
 } from '../types/video-streaming.types';
 import { PrismaClient } from '@prisma/client';
 
-export default class VideoStreamingService {
+export class VideoStreamingService {
   private prisma: PrismaClient;
   private cdnBaseUrl: string;
 
@@ -328,3 +328,5 @@ export default class VideoStreamingService {
     }
   }
 }
+
+export default VideoStreamingService;

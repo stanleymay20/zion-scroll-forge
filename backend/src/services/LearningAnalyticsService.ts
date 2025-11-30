@@ -34,7 +34,7 @@ interface PerformanceData {
   aiTutorSessions: any[];
 }
 
-export default class LearningAnalyticsService {
+export class LearningAnalyticsService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -720,3 +720,5 @@ export default class LearningAnalyticsService {
     };
   }
 }
+
+export default LearningAnalyticsService;

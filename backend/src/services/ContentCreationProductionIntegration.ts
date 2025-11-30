@@ -84,7 +84,7 @@ export interface ContentCreationMetrics {
 /**
  * Content Creation Production Integration Service
  */
-export default class ContentCreationProductionIntegration {
+export class ContentCreationProductionIntegration {
   private monitoring: ProductionMonitoringService;
   private deployment: DeploymentOrchestrationService;
   private backup: BackupRecoveryService;
@@ -668,3 +668,5 @@ export default class ContentCreationProductionIntegration {
     return `job_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default ContentCreationProductionIntegration;

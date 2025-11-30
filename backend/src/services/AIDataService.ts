@@ -105,7 +105,7 @@ export interface AIReviewQueueData {
   assignedToUserId?: string;
 }
 
-export default class AIDataService {
+export class AIDataService {
   /**
    * Create a new AI service request record
    */
@@ -944,3 +944,5 @@ export default class AIDataService {
     }
   }
 }
+
+export default AIDataService;

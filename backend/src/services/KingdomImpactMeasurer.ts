@@ -11,7 +11,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 import SpiritualGrowthAnalyticsService from './SpiritualGrowthAnalyticsService';
 
 const prisma = new PrismaClient();
@@ -127,7 +127,7 @@ interface BreakthroughReport {
   contentRole: string;
 }
 
-export default class KingdomImpactMeasurer {
+export class KingdomImpactMeasurer {
   private aiGateway: AIGatewayService;
   private spiritualAnalytics: SpiritualGrowthAnalyticsService;
 
@@ -708,3 +708,5 @@ Format as a JSON array of strings.`;
     }
   }
 }
+
+export default KingdomImpactMeasurer;

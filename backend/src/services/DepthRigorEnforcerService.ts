@@ -6,7 +6,7 @@
 
 import { PrismaClient } from '@prisma/client';
 import QualityMetricsService from './QualityMetricsService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import {
   RigorLevel,
   RigorValidation,
@@ -21,7 +21,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class DepthRigorEnforcerService {
+export class DepthRigorEnforcerService {
   private qualityMetricsService: QualityMetricsService;
 
   // Elite institutions for benchmarking
@@ -944,3 +944,5 @@ export default class DepthRigorEnforcerService {
     logger.info('Rejection notification sent', { courseId });
   }
 }
+
+export default DepthRigorEnforcerService;

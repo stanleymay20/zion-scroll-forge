@@ -5,8 +5,8 @@
 
 import { Router } from 'express';
 import { PrismaClient } from '@prisma/client';
-import { MasterCourseCatalogService } from '../../services/MasterCourseCatalogService';
-import { SupremeScrollFaculty, CourseSearchCriteria } from '../../types/curriculum-grid';
+import { MasterCourseCatalogService } from '../services/MasterCourseCatalogService';
+import { SupremeScrollFaculty, CourseSearchCriteria } from '../types/curriculum-grid';
 
 const router = Router();
 const prisma = new PrismaClient();

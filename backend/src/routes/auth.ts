@@ -5,10 +5,27 @@
 
 import express from 'express';
 import Joi from 'joi';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+import { PrismaClient } from '@prisma/client';
 import { supabaseAuthService } from '../services/SupabaseAuthService';
 import { authService } from '../services/AuthService';
 import { authenticate } from '../middleware/auth';
 import { logger } from '../utils/productionLogger';
+
+const prisma = new PrismaClient();
+
+// Custom error class for validation
+class ScrollValidationError extends Error {
+  constructor(
+    message: string,
+    public scrollMessage: string,
+    public kingdomGuidance: string
+  ) {
+    super(message);
+    this.name = 'ScrollValidationError';
+  }
+}
 
 const router = express.Router();
 
@@ -141,7 +158,7 @@ router.post('/register', async (req, res, next) => {
     // Generate token
     const token = generateToken(newUser);
     
-    logger.scroll('New ScrollStudent registered', {
+    logger.info('New ScrollStudent registered', {
       userId: newUser.id,
       email: newUser.email,
       username: newUser.username
@@ -233,7 +250,7 @@ router.post('/login', async (req, res, next) => {
     // Remove password hash from response
     const { passwordHash, ...userResponse } = user;
     
-    logger.scroll('ScrollStudent logged in', {
+    logger.info('ScrollStudent logged in', {
       userId: user.id,
       email: user.email,
       lastLogin: user.lastLoginAt
@@ -652,15 +669,15 @@ router.post('/supabase/change-password', authenticate, async (req, res) => {
 
     await authService.changePassword(req.user!.id, currentPassword, newPassword);
 
-    res.json({
+    return res.json({
       success: true,
       message: 'Password changed successfully'
     });
   } catch (error) {
-    logger.error('Password change failed', { error: error.message });
-    res.status(400).json({
+    logger.error('Password change failed', { error: error instanceof Error ? error.message : 'Unknown error' });
+    return res.status(400).json({
       success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Password change failed'
     });
   }
 });
@@ -675,5 +692,3 @@ router.get('/health', (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
-
-export default router;

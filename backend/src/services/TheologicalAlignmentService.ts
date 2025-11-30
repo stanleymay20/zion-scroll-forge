@@ -14,7 +14,7 @@ import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class TheologicalAlignmentService {
+export class TheologicalAlignmentService {
   private aiGateway: AIGatewayService;
   private statementOfFaith: string;
 
@@ -392,3 +392,5 @@ Be thorough but fair. Minor stylistic differences are acceptable. Focus on subst
     }
   }
 }
+
+export default TheologicalAlignmentService;

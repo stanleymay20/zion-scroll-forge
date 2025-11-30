@@ -14,11 +14,11 @@ import {
   ScholarshipStatus,
   ScholarshipType
 } from '../types/scholarship.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class ScholarshipService {
+export class ScholarshipService {
   /**
    * Create a new scholarship
    */
@@ -349,3 +349,5 @@ export default class ScholarshipService {
     };
   }
 }
+
+export default ScholarshipService;

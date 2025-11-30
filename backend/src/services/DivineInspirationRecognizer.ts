@@ -87,7 +87,7 @@ export interface InspirationPattern {
   recommendations: string[];
 }
 
-export default class DivineInspirationRecognizer {
+export class DivineInspirationRecognizer {
   private aiGateway: AIGatewayService;
   private spiritualFormation: SpiritualFormationAIService;
 
@@ -606,3 +606,5 @@ export interface CultivationRecommendations {
   resources: string[];
   timestamp: Date;
 }
+
+export default DivineInspirationRecognizer;

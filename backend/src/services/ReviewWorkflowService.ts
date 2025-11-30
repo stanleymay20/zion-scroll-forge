@@ -11,11 +11,11 @@ import {
   ReviewStatus,
   AIServiceType,
 } from '../types/qa.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class ReviewWorkflowService {
+export class ReviewWorkflowService {
   /**
    * Create a review workflow item
    */
@@ -564,3 +564,5 @@ export default class ReviewWorkflowService {
     }
   }
 }
+
+export default ReviewWorkflowService;

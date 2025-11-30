@@ -15,7 +15,7 @@ import {
   ContactMethod
 } from '../types/fundraising.types';
 import { AIGatewayService } from './AIGatewayService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 export class RelationshipManagementService {
   private aiGateway: AIGatewayService;

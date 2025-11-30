@@ -19,7 +19,7 @@ import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class AIContentDetectionService {
+export class AIContentDetectionService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -474,3 +474,5 @@ Respond with ONLY a number between 0 and 1, where 0 means definitely human-writt
     }
   }
 }
+
+export default AIContentDetectionService;

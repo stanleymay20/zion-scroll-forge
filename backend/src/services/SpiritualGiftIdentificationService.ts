@@ -4,7 +4,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 import VectorStoreService from './VectorStoreService';
 import {
   SpiritualGiftIdentification,
@@ -18,7 +18,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class SpiritualGiftIdentificationService {
+export class SpiritualGiftIdentificationService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
 
@@ -315,3 +315,5 @@ Format as JSON.`;
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default SpiritualGiftIdentificationService;

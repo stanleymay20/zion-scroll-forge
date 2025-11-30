@@ -15,7 +15,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class PerformanceReportingService {
+export class PerformanceReportingService {
   /**
    * Generate performance report
    */
@@ -426,3 +426,5 @@ export default class PerformanceReportingService {
     ];
   }
 }
+
+export default PerformanceReportingService;

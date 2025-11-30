@@ -7,7 +7,7 @@ import express, { Request, Response } from 'express';
 import CareerServicesAIService from '../services/CareerServicesAIService';
 import { MockInterviewService } from '../services/MockInterviewService';
 import { EmployerMatchingService } from '../services/EmployerMatchingService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 const careerServicesAI = new CareerServicesAIService();

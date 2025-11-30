@@ -24,7 +24,7 @@ import { AICacheService } from './AICacheService';
 import { VectorStoreService } from './VectorStoreService';
 import { logger } from '../utils/logger';
 
-export default class TranslationService {
+export class TranslationService {
   private aiGateway: AIGatewayService;
   private cache: AICacheService;
   private vectorStore: VectorStoreService;
@@ -561,3 +561,5 @@ Provide the translation in JSON format:
     return translations[language] || ['NIV'];
   }
 }
+
+export default TranslationService;

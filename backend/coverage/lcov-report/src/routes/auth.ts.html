@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/174</span>
+                <span class='fraction'>0/181</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/34</span>
+                <span class='fraction'>0/38</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/17</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/174</span>
+                <span class='fraction'>0/181</span>
             </div>
         
             
@@ -742,7 +742,22 @@
 <a name='L677'></a><a href='#L677'>677</a>
 <a name='L678'></a><a href='#L678'>678</a>
 <a name='L679'></a><a href='#L679'>679</a>
-<a name='L680'></a><a href='#L680'>680</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L680'></a><a href='#L680'>680</a>
+<a name='L681'></a><a href='#L681'>681</a>
+<a name='L682'></a><a href='#L682'>682</a>
+<a name='L683'></a><a href='#L683'>683</a>
+<a name='L684'></a><a href='#L684'>684</a>
+<a name='L685'></a><a href='#L685'>685</a>
+<a name='L686'></a><a href='#L686'>686</a>
+<a name='L687'></a><a href='#L687'>687</a>
+<a name='L688'></a><a href='#L688'>688</a>
+<a name='L689'></a><a href='#L689'>689</a>
+<a name='L690'></a><a href='#L690'>690</a>
+<a name='L691'></a><a href='#L691'>691</a>
+<a name='L692'></a><a href='#L692'>692</a>
+<a name='L693'></a><a href='#L693'>693</a>
+<a name='L694'></a><a href='#L694'>694</a>
+<a name='L695'></a><a href='#L695'>695</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -753,13 +768,29 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -770,6 +801,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1419,8 +1451,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * ScrollUniversity Authentication Routes
  * Divine access control for kingdom education
@@ -1428,10 +1458,27 @@
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import express from 'express';</span>
 <span class="cstat-no" title="statement not covered" >import Joi from 'joi';</span>
+<span class="cstat-no" title="statement not covered" >import jwt from 'jsonwebtoken';</span>
+<span class="cstat-no" title="statement not covered" >import bcrypt from 'bcrypt';</span>
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
 <span class="cstat-no" title="statement not covered" >import { supabaseAuthService } from '../services/SupabaseAuthService';</span>
 <span class="cstat-no" title="statement not covered" >import { authService } from '../services/AuthService';</span>
 <span class="cstat-no" title="statement not covered" >import { authenticate } from '../middleware/auth';</span>
 <span class="cstat-no" title="statement not covered" >import { logger } from '../utils/productionLogger';</span>
+&nbsp;
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
+&nbsp;
+// Custom error class for validation
+class ScrollValidationError extends Error {
+<span class="fstat-no" title="function not covered" >  constructor(</span>
+    message: string,
+    public <span class="cstat-no" title="statement not covered" >scrollMessage: string,</span>
+    public <span class="cstat-no" title="statement not covered" >kingdomGuidance: string</span>
+  ) {
+<span class="cstat-no" title="statement not covered" >    super(message);</span>
+<span class="cstat-no" title="statement not covered" >    this.name = 'ScrollValidationError';</span>
+  }
+}
 &nbsp;
 const router = <span class="cstat-no" title="statement not covered" >express.Router();</span>
 &nbsp;
@@ -1564,7 +1611,7 @@ const generateToken = <span class="cstat-no" title="statement not covered" ><spa
     // Generate token
     const token = <span class="cstat-no" title="statement not covered" >generateToken(newUser);</span>
     
-<span class="cstat-no" title="statement not covered" >    logger.scroll('New ScrollStudent registered', {</span>
+<span class="cstat-no" title="statement not covered" >    logger.info('New ScrollStudent registered', {</span>
       userId: newUser.id,
       email: newUser.email,
       username: newUser.username
@@ -1656,7 +1703,7 @@ const generateToken = <span class="cstat-no" title="statement not covered" ><spa
     // Remove password hash from response
     const { passwordHash, ...userResponse } = <span class="cstat-no" title="statement not covered" >user;</span>
     
-<span class="cstat-no" title="statement not covered" >    logger.scroll('ScrollStudent logged in', {</span>
+<span class="cstat-no" title="statement not covered" >    logger.info('ScrollStudent logged in', {</span>
       userId: user.id,
       email: user.email,
       lastLogin: user.lastLoginAt
@@ -2075,15 +2122,15 @@ const generateToken = <span class="cstat-no" title="statement not covered" ><spa
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    await authService.changePassword(req.user!.id, currentPassword, newPassword);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    res.json({</span>
+<span class="cstat-no" title="statement not covered" >    return res.json({</span>
       success: true,
       message: 'Password changed successfully'
     });
   } catch (error) {
-<span class="cstat-no" title="statement not covered" >    logger.error('Password change failed', { error: error.message });</span>
-<span class="cstat-no" title="statement not covered" >    res.status(400).json({</span>
+<span class="cstat-no" title="statement not covered" >    logger.error('Password change failed', { error: error instanceof Error ? error.message : 'Unknown error' });</span>
+<span class="cstat-no" title="statement not covered" >    return res.status(400).json({</span>
       success: false,
-      error: error.message
+      error: error instanceof Error ? error.message : 'Password change failed'
     });
   }
 });
@@ -2098,8 +2145,6 @@ const generateToken = <span class="cstat-no" title="statement not covered" ><spa
     timestamp: new Date().toISOString()
   });
 });
-&nbsp;
-<span class="cstat-no" title="statement not covered" >export default router;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -2107,7 +2152,7 @@ const generateToken = <span class="cstat-no" title="statement not covered" ><spa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-26T12:50:25.146Z
+                at 2025-11-30T22:23:03.756Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

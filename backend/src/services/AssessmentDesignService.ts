@@ -22,7 +22,7 @@ import {
 import { AIGatewayService } from './AIGatewayService';
 import LearningAnalyticsService from './LearningAnalyticsService';
 
-export default class AssessmentDesignService {
+export class AssessmentDesignService {
   private aiGateway: AIGatewayService;
   private learningAnalytics: LearningAnalyticsService;
 
@@ -406,3 +406,5 @@ export default class AssessmentDesignService {
     return typeScores[assessment.type] || 0.7;
   }
 }
+
+export default AssessmentDesignService;

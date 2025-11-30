@@ -58,7 +58,7 @@ export interface ConsistencyCheckRequest {
   relatedContentIds?: string[];
 }
 
-export default class ContentConsistencyChecker {
+export class ContentConsistencyChecker {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
   private consistencyThreshold: number = 0.90;
@@ -554,3 +554,5 @@ Only report significant inconsistencies that could confuse students.`;
     }
   }
 }
+
+export default ContentConsistencyChecker;

@@ -3,7 +3,7 @@
  */
 
 import SpiritualFormationAIService from '../SpiritualFormationAIService';
-import AIGatewayService from '../AIGatewayService';
+import { AIGatewayService } from '../AIGatewayService';
 import VectorStoreService from '../VectorStoreService';
 
 // Mock dependencies

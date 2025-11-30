@@ -50,7 +50,7 @@ export interface FactCheckRequest {
   requireSources?: boolean;
 }
 
-export default class FactualAccuracyChecker {
+export class FactualAccuracyChecker {
   private aiGateway: AIGatewayService;
   private accuracyThreshold: number = 0.85;
 
@@ -472,3 +472,5 @@ Use your knowledge to verify the claim. If you're uncertain, mark needsReview as
     }
   }
 }
+
+export default FactualAccuracyChecker;

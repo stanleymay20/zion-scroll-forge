@@ -22,7 +22,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class PrayerJournalService {
+export class PrayerJournalService {
   /**
    * Create a new prayer journal entry
    */
@@ -492,3 +492,5 @@ export default class PrayerJournalService {
     };
   }
 }
+
+export default PrayerJournalService;

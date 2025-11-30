@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">11.02% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/127</span>
+                <span class='fraction'>14/127</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">14.28% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/21</span>
+                <span class='fraction'>3/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">11.11% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/126</span>
+                <span class='fraction'>14/126</span>
             </div>
         
             
@@ -458,13 +458,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -473,9 +473,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -795,8 +795,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -806,7 +806,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -838,7 +838,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Socket.io Service
  * Manages WebSocket connections and real-time events
@@ -846,13 +846,13 @@
  */
 &nbsp;
 import { Server as HTTPServer } from 'http';
-<span class="cstat-no" title="statement not covered" >import { Server as SocketIOServer, Socket } from 'socket.io';</span>
-<span class="cstat-no" title="statement not covered" >import { socketConfig } from '../config/socket.config';</span>
-<span class="cstat-no" title="statement not covered" >import socketRedisAdapter from './SocketRedisAdapter';</span>
-<span class="cstat-no" title="statement not covered" >import ChatService from './ChatService';</span>
-<span class="cstat-no" title="statement not covered" >import logger from '../utils/logger';</span>
-<span class="cstat-no" title="statement not covered" >import jwt from 'jsonwebtoken';</span>
-<span class="cstat-no" title="statement not covered" >import {</span>
+import { Server as SocketIOServer, Socket } from 'socket.io';
+import { socketConfig } from '../config/socket.config';
+import socketRedisAdapter from './SocketRedisAdapter';
+import ChatService from './ChatService';
+import { logger } from '../utils/logger';
+import jwt from 'jsonwebtoken';
+import {
   SocketAuthPayload,
   SocketJoinRoomPayload,
   SocketLeaveRoomPayload,
@@ -861,9 +861,9 @@ import { Server as HTTPServer } from 'http';
   UserStatus
 } from '../types/chat.types';
 &nbsp;
-<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >export class S</span></span>ocketService {
-  private <span class="cstat-no" title="statement not covered" >io: SocketIOServer | null = null;</span>
-  private <span class="cstat-no" title="statement not covered" >connectedUsers: Map&lt;string, Set&lt;string&gt;&gt; = new Map(); </span>// userId -&gt; Set of socketIds
+export class SocketService {
+  private io: SocketIOServer | null = null;
+  private connectedUsers: Map&lt;string, Set&lt;string&gt;&gt; = new Map(); // userId -&gt; Set of socketIds
 &nbsp;
   /**
    * Initialize Socket.io server
@@ -1182,9 +1182,9 @@ import { Server as HTTPServer } from 'http';
   /**
    * Broadcast to all connected clients
    */
-<span class="fstat-no" title="function not covered" >  async </span>broadcast(event: string, data: any): Promise&lt;void&gt; {
-<span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      this.io?.emit(event, data);</span>
+  async broadcast(event: string, data: any): Promise&lt;void&gt; {
+    try {
+      this.io?.emit(event, data);
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Error broadcasting:', error);</span>
     }
@@ -1193,8 +1193,8 @@ import { Server as HTTPServer } from 'http';
   /**
    * Get connected users count
    */
-<span class="fstat-no" title="function not covered" >  getConnectedUsersCount(</span>): number {
-<span class="cstat-no" title="statement not covered" >    return this.connectedUsers.size;</span>
+  getConnectedUsersCount(): number {
+    return this.connectedUsers.size;
   }
 &nbsp;
   /**
@@ -1226,7 +1226,7 @@ import { Server as HTTPServer } from 'http';
   }
 }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default new SocketService();</span>
+export default new SocketService();
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1234,7 +1234,7 @@ import { Server as HTTPServer } from 'http';
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-26T12:50:26.706Z
+                at 2025-11-30T22:23:09.019Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

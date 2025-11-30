@@ -12,13 +12,13 @@ import {
   DisbursementStatus,
   DisbursementMethod
 } from '../types/scholarship.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import ScholarshipNotificationService from './ScholarshipNotificationService';
 import ScholarshipService from './ScholarshipService';
 
 const prisma = new PrismaClient();
 
-export default class ScholarshipDisbursementService {
+export class ScholarshipDisbursementService {
   private notificationService: ScholarshipNotificationService;
   private scholarshipService: ScholarshipService;
 
@@ -395,3 +395,5 @@ export default class ScholarshipDisbursementService {
     };
   }
 }
+
+export default ScholarshipDisbursementService;

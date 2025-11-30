@@ -15,7 +15,7 @@ import {
   MultilingualTutorRequest,
   BatchTranslationRequest
 } from '../types/translation.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 

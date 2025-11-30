@@ -6,7 +6,7 @@
 
 import { ComplianceReport, AutomatedFix } from '../types/accessibility.types';
 import { AltTextGenerationService } from './AltTextGenerationService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import * as cheerio from 'cheerio';
 
 export class AutomatedFixService {

@@ -48,7 +48,7 @@ export interface ResourceAllocation {
   dependencies: string[];
 }
 
-export default class ContentPriorityManager {
+export class ContentPriorityManager {
   /**
    * Calculate priority score for a course
    */
@@ -402,3 +402,5 @@ export default class ContentPriorityManager {
     return team;
   }
 }
+
+export default ContentPriorityManager;

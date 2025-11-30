@@ -3,7 +3,7 @@
  * Handles creation and management of devotion content
  */
 
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 import ScriptureIntegrationService from './ScriptureIntegrationService';
 import DevotionAudioService from './DevotionAudioService';
 import {
@@ -12,7 +12,7 @@ import {
   ScripturePassage
 } from '../types/devotion.types';
 
-export default class DevotionContentManagementService {
+export class DevotionContentManagementService {
   private aiGateway: AIGatewayService;
   private scriptureService: ScriptureIntegrationService;
   private audioService: DevotionAudioService;
@@ -385,3 +385,5 @@ Format your response as JSON with fields: title, reflection, prayerPrompt, actio
     }
   }
 }
+
+export default DevotionContentManagementService;

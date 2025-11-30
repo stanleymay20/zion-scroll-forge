@@ -15,7 +15,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class PrayerAnalyticsService {
+export class PrayerAnalyticsService {
   /**
    * Get comprehensive prayer analytics for a user
    */
@@ -295,3 +295,5 @@ export default class PrayerAnalyticsService {
     return 15;
   }
 }
+
+export default PrayerAnalyticsService;

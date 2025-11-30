@@ -146,8 +146,23 @@ export const optionalAuth = async (
 export const requireAuth = authenticate;
 
 /**
+ * Authenticate token (alias for authenticate)
+ */
+export const authenticateToken = authenticate;
+
+/**
  * Require specific role(s)
  */
 export const requireRole = (roles: string[]) => {
   return [authenticate, authorize(...roles)];
+};
+
+/**
+ * Require Scroll Alignment (placeholder for spiritual alignment check)
+ */
+export const requireScrollAlignment = (minAlignment: number = 0.5) => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    // Placeholder - implement spiritual alignment check
+    next();
+  };
 };

@@ -4,7 +4,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 import VectorStoreService from './VectorStoreService';
 import {
   CallingDiscernment,
@@ -14,7 +14,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class CallingDiscernmentService {
+export class CallingDiscernmentService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
 
@@ -314,3 +314,5 @@ Format as JSON.`;
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default CallingDiscernmentService;

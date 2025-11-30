@@ -15,7 +15,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class UserFeedbackService {
+export class UserFeedbackService {
   /**
    * Submit user feedback
    */
@@ -455,3 +455,5 @@ export default class UserFeedbackService {
     }
   }
 }
+
+export default UserFeedbackService;

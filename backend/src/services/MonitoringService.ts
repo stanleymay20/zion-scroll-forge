@@ -5,7 +5,6 @@
 
 import { EventEmitter } from 'events';
 import { logger, MetricsLogger, SecurityLogger, ErrorTracker } from '../utils/productionLogger';
-import { cacheService } from './CacheService';
 import { healthCheckService } from './HealthCheckService';
 
 export interface MetricData {
@@ -47,7 +46,8 @@ export class MonitoringService extends EventEmitter {
   private alerts: Map<string, Alert> = new Map();
   private alertRules: Map<string, AlertRule> = new Map();
   private metricsRetentionHours = 24;
-  private cleanupInterval: NodeJS.Timeout;
+  private cleanupInterval!: NodeJS.Timeout;
+  private healthMonitoringInterval!: NodeJS.Timeout;
 
   constructor() {
     super();
@@ -185,7 +185,7 @@ export class MonitoringService extends EventEmitter {
   /**
    * Record application event
    */
-  recordEvent(event: string, data: any, userId?: string): void {
+  recordEvent(event: string, data: Record<string, unknown>, userId?: string): void {
     const eventData = {
       event,
       data,
@@ -210,7 +210,7 @@ export class MonitoringService extends EventEmitter {
   /**
    * Record error
    */
-  recordError(error: Error, context?: any): void {
+  recordError(error: Error, context?: Record<string, unknown>): void {
     ErrorTracker.trackError(error, context);
     
     this.recordMetric({
@@ -248,7 +248,7 @@ export class MonitoringService extends EventEmitter {
   /**
    * Record security event
    */
-  recordSecurityEvent(type: string, details: any, userId?: string, ip?: string): void {
+  recordSecurityEvent(type: string, details: Record<string, unknown>, userId?: string, ip?: string): void {
     SecurityLogger.logSuspiciousActivity(type, details, ip || 'unknown');
     
     this.recordMetric({
@@ -270,7 +270,13 @@ export class MonitoringService extends EventEmitter {
   /**
    * Get system health metrics
    */
-  async getSystemHealth(): Promise<any> {
+  async getSystemHealth(): Promise<{
+    status: string;
+    timestamp: string;
+    uptime: number;
+    version: string;
+    checks: Record<string, unknown>;
+  }> {
     const health = await healthCheckService.performHealthCheck();
     
     // Record health metrics
@@ -298,7 +304,7 @@ export class MonitoringService extends EventEmitter {
   /**
    * Get dashboard metrics
    */
-  getDashboardMetrics(): any {
+  getDashboardMetrics(): Record<string, unknown> {
     const now = new Date();
     const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
     
@@ -452,7 +458,7 @@ export class MonitoringService extends EventEmitter {
     if (existingAlert) return; // Don't create duplicate alerts
     
     const alert: Alert = {
-      id: `alert_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      id: `alert_${Date.now()}_${Math.random().toString(36).substring(2, 11)}`,
       ruleId: rule.id,
       ruleName: rule.name,
       metric: rule.metric,
@@ -478,7 +484,7 @@ export class MonitoringService extends EventEmitter {
     this.emit('alertTriggered', alert);
     
     // Send notifications
-    this.sendAlertNotifications(alert, rule.channels);
+    void this.sendAlertNotifications(alert, rule.channels);
   }
 
   /**
@@ -502,7 +508,7 @@ export class MonitoringService extends EventEmitter {
         logger.error('Failed to send alert notification', {
           channel,
           alertId: alert.id,
-          error: error.message
+          error: error instanceof Error ? error.message : 'Unknown error'
         });
       }
     }
@@ -566,11 +572,11 @@ export class MonitoringService extends EventEmitter {
    * Start health monitoring
    */
   private startHealthMonitoring(): void {
-    setInterval(async () => {
+    this.healthMonitoringInterval = setInterval(async () => {
       try {
         await this.getSystemHealth();
       } catch (error) {
-        logger.error('Health monitoring failed', { error: error.message });
+        logger.error('Health monitoring failed', { error: error instanceof Error ? error.message : 'Unknown error' });
       }
     }, 60 * 1000); // Check every minute
   }
@@ -581,6 +587,10 @@ export class MonitoringService extends EventEmitter {
   shutdown(): void {
     if (this.cleanupInterval) {
       clearInterval(this.cleanupInterval);
+    }
+    
+    if (this.healthMonitoringInterval) {
+      clearInterval(this.healthMonitoringInterval);
     }
     
     logger.info('Monitoring service shutdown');

@@ -28,7 +28,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class CourseService {
+export class CourseService {
   /**
    * Create a new course with comprehensive validation
    */
@@ -631,3 +631,5 @@ export default class CourseService {
     return 0;
   }
 }
+
+export default CourseService;

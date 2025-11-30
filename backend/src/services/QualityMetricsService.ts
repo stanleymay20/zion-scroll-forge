@@ -14,11 +14,11 @@ import {
   ContinuousImprovement,
   Improvement,
 } from '../types/qa.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class QualityMetricsService {
+export class QualityMetricsService {
   private thresholds: QualityThresholds;
 
   constructor(thresholds?: Partial<QualityThresholds>) {
@@ -485,3 +485,5 @@ export default class QualityMetricsService {
     return recommendations;
   }
 }
+
+export default QualityMetricsService;

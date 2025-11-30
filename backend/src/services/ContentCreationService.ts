@@ -28,7 +28,7 @@ import {
   Resource
 } from '../types/content-creation.types';
 
-export default class ContentCreationService {
+export class ContentCreationService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
   private cache: AICacheService;
@@ -1127,3 +1127,5 @@ Return as JSON array of strings.
     return await this.pedagogyValidator.validateProgressionLevel(content, targetLevel);
   }
 }
+
+export default ContentCreationService;

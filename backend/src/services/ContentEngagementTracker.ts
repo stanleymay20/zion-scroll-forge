@@ -7,7 +7,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
@@ -76,7 +76,7 @@ export interface ContentComparison {
   insights: string[];
 }
 
-export default class ContentEngagementTracker {
+export class ContentEngagementTracker {
   /**
    * Track a content interaction event
    */
@@ -704,3 +704,5 @@ export default class ContentEngagementTracker {
     };
   }
 }
+
+export default ContentEngagementTracker;

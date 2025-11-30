@@ -23,7 +23,7 @@ import {
   VideoProductionError
 } from '../types/course-content.types';
 
-export default class VideoProductionService {
+export class VideoProductionService {
   private prisma: PrismaClient;
   private aiGateway: AIGatewayService;
   private translationService: TranslationService;
@@ -741,3 +741,4 @@ export default class VideoProductionService {
   }
 }
 
+export default VideoProductionService;

@@ -9,10 +9,10 @@ import express, { Request, Response } from 'express';
 import AnalyticsDashboardService from '../services/AnalyticsDashboardService';
 import DataAggregationService from '../services/DataAggregationService';
 import ReportGenerationService from '../services/ReportGenerationService';
-import DataExportService from '../services/DataExportService';
+import { DataExportService } from '../services/DataExportService';
 import PredictiveAnalyticsService from '../services/PredictiveAnalyticsService';
 import { authenticateToken, requireRole } from '../middleware/auth';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 

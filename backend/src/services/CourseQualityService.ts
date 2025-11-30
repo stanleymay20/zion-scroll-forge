@@ -7,7 +7,7 @@
 import { PrismaClient } from '@prisma/client';
 import QualityMetricsService from './QualityMetricsService';
 import ReviewWorkflowService from './ReviewWorkflowService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import {
   QualityReport,
   VideoQualityReport,
@@ -20,7 +20,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class CourseQualityService {
+export class CourseQualityService {
   private qualityMetricsService: QualityMetricsService;
   private reviewWorkflowService: ReviewWorkflowService;
 
@@ -923,3 +923,5 @@ export default class CourseQualityService {
     }
   }
 }
+
+export default CourseQualityService;

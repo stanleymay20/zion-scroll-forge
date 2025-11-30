@@ -75,9 +75,11 @@ export class HealthCheckService {
         checks
       };
 
-      // Log health status
-      HealthMonitor.logHealthCheck('application', overallStatus, {
+      // Log health status (map degraded to unhealthy for logging)
+      const logStatus = overallStatus === 'degraded' ? 'unhealthy' : overallStatus;
+      HealthMonitor.logHealthCheck('application', logStatus, {
         responseTime: Date.now() - startTime,
+        actualStatus: overallStatus,
         checks: Object.entries(checks).map(([name, result]) => ({
           name,
           status: result.status,
@@ -87,7 +89,8 @@ export class HealthCheckService {
 
       return healthStatus;
     } catch (error) {
-      logger.error('Health check failed', { error: error.message });
+      const err = error as Error;
+      logger.error('Health check failed', { error: err.message });
       
       return {
         status: 'unhealthy',
@@ -138,7 +141,7 @@ export class HealthCheckService {
       return {
         status: 'unhealthy',
         responseTime: Date.now() - startTime,
-        message: error.message
+        message: error instanceof Error ? error.message : 'Unknown database error'
       };
     }
   }
@@ -166,7 +169,7 @@ export class HealthCheckService {
       const testValue = { timestamp: Date.now() };
       
       await cacheService.set(testKey, testValue, { ttl: 60 });
-      const retrieved = await cacheService.get(testKey);
+      const retrieved = await cacheService.get(testKey) as { timestamp: number } | null;
       await cacheService.delete(testKey);
       
       if (!retrieved || retrieved.timestamp !== testValue.timestamp) {
@@ -188,7 +191,7 @@ export class HealthCheckService {
       return {
         status: 'unhealthy',
         responseTime: Date.now() - startTime,
-        message: error.message
+        message: error instanceof Error ? error.message : 'Unknown cache error'
       };
     }
   }
@@ -249,7 +252,7 @@ export class HealthCheckService {
       return {
         status: 'unhealthy',
         responseTime: Date.now() - startTime,
-        message: error.message
+        message: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -287,7 +290,7 @@ export class HealthCheckService {
       return {
         status: 'unhealthy',
         responseTime: Date.now() - startTime,
-        message: error.message
+        message: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -355,7 +358,7 @@ export class HealthCheckService {
       return {
         status: 'unhealthy',
         responseTime: Date.now() - startTime,
-        message: error.message
+        message: error instanceof Error ? error.message : 'Unknown error'
       };
     }
   }
@@ -363,39 +366,159 @@ export class HealthCheckService {
   /**
    * Get disk usage information
    */
-  private async getDiskUsage(): Promise<any> {
-    // This is a simplified implementation
-    // In production, you might want to use a library like 'node-disk-info'
-    return {
-      total: 100 * 1024 * 1024 * 1024, // 100GB placeholder
-      free: 50 * 1024 * 1024 * 1024,   // 50GB placeholder
-      used: 50 * 1024 * 1024 * 1024,   // 50GB placeholder
-      utilization: 0.5 // 50% placeholder
-    };
+  private async getDiskUsage(): Promise<{
+    total: number;
+    free: number;
+    used: number;
+    utilization: number;
+  }> {
+    try {
+      // Use environment variable for disk size or calculate from available system info
+      const totalDisk = parseInt(process.env.DISK_TOTAL_GB || '100', 10) * 1024 * 1024 * 1024;
+      
+      // Attempt to get actual disk usage from system
+      // Note: This is a simplified implementation. For production, consider using 'diskusage' npm package
+      const tmpDir = process.env.TMPDIR || process.env.TEMP || '/tmp';
+      
+      try {
+        const stats = await fs.statfs(tmpDir);
+        const total = stats.blocks * stats.bsize;
+        const free = stats.bfree * stats.bsize;
+        const used = total - free;
+        
+        return {
+          total,
+          free,
+          used,
+          utilization: used / total
+        };
+      } catch (statfsError) {
+        // Fallback to environment-based estimation if statfs fails
+        logger.warn('Unable to get disk stats, using fallback', { 
+          error: statfsError instanceof Error ? statfsError.message : 'Unknown error' 
+        });
+        
+        const freeDisk = parseInt(process.env.DISK_FREE_GB || '50', 10) * 1024 * 1024 * 1024;
+        const usedDisk = totalDisk - freeDisk;
+        
+        return {
+          total: totalDisk,
+          free: freeDisk,
+          used: usedDisk,
+          utilization: usedDisk / totalDisk
+        };
+      }
+    } catch (error) {
+      logger.error('Disk usage check failed', { 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
+      
+      // Return safe defaults on complete failure
+      const defaultTotal = 100 * 1024 * 1024 * 1024;
+      const defaultFree = 50 * 1024 * 1024 * 1024;
+      
+      return {
+        total: defaultTotal,
+        free: defaultFree,
+        used: defaultTotal - defaultFree,
+        utilization: 0.5
+      };
+    }
   }
 
   /**
    * Check blockchain service connectivity
    */
-  private async checkBlockchainService(): Promise<{ status: string }> {
-    // Placeholder implementation
-    return { status: 'healthy' };
+  private async checkBlockchainService(): Promise<{ status: 'healthy' | 'unhealthy' | 'degraded' }> {
+    try {
+      const rpcUrl = process.env.BLOCKCHAIN_RPC_URL;
+      if (!rpcUrl) {
+        return { status: 'degraded' };
+      }
+      
+      // Attempt basic connectivity check with timeout
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      
+      try {
+        const response = await fetch(rpcUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            jsonrpc: '2.0',
+            method: 'eth_blockNumber',
+            params: [],
+            id: 1
+          }),
+          signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (response.ok) {
+          return { status: 'healthy' };
+        } else {
+          return { status: 'degraded' };
+        }
+      } catch (fetchError) {
+        clearTimeout(timeoutId);
+        logger.warn('Blockchain service check failed', { 
+          error: fetchError instanceof Error ? fetchError.message : 'Unknown error' 
+        });
+        return { status: 'unhealthy' };
+      }
+    } catch (error) {
+      logger.error('Blockchain service check error', { 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
+      return { status: 'unhealthy' };
+    }
   }
 
   /**
    * Check email service connectivity
    */
-  private async checkEmailService(): Promise<{ status: string }> {
-    // Placeholder implementation
-    return { status: 'healthy' };
+  private async checkEmailService(): Promise<{ status: 'healthy' | 'unhealthy' | 'degraded' }> {
+    try {
+      const smtpHost = process.env.SMTP_HOST;
+      const smtpPort = process.env.SMTP_PORT;
+      
+      if (!smtpHost || !smtpPort) {
+        return { status: 'degraded' };
+      }
+      
+      // Basic connectivity check - in production, use nodemailer's verify()
+      // For now, just verify configuration exists
+      return { status: 'healthy' };
+    } catch (error) {
+      logger.error('Email service check error', { 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
+      return { status: 'unhealthy' };
+    }
   }
 
   /**
    * Check file storage service connectivity
    */
-  private async checkFileStorageService(): Promise<{ status: string }> {
-    // Placeholder implementation
-    return { status: 'healthy' };
+  private async checkFileStorageService(): Promise<{ status: 'healthy' | 'unhealthy' | 'degraded' }> {
+    try {
+      const s3Bucket = process.env.AWS_S3_BUCKET;
+      const awsRegion = process.env.AWS_REGION;
+      
+      if (!s3Bucket || !awsRegion) {
+        return { status: 'degraded' };
+      }
+      
+      // Basic configuration check - in production, use AWS SDK to test actual connectivity
+      // For now, just verify configuration exists
+      return { status: 'healthy' };
+    } catch (error) {
+      logger.error('File storage service check error', { 
+        error: error instanceof Error ? error.message : 'Unknown error' 
+      });
+      return { status: 'unhealthy' };
+    }
   }
 
   /**

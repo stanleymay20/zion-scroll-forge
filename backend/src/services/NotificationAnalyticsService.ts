@@ -10,11 +10,11 @@ import {
   NotificationCategory,
   NotificationFilter,
 } from '../types/notification.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class NotificationAnalyticsService {
+export class NotificationAnalyticsService {
   /**
    * Get comprehensive notification analytics
    */
@@ -554,3 +554,5 @@ export default class NotificationAnalyticsService {
     return Array.from(grouped.values()).sort((a, b) => a.date.localeCompare(b.date));
   }
 }
+
+export default NotificationAnalyticsService;

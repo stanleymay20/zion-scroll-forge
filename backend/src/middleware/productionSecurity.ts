@@ -340,7 +340,7 @@ function parseSize(size: string): number {
 /**
  * Maintenance mode middleware
  */
-export function maintenanceMode(req: Request, res: Response, next: NextFunction): void {
+export function maintenanceMode(req: Request, res: Response, next: NextFunction): void | Response {
   const isMaintenanceMode = process.env.ENABLE_MAINTENANCE_MODE === 'true';
 
   if (isMaintenanceMode) {

@@ -172,13 +172,16 @@ export const propertyTestUtils = {
 };
 
 // Global property test configuration
-global.propertyTestConfig = {
+export const propertyTestConfig = {
   numRuns: 100,
   timeout: 30000,
   seed: 42,
   generators: scrollLibraryGenerators,
   utils: propertyTestUtils
 };
+
+// Also set as global for backward compatibility
+(global as any).propertyTestConfig = propertyTestConfig;
 
 // Extend global types
 declare global {
@@ -190,5 +193,3 @@ declare global {
     utils: typeof propertyTestUtils;
   };
 }
-
-export {};

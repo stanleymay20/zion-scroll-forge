@@ -13,7 +13,7 @@ import {
   WatchedSegment
 } from '../types/video-streaming.types';
 
-export default class VideoProgressTrackingService {
+export class VideoProgressTrackingService {
   private prisma: PrismaClient;
 
   constructor() {
@@ -361,3 +361,5 @@ export default class VideoProgressTrackingService {
     }
   }
 }
+
+export default VideoProgressTrackingService;

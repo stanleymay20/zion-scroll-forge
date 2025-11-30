@@ -6,9 +6,8 @@
  */
 
 import { Router, Request, Response } from 'express';
-import { auth } from '../middleware/auth';
-import { rbac } from '../middleware/rbac';
-import { inputValidation } from '../middleware/inputValidation';
+import { authenticate } from '../middleware/auth';
+import { requireRole, UserRole } from '../middleware/rbac';
 import { ScrollOSToolsService } from '../services/ScrollOSToolsService';
 import { ToolManifestService } from '../services/ToolManifestService';
 import { ToolInstanceService } from '../services/ToolInstanceService';
@@ -18,13 +17,13 @@ import { logger } from '../utils/logger';
 const router = Router();
 
 // Apply authentication to all routes
-router.use(auth);
+router.use(authenticate);
 
 /**
  * Get available tool manifests for user
  */
 router.get('/manifests', 
-  rbac(['student', 'faculty', 'admin']),
+  requireRole(UserRole.STUDENT, UserRole.FACULTY, UserRole.ADMIN),
   async (req: Request, res: Response) => {
     try {
       const userId = req.user?.id;
@@ -56,12 +55,7 @@ router.get('/manifests',
  * Launch a tool instance
  */
 router.post('/instances/launch',
-  rbac(['student', 'faculty', 'admin']),
-  inputValidation({
-    manifestId: { type: 'string', required: true },
-    projectId: { type: 'string', required: false },
-    initialState: { type: 'object', required: false }
-  }),
+  requireRole(UserRole.STUDENT, UserRole.FACULTY, UserRole.ADMIN),
   async (req: Request, res: Response) => {
     try {
       const { manifestId, projectId, initialState } = req.body;
@@ -100,11 +94,7 @@ router.post('/instances/launch',
  * Save tool instance state
  */
 router.post('/tool-instances/state',
-  rbac(['student', 'faculty', 'admin']),
-  inputValidation({
-    instanceId: { type: 'string', required: true },
-    state: { type: 'object', required: true }
-  }),
+  requireRole(UserRole.STUDENT, UserRole.FACULTY, UserRole.ADMIN),
   async (req: Request, res: Response) => {
     try {
       const { instanceId, state } = req.body;
@@ -147,7 +137,7 @@ router.post('/tool-instances/state',
  * Get tool instance state
  */
 router.get('/tool-instances/:instanceId/state',
-  rbac(['student', 'faculty', 'admin']),
+  requireRole(UserRole.STUDENT, UserRole.FACULTY, UserRole.ADMIN),
   async (req: Request, res: Response) => {
     try {
       const { instanceId } = req.params;
@@ -195,7 +185,7 @@ router.get('/tool-instances/:instanceId/state',
  * Close tool instance
  */
 router.delete('/tool-instances/:instanceId',
-  rbac(['student', 'faculty', 'admin']),
+  requireRole(UserRole.STUDENT, UserRole.FACULTY, UserRole.ADMIN),
   async (req: Request, res: Response) => {
     try {
       const { instanceId } = req.params;
@@ -240,10 +230,7 @@ router.delete('/tool-instances/:instanceId',
  * Send message to tool instance
  */
 router.post('/tool-instances/:instanceId/messages',
-  rbac(['student', 'faculty', 'admin']),
-  inputValidation({
-    message: { type: 'object', required: true }
-  }),
+  requireRole(UserRole.STUDENT, UserRole.FACULTY, UserRole.ADMIN),
   async (req: Request, res: Response) => {
     try {
       const { instanceId } = req.params;
@@ -291,7 +278,7 @@ router.post('/tool-instances/:instanceId/messages',
  * Get user's active tool instances
  */
 router.get('/instances/active',
-  rbac(['student', 'faculty', 'admin']),
+  requireRole(UserRole.STUDENT, UserRole.FACULTY, UserRole.ADMIN),
   async (req: Request, res: Response) => {
     try {
       const userId = req.user?.id;
@@ -322,11 +309,7 @@ router.get('/instances/active',
  * Validate tool permissions
  */
 router.post('/instances/validate-permissions',
-  rbac(['student', 'faculty', 'admin']),
-  inputValidation({
-    manifestId: { type: 'string', required: true },
-    requiredPermissions: { type: 'array', required: true }
-  }),
+  requireRole(UserRole.STUDENT, UserRole.FACULTY, UserRole.ADMIN),
   async (req: Request, res: Response) => {
     try {
       const { manifestId, requiredPermissions } = req.body;
@@ -362,7 +345,7 @@ router.post('/instances/validate-permissions',
  * Get tool integration health status
  */
 router.get('/health/:toolId',
-  rbac(['admin', 'faculty']),
+  requireRole(UserRole.ADMIN, UserRole.FACULTY),
   async (req: Request, res: Response) => {
     try {
       const { toolId } = req.params;
@@ -390,3 +373,5 @@ router.get('/health/:toolId',
 );
 
 export default router;
+
+

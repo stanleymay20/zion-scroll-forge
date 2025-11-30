@@ -4,7 +4,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 import VectorStoreService from './VectorStoreService';
 import {
   PropheticCheckIn,
@@ -26,7 +26,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class PropheticCheckInService {
+export class PropheticCheckInService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
 
@@ -592,3 +592,5 @@ Format as JSON.`;
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default PropheticCheckInService;

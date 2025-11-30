@@ -71,7 +71,7 @@ export interface HistorySummary {
  * Content Versioning Integrator Service
  * Provides unified interface for version control and change tracking
  */
-export default class ContentVersioningIntegrator {
+export class ContentVersioningIntegrator {
   private versionControl: ContentVersionControl;
   private changeTracker: ContentChangeTracker;
 
@@ -569,3 +569,5 @@ export default class ContentVersioningIntegrator {
     };
   }
 }
+
+export default ContentVersioningIntegrator;

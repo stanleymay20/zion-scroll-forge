@@ -11,7 +11,7 @@ import {
   ReportPeriod,
   ProspectSource
 } from '../types/fundraising.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 const fundraisingService = new FundraisingAIService();

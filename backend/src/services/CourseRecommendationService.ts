@@ -25,7 +25,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class CourseRecommendationService {
+export class CourseRecommendationService {
   private aiGateway: AIGatewayService;
   private degreePlanService: DegreePlanGenerationService;
   private courseRecommendationEngine: CourseRecommendationEngineService;
@@ -175,3 +175,5 @@ export default class CourseRecommendationService {
     );
   }
 }
+
+export default CourseRecommendationService;

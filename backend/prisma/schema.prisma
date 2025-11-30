@@ -1363,21 +1363,57 @@ enum TaskStatus {
 // ============================================================================
 
 model User {
-  id                String   @id @default(uuid())
-  email             String   @unique
-  username          String   @unique
-  passwordHash      String   @map("password_hash")
-  firstName         String   @map("first_name")
-  lastName          String   @map("last_name")
-  role              String   // STUDENT, FACULTY, ADMIN, STAFF
-  scrollCalling     String?  @map("scroll_calling")
-  spiritualGifts    String[] @map("spiritual_gifts")
-  kingdomVision     String?  @map("kingdom_vision")
-  scrollAlignment   Float    @default(0) @map("scroll_alignment")
-  createdAt         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
-
+  id                    String                    @id @default(uuid())
+  email                 String                    @unique
+  username              String                    @unique
+  passwordHash          String                    @map("password_hash")
+  firstName             String                    @map("first_name")
+  lastName              String                    @map("last_name")
+  location              String?
+  phoneNumber           String?                   @map("phone_number")
+  
+  // Role & Status
+  role                  String                    @default("STUDENT") // STUDENT, FACULTY, ADMIN, STAFF
+  enrollmentStatus      String                    @default("PENDING") @map("enrollment_status")
+  academicLevel         String                    @default("SCROLL_OPEN") @map("academic_level")
+  
+  // Spiritual Formation
+  scrollCalling         String?                   @map("scroll_calling")
+  spiritualGifts        String[]                  @map("spiritual_gifts")
+  kingdomVision         String?                   @map("kingdom_vision")
+  scrollAlignment       Float                     @default(0.0) @map("scroll_alignment")
+  
+  // ScrollCoin Economy
+  scrollCoinBalance     Float                     @default(0.0) @map("scroll_coin_balance")
+  
+  // Timestamps
+  lastLoginAt           DateTime?                 @map("last_login_at")
+  createdAt             DateTime                  @default(now()) @map("created_at")
+  updatedAt             DateTime                  @updatedAt @map("updated_at")
+  
+  // Relations
+  // scrollCoinTransactions ScrollCoinTransaction[] // Temporarily commented until model is created
+  
+  @@index([email], map: "idx_user_email")
+  @@index([username], map: "idx_user_username")
+  @@index([enrollmentStatus], map: "idx_user_enrollment_status")
   @@map("users")
+}
+
+model ScrollCoinTransaction {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  amount      Float
+  type        String   // REWARD, PURCHASE, TRANSFER, REFUND
+  description String
+  metadata    Json?
+  createdAt   DateTime @default(now()) @map("created_at")
+  
+  // user        User     @relation(fields: [userId], references: [id])
+  
+  @@index([userId], map: "idx_transaction_user")
+  @@index([createdAt], map: "idx_transaction_date")
+  @@map("scroll_coin_transactions")
 }
 
 model Faculty {

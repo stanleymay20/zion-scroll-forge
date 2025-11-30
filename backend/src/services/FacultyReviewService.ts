@@ -13,7 +13,7 @@ import {
   CuratedResource
 } from '../types/content-creation.types';
 
-export default class FacultyReviewService {
+export class FacultyReviewService {
   /**
    * Submit content for faculty review
    */
@@ -537,3 +537,5 @@ export default class FacultyReviewService {
     };
   }
 }
+
+export default FacultyReviewService;

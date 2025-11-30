@@ -10,11 +10,11 @@ import {
   EligibilityCriteria,
   EligibilityCheckResult
 } from '../types/scholarship.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class EligibilityCheckService {
+export class EligibilityCheckService {
   /**
    * Check if a user is eligible for a scholarship
    */
@@ -296,3 +296,5 @@ export default class EligibilityCheckService {
     return results;
   }
 }
+
+export default EligibilityCheckService;

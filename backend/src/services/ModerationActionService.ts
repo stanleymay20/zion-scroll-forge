@@ -17,7 +17,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export default class ModerationActionService {
+export class ModerationActionService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -507,3 +507,5 @@ Keep it under 200 words.`;
     return Math.max(0, Math.min(1, confidence));
   }
 }
+
+export default ModerationActionService;

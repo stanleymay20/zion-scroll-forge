@@ -5,9 +5,9 @@
  */
 
 import express from 'express';
-import { ArchitectureComparisonVisualizationService } from '../../../src/services/ArchitectureComparisonVisualizationService';
-import { CompetitiveAnalysisEngine } from '../../../src/services/CompetitiveAnalysisEngine';
-import { authMiddleware } from '../middleware/auth';
+import { ArchitectureComparisonVisualizationService } from '../services/ArchitectureComparisonVisualizationService';
+import { CompetitiveAnalysisEngine } from '../services/CompetitiveAnalysisEngine';
+import { authenticate as authMiddleware } from '../middleware/auth';
 
 const router = express.Router();
 const visualizationService = new ArchitectureComparisonVisualizationService();

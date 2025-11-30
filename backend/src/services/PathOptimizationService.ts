@@ -33,7 +33,7 @@ interface CourseNode {
   spiritualGrowth: number;
 }
 
-export default class PathOptimizationService {
+export class PathOptimizationService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -851,3 +851,5 @@ export default class PathOptimizationService {
     };
   }
 }
+
+export default PathOptimizationService;

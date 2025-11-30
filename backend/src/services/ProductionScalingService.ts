@@ -134,7 +134,7 @@ export interface ScalingReport {
   projectedCapacity: number;
 }
 
-export default class ProductionScalingService {
+export class ProductionScalingService {
   // In-memory storage for templates (in production, this would be in database)
   private templates: Map<string, CourseTemplate> = new Map();
   /**
@@ -583,3 +583,5 @@ export default class ProductionScalingService {
     }
   }
 }
+
+export default ProductionScalingService;

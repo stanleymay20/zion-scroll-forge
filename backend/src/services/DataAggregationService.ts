@@ -11,12 +11,12 @@ import {
   AggregationResult,
   AggregationConfig,
 } from '../types/analytics.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import cron from 'node-cron';
 
 const prisma = new PrismaClient();
 
-export default class DataAggregationService {
+export class DataAggregationService {
   private scheduledJobs: Map<string, cron.ScheduledTask> = new Map();
 
   /**
@@ -530,3 +530,5 @@ export default class DataAggregationService {
     this.scheduledJobs.clear();
   }
 }
+
+export default DataAggregationService;

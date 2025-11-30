@@ -32,7 +32,7 @@ interface TransferCourse {
   description?: string;
 }
 
-export default class TransferCreditMappingService {
+export class TransferCreditMappingService {
   private aiGateway: AIGatewayService;
   private degreePlanService: DegreePlanGenerationService;
 
@@ -389,3 +389,5 @@ Return only the number of the best match, or 0 if no good match exists.`;
     }
   }
 }
+
+export default TransferCreditMappingService;

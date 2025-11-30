@@ -12,9 +12,9 @@ import {
   ContentType
 } from '../types/translation.types';
 import { AIGatewayService } from './AIGatewayService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
-export default class LocalizationService {
+export class LocalizationService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -326,3 +326,5 @@ Provide analysis in JSON format:
     }
   }
 }
+
+export default LocalizationService;

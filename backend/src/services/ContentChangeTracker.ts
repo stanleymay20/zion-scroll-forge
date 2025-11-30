@@ -103,7 +103,7 @@ export interface QualityTrend {
  * Content Change Tracker Service
  * Provides detailed revision history and accountability tracking
  */
-export default class ContentChangeTracker {
+export class ContentChangeTracker {
   private versionControl: ContentVersionControl;
   private revisionHistory: Map<string, RevisionHistoryEntry[]> = new Map();
   private accountabilityRecords: Map<string, AccountabilityRecord[]> = new Map();
@@ -775,3 +775,5 @@ export default class ContentChangeTracker {
     return `ent_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default ContentChangeTracker;

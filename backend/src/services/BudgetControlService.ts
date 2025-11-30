@@ -9,7 +9,7 @@ import {
   BudgetAlert,
   CostForecast
 } from '../types/cost-optimization.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -20,7 +20,7 @@ interface SpendingRecord {
   timestamp: Date;
 }
 
-export default class BudgetControlService {
+export class BudgetControlService {
   private config: BudgetConfig;
   private dailySpending: SpendingRecord[] = [];
   private monthlySpending: SpendingRecord[] = [];
@@ -441,3 +441,5 @@ export default class BudgetControlService {
     logger.info('Budget configuration updated');
   }
 }
+
+export default BudgetControlService;

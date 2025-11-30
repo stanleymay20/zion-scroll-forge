@@ -5,14 +5,15 @@
 
 import express from 'express';
 import { logger } from '../utils/logger';
-import { AIGradingService } from '../../../src/services/AIGradingService';
-import { AssessmentEvaluationService } from '../../../src/services/AssessmentEvaluationService';
-import { PropheticIntelligenceService } from '../../../src/services/PropheticIntelligenceService';
+import { gradingService as aiGradingService } from '../services/GradingService';
+// Note: These services may need to be created if they don't exist
+// import { AssessmentEvaluationService } from '../services/AssessmentEvaluationService';
+// import { PropheticIntelligenceService } from '../services/PropheticIntelligenceService';
 
 const router = express.Router();
-const aiGradingService = AIGradingService.getInstance();
-const assessmentService = AssessmentEvaluationService.getInstance();
-const propheticService = PropheticIntelligenceService.getInstance();
+// Services will be initialized when they're created
+// const assessmentService = AssessmentEvaluationService.getInstance();
+// const propheticService = PropheticIntelligenceService.getInstance();
 
 /**
  * POST /api/ai/assessment

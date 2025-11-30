@@ -7,7 +7,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import ContentEngagementTracker from './ContentEngagementTracker';
 import ContentEffectivenessEvaluator from './ContentEffectivenessEvaluator';
 
@@ -61,7 +61,7 @@ export interface FactorAnalysisReport {
   analyzedAt: Date;
 }
 
-export default class EffectivenessFactorAnalyzer {
+export class EffectivenessFactorAnalyzer {
   private engagementTracker: ContentEngagementTracker;
   private effectivenessEvaluator: ContentEffectivenessEvaluator;
 
@@ -736,3 +736,5 @@ export default class EffectivenessFactorAnalyzer {
       .map(({ factor }) => factor);
   }
 }
+
+export default EffectivenessFactorAnalyzer;

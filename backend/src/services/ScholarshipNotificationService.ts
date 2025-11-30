@@ -10,11 +10,11 @@ import {
   NotificationData,
   ApplicationStatus
 } from '../types/scholarship.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class ScholarshipNotificationService {
+export class ScholarshipNotificationService {
   /**
    * Send application submitted notification
    */
@@ -316,3 +316,5 @@ export default class ScholarshipNotificationService {
     }
   }
 }
+
+export default ScholarshipNotificationService;

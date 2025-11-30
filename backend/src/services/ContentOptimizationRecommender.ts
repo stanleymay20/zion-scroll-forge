@@ -7,7 +7,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import ContentEngagementTracker from './ContentEngagementTracker';
 import ContentEffectivenessEvaluator from './ContentEffectivenessEvaluator';
 
@@ -53,7 +53,7 @@ export interface OptimizationPlan {
   };
 }
 
-export default class ContentOptimizationRecommender {
+export class ContentOptimizationRecommender {
   private engagementTracker: ContentEngagementTracker;
   private effectivenessEvaluator: ContentEffectivenessEvaluator;
 
@@ -697,3 +697,5 @@ export default class ContentOptimizationRecommender {
     return Math.round(totalImpact);
   }
 }
+
+export default ContentOptimizationRecommender;

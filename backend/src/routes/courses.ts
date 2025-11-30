@@ -5,7 +5,6 @@
 
 import express from 'express';
 import multer from 'multer';
-import { UserRole } from '@prisma/client';
 import { requireRole, requireAuth } from '../middleware/auth';
 import { logger } from '../utils/logger';
 import CourseService from '../services/CourseService';
@@ -13,6 +12,15 @@ import ModuleService from '../services/ModuleService';
 import LectureService from '../services/LectureService';
 import FileStorageService from '../services/FileStorageService';
 import VideoProcessingService from '../services/VideoProcessingService';
+
+// User roles as constants
+const UserRole = {
+  STUDENT: 'STUDENT',
+  FACULTY: 'FACULTY',
+  ADMIN: 'ADMIN',
+  STAFF: 'STAFF',
+  CHANCELLOR: 'CHANCELLOR',
+} as const;
 import PDFGenerationService from '../services/PDFGenerationService';
 import { CourseSearchParams, FileType } from '../types/course.types';
 

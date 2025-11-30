@@ -19,9 +19,9 @@ import {
   budgetConfig,
   modelSelectionConfig
 } from '../config/cost-optimization.config';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
-export default class CostOptimizationService {
+export class CostOptimizationService {
   private promptOptimizer: PromptOptimizationService;
   private cacheService: AdvancedCacheService;
   private batchProcessor: BatchProcessingService;
@@ -289,3 +289,5 @@ export default class CostOptimizationService {
     }
   }
 }
+
+export default CostOptimizationService;

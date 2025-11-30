@@ -16,7 +16,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class ABTestingService {
+export class ABTestingService {
   /**
    * Create a new A/B test
    */
@@ -523,3 +523,5 @@ export default class ABTestingService {
     return 'inconclusive';
   }
 }
+
+export default ABTestingService;

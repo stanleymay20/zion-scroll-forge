@@ -11,9 +11,9 @@ import {
 } from '../types/translation.types';
 import { AIGatewayService } from './AIGatewayService';
 import { TheologicalTranslationService } from './TheologicalTranslationService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
-export default class TranslationQualityService {
+export class TranslationQualityService {
   private aiGateway: AIGatewayService;
   private theologicalService: TheologicalTranslationService;
 
@@ -478,3 +478,5 @@ Provide comparison in JSON format:
     };
   }
 }
+
+export default TranslationQualityService;

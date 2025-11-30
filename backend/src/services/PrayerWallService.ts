@@ -15,7 +15,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class PrayerWallService {
+export class PrayerWallService {
   /**
    * Create a prayer wall
    */
@@ -390,3 +390,5 @@ export default class PrayerWallService {
     }
   }
 }
+
+export default PrayerWallService;

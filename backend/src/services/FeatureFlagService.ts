@@ -27,7 +27,7 @@ interface FeatureFlagEvaluation {
   variant?: string;
 }
 
-export default class FeatureFlagService {
+export class FeatureFlagService {
   private flags: Map<string, FeatureFlag> = new Map();
 
   constructor() {
@@ -462,3 +462,5 @@ export default class FeatureFlagService {
     logger.info('Feature flags imported', { count: flags.length });
   }
 }
+
+export default FeatureFlagService;

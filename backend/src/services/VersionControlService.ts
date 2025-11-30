@@ -21,7 +21,7 @@ import {
 import crypto from 'crypto';
 import { diff_match_patch } from 'diff-match-patch';
 
-export default class VersionControlService {
+export class VersionControlService {
   private prisma: PrismaClient;
   private supabase: SupabaseClient;
   private dmp: diff_match_patch;
@@ -822,3 +822,5 @@ export default class VersionControlService {
     });
   }
 }
+
+export default VersionControlService;

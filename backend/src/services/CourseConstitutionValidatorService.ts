@@ -23,7 +23,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class CourseConstitutionValidatorService {
+export class CourseConstitutionValidatorService {
   /**
    * Validates course structure against Constitution requirements
    * Requirements: 14.1
@@ -789,3 +789,5 @@ export default class CourseConstitutionValidatorService {
     return { score, maxScore, evidence, gaps };
   }
 }
+
+export default CourseConstitutionValidatorService;

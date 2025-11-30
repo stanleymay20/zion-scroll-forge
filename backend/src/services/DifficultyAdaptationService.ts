@@ -62,7 +62,7 @@ export interface AdaptDifficultyResponse {
   error?: string;
 }
 
-export default class DifficultyAdaptationService {
+export class DifficultyAdaptationService {
   private aiGateway: AIGatewayService;
   private analyticsService: LearningAnalyticsService;
 
@@ -506,3 +506,5 @@ Return the adapted content in the same JSON format.
     // Store in database with adaptation metadata
   }
 }
+
+export default DifficultyAdaptationService;

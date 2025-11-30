@@ -23,7 +23,7 @@ import {
   RemoveMemberRequest,
   MarkAsReadRequest
 } from '../types/chat.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import multer from 'multer';
 
 const router = express.Router();

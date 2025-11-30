@@ -53,7 +53,7 @@ export interface DeliveryMetrics {
   averageDeliveryTime: number;
 }
 
-export default class CourseDeliveryCoordinator {
+export class CourseDeliveryCoordinator {
   private courseService: CourseService;
 
   constructor() {
@@ -438,3 +438,5 @@ export default class CourseDeliveryCoordinator {
     return sorted;
   }
 }
+
+export default CourseDeliveryCoordinator;

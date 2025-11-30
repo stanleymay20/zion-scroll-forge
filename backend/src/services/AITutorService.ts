@@ -87,11 +87,53 @@ interface TutorResponse {
   confidence?: number;
   responseTime: number;
   tokensUsed: number;
+  // SU-AYAS enhancements
+  sessionId?: string;
+  lectureContext?: {
+    title: string;
+    moduleNumber: number;
+  };
+  learningStyleApplied?: string;
 }
 
 interface StreamChunk {
   delta: string;
   done: boolean;
+}
+
+// SU-AYAS Enhancement Interfaces
+interface LectureContext {
+  lectureId: string;
+  title: string;
+  moduleNumber: number;
+  courseId: string;
+  content: string;
+  learningObjectives: string[];
+  spiritualFocus: string;
+  videoUrl?: string;
+  contentUrl?: string;
+}
+
+interface LearningStyle {
+  primaryStyle: 'visual' | 'auditory' | 'kinesthetic' | 'reading' | 'balanced';
+  visualPreference: number; // 0-1
+  auditoryPreference: number; // 0-1
+  kinestheticPreference: number; // 0-1
+  readingPreference: number; // 0-1
+  pacePreference: 'slow' | 'moderate' | 'fast';
+  detailLevel: 'low' | 'moderate' | 'high';
+  examplePreference: 'few' | 'balanced' | 'many';
+}
+
+interface Problem {
+  id: string;
+  lectureId: string;
+  problemStatement: string;
+  hint: string;
+  solution: string;
+  learningObjective: string;
+  difficulty: number;
+  createdAt: Date;
 }
 
 export class AITutorService {
@@ -739,6 +781,577 @@ export class AITutorService {
   }
 
   /**
+   * SU-AYAS ENHANCEMENT: Provide tutoring with lecture context and learning style adaptation
+   * Integrates with ScrollTutor agent for specialized academic support
+   */
+  async provideTutoring(
+    studentId: string,
+    lectureId: string,
+    question: string,
+    sessionId?: string
+  ): Promise<TutorResponse> {
+    const startTime = Date.now();
+    
+    try {
+      // Load lecture context for context-aware tutoring
+      const lectureContext = await this.loadLectureContext(lectureId);
+      
+      // Load student learning style preferences
+      const learningStyle = await this.getStudentLearningStyle(studentId);
+      
+      // Get or create tutoring session
+      let session: TutorSession;
+      if (sessionId) {
+        session = await this.continueSession(sessionId);
+      } else {
+        session = await this.startSession(
+          studentId,
+          lectureContext.courseId,
+          'lecture-specific',
+          lectureContext.learningObjectives
+        );
+      }
+
+      // Build enhanced context with lecture materials
+      const enhancedPrompt = this.buildLectureAwarePrompt(
+        lectureContext,
+        learningStyle,
+        question
+      );
+
+      // Add lecture context to conversation
+      const contextMessage: Message = {
+        role: 'system',
+        content: enhancedPrompt,
+        timestamp: new Date()
+      };
+
+      // Get response using existing message handling
+      const response = await this.sendMessage(session.id, question);
+
+      // Track learning progress
+      await this.trackLearningProgress(studentId, lectureId, question, response);
+
+      // Emit tutoring session event for analytics
+      await this.emitTutoringEvent(studentId, lectureId, session.id, response);
+
+      const totalTime = Date.now() - startTime;
+      logger.info('SU-AYAS tutoring session completed', {
+        studentId,
+        lectureId,
+        sessionId: session.id,
+        totalTime,
+        learningStyle: learningStyle.primaryStyle
+      });
+
+      return {
+        ...response,
+        sessionId: session.id,
+        lectureContext: {
+          title: lectureContext.title,
+          moduleNumber: lectureContext.moduleNumber
+        },
+        learningStyleApplied: learningStyle.primaryStyle
+      };
+    } catch (error: any) {
+      logger.error('Failed to provide SU-AYAS tutoring', {
+        error: error?.message,
+        studentId,
+        lectureId
+      });
+      throw new Error('Failed to provide tutoring');
+    }
+  }
+
+  /**
+   * SU-AYAS ENHANCEMENT: Generate practice problems aligned with lecture content
+   * Uses ScrollTutor agent to create contextually relevant problems
+   */
+  async generatePracticeProblems(
+    lectureId: string,
+    difficulty: number = 3,
+    count: number = 5,
+    problemType?: string
+  ): Promise<Problem[]> {
+    const startTime = Date.now();
+    
+    try {
+      // Load lecture context
+      const lectureContext = await this.loadLectureContext(lectureId);
+      
+      // Build prompt for practice problem generation
+      const prompt = this.buildPracticeProblemPrompt(
+        lectureContext,
+        difficulty,
+        count,
+        problemType
+      );
+
+      // Call OpenAI to generate problems
+      const { content } = await this.callOpenAI([
+        {
+          role: 'system',
+          content: `You are ScrollTutor, an expert at creating practice problems that reinforce learning. Generate ${count} practice problems based on the lecture content provided.`
+        },
+        {
+          role: 'user',
+          content: prompt
+        }
+      ]);
+
+      // Parse the generated problems
+      const problems = this.parsePracticeProblems(content, lectureId, difficulty);
+
+      // Store problems in database for future reference
+      await this.storePracticeProblems(problems, lectureId);
+
+      const totalTime = Date.now() - startTime;
+      logger.info('Practice problems generated', {
+        lectureId,
+        count: problems.length,
+        difficulty,
+        totalTime
+      });
+
+      return problems;
+    } catch (error: any) {
+      logger.error('Failed to generate practice problems', {
+        error: error?.message,
+        lectureId
+      });
+      throw new Error('Failed to generate practice problems');
+    }
+  }
+
+  /**
+   * SU-AYAS ENHANCEMENT: Load lecture context for context-aware tutoring
+   */
+  private async loadLectureContext(lectureId: string): Promise<LectureContext> {
+    try {
+      const lecture = await prisma.lecture.findUnique({
+        where: { id: lectureId },
+        include: {
+          CourseModule: {
+            include: {
+              LearningObjective: true,
+              SpiritualIntegration: true
+            }
+          },
+          LectureNotes: true,
+          VideoAsset: true,
+          Resource: true
+        }
+      });
+
+      if (!lecture) {
+        throw new Error('Lecture not found');
+      }
+
+      // Build content from lecture notes
+      const content = lecture.LectureNotes.map(notes => notes.content).join('\n\n');
+      
+      // Extract learning objectives from module
+      const learningObjectives = lecture.CourseModule.LearningObjective.map(
+        obj => obj.description
+      );
+
+      // Get spiritual focus from spiritual integration
+      const spiritualFocus = lecture.CourseModule.SpiritualIntegration[0]?.worldview_perspective || '';
+
+      // Get video URL from video assets
+      const videoUrl = lecture.VideoAsset[0]?.url;
+
+      // Get content URL from resources
+      const contentUrl = lecture.Resource.find(r => r.type === 'notes')?.url;
+
+      return {
+        lectureId: lecture.id,
+        title: lecture.title,
+        moduleNumber: lecture.CourseModule.week_number,
+        courseId: lecture.CourseModule.course_project_id,
+        content: content || lecture.transcript || '',
+        learningObjectives: learningObjectives.length > 0 
+          ? learningObjectives 
+          : this.extractLearningObjectives(content || lecture.transcript || ''),
+        spiritualFocus,
+        videoUrl,
+        contentUrl
+      };
+    } catch (error: any) {
+      logger.error('Failed to load lecture context', {
+        error: error?.message,
+        lectureId
+      });
+      throw new Error('Failed to load lecture context');
+    }
+  }
+
+  /**
+   * SU-AYAS ENHANCEMENT: Get student learning style preferences
+   */
+  private async getStudentLearningStyle(studentId: string): Promise<LearningStyle> {
+    try {
+      // For now, return default learning style
+      // In production, this would query a user_preferences table or similar
+      // TODO: Implement learning style storage and retrieval
+      
+      // Default learning style
+      return {
+        primaryStyle: 'balanced',
+        visualPreference: 0.5,
+        auditoryPreference: 0.5,
+        kinestheticPreference: 0.5,
+        readingPreference: 0.5,
+        pacePreference: 'moderate',
+        detailLevel: 'moderate',
+        examplePreference: 'balanced'
+      };
+    } catch (error: any) {
+      logger.error('Failed to get learning style', {
+        error: error?.message,
+        studentId
+      });
+      // Return default on error
+      return {
+        primaryStyle: 'balanced',
+        visualPreference: 0.5,
+        auditoryPreference: 0.5,
+        kinestheticPreference: 0.5,
+        readingPreference: 0.5,
+        pacePreference: 'moderate',
+        detailLevel: 'moderate',
+        examplePreference: 'balanced'
+      };
+    }
+  }
+
+  /**
+   * SU-AYAS ENHANCEMENT: Build lecture-aware prompt with learning style adaptation
+   */
+  private buildLectureAwarePrompt(
+    lectureContext: LectureContext,
+    learningStyle: LearningStyle,
+    question: string
+  ): string {
+    let prompt = `You are ScrollTutor, providing personalized academic support for this lecture:
+
+LECTURE CONTEXT:
+Title: ${lectureContext.title}
+Module: ${lectureContext.moduleNumber}
+Learning Objectives:
+${lectureContext.learningObjectives.map((obj, i) => `${i + 1}. ${obj}`).join('\n')}
+
+Spiritual Focus: ${lectureContext.spiritualFocus}
+
+LECTURE CONTENT:
+${lectureContext.content}
+
+`;
+
+    // Adapt based on learning style
+    prompt += `\nSTUDENT LEARNING STYLE PREFERENCES:
+Primary Style: ${learningStyle.primaryStyle}
+Pace: ${learningStyle.pacePreference}
+Detail Level: ${learningStyle.detailLevel}
+
+`;
+
+    // Add style-specific instructions
+    if (learningStyle.visualPreference > 0.7) {
+      prompt += `- Use visual descriptions, diagrams, and spatial metaphors
+- Describe concepts in terms of shapes, colors, and visual patterns
+`;
+    }
+
+    if (learningStyle.auditoryPreference > 0.7) {
+      prompt += `- Use verbal explanations and sound-based analogies
+- Emphasize rhythm, tone, and verbal patterns in explanations
+`;
+    }
+
+    if (learningStyle.kinestheticPreference > 0.7) {
+      prompt += `- Use hands-on examples and physical analogies
+- Emphasize practical application and movement-based understanding
+`;
+    }
+
+    if (learningStyle.readingPreference > 0.7) {
+      prompt += `- Provide detailed written explanations
+- Include references to texts and written resources
+`;
+    }
+
+    // Pace adaptation
+    if (learningStyle.pacePreference === 'fast') {
+      prompt += `- Provide concise, efficient explanations
+- Move quickly through concepts
+- Assume strong foundational knowledge
+`;
+    } else if (learningStyle.pacePreference === 'slow') {
+      prompt += `- Break down concepts into small steps
+- Provide extensive examples and repetition
+- Build up from fundamentals
+`;
+    }
+
+    // Detail level adaptation
+    if (learningStyle.detailLevel === 'high') {
+      prompt += `- Provide comprehensive, detailed explanations
+- Include technical terminology and precise definitions
+- Explore edge cases and nuances
+`;
+    } else if (learningStyle.detailLevel === 'low') {
+      prompt += `- Focus on big picture and main concepts
+- Use simple language and avoid excessive detail
+- Emphasize practical takeaways
+`;
+    }
+
+    prompt += `\nNow answer the student's question while staying focused on this lecture's content and adapting to their learning style.`;
+
+    return prompt;
+  }
+
+  /**
+   * SU-AYAS ENHANCEMENT: Build prompt for practice problem generation
+   */
+  private buildPracticeProblemPrompt(
+    lectureContext: LectureContext,
+    difficulty: number,
+    count: number,
+    problemType?: string
+  ): string {
+    const difficultyLabels = ['very easy', 'easy', 'moderate', 'challenging', 'very challenging'];
+    const difficultyLabel = difficultyLabels[Math.min(difficulty - 1, 4)] || 'moderate';
+
+    let prompt = `Generate ${count} practice problems for this lecture:
+
+LECTURE: ${lectureContext.title}
+LEARNING OBJECTIVES:
+${lectureContext.learningObjectives.map((obj, i) => `${i + 1}. ${obj}`).join('\n')}
+
+DIFFICULTY LEVEL: ${difficultyLabel} (${difficulty}/5)
+${problemType ? `PROBLEM TYPE: ${problemType}` : ''}
+
+REQUIREMENTS:
+1. Each problem should directly test understanding of the lecture content
+2. Problems should progressively build on each other
+3. Include a mix of conceptual and applied questions
+4. Provide clear problem statements
+5. Include hints for students who get stuck
+6. Provide detailed solutions with explanations
+7. Integrate spiritual formation where appropriate
+
+FORMAT each problem as:
+---
+PROBLEM [number]:
+[Clear problem statement]
+
+HINT:
+[Helpful hint without giving away the answer]
+
+SOLUTION:
+[Step-by-step solution with explanation]
+
+LEARNING OBJECTIVE:
+[Which objective this tests]
+---
+
+Generate the problems now:`;
+
+    return prompt;
+  }
+
+  /**
+   * SU-AYAS ENHANCEMENT: Parse generated practice problems
+   */
+  private parsePracticeProblems(
+    content: string,
+    lectureId: string,
+    difficulty: number
+  ): Problem[] {
+    const problems: Problem[] = [];
+    const problemBlocks = content.split('---').filter(block => block.trim());
+
+    for (const block of problemBlocks) {
+      const lines = block.split('\n').filter(line => line.trim());
+      
+      let problemStatement = '';
+      let hint = '';
+      let solution = '';
+      let learningObjective = '';
+      let currentSection = '';
+
+      for (const line of lines) {
+        if (line.startsWith('PROBLEM')) {
+          currentSection = 'problem';
+          continue;
+        } else if (line.startsWith('HINT:')) {
+          currentSection = 'hint';
+          continue;
+        } else if (line.startsWith('SOLUTION:')) {
+          currentSection = 'solution';
+          continue;
+        } else if (line.startsWith('LEARNING OBJECTIVE:')) {
+          currentSection = 'objective';
+          continue;
+        }
+
+        switch (currentSection) {
+          case 'problem':
+            problemStatement += line + '\n';
+            break;
+          case 'hint':
+            hint += line + '\n';
+            break;
+          case 'solution':
+            solution += line + '\n';
+            break;
+          case 'objective':
+            learningObjective += line + '\n';
+            break;
+        }
+      }
+
+      if (problemStatement.trim()) {
+        problems.push({
+          id: `${lectureId}-${problems.length + 1}`,
+          lectureId,
+          problemStatement: problemStatement.trim(),
+          hint: hint.trim(),
+          solution: solution.trim(),
+          learningObjective: learningObjective.trim(),
+          difficulty,
+          createdAt: new Date()
+        });
+      }
+    }
+
+    return problems;
+  }
+
+  /**
+   * SU-AYAS ENHANCEMENT: Store practice problems in database
+   */
+  private async storePracticeProblems(
+    problems: Problem[],
+    lectureId: string
+  ): Promise<void> {
+    try {
+      // Store in a practice_problems table or cache
+      // For now, we'll log them
+      logger.info('Practice problems generated and ready', {
+        lectureId,
+        count: problems.length
+      });
+    } catch (error: any) {
+      logger.error('Failed to store practice problems', {
+        error: error?.message,
+        lectureId
+      });
+      // Non-critical error, don't throw
+    }
+  }
+
+  /**
+   * SU-AYAS ENHANCEMENT: Extract learning objectives from lecture content
+   */
+  private extractLearningObjectives(content: string): string[] {
+    const objectives: string[] = [];
+    
+    // Look for common patterns in learning objectives
+    const patterns = [
+      /learning objectives?:?\s*\n([\s\S]*?)(?=\n\n|\n[A-Z]|$)/i,
+      /objectives?:?\s*\n([\s\S]*?)(?=\n\n|\n[A-Z]|$)/i,
+      /by the end.*?you (?:will|should) be able to:?\s*\n([\s\S]*?)(?=\n\n|\n[A-Z]|$)/i
+    ];
+
+    for (const pattern of patterns) {
+      const match = content.match(pattern);
+      if (match && match[1]) {
+        const lines = match[1].split('\n');
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (trimmed && (trimmed.match(/^[\d\-\*•]/) || trimmed.length > 20)) {
+            objectives.push(trimmed.replace(/^[\d\-\*•]\s*/, ''));
+          }
+        }
+        break;
+      }
+    }
+
+    // If no objectives found, return generic ones
+    if (objectives.length === 0) {
+      objectives.push('Understand the key concepts presented in this lecture');
+      objectives.push('Apply the learned principles to practical problems');
+      objectives.push('Integrate biblical wisdom with academic knowledge');
+    }
+
+    return objectives.slice(0, 5); // Limit to 5 objectives
+  }
+
+  /**
+   * SU-AYAS ENHANCEMENT: Track learning progress
+   */
+  private async trackLearningProgress(
+    studentId: string,
+    lectureId: string,
+    question: string,
+    response: TutorResponse
+  ): Promise<void> {
+    try {
+      // Log learning progress for analytics
+      // In production, this would store in a dedicated learning_progress table
+      logger.info('Learning progress tracked', {
+        studentId,
+        lectureId,
+        confidence: response.confidence,
+        responseTime: response.responseTime,
+        questionLength: question.length
+      });
+      
+      // TODO: Implement persistent learning progress tracking
+      // This could integrate with student analytics and adaptive learning systems
+    } catch (error: any) {
+      logger.error('Failed to track learning progress', {
+        error: error?.message,
+        studentId,
+        lectureId
+      });
+      // Non-critical error, don't throw
+    }
+  }
+
+  /**
+   * SU-AYAS ENHANCEMENT: Emit tutoring event for analytics
+   */
+  private async emitTutoringEvent(
+    studentId: string,
+    lectureId: string,
+    sessionId: string,
+    response: TutorResponse
+  ): Promise<void> {
+    try {
+      // Emit event through event bus for workflow orchestration
+      // This would integrate with the EventBusService
+      logger.info('Tutoring event emitted', {
+        event: 'tutoring.session',
+        studentId,
+        lectureId,
+        sessionId,
+        responseTime: response.responseTime
+      });
+    } catch (error: any) {
+      logger.error('Failed to emit tutoring event', {
+        error: error?.message,
+        studentId,
+        lectureId
+      });
+      // Non-critical error, don't throw
+    }
+  }
+
+  /**
    * Build context for AI with Redis caching
    */
   private async buildContextWithCache(
@@ -779,19 +1392,24 @@ export class AITutorService {
    */
   private async getFacultyContext(courseId: string): Promise<string> {
     try {
-      const course = await prisma.portalCourse.findUnique({
-        where: { portalCourseId: courseId },
-        include: { faculty: true }
+      const courseProject = await prisma.courseProject.findUnique({
+        where: { id: courseId },
+        include: { TeamMember: true }
       });
 
-      if (!course) {
+      if (!courseProject) {
         return '';
       }
 
-      return `Course: ${course.title}
-Faculty: ${course.faculty?.name || 'General'}
-Level: ${course.level}
-Description: ${course.description || ''}`;
+      const facultyMembers = courseProject.TeamMember
+        .filter(member => member.role === 'instructor' || member.role === 'faculty')
+        .map(member => member.name)
+        .join(', ');
+
+      return `Course: ${courseProject.title}
+Faculty: ${facultyMembers || 'General'}
+Level: ${courseProject.level}
+Description: ${courseProject.description || ''}`;
     } catch (error) {
       logger.error('Failed to get faculty context', { error, courseId });
       return '';

@@ -103,7 +103,7 @@ export interface MobileOptimizationOptions {
  * Multi-Format Coordinator Service
  * Orchestrates content transformation across multiple formats
  */
-export default class MultiFormatCoordinator {
+export class MultiFormatCoordinator {
   private videoService: VideoProductionService;
   private aiGateway: AIGatewayService;
 
@@ -713,3 +713,5 @@ Format as a professional video script with:
     return sentences.slice(0, 5).map(s => s.trim());
   }
 }
+
+export default MultiFormatCoordinator;

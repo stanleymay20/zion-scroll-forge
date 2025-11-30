@@ -20,7 +20,7 @@ import { AppealGenerationService } from './AppealGenerationService';
 import { RelationshipManagementService } from './RelationshipManagementService';
 import { ProspectIdentificationService } from './ProspectIdentificationService';
 import { ImpactReportingService } from './ImpactReportingService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 export class FundraisingAIService {
   private donorAnalysisService: DonorAnalysisService;

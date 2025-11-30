@@ -4,7 +4,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import AIGatewayService from './AIGatewayService';
+import { AIGatewayService } from './AIGatewayService';
 import {
   SpiritualGrowthAnalytics,
   GrowthAnalyticsRequest,
@@ -13,7 +13,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class SpiritualGrowthAnalyticsService {
+export class SpiritualGrowthAnalyticsService {
   private aiGateway: AIGatewayService;
 
   constructor(aiGateway?: AIGatewayService) {
@@ -308,3 +308,5 @@ Format as JSON.`;
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default SpiritualGrowthAnalyticsService;

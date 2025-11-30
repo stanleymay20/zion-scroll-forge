@@ -15,7 +15,7 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-export default class TheologicalReviewService {
+export class TheologicalReviewService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -425,3 +425,5 @@ Return a JSON array of correction suggestions as strings.`;
     }
   }
 }
+
+export default TheologicalReviewService;

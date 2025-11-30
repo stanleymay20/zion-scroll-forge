@@ -11,7 +11,7 @@ import {
   AutomatedFix
 } from '../types/accessibility.types';
 import { AIGatewayService } from './AIGatewayService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import * as cheerio from 'cheerio';
 
 export class ComplianceCheckingService {

@@ -9,7 +9,7 @@ import PromptOptimizationService from '../services/PromptOptimizationService';
 import BudgetControlService from '../services/BudgetControlService';
 import { budgetConfig } from '../config/cost-optimization.config';
 import { authenticateToken, requireRole } from '../middleware/auth';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const router = express.Router();
 const costOptimization = new CostOptimizationService();

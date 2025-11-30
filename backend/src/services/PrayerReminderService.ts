@@ -15,7 +15,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class PrayerReminderService {
+export class PrayerReminderService {
   /**
    * Create a prayer reminder
    */
@@ -337,3 +337,5 @@ export default class PrayerReminderService {
     // (Firebase Cloud Messaging, OneSignal, etc.)
   }
 }
+
+export default PrayerReminderService;

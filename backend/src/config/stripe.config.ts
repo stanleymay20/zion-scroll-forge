@@ -15,8 +15,14 @@ export const stripeConfig: StripeServiceConfig = {
 
 // Validate required environment variables
 export function validateStripeConfig(): void {
+  const isProduction = process.env.NODE_ENV === 'production';
+  
   if (!stripeConfig.apiKey) {
-    throw new Error('STRIPE_SECRET_KEY environment variable is required');
+    if (isProduction) {
+      throw new Error('STRIPE_SECRET_KEY environment variable is required in production');
+    } else {
+      console.warn('⚠️  STRIPE_SECRET_KEY not configured - Payment features will be disabled in development');
+    }
   }
   
   if (!stripeConfig.webhookSecret) {

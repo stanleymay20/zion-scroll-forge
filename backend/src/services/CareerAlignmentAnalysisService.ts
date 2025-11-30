@@ -23,7 +23,7 @@ import {
 
 const prisma = new PrismaClient();
 
-export default class CareerAlignmentAnalysisService {
+export class CareerAlignmentAnalysisService {
   private aiGateway: AIGatewayService;
 
   constructor() {
@@ -469,3 +469,5 @@ Format: One insight per line, concise and actionable.`;
     return map[difficulty] || 'intermediate';
   }
 }
+
+export default CareerAlignmentAnalysisService;

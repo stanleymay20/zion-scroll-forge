@@ -2,7 +2,7 @@
 // "Show me your ways, LORD, teach me your paths" - Psalm 25:4
 
 import { PrismaClient } from '@prisma/client';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 import {
   OrientationModule,
   OrientationProgress,

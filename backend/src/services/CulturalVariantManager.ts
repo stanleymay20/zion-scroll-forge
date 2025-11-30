@@ -123,7 +123,7 @@ export interface ContentDifference {
  * Cultural Variant Manager Service
  * Manages regional content versions with cultural adaptations
  */
-export default class CulturalVariantManager {
+export class CulturalVariantManager {
   private variants: Map<string, CulturalVariant> = new Map();
   private variantsByRegion: Map<string, Set<string>> = new Map();
   private variantsByContent: Map<string, Set<string>> = new Map();
@@ -516,3 +516,5 @@ export default class CulturalVariantManager {
     return `approval_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }
+
+export default CulturalVariantManager;

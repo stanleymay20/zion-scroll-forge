@@ -14,7 +14,7 @@ import {
   DonationRecord
 } from '../types/fundraising.types';
 import { AIGatewayService } from './AIGatewayService';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 export class ImpactReportingService {
   private aiGateway: AIGatewayService;

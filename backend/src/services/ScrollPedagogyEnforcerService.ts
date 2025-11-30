@@ -24,7 +24,7 @@ import {
 } from '../types/course-content.types';
 import { logger } from '../utils/logger';
 
-export default class ScrollPedagogyEnforcerService {
+export class ScrollPedagogyEnforcerService {
   /**
    * Validates that a lesson follows the 6-step lesson flow
    * Property 80: Six-Step Lesson Flow Enforcement
@@ -584,3 +584,5 @@ export default class ScrollPedagogyEnforcerService {
     return true;
   }
 }
+
+export default ScrollPedagogyEnforcerService;

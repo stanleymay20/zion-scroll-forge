@@ -52,7 +52,7 @@ export interface QualityCheckRequest {
   relatedContentIds?: string[];
 }
 
-export default class ContentQualityIntegrator {
+export class ContentQualityIntegrator {
   private factChecker: FactualAccuracyChecker;
   private consistencyChecker: ContentConsistencyChecker;
   private attributionManager: SourceAttributionManager;
@@ -384,3 +384,5 @@ export default class ContentQualityIntegrator {
     }
   }
 }
+
+export default ContentQualityIntegrator;

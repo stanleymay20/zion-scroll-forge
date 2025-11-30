@@ -24,7 +24,7 @@ import {
   MasteryLevel,
   DifficultyLevel
 } from '../types/scripture-memory.types';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 

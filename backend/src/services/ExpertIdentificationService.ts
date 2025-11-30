@@ -98,7 +98,7 @@ interface ExpertiseGap {
   recommendations: string[];
 }
 
-export default class ExpertIdentificationService {
+export class ExpertIdentificationService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
   private facultyService: FacultyAssistantService;
@@ -502,3 +502,5 @@ Identify:
     );
   }
 }
+
+export default ExpertIdentificationService;

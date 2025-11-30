@@ -6,11 +6,11 @@
 import { PrismaClient } from '@prisma/client';
 import { NotificationTemplate, NotificationCategory, NotificationChannel } from '../types/notification.types';
 import { defaultTemplates } from '../config/notification.config';
-import logger from '../utils/logger';
+import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class NotificationTemplateService {
+export class NotificationTemplateService {
   /**
    * Initialize default templates
    */
@@ -324,3 +324,5 @@ export default class NotificationTemplateService {
     }
   }
 }
+
+export default NotificationTemplateService;

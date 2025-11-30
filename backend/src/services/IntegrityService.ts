@@ -26,7 +26,7 @@ import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
 
-export default class IntegrityService {
+export class IntegrityService {
   private plagiarismService: PlagiarismDetectionService;
   private aiContentService: AIContentDetectionService;
   private collusionService: CollusionDetectionService;
@@ -541,3 +541,5 @@ export default class IntegrityService {
     return this.caseManagementService;
   }
 }
+
+export default IntegrityService;
