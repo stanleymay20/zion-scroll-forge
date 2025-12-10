@@ -23,7 +23,17 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import type { Achievement } from '@/types/student-profile';
+
+interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  type: string;
+  category: string;
+  dateEarned: string;
+  isPinned: boolean;
+  verificationUrl?: string;
+}
 
 interface AchievementShowcaseProps {
   studentId: string;
@@ -52,19 +62,48 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
   const loadAchievements = async () => {
     try {
       setLoading(true);
-      const { data: session } = await supabase.auth.getSession();
-      const response = await fetch(`/api/profile/${studentId}/achievements`, {
-        headers: {
-          'Authorization': `Bearer ${session?.session?.access_token}`
-        }
-      });
       
-      if (!response.ok) throw new Error('Failed to load achievements');
+      // Query user_achievements joined with achievements table
+      const { data, error } = await supabase
+        .from('user_achievements')
+        .select(`
+          id,
+          earned_at,
+          achievement_id,
+          achievements (
+            id,
+            name,
+            description,
+            category,
+            icon,
+            scrollcoin_reward,
+            xp_reward
+          )
+        `)
+        .eq('user_id', studentId)
+        .order('earned_at', { ascending: false });
       
-      const data = await response.json();
-      setAchievements(data.data);
+      if (error) {
+        console.log('Achievements not available:', error.message);
+        setAchievements([]);
+        return;
+      }
+      
+      const mappedAchievements: Achievement[] = (data || []).map((item: any) => ({
+        id: item.id,
+        name: item.achievements?.name || 'Achievement',
+        description: item.achievements?.description || '',
+        type: item.achievements?.category || 'academic',
+        category: item.achievements?.category || 'general',
+        dateEarned: item.earned_at,
+        isPinned: false,
+        verificationUrl: undefined
+      }));
+      
+      setAchievements(mappedAchievements);
     } catch (error) {
       console.error('Error loading achievements:', error);
+      setAchievements([]);
     } finally {
       setLoading(false);
     }
@@ -95,25 +134,10 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
   };
 
   const handleTogglePin = async (achievementId: string, isPinned: boolean) => {
-    try {
-      const { data: session } = await supabase.auth.getSession();
-      const response = await fetch(`/api/profile/${studentId}/achievements/${achievementId}/pin`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session?.session?.access_token}`
-        },
-        body: JSON.stringify({ isPinned: !isPinned })
-      });
-      
-      if (!response.ok) throw new Error('Failed to update achievement');
-      
-      setAchievements(achievements.map(a => 
-        a.id === achievementId ? { ...a, isPinned: !isPinned } : a
-      ));
-    } catch (error) {
-      console.error('Error updating achievement:', error);
-    }
+    // Toggle pin state locally (would need a pinned_achievements table for persistence)
+    setAchievements(achievements.map(a => 
+      a.id === achievementId ? { ...a, isPinned: !isPinned } : a
+    ));
   };
 
   const getAchievementIcon = (type: string) => {
@@ -124,7 +148,7 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
       service: <Star className="h-6 w-6" />,
       research: <Award className="h-6 w-6" />,
       scrollbadge: <Trophy className="h-6 w-6" />,
-      scrollcoin: <Trophy className="h-6 w-6" />,
+      scrollgold: <Trophy className="h-6 w-6" />,
     };
     return icons[type] || <Award className="h-6 w-6" />;
   };
@@ -137,7 +161,7 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
       service: 'from-yellow-500 to-yellow-600',
       research: 'from-red-500 to-red-600',
       scrollbadge: 'from-indigo-500 to-indigo-600',
-      scrollcoin: 'from-amber-500 to-amber-600',
+      scrollgold: 'from-amber-500 to-amber-600',
     };
     return colors[type] || 'from-gray-500 to-gray-600';
   };
@@ -218,7 +242,7 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
               <SelectItem value="service">Service</SelectItem>
               <SelectItem value="research">Research</SelectItem>
               <SelectItem value="scrollbadge">ScrollBadge</SelectItem>
-              <SelectItem value="scrollcoin">ScrollCoin</SelectItem>
+              <SelectItem value="scrollgold">ScrollGold</SelectItem>
             </SelectContent>
           </Select>
         </div>

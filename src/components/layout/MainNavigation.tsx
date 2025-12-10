@@ -78,13 +78,13 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       ]
     },
     {
-      title: "ScrollCoin Economy",
+      title: "ScrollGold Economy",
       icon: Coins,
       items: [
-        { label: "My Wallet", href: "/scrollcoin-wallet", icon: Coins },
-        { label: "Earn ScrollCoin", href: "/scrollcoin", icon: Trophy },
+        { label: "My Wallet", href: "/scrollgold-wallet", icon: Coins },
+        { label: "Earn ScrollGold", href: "/scrollgold", icon: Trophy },
         { label: "Redemption Store", href: "/redemption-store", icon: Briefcase },
-        { label: "Leaderboard", href: "/scrollcoin-leaderboard", icon: Trophy },
+        { label: "Leaderboard", href: "/scrollgold-leaderboard", icon: Trophy },
       ]
     },
     {
