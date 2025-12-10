@@ -5,16 +5,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { 
   Home, BookOpen, Bot, Heart, Menu, Settings, 
-  Users, Coins, GraduationCap, MessageSquare, Trophy
+  Users, Coins, GraduationCap, MessageSquare, Trophy, Shield
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRoles } from "@/hooks/useUserRoles";
 import { UserProfileDropdown } from "./UserProfileDropdown";
 import { NotificationBell } from "@/components/NotificationBell";
 import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 import { useState } from "react";
 
-const getMobileNavItems = (userRole: string) => {
+const getMobileNavItems = () => {
   const baseItems = [
     { label: "Dashboard", href: "/dashboard", icon: Home },
     { label: "Courses", href: "/courses", icon: BookOpen },
@@ -26,7 +27,7 @@ const getMobileNavItems = (userRole: string) => {
   return baseItems;
 };
 
-const getFullMenuItems = (userRole: string) => {
+const getFullMenuItems = (roles: string[]) => {
   const items = [
     { label: "Dashboard", href: "/dashboard", icon: Home },
     { label: "My Courses", href: "/courses", icon: BookOpen },
@@ -40,12 +41,14 @@ const getFullMenuItems = (userRole: string) => {
     { label: "Settings", href: "/settings", icon: Settings },
   ];
 
-  // Add faculty/admin items
-  if (userRole === "faculty" || userRole === "admin") {
+  // Add faculty/admin items based on roles array
+  if (roles.includes("faculty") || roles.includes("admin") || roles.includes("superadmin")) {
     items.push({ label: "Faculty Dashboard", href: "/faculty", icon: Users });
   }
-  if (userRole === "admin") {
-    items.push({ label: "Admin Dashboard", href: "/admin", icon: Settings });
+  if (roles.includes("admin") || roles.includes("superadmin")) {
+    items.push({ label: "Admin Dashboard", href: "/admin", icon: Shield });
+    items.push({ label: "Content Generation", href: "/admin/content-generation", icon: Bot });
+    items.push({ label: "Institutions", href: "/admin/institutions", icon: GraduationCap });
   }
 
   return items;
@@ -54,11 +57,11 @@ const getFullMenuItems = (userRole: string) => {
 export const MobileNavigation = () => {
   const location = useLocation();
   const { user } = useAuth();
+  const { roles } = useUserRoles();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  const userRole = user?.user_metadata?.role || "student";
-  const mobileNavItems = getMobileNavItems(userRole);
-  const fullMenuItems = getFullMenuItems(userRole);
+  const mobileNavItems = getMobileNavItems();
+  const fullMenuItems = getFullMenuItems(roles);
 
   const isActive = (href: string) => {
     return location.pathname === href || location.pathname.startsWith(href + "/");

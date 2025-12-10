@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUserRoles } from "@/hooks/useUserRoles";
 import { UserProfileDropdown } from "./UserProfileDropdown";
 import { NotificationBell } from "@/components/NotificationBell";
 import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
@@ -32,7 +33,7 @@ interface NavItem {
 }
 
 // Navigation sections based on user roles
-const getNavigationSections = (userRole: string): NavSection[] => {
+const getNavigationSections = (userRoles: string[]): NavSection[] => {
   const allSections: NavSection[] = [
     {
       title: "Overview",
@@ -122,12 +123,17 @@ const getNavigationSections = (userRole: string): NavSection[] => {
     },
   ];
 
-  // Filter sections and items based on user role
+  // Filter sections and items based on user roles (check if ANY role matches)
+  const hasAnyRole = (requiredRoles: string[] | undefined) => {
+    if (!requiredRoles) return true;
+    return requiredRoles.some(role => userRoles.includes(role));
+  };
+
   return allSections
-    .filter(section => !section.roles || section.roles.includes(userRole))
+    .filter(section => hasAnyRole(section.roles))
     .map(section => ({
       ...section,
-      items: section.items.filter(item => !item.roles || item.roles.includes(userRole))
+      items: section.items.filter(item => hasAnyRole(item.roles))
     }))
     .filter(section => section.items.length > 0);
 };
@@ -135,11 +141,11 @@ const getNavigationSections = (userRole: string): NavSection[] => {
 export const MainNavigation = () => {
   const location = useLocation();
   const { user } = useAuth();
+  const { roles, loading: rolesLoading } = useUserRoles();
   const [expandedSections, setExpandedSections] = useState<string[]>(["Overview", "Learning"]);
 
-  // Get user role from metadata or default to student
-  const userRole = user?.user_metadata?.role || "student";
-  const navigationSections = getNavigationSections(userRole);
+  // Get navigation sections based on user's actual roles from the database
+  const navigationSections = getNavigationSections(roles);
 
   const toggleSection = (sectionTitle: string) => {
     setExpandedSections(prev => 
