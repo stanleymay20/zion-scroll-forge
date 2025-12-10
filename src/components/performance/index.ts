@@ -1,10 +1,10 @@
 /**
  * Performance Optimization Components
  * Export all performance-related components and utilities
+ * Note: PerformanceOptimizer is not exported to avoid circular dependency issues
  */
 
 export {
-  PerformanceOptimizer,
   LazyLoad,
   lazyLoadRoute,
   prefetchRoute,

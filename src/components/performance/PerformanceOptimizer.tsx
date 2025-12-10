@@ -1,66 +1,10 @@
 /**
- * Performance Optimizer Component
+ * Performance Optimizer Component - Removed PerformanceOptimizer to avoid issues
  * Applies various performance optimizations to the application
  * Uses dynamic imports to avoid circular dependencies
  */
 
 import React, { useEffect, lazy, Suspense, useState, useRef, useCallback } from 'react';
-
-interface PerformanceOptimizerProps {
-  children: React.ReactNode;
-}
-
-export function PerformanceOptimizer({ children }: PerformanceOptimizerProps) {
-  useEffect(() => {
-    // Dynamically import performance modules to avoid circular dependencies
-    const initPerformance = async () => {
-      try {
-        const [{ performanceMonitor }, { initializeCDN }, { apiCache }] = await Promise.all([
-          import('@/lib/performance-monitor'),
-          import('@/lib/cdn-integration'),
-          import('@/lib/api-cache')
-        ]);
-
-        // Initialize CDN
-        initializeCDN();
-
-        // Start performance monitoring
-        performanceMonitor.mark('app-start');
-
-        // Start cache cleanup
-        const cleanupInterval = apiCache.startAutoCleanup();
-
-        // Report Web Vitals periodically
-        const reportInterval = setInterval(() => {
-          const vitals = performanceMonitor.reportWebVitals();
-          if (import.meta.env.DEV) {
-            console.log('Web Vitals:', vitals);
-          }
-        }, 30000);
-
-        // Return cleanup function
-        return () => {
-          clearInterval(cleanupInterval);
-          clearInterval(reportInterval);
-        };
-      } catch (e) {
-        console.warn('Performance optimization failed to initialize:', e);
-        return () => {};
-      }
-    };
-
-    let cleanup: (() => void) | undefined;
-    initPerformance().then((fn) => {
-      cleanup = fn;
-    });
-
-    return () => {
-      cleanup?.();
-    };
-  }, []);
-
-  return <>{children}</>;
-}
 
 /**
  * Lazy load wrapper with loading fallback
@@ -115,11 +59,11 @@ export function lazyLoadRoute(
 export function prefetchRoute(
   importFunc: () => Promise<{ default: React.ComponentType<any> }>
 ) {
-  if ('requestIdleCallback' in window) {
+  if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
     requestIdleCallback(() => {
       importFunc();
     });
-  } else {
+  } else if (typeof window !== 'undefined') {
     setTimeout(() => {
       importFunc();
     }, 1);
