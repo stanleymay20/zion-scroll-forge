@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -50,9 +51,12 @@ function getLevelColor(level: string): string {
   }
 }
 
-function BookCard({ book }: { book: ScrollBook }) {
+function BookCard({ book, onRead }: { book: ScrollBook; onRead: (id: string) => void }) {
   return (
-    <Card className="hover:border-primary/50 transition-colors cursor-pointer group">
+    <Card 
+      className="hover:border-primary/50 transition-colors cursor-pointer group"
+      onClick={() => onRead(book.id)}
+    >
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between">
           <Badge variant="outline" className={getLevelColor(book.level)}>
@@ -168,6 +172,7 @@ function StudyPackCard({ pack }: { pack: StudyPack }) {
 }
 
 export default function ScrollLibrary() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFaculty, setSelectedFaculty] = useState("All Faculties");
   const { data: books, isLoading: booksLoading } = useScrollBooks();
@@ -175,6 +180,10 @@ export default function ScrollLibrary() {
   const { data: searchResults, isLoading: searchLoading } = useLibrarySearch(searchQuery);
 
   const isLoading = booksLoading || packsLoading;
+
+  const handleReadBook = (bookId: string) => {
+    navigate(`/scroll-library/book/${bookId}`);
+  };
 
   // Filter books by faculty
   const filteredBooks = books?.filter(book => 
@@ -345,7 +354,7 @@ export default function ScrollLibrary() {
           ) : filteredBooks.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {filteredBooks.map((book) => (
-                <BookCard key={book.id} book={book} />
+                <BookCard key={book.id} book={book} onRead={handleReadBook} />
               ))}
             </div>
           ) : (
