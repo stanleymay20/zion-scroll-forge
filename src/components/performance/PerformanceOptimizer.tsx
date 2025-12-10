@@ -1,12 +1,10 @@
 /**
  * Performance Optimizer Component
  * Applies various performance optimizations to the application
+ * Uses dynamic imports to avoid circular dependencies
  */
 
-import React, { useEffect, lazy, Suspense } from 'react';
-import { performanceMonitor } from '@/lib/performance-monitor';
-import { initializeCDN } from '@/lib/cdn-integration';
-import { apiCache } from '@/lib/api-cache';
+import React, { useEffect, lazy, Suspense, useState, useRef, useCallback } from 'react';
 
 interface PerformanceOptimizerProps {
   children: React.ReactNode;
@@ -14,25 +12,50 @@ interface PerformanceOptimizerProps {
 
 export function PerformanceOptimizer({ children }: PerformanceOptimizerProps) {
   useEffect(() => {
-    // Initialize CDN
-    initializeCDN();
+    // Dynamically import performance modules to avoid circular dependencies
+    const initPerformance = async () => {
+      try {
+        const [{ performanceMonitor }, { initializeCDN }, { apiCache }] = await Promise.all([
+          import('@/lib/performance-monitor'),
+          import('@/lib/cdn-integration'),
+          import('@/lib/api-cache')
+        ]);
 
-    // Start performance monitoring
-    performanceMonitor.mark('app-start');
+        // Initialize CDN
+        initializeCDN();
 
-    // Start cache cleanup
-    const cleanupInterval = apiCache.startAutoCleanup();
+        // Start performance monitoring
+        performanceMonitor.mark('app-start');
 
-    // Report Web Vitals periodically
-    const reportInterval = setInterval(() => {
-      const vitals = performanceMonitor.reportWebVitals();
-      console.log('Web Vitals:', vitals);
-    }, 30000); // Every 30 seconds
+        // Start cache cleanup
+        const cleanupInterval = apiCache.startAutoCleanup();
 
-    // Cleanup
+        // Report Web Vitals periodically
+        const reportInterval = setInterval(() => {
+          const vitals = performanceMonitor.reportWebVitals();
+          if (import.meta.env.DEV) {
+            console.log('Web Vitals:', vitals);
+          }
+        }, 30000);
+
+        // Return cleanup function
+        return () => {
+          clearInterval(cleanupInterval);
+          clearInterval(reportInterval);
+        };
+      } catch (e) {
+        console.warn('Performance optimization failed to initialize:', e);
+        return () => {};
+      }
+    };
+
+    let cleanup: (() => void) | undefined;
+    initPerformance().then((fn) => {
+      cleanup = fn;
+    });
+
     return () => {
-      clearInterval(cleanupInterval);
-      clearInterval(reportInterval);
+      cleanup?.();
     };
   }, []);
 
@@ -73,11 +96,14 @@ export function lazyLoadRoute(
     const start = performance.now();
     return importFunc().then((module) => {
       const duration = performance.now() - start;
-      performanceMonitor.recordMetric({
-        name: 'route-load-time',
-        value: duration,
-        timestamp: Date.now(),
-      });
+      // Record metric asynchronously to avoid blocking
+      import('@/lib/performance-monitor').then(({ performanceMonitor }) => {
+        performanceMonitor.recordMetric({
+          name: 'route-load-time',
+          value: duration,
+          timestamp: Date.now(),
+        });
+      }).catch(() => {});
       return module;
     });
   });
@@ -89,7 +115,6 @@ export function lazyLoadRoute(
 export function prefetchRoute(
   importFunc: () => Promise<{ default: React.ComponentType<any> }>
 ) {
-  // Prefetch on idle
   if ('requestIdleCallback' in window) {
     requestIdleCallback(() => {
       importFunc();
@@ -121,8 +146,8 @@ export function OptimizedImage({
   className = '',
   ...props
 }: OptimizedImageProps) {
-  const [isLoaded, setIsLoaded] = React.useState(false);
-  const imgRef = React.useRef<HTMLImageElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const imgRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     if (!lazy || !imgRef.current) return;
@@ -132,9 +157,9 @@ export function OptimizedImage({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const img = entry.target as HTMLImageElement;
-            const src = img.dataset.src;
-            if (src) {
-              img.src = src;
+            const dataSrc = img.dataset.src;
+            if (dataSrc) {
+              img.src = dataSrc;
               setIsLoaded(true);
             }
             observer.unobserve(img);
@@ -166,7 +191,7 @@ export function OptimizedImage({
  * Debounced component re-render
  */
 export function useDebouncedValue<T>(value: T, delay: number = 300): T {
-  const [debouncedValue, setDebouncedValue] = React.useState<T>(value);
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -188,9 +213,9 @@ export function useThrottledCallback<T extends (...args: any[]) => any>(
   callback: T,
   delay: number = 300
 ): T {
-  const lastRun = React.useRef(Date.now());
+  const lastRun = useRef(Date.now());
 
-  return React.useCallback(
+  return useCallback(
     ((...args) => {
       const now = Date.now();
       if (now - lastRun.current >= delay) {
@@ -209,7 +234,7 @@ export function useIntersectionObserver(
   ref: React.RefObject<Element>,
   options: IntersectionObserverInit = {}
 ) {
-  const [isIntersecting, setIsIntersecting] = React.useState(false);
+  const [isIntersecting, setIsIntersecting] = useState(false);
 
   useEffect(() => {
     if (!ref.current) return;
