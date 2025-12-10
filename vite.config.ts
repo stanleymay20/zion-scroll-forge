@@ -19,27 +19,9 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    target: 'es2015',
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: mode === 'production',
-      },
-    },
-    // Chunk size warnings
-    chunkSizeWarningLimit: 1000,
-    // Source maps for production debugging
-    sourcemap: mode === 'production' ? 'hidden' : true,
-  },
-  // Let Vite handle optimization automatically
-  optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom',
-      '@tanstack/react-query',
-      '@supabase/supabase-js',
-    ],
+    target: 'esnext',
+    minify: mode === 'production' ? 'esbuild' : false,
+    sourcemap: false,
+    chunkSizeWarningLimit: 2000,
   },
 }));
