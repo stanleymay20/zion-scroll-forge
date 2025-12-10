@@ -54,25 +54,41 @@ User prompt:
 
 /**
  * Check if user has required role for action
+ * Uses secure user_roles table instead of profiles to prevent privilege escalation
  */
 export const checkUserRole = async (requiredRole: 'student' | 'faculty' | 'admin'): Promise<boolean> => {
   try {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return false;
 
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single();
+    // Use the secure has_role RPC function instead of querying profiles directly
+    // This prevents privilege escalation by ensuring role checks go through 
+    // the security definer function that queries user_roles table
+    const { data: hasRole, error } = await supabase.rpc('has_role', {
+      _user_id: user.id,
+      _role: requiredRole
+    });
 
-    if (!profile) return false;
+    if (error) {
+      console.error('Error checking user role via RPC:', error);
+      // Fallback to querying user_roles table directly (read-only, secure)
+      const { data: userRoles } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id);
 
-    const roleHierarchy = { student: 1, faculty: 2, admin: 3 };
-    const userLevel = roleHierarchy[profile.role as keyof typeof roleHierarchy] || 0;
-    const requiredLevel = roleHierarchy[requiredRole];
+      if (!userRoles || userRoles.length === 0) return false;
 
-    return userLevel >= requiredLevel;
+      const roleHierarchy = { student: 1, faculty: 2, admin: 3 };
+      const userLevel = Math.max(
+        ...userRoles.map(r => roleHierarchy[r.role as keyof typeof roleHierarchy] || 0)
+      );
+      const requiredLevel = roleHierarchy[requiredRole];
+
+      return userLevel >= requiredLevel;
+    }
+
+    return !!hasRole;
   } catch (error) {
     console.error('Error checking user role:', error);
     return false;
