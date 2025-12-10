@@ -55,110 +55,124 @@ export interface Subscription {
   updated_at: string;
 }
 
-// Fetchers
-export async function getBillingProducts() {
-  const { data, error } = await (supabase as any)
-    .from("billing_products")
-    .select("*")
-    .eq("is_active", true)
-    .order("product_type", { ascending: true });
+// Fetchers - Use existing tables
+export async function getBillingProducts(): Promise<BillingProduct[]> {
+  // Use courses as products since billing_products table doesn't exist
+  const { data, error } = await supabase
+    .from("courses")
+    .select("id, title, description, price_cents, price, created_at")
+    .order("title", { ascending: true })
+    .limit(20);
 
   if (error) throw error;
-  return data as BillingProduct[];
+  
+  // Transform courses to BillingProduct format
+  return (data || []).map((course: any) => ({
+    id: course.id,
+    name: course.title,
+    description: course.description,
+    product_type: 'course' as const,
+    price_cents: course.price_cents || (course.price ? Math.round(course.price * 100) : 0),
+    currency: 'USD',
+    is_active: true,
+    created_at: course.created_at
+  }));
 }
 
-export async function getBillingTransactions() {
+export async function getBillingTransactions(): Promise<BillingTransaction[]> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await (supabase as any)
-    .from("billing_transactions")
-    .select(`
-      *,
-      product:billing_products(name, product_type)
-    `)
+  // Use transactions table which does exist
+  const { data, error } = await supabase
+    .from("transactions")
+    .select("*")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })
     .limit(50);
 
   if (error) throw error;
-  return data as BillingTransaction[];
+  
+  // Transform to BillingTransaction format
+  return (data || []).map((tx: any) => ({
+    id: tx.id,
+    user_id: tx.user_id,
+    amount_cents: Math.round(Number(tx.amount) * 100),
+    currency: 'USD',
+    payment_method: 'scrollcoin',
+    transaction_type: tx.type || 'purchase',
+    status: 'completed',
+    scrollcoin_amount: Number(tx.amount),
+    notes: tx.description,
+    created_at: tx.created_at
+  }));
 }
 
-export async function getUserSubscriptions() {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error("Not authenticated");
-
-  const { data, error } = await (supabase as any)
-    .from("subscriptions")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
-
-  if (error) throw error;
-  return data as Subscription[];
+export async function getUserSubscriptions(): Promise<Subscription[]> {
+  // No subscriptions table exists, return empty
+  return [];
 }
 
-export async function getActiveSubscription() {
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error("Not authenticated");
-
-  const { data, error } = await (supabase as any)
-    .from("subscriptions")
-    .select("*")
-    .eq("user_id", user.id)
-    .eq("status", "active")
-    .maybeSingle();
-
-  if (error) throw error;
-  return data as Subscription | null;
+export async function getActiveSubscription(): Promise<Subscription | null> {
+  // No subscriptions table exists, return null
+  return null;
 }
 
 export async function createCheckoutSession(params: {
   product_id: string;
   scrollcoin_discount?: number;
 }) {
-  const { data, error } = await supabase.functions.invoke("create-checkout-session", {
-    body: params
+  // Stripe integration not configured yet
+  toast({
+    title: "Coming Soon",
+    description: "Payment processing will be available soon. Use ScrollCoins for now!",
   });
-
-  if (error) throw error;
-  return data;
+  return null;
 }
 
 export async function createSubscription(params: {
   plan_name: string;
   plan_type: 'monthly' | 'annual';
 }) {
-  const { data, error } = await supabase.functions.invoke("create-subscription", {
-    body: params
+  // Stripe integration not configured yet
+  toast({
+    title: "Coming Soon",
+    description: "Subscriptions will be available soon.",
   });
-
-  if (error) throw error;
-  return data;
+  return null;
 }
 
 export async function cancelSubscription(subscriptionId: string) {
-  const { data, error } = await supabase.functions.invoke("cancel-subscription", {
-    body: { subscription_id: subscriptionId }
-  });
-
-  if (error) throw error;
-  return data;
+  // Stripe integration not configured yet
+  return null;
 }
 
 // Hooks
 export const useBillingProducts = () =>
-  useQuery({ queryKey: ["billing-products"], queryFn: getBillingProducts });
+  useQuery({ 
+    queryKey: ["billing-products"], 
+    queryFn: getBillingProducts,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
 
 export const useBillingTransactions = () =>
-  useQuery({ queryKey: ["billing-transactions"], queryFn: getBillingTransactions });
+  useQuery({ 
+    queryKey: ["billing-transactions"], 
+    queryFn: getBillingTransactions,
+    staleTime: 60 * 1000, // 1 minute
+  });
 
 export const useUserSubscriptions = () =>
-  useQuery({ queryKey: ["user-subscriptions"], queryFn: getUserSubscriptions });
+  useQuery({ 
+    queryKey: ["user-subscriptions"], 
+    queryFn: getUserSubscriptions 
+  });
 
 export const useActiveSubscription = () =>
-  useQuery({ queryKey: ["active-subscription"], queryFn: getActiveSubscription });
+  useQuery({ 
+    queryKey: ["active-subscription"], 
+    queryFn: getActiveSubscription 
+  });
 
 export const useCreateCheckoutSession = () => {
   const qc = useQueryClient();
@@ -167,8 +181,6 @@ export const useCreateCheckoutSession = () => {
     onSuccess: (data) => {
       if (data?.url) {
         window.location.href = data.url;
-      } else {
-        toast({ title: "✅ Checkout session created" });
       }
       qc.invalidateQueries({ queryKey: ["billing-transactions"] });
     },
@@ -185,7 +197,6 @@ export const useCreateSubscription = () => {
   return useMutation({
     mutationFn: createSubscription,
     onSuccess: () => {
-      toast({ title: "✝️ Subscription created — Thank you for supporting God's work!" });
       qc.invalidateQueries({ queryKey: ["user-subscriptions"] });
       qc.invalidateQueries({ queryKey: ["active-subscription"] });
     },

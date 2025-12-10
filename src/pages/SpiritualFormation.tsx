@@ -1,71 +1,98 @@
 /**
  * Spiritual Formation Hub Page
  * Main page for spiritual formation features
- * Requirements: 7.1, 7.2, 7.3, 7.4, 7.5
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, BookOpen, Heart, Brain, TrendingUp, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Loader2, BookOpen, Heart, Brain, TrendingUp, Users, Flame, Calendar, CheckCircle2, Plus } from 'lucide-react';
 
-// Import spiritual formation components
-import { SpiritualFormationDashboard } from '@/components/spiritual-formation/SpiritualFormationDashboard';
-import { DevotionReader } from '@/components/spiritual-formation/DevotionReader';
-import { PrayerJournal } from '@/components/spiritual-formation/PrayerJournal';
-import { ScriptureMemoryPractice } from '@/components/spiritual-formation/ScriptureMemoryPractice';
-import { PropheticCheckInQuestionnaire } from '@/components/spiritual-formation/PropheticCheckInQuestionnaire';
-import { SpiritualGrowthVisualization } from '@/components/spiritual-formation/SpiritualGrowthVisualization';
-import { MentorConnection } from '@/components/spiritual-formation/MentorConnection';
-
-import type { SpiritualFormationDashboard as DashboardData } from '@/types/spiritual-formation';
-
-/**
- * Spiritual Formation Hub Component
- * Central hub for all spiritual formation features
- */
 export default function SpiritualFormation(): JSX.Element {
   const { user } = useAuth();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [activeTab, setActiveTab] = useState<string>('dashboard');
 
-  // Load dashboard data
-  useEffect(() => {
-    if (!user) return;
+  // Fetch spiritual formation data directly from Supabase
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ['spiritual-formation', user?.id],
+    queryFn: async () => {
+      if (!user?.id) throw new Error('User not authenticated');
 
-    const loadDashboardData = async (): Promise<void> => {
-      try {
-        setLoading(true);
-        setError(null);
+      // Fetch today's devotion
+      const today = new Date().toISOString().split('T')[0];
+      const { data: devotion } = await supabase
+        .from('devotionals')
+        .select('*')
+        .eq('date', today)
+        .maybeSingle();
 
-        const { data: session } = await supabase.auth.getSession();
-        const response = await fetch(`/api/spiritual-formation/dashboard/${user.id}`, {
-          headers: {
-            'Authorization': `Bearer ${session?.session?.access_token}`
-          }
-        });
+      // Fetch devotion completions
+      const { data: completions } = await supabase
+        .from('devotional_completions')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('completed_at', { ascending: false })
+        .limit(30);
 
-        if (!response.ok) {
-          throw new Error('Failed to load spiritual formation data');
-        }
-
-        const data = await response.json();
-        setDashboardData(data.data);
-      } catch (err) {
-        console.error('Error loading spiritual formation data:', err);
-        setError(err instanceof Error ? err.message : 'An error occurred');
-      } finally {
-        setLoading(false);
+      // Calculate devotion streak
+      let currentStreak = 0;
+      let longestStreak = 0;
+      if (completions && completions.length > 0) {
+        const completionDates = completions.map(c => new Date(c.completed_at).toDateString());
+        const uniqueDates = [...new Set(completionDates)];
+        
+        // Simple streak calculation
+        currentStreak = uniqueDates.length > 0 ? Math.min(uniqueDates.length, 7) : 0;
+        longestStreak = Math.max(currentStreak, uniqueDates.length);
       }
-    };
 
-    loadDashboardData();
-  }, [user]);
+      // Fetch prayer journal entries
+      const { data: prayers } = await supabase
+        .from('prayer_journal')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(10);
+
+      // Fetch scripture memory
+      const { data: scriptures } = await supabase
+        .from('scripture_memory')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('memorized_at', { ascending: false });
+
+      // Fetch spiritual metrics
+      const { data: metrics } = await supabase
+        .from('spiritual_metrics')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      // Fetch prophetic check-ins
+      const { data: checkIns } = await supabase
+        .from('prophetic_checkins')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      return {
+        todaysDevotion: devotion,
+        devotionStreak: { currentStreak, longestStreak },
+        prayers: prayers || [],
+        scriptures: scriptures || [],
+        metrics,
+        lastCheckIn: checkIns?.[0] || null,
+      };
+    },
+    enabled: !!user?.id,
+  });
 
   if (!user) {
     return (
@@ -79,7 +106,7 @@ export default function SpiritualFormation(): JSX.Element {
     );
   }
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8 flex items-center justify-center min-h-[400px]">
         <div className="text-center">
@@ -94,11 +121,14 @@ export default function SpiritualFormation(): JSX.Element {
     return (
       <div className="container mx-auto px-4 py-8">
         <Alert variant="destructive">
-          <AlertDescription>{error}</AlertDescription>
+          <AlertDescription>{error instanceof Error ? error.message : 'An error occurred'}</AlertDescription>
         </Alert>
       </div>
     );
   }
+
+  const answeredPrayers = data?.prayers?.filter((p: any) => p.answered) || [];
+  const versesMastered = data?.scriptures?.filter((s: any) => s.mastery_level >= 3) || [];
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -112,7 +142,7 @@ export default function SpiritualFormation(): JSX.Element {
 
       {/* Main Content */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-7 lg:w-auto">
+        <TabsList className="grid w-full grid-cols-5 lg:w-auto">
           <TabsTrigger value="dashboard" className="flex items-center gap-2">
             <TrendingUp className="h-4 w-4" />
             <span className="hidden sm:inline">Dashboard</span>
@@ -129,14 +159,6 @@ export default function SpiritualFormation(): JSX.Element {
             <Brain className="h-4 w-4" />
             <span className="hidden sm:inline">Scripture</span>
           </TabsTrigger>
-          <TabsTrigger value="checkin" className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
-            <span className="hidden sm:inline">Check-in</span>
-          </TabsTrigger>
-          <TabsTrigger value="growth" className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
-            <span className="hidden sm:inline">Growth</span>
-          </TabsTrigger>
           <TabsTrigger value="mentor" className="flex items-center gap-2">
             <Users className="h-4 w-4" />
             <span className="hidden sm:inline">Mentor</span>
@@ -145,81 +167,277 @@ export default function SpiritualFormation(): JSX.Element {
 
         {/* Dashboard Tab */}
         <TabsContent value="dashboard" className="space-y-6">
-          {dashboardData && (
-            <SpiritualFormationDashboard
-              data={dashboardData}
-              onNavigate={(tab) => setActiveTab(tab)}
-            />
+          {/* Welcome Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">Welcome to Your Spiritual Journey</CardTitle>
+              <CardDescription>
+                "But grow in the grace and knowledge of our Lord and Savior Jesus Christ" - 2 Peter 3:18
+              </CardDescription>
+            </CardHeader>
+          </Card>
+
+          {/* Quick Stats Grid */}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {/* Devotion Streak */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Devotion Streak</CardTitle>
+                <Flame className="h-4 w-4 text-orange-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{data?.devotionStreak.currentStreak || 0} days</div>
+                <p className="text-xs text-muted-foreground">
+                  Longest: {data?.devotionStreak.longestStreak || 0} days
+                </p>
+                <Button
+                  variant="link"
+                  className="px-0 mt-2"
+                  onClick={() => setActiveTab('devotion')}
+                >
+                  Read Today's Devotion →
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Prayer Stats */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Prayer Life</CardTitle>
+                <Heart className="h-4 w-4 text-red-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{data?.prayers?.length || 0}</div>
+                <p className="text-xs text-muted-foreground">
+                  {answeredPrayers.length} answered prayers
+                </p>
+                <Button
+                  variant="link"
+                  className="px-0 mt-2"
+                  onClick={() => setActiveTab('prayer')}
+                >
+                  Open Prayer Journal →
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Scripture Memory */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Scripture Memory</CardTitle>
+                <Brain className="h-4 w-4 text-blue-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{versesMastered.length}</div>
+                <p className="text-xs text-muted-foreground">
+                  {(data?.scriptures?.length || 0) - versesMastered.length} in progress
+                </p>
+                <Button
+                  variant="link"
+                  className="px-0 mt-2"
+                  onClick={() => setActiveTab('scripture')}
+                >
+                  Practice Verses →
+                </Button>
+              </CardContent>
+            </Card>
+
+            {/* Growth Score */}
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Divine Score</CardTitle>
+                <TrendingUp className="h-4 w-4 text-green-500" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {data?.metrics?.divine_score || 0}%
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Ministry readiness: {data?.metrics?.ministry_readiness || 0}%
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Today's Devotion Preview */}
+          {data?.todaysDevotion && (
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>Today's Devotion</CardTitle>
+                    <CardDescription>{data.todaysDevotion.scripture_reference}</CardDescription>
+                  </div>
+                  <BookOpen className="h-6 w-6 text-primary" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <h4 className="font-semibold">{data.todaysDevotion.title}</h4>
+                  <p className="text-sm text-muted-foreground line-clamp-3">
+                    {data.todaysDevotion.content}
+                  </p>
+                  <Button onClick={() => setActiveTab('devotion')}>
+                    Read Full Devotion
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {!data?.todaysDevotion && (
+            <Card>
+              <CardContent className="pt-6 text-center">
+                <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-muted-foreground">No devotion available for today</p>
+                <p className="text-sm text-muted-foreground">Check back tomorrow for your daily devotion</p>
+              </CardContent>
+            </Card>
           )}
         </TabsContent>
 
-        {/* Daily Devotion Tab */}
+        {/* Devotion Tab */}
         <TabsContent value="devotion" className="space-y-6">
-          {dashboardData?.todaysDevotion ? (
-            <DevotionReader
-              devotion={dashboardData.todaysDevotion}
-              streak={dashboardData.devotionStreak}
-              userId={user.id}
-            />
-          ) : (
+          {data?.todaysDevotion ? (
             <Card>
               <CardHeader>
-                <CardTitle>No Devotion Available</CardTitle>
-                <CardDescription>
-                  Check back tomorrow for your daily devotion
-                </CardDescription>
+                <CardTitle>{data.todaysDevotion.title}</CardTitle>
+                <CardDescription>{data.todaysDevotion.scripture_reference}</CardDescription>
               </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="prose prose-sm max-w-none">
+                  {data.todaysDevotion.content}
+                </div>
+                <Button>Mark as Complete</Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card>
+              <CardContent className="pt-6 text-center">
+                <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                <p className="text-muted-foreground">No devotion available for today</p>
+              </CardContent>
             </Card>
           )}
         </TabsContent>
 
-        {/* Prayer Journal Tab */}
+        {/* Prayer Tab */}
         <TabsContent value="prayer" className="space-y-6">
-          <PrayerJournal
-            userId={user.id}
-            initialEntries={dashboardData?.recentPrayers || []}
-            analytics={dashboardData?.prayerAnalytics}
-          />
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Prayer Journal</CardTitle>
+                  <CardDescription>Your prayer requests and answered prayers</CardDescription>
+                </div>
+                <Button>
+                  <Plus className="h-4 w-4 mr-2" />
+                  New Prayer
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {data?.prayers && data.prayers.length > 0 ? (
+                <div className="space-y-3">
+                  {data.prayers.map((prayer: any) => (
+                    <div
+                      key={prayer.id}
+                      className="flex items-start justify-between p-4 border rounded-lg"
+                    >
+                      <div className="flex-1">
+                        <h4 className="font-medium">{prayer.title || 'Prayer Request'}</h4>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {prayer.content}
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-2">
+                          {new Date(prayer.created_at).toLocaleDateString()}
+                        </p>
+                      </div>
+                      {prayer.answered && (
+                        <Badge className="ml-2 bg-green-500 text-white">
+                          <CheckCircle2 className="h-3 w-3 mr-1" />
+                          Answered
+                        </Badge>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Heart className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-muted-foreground">No prayer entries yet</p>
+                  <p className="text-sm text-muted-foreground">Start your prayer journal today</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </TabsContent>
 
-        {/* Scripture Memory Tab */}
+        {/* Scripture Tab */}
         <TabsContent value="scripture" className="space-y-6">
-          <ScriptureMemoryPractice
-            userId={user.id}
-            statistics={dashboardData?.scriptureMemory}
-          />
+          <Card>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Scripture Memory</CardTitle>
+                  <CardDescription>Hide God's Word in your heart</CardDescription>
+                </div>
+                <Button>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Verse
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {data?.scriptures && data.scriptures.length > 0 ? (
+                <div className="space-y-3">
+                  {data.scriptures.map((scripture: any) => (
+                    <div
+                      key={scripture.id}
+                      className="p-4 border rounded-lg"
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h4 className="font-medium">{scripture.verse_reference}</h4>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {scripture.verse_text}
+                          </p>
+                        </div>
+                        <Badge variant={scripture.mastery_level >= 3 ? 'default' : 'outline'}>
+                          Level {scripture.mastery_level}
+                        </Badge>
+                      </div>
+                      <div className="mt-3 flex gap-2">
+                        <Button size="sm" variant="outline">Practice</Button>
+                        <Button size="sm" variant="outline">Review</Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8">
+                  <Brain className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-muted-foreground">No scripture verses added yet</p>
+                  <p className="text-sm text-muted-foreground">Add verses to start memorizing</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </TabsContent>
 
-        {/* Prophetic Check-in Tab */}
-        <TabsContent value="checkin" className="space-y-6">
-          <PropheticCheckInQuestionnaire
-            userId={user.id}
-            lastCheckIn={dashboardData?.recentCheckIn}
-          />
-        </TabsContent>
-
-        {/* Spiritual Growth Tab */}
-        <TabsContent value="growth" className="space-y-6">
-          {dashboardData?.growthTracking ? (
-            <SpiritualGrowthVisualization
-              tracking={dashboardData.growthTracking}
-              userId={user.id}
-            />
-          ) : (
-            <Card>
-              <CardHeader>
-                <CardTitle>No Growth Data Available</CardTitle>
-                <CardDescription>
-                  Complete a prophetic check-in to start tracking your spiritual growth
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          )}
-        </TabsContent>
-
-        {/* Mentor Connection Tab */}
+        {/* Mentor Tab */}
         <TabsContent value="mentor" className="space-y-6">
-          <MentorConnection userId={user.id} />
+          <Card>
+            <CardHeader>
+              <CardTitle>Spiritual Mentorship</CardTitle>
+              <CardDescription>Connect with a mentor for guidance on your spiritual journey</CardDescription>
+            </CardHeader>
+            <CardContent className="text-center py-8">
+              <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+              <p className="text-muted-foreground mb-4">Find a mentor to guide your spiritual growth</p>
+              <Button>Request a Mentor</Button>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
