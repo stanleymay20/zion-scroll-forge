@@ -79,8 +79,8 @@ import EventDetail from "./pages/EventDetail";
 import DegreePrograms from "./pages/DegreePrograms";
 import DegreeProgramDetail from "./pages/DegreeProgramDetail";
 import BillingDashboard from "./pages/BillingDashboard";
-import ScrollCoinWallet from "./pages/ScrollCoinWallet";
-import ScrollCoinLeaderboard from "./pages/ScrollCoinLeaderboard";
+import ScrollGoldWallet from "./pages/ScrollGoldWallet";
+import ScrollGoldLeaderboard from "./pages/ScrollGoldLeaderboard";
 import AITutorsCatalog from "./pages/AITutorsCatalog";
 import TutorSession from "./pages/TutorSession";
 import AITutorInterface from "./pages/AITutorInterface";
@@ -321,8 +321,10 @@ const App = () => (
             <Route path="events" element={<Events />} />
             <Route path="events/:id" element={<EventDetail />} />
             <Route path="billing" element={<BillingDashboard />} />
-            <Route path="scrollcoin-wallet" element={<ScrollCoinWallet />} />
-            <Route path="scrollcoin-leaderboard" element={<ScrollCoinLeaderboard />} />
+            <Route path="scrollcoin-wallet" element={<ScrollGoldWallet />} />
+            <Route path="scrollcoin-leaderboard" element={<ScrollGoldLeaderboard />} />
+            <Route path="scrollgold-wallet" element={<ScrollGoldWallet />} />
+            <Route path="scrollgold-leaderboard" element={<ScrollGoldLeaderboard />} />
             <Route path="ai-tutors-catalog" element={<AITutorsCatalog />} />
             <Route path="ai-tutor-interface" element={<AITutorInterface />} />
             <Route path="ai-tutors/:id" element={<TutorSession />} />

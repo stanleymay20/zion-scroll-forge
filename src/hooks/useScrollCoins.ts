@@ -1,11 +1,17 @@
+/**
+ * ScrollCoins Hooks - Backwards Compatibility
+ * 
+ * This file re-exports ScrollGold hooks for backwards compatibility.
+ */
+
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 
-console.info("✝️ ScrollUniversity ScrollCoin Hooks — Christ governs rewards");
+console.info("✝️ ScrollUniversity ScrollGold Hooks — Christ governs rewards");
 
 // Mutations
-export async function addScrollCoins(amount: number) {
+export async function addScrollGold(amount: number) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
@@ -19,14 +25,18 @@ export async function addScrollCoins(amount: number) {
 }
 
 // Hooks
-export const useAddScrollCoins = () => {
+export const useAddScrollGold = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: addScrollCoins,
+    mutationFn: addScrollGold,
     onSuccess: (data) => {
-      toast({ title: `🪙 +${data.amount} ScrollCoins earned!`, description: "Keep building the Kingdom" });
+      toast({ title: `🪙 +${data.amount} ScrollGold earned!`, description: "Keep building the Kingdom" });
       qc.invalidateQueries({ queryKey: ["profile"] });
     },
     onError: (e: any) => toast({ title: "Reward failed", description: e.message, variant: "destructive" })
   });
 };
+
+// Backwards compatibility
+export const addScrollCoins = addScrollGold;
+export const useAddScrollCoins = useAddScrollGold;
