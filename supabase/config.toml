@@ -154,3 +154,9 @@ verify_jwt = true
 
 [functions.generate-video]
 verify_jwt = true
+
+[functions.generate-certificate-materials]
+verify_jwt = false
+
+[functions.academic-year-automation]
+verify_jwt = false
