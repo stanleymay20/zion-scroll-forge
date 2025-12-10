@@ -15,8 +15,8 @@ export const StudyGroups: React.FC = () => {
   const [isCreating, setIsCreating] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  const handleSelectGroup = (group: StudyGroupWithMembers) => {
-    setSelectedGroup(group);
+  const handleSelectGroup = (group: any) => {
+    setSelectedGroup(group as StudyGroupWithMembers);
   };
 
   const handleBack = () => {
