@@ -1,6 +1,7 @@
 /**
  * Performance Monitoring Service
  * Tracks and reports performance metrics for the application
+ * Uses lazy initialization to avoid circular dependencies
  */
 
 interface PerformanceMetric {
@@ -20,6 +21,7 @@ interface PerformanceThresholds {
 
 class PerformanceMonitor {
   private metrics: PerformanceMetric[] = [];
+  private initialized = false;
   private thresholds: PerformanceThresholds = {
     fcp: 1800, // 1.8s
     lcp: 2500, // 2.5s
@@ -28,7 +30,11 @@ class PerformanceMonitor {
     ttfb: 600, // 600ms
   };
 
-  constructor() {
+  // Lazy initialization - only init when first method is called
+  private ensureInitialized() {
+    if (this.initialized) return;
+    this.initialized = true;
+    
     if (typeof window !== 'undefined') {
       this.initializeObservers();
     }
@@ -41,7 +47,7 @@ class PerformanceMonitor {
         // Observe paint timing
         const paintObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
-            this.recordMetric({
+            this.recordMetricInternal({
               name: entry.name,
               value: entry.startTime,
               timestamp: Date.now(),
@@ -54,7 +60,7 @@ class PerformanceMonitor {
         const lcpObserver = new PerformanceObserver((list) => {
           const entries = list.getEntries();
           const lastEntry = entries[entries.length - 1];
-          this.recordMetric({
+          this.recordMetricInternal({
             name: 'largest-contentful-paint',
             value: lastEntry.startTime,
             timestamp: Date.now(),
@@ -66,7 +72,7 @@ class PerformanceMonitor {
         const fidObserver = new PerformanceObserver((list) => {
           for (const entry of list.getEntries()) {
             const fidEntry = entry as any;
-            this.recordMetric({
+            this.recordMetricInternal({
               name: 'first-input-delay',
               value: fidEntry.processingStart - fidEntry.startTime,
               timestamp: Date.now(),
@@ -84,7 +90,7 @@ class PerformanceMonitor {
               clsValue += layoutShift.value;
             }
           }
-          this.recordMetric({
+          this.recordMetricInternal({
             name: 'cumulative-layout-shift',
             value: clsValue,
             timestamp: Date.now(),
@@ -101,10 +107,10 @@ class PerformanceMonitor {
   }
 
   private monitorResourceTiming() {
-    if ('performance' in window && 'getEntriesByType' in performance) {
+    if (typeof window !== 'undefined' && 'performance' in window && 'getEntriesByType' in performance) {
       const resources = performance.getEntriesByType('resource');
       resources.forEach((resource: any) => {
-        this.recordMetric({
+        this.recordMetricInternal({
           name: 'resource-load-time',
           value: resource.duration,
           timestamp: Date.now(),
@@ -117,7 +123,8 @@ class PerformanceMonitor {
     }
   }
 
-  recordMetric(metric: PerformanceMetric) {
+  // Internal method that doesn't trigger initialization
+  private recordMetricInternal(metric: PerformanceMetric) {
     this.metrics.push(metric);
 
     // Check thresholds and log warnings
@@ -129,9 +136,14 @@ class PerformanceMonitor {
     }
 
     // Send to analytics in production
-    if (process.env.NODE_ENV === 'production') {
+    if (typeof window !== 'undefined' && import.meta.env.PROD) {
       this.sendToAnalytics(metric);
     }
+  }
+
+  recordMetric(metric: PerformanceMetric) {
+    this.ensureInitialized();
+    this.recordMetricInternal(metric);
   }
 
   private checkThresholds(metric: PerformanceMetric) {
@@ -152,7 +164,7 @@ class PerformanceMonitor {
 
   private sendToAnalytics(metric: PerformanceMetric) {
     // Send to backend analytics endpoint
-    if (navigator.sendBeacon) {
+    if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
       const data = JSON.stringify({
         type: 'performance',
         metric,
@@ -164,10 +176,12 @@ class PerformanceMonitor {
   }
 
   getMetrics(): PerformanceMetric[] {
+    this.ensureInitialized();
     return [...this.metrics];
   }
 
   getAverageMetric(name: string): number {
+    this.ensureInitialized();
     const filtered = this.metrics.filter((m) => m.name === name);
     if (filtered.length === 0) return 0;
     const sum = filtered.reduce((acc, m) => acc + m.value, 0);
@@ -180,18 +194,20 @@ class PerformanceMonitor {
 
   // Mark custom performance points
   mark(name: string) {
-    if ('performance' in window && 'mark' in performance) {
+    this.ensureInitialized();
+    if (typeof window !== 'undefined' && 'performance' in window && 'mark' in performance) {
       performance.mark(name);
     }
   }
 
   // Measure between two marks
   measure(name: string, startMark: string, endMark: string) {
-    if ('performance' in window && 'measure' in performance) {
+    this.ensureInitialized();
+    if (typeof window !== 'undefined' && 'performance' in window && 'measure' in performance) {
       try {
         performance.measure(name, startMark, endMark);
         const measure = performance.getEntriesByName(name)[0];
-        this.recordMetric({
+        this.recordMetricInternal({
           name,
           value: measure.duration,
           timestamp: Date.now(),
@@ -204,7 +220,8 @@ class PerformanceMonitor {
 
   // Get navigation timing
   getNavigationTiming() {
-    if ('performance' in window && 'timing' in performance) {
+    this.ensureInitialized();
+    if (typeof window !== 'undefined' && 'performance' in window && 'timing' in performance) {
       const timing = performance.timing;
       return {
         dns: timing.domainLookupEnd - timing.domainLookupStart,
@@ -221,6 +238,7 @@ class PerformanceMonitor {
 
   // Report Web Vitals
   reportWebVitals() {
+    this.ensureInitialized();
     return {
       fcp: this.getAverageMetric('first-contentful-paint'),
       lcp: this.getAverageMetric('largest-contentful-paint'),
@@ -231,4 +249,5 @@ class PerformanceMonitor {
   }
 }
 
+// Export singleton - now with lazy initialization
 export const performanceMonitor = new PerformanceMonitor();
