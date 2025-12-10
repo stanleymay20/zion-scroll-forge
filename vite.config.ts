@@ -17,8 +17,6 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
-    // Ensure single React instance
-    dedupe: ['react', 'react-dom'],
   },
   build: {
     target: 'es2015',
@@ -29,41 +27,12 @@ export default defineConfig(({ mode }) => ({
         drop_debugger: mode === 'production',
       },
     },
-    rollupOptions: {
-      output: {
-        // Simplified code splitting to avoid duplicate React issues
-        manualChunks: {
-          // Keep React together as a single chunk
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          // UI libraries
-          'vendor-ui': ['@radix-ui/react-toast', '@radix-ui/react-dialog', '@radix-ui/react-popover', 'lucide-react'],
-          // Data fetching
-          'vendor-data': ['@tanstack/react-query'],
-          // Supabase
-          'vendor-supabase': ['@supabase/supabase-js'],
-        },
-        // Optimize chunk file names
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: (assetInfo) => {
-          if (!assetInfo.name) return 'assets/[name]-[hash][extname]';
-          const info = assetInfo.name.split('.');
-          const ext = info[info.length - 1];
-          if (/png|jpe?g|svg|gif|tiff|bmp|ico/i.test(ext)) {
-            return `assets/images/[name]-[hash][extname]`;
-          } else if (/woff|woff2|eot|ttf|otf/i.test(ext)) {
-            return `assets/fonts/[name]-[hash][extname]`;
-          }
-          return `assets/[ext]/[name]-[hash][extname]`;
-        },
-      },
-    },
     // Chunk size warnings
     chunkSizeWarningLimit: 1000,
     // Source maps for production debugging
     sourcemap: mode === 'production' ? 'hidden' : true,
   },
-  // Optimize dependencies - ensure single React instance
+  // Let Vite handle optimization automatically
   optimizeDeps: {
     include: [
       'react',
@@ -72,6 +41,5 @@ export default defineConfig(({ mode }) => ({
       '@tanstack/react-query',
       '@supabase/supabase-js',
     ],
-    exclude: ['@vite/client', '@vite/env'],
   },
 }));
