@@ -16,5 +16,14 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
+    dedupe: ['react', 'react-dom'],
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'],
+  },
+  build: {
+    commonjsOptions: {
+      include: [/react/, /react-dom/, /node_modules/],
+    },
   },
 }));
