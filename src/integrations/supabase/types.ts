@@ -2997,6 +2997,113 @@ export type Database = {
         }
         Relationships: []
       }
+      scroll_books: {
+        Row: {
+          author: string | null
+          cover_image_url: string | null
+          created_at: string
+          description: string | null
+          faculty: string
+          id: string
+          level: string
+          published_at: string | null
+          quality_score: number | null
+          subject: string
+          subtitle: string | null
+          theological_alignment: number | null
+          title: string
+          total_chapters: number | null
+          total_pages: number | null
+          updated_at: string
+        }
+        Insert: {
+          author?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          faculty: string
+          id?: string
+          level: string
+          published_at?: string | null
+          quality_score?: number | null
+          subject: string
+          subtitle?: string | null
+          theological_alignment?: number | null
+          title: string
+          total_chapters?: number | null
+          total_pages?: number | null
+          updated_at?: string
+        }
+        Update: {
+          author?: string | null
+          cover_image_url?: string | null
+          created_at?: string
+          description?: string | null
+          faculty?: string
+          id?: string
+          level?: string
+          published_at?: string | null
+          quality_score?: number | null
+          subject?: string
+          subtitle?: string | null
+          theological_alignment?: number | null
+          title?: string
+          total_chapters?: number | null
+          total_pages?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      scroll_chapters: {
+        Row: {
+          book_id: string
+          content: string
+          created_at: string
+          id: string
+          key_concepts: string[] | null
+          order_index: number
+          reading_time_minutes: number | null
+          scripture_references: string[] | null
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          book_id: string
+          content: string
+          created_at?: string
+          id?: string
+          key_concepts?: string[] | null
+          order_index: number
+          reading_time_minutes?: number | null
+          scripture_references?: string[] | null
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          book_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          key_concepts?: string[] | null
+          order_index?: number
+          reading_time_minutes?: number | null
+          scripture_references?: string[] | null
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scroll_chapters_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "scroll_books"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       scroll_integrity_logs: {
         Row: {
           created_at: string | null
@@ -3023,6 +3130,66 @@ export type Database = {
           verified_at?: string | null
         }
         Relationships: []
+      }
+      scroll_reading_progress: {
+        Row: {
+          book_id: string
+          bookmarks: Json | null
+          chapter_id: string | null
+          completed_at: string | null
+          created_at: string
+          highlights: Json | null
+          id: string
+          last_read_at: string | null
+          notes: Json | null
+          progress_percent: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          book_id: string
+          bookmarks?: Json | null
+          chapter_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          highlights?: Json | null
+          id?: string
+          last_read_at?: string | null
+          notes?: Json | null
+          progress_percent?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          book_id?: string
+          bookmarks?: Json | null
+          chapter_id?: string | null
+          completed_at?: string | null
+          created_at?: string
+          highlights?: Json | null
+          id?: string
+          last_read_at?: string | null
+          notes?: Json | null
+          progress_percent?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scroll_reading_progress_book_id_fkey"
+            columns: ["book_id"]
+            isOneToOne: false
+            referencedRelation: "scroll_books"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "scroll_reading_progress_chapter_id_fkey"
+            columns: ["chapter_id"]
+            isOneToOne: false
+            referencedRelation: "scroll_chapters"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       scrollcoin_analytics_daily: {
         Row: {
