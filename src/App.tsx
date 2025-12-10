@@ -1,7 +1,12 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// Force single React instance
+if (typeof window !== 'undefined') {
+  (window as any).__REACT__ = React;
+}
 import { AuthProvider } from "./contexts/AuthContext";
 import { InstitutionProvider } from "./contexts/InstitutionContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
