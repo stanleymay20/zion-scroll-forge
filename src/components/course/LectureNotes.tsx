@@ -1,12 +1,15 @@
 /**
  * Lecture Notes Component
- * Displays lecture notes with downloadable PDF functionality
+ * Displays lecture notes with downloadable PDF functionality using proper PDF generation
  */
 
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Download, FileText, Printer } from 'lucide-react';
+import { Download, FileText, Printer, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
+import ReactMarkdown from 'react-markdown';
 
 interface LectureNotesProps {
   lectureId: string;
@@ -15,43 +18,129 @@ interface LectureNotesProps {
 }
 
 export function LectureNotes({ lectureId, title, content }: LectureNotesProps) {
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
+
+  // Convert content to plain text for PDF
+  const getPlainTextContent = (): string => {
+    if (typeof content === 'string') {
+      // Remove markdown formatting for cleaner PDF
+      return content
+        .replace(/#{1,6}\s/g, '') // Remove headers
+        .replace(/\*\*([^*]+)\*\*/g, '$1') // Remove bold
+        .replace(/\*([^*]+)\*/g, '$1') // Remove italic
+        .replace(/`([^`]+)`/g, '$1') // Remove inline code
+        .replace(/```[\s\S]*?```/g, '') // Remove code blocks
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1'); // Remove links, keep text
+    }
+
+    // Build structured text from content object
+    let text = `${title}\n${'='.repeat(title.length)}\n\n`;
+
+    if (content?.key_concepts) {
+      text += 'KEY CONCEPTS\n' + '-'.repeat(12) + '\n';
+      content.key_concepts.forEach((concept: string, i: number) => {
+        text += `${i + 1}. ${concept}\n`;
+      });
+      text += '\n';
+    }
+
+    if (content?.sections) {
+      content.sections.forEach((section: any) => {
+        text += `\n${section.title}\n${'-'.repeat(section.title.length)}\n`;
+        text += `${section.content}\n`;
+        
+        if (section.examples) {
+          text += '\nExamples:\n';
+          section.examples.forEach((ex: string, i: number) => {
+            text += `  ${i + 1}. ${ex}\n`;
+          });
+        }
+      });
+    }
+
+    if (content?.scripture_references) {
+      text += '\n\nSCRIPTURE REFERENCES\n' + '-'.repeat(20) + '\n';
+      content.scripture_references.forEach((ref: any) => {
+        text += `${ref.reference}: ${ref.text}\n`;
+      });
+    }
+
+    if (content?.summary) {
+      text += '\n\nSUMMARY\n' + '-'.repeat(7) + '\n';
+      text += content.summary + '\n';
+    }
+
+    if (content?.study_questions) {
+      text += '\n\nSTUDY QUESTIONS\n' + '-'.repeat(15) + '\n';
+      content.study_questions.forEach((q: string, i: number) => {
+        text += `${i + 1}. ${q}\n`;
+      });
+    }
+
+    if (content?.notes || content?.description) {
+      text += content.notes || content.description;
+    }
+
+    text += '\n\n---\nScrollUniversity - Christ is Lord over every scroll\n';
+    text += `Generated on ${new Date().toLocaleDateString()}\n`;
+
+    return text;
+  };
+
   const handleDownloadPDF = async () => {
+    setIsGeneratingPDF(true);
+    
     try {
       toast.info('Generating PDF...', {
         description: 'Please wait while we prepare your download'
       });
 
-      // In production, this would call the backend PDF generation service
-      // For now, we'll simulate the download
-      const response = await fetch(`/api/lectures/${lectureId}/notes/pdf`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/pdf',
-        },
+      const plainContent = getPlainTextContent();
+      
+      // Call edge function to generate proper PDF
+      const { data, error } = await supabase.functions.invoke('generate-pdf', {
+        body: {
+          title: title,
+          content: plainContent,
+          author: 'ScrollUniversity',
+          type: 'lecture_notes'
+        }
       });
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `${title.replace(/\s+/g, '_')}_notes.pdf`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+      if (error) throw error;
 
-        toast.success('PDF Downloaded', {
-          description: 'Lecture notes have been downloaded successfully'
-        });
-      } else {
-        throw new Error('Failed to download PDF');
+      if (!data?.pdf) {
+        throw new Error('No PDF data received');
       }
+
+      // Convert base64 to blob
+      const binaryString = atob(data.pdf);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: 'application/pdf' });
+
+      // Download the file
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = data.filename || `${title.replace(/\s+/g, '_')}_notes.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast.success('PDF Downloaded', {
+        description: 'Lecture notes have been downloaded. Open with Adobe Reader or any PDF viewer.'
+      });
     } catch (error) {
       console.error('PDF download error:', error);
       toast.error('Download Failed', {
-        description: 'Unable to download PDF. Please try again later.'
+        description: 'Unable to generate PDF. Please try again later.'
       });
+    } finally {
+      setIsGeneratingPDF(false);
     }
   };
 
@@ -59,10 +148,10 @@ export function LectureNotes({ lectureId, title, content }: LectureNotesProps) {
     window.print();
   };
 
-  // Parse content if it's a JSON object
+  // Parse content for display
   const notesContent = typeof content === 'string' 
     ? content 
-    : content?.notes || content?.description || 'No notes available for this lecture.';
+    : content?.notes || content?.description || '';
 
   return (
     <Card>
@@ -85,8 +174,13 @@ export function LectureNotes({ lectureId, title, content }: LectureNotesProps) {
               variant="outline"
               size="sm"
               onClick={handleDownloadPDF}
+              disabled={isGeneratingPDF}
             >
-              <Download className="h-4 w-4 mr-2" />
+              {isGeneratingPDF ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4 mr-2" />
+              )}
               Download PDF
             </Button>
           </div>
@@ -99,11 +193,26 @@ export function LectureNotes({ lectureId, title, content }: LectureNotesProps) {
 
           {/* Notes Content */}
           <div className="space-y-4">
-            {typeof notesContent === 'string' ? (
-              <div 
-                className="whitespace-pre-wrap"
-                dangerouslySetInnerHTML={{ __html: notesContent }}
-              />
+            {typeof content === 'string' ? (
+              <div className="whitespace-pre-wrap">
+                <ReactMarkdown
+                  components={{
+                    h1: ({ children }) => <h1 className="text-2xl font-bold mt-6 mb-4">{children}</h1>,
+                    h2: ({ children }) => <h2 className="text-xl font-bold mt-5 mb-3">{children}</h2>,
+                    h3: ({ children }) => <h3 className="text-lg font-semibold mt-4 mb-2">{children}</h3>,
+                    p: ({ children }) => <p className="mb-4 leading-relaxed">{children}</p>,
+                    ul: ({ children }) => <ul className="list-disc list-inside space-y-1 mb-4">{children}</ul>,
+                    ol: ({ children }) => <ol className="list-decimal list-inside space-y-1 mb-4">{children}</ol>,
+                    blockquote: ({ children }) => (
+                      <blockquote className="border-l-4 border-primary pl-4 italic my-4 bg-muted/30 py-2">
+                        {children}
+                      </blockquote>
+                    ),
+                  }}
+                >
+                  {content}
+                </ReactMarkdown>
+              </div>
             ) : (
               <>
                 {/* Key Concepts */}
@@ -191,6 +300,13 @@ export function LectureNotes({ lectureId, title, content }: LectureNotesProps) {
                         <li key={index} className="text-muted-foreground">{question}</li>
                       ))}
                     </ol>
+                  </div>
+                )}
+
+                {/* Fallback for simple notes */}
+                {notesContent && !content?.sections && (
+                  <div className="whitespace-pre-wrap">
+                    <ReactMarkdown>{notesContent}</ReactMarkdown>
                   </div>
                 )}
               </>

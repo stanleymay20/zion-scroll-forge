@@ -1,6 +1,7 @@
 /**
  * Course Learning Experience Page
- * Comprehensive learning interface with video player, notes, quizzes, assignments, and discussions
+ * Comprehensive learning interface with live video sessions, notes, quizzes, assignments, and discussions
+ * Features: Live interactive video with text/voice/voice-to-text interaction
  * Requirements: 4.2, 4.3, 4.4
  */
 
@@ -24,10 +25,11 @@ import {
   Loader2,
   AlertCircle,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Video
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { VideoPlayer } from '@/components/course/VideoPlayer';
+import { LiveVideoSession } from '@/components/course/LiveVideoSession';
 import { LectureNotes } from '@/components/course/LectureNotes';
 import { QuizInterface } from '@/components/course/QuizInterface';
 import { AssignmentSubmission } from '@/components/course/AssignmentSubmission';
@@ -241,8 +243,8 @@ export default function CourseLearn() {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="video" className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4" />
-                <span className="hidden sm:inline">Video</span>
+                <Video className="h-4 w-4" />
+                <span className="hidden sm:inline">Live Session</span>
               </TabsTrigger>
               <TabsTrigger value="notes" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
@@ -263,12 +265,13 @@ export default function CourseLearn() {
             </TabsList>
 
             <TabsContent value="video" className="mt-6">
-              <VideoPlayer
-                videoUrl={currentLecture.url || ''}
-                title={currentLecture.title}
-                onComplete={markLectureComplete}
+              <LiveVideoSession
                 lectureId={currentLecture.id}
+                lectureTitle={currentLecture.title}
+                lecturerName="Dr. Emmanuel Scroll"
+                onComplete={markLectureComplete}
                 enrollmentId={enrollment.id}
+                moduleContent={currentLecture.content}
               />
             </TabsContent>
 
