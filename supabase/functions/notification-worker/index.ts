@@ -77,7 +77,7 @@ serve(async (req) => {
         await supabase.rpc('create_notification', {
           p_user_id: metric.user_id,
           p_title: '🔥 30-Day Prayer Streak!',
-          p_body: 'You've maintained a 30-day prayer streak. Keep going!',
+          p_body: "You've maintained a 30-day prayer streak. Keep going!",
           p_type: 'achievement',
           p_related_id: metric.id,
           p_related_type: 'spiritual_metric',
