@@ -82,15 +82,24 @@ export default function CourseLearn() {
     enabled: !!courseId && !!user
   });
 
-  // Get all lectures from all modules
+  // Get all lectures/modules - use course_modules directly as lectures
+  // If learning_materials exist, use those; otherwise treat modules as lectures
   const allLectures = courseData?.course_modules
-    ?.flatMap((module: any) => 
-      module.learning_materials?.map((material: any) => ({
-        ...material,
+    ?.sort((a: any, b: any) => (a.order_index || 0) - (b.order_index || 0))
+    ?.map((module: any) => {
+      // If module has learning materials, we could expand them
+      // For now, treat each module as a lecture
+      return {
+        id: module.id,
+        title: module.title,
+        content: module.content_md,
+        url: module.material_url,
         moduleTitle: module.title,
-        moduleId: module.id
-      })) || []
-    ) || [];
+        moduleId: module.id,
+        duration_minutes: module.duration_minutes,
+        learning_materials: module.learning_materials || []
+      };
+    }) || [];
 
   const currentLecture = allLectures[currentLectureIndex];
 
