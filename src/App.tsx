@@ -1,17 +1,12 @@
-import { Suspense, useEffect } from "react";
-import { Toaster } from "@/components/ui/toaster";
+import { Suspense } from "react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./contexts/AuthContext";
 import { InstitutionProvider } from "./contexts/InstitutionContext";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
-import { useRealtimeSubscriptions } from "@/hooks/useRealtime";
 import { MainLayout } from "./components/layout/MainLayout";
-import { MobileAppInstallPrompt } from "@/components/mobile";
-import { PWAInstallPrompt, OfflineIndicator, PWAUpdatePrompt } from "@/components/pwa";
 import { Loader2 } from "lucide-react";
 
 // Create query client inline to avoid import issues
@@ -176,59 +171,15 @@ const LoadingFallback = () => (
   </div>
 );
 
-// Realtime subscriptions wrapper
-const RealtimeProvider = ({ children }: { children: React.ReactNode }) => {
-  useRealtimeSubscriptions();
-  return <>{children}</>;
-};
-
-// Mobile viewport configuration
-const MobileViewportConfig = () => {
-  useEffect(() => {
-    // Set viewport meta tag for mobile devices
-    const viewport = document.querySelector('meta[name="viewport"]');
-    if (viewport) {
-      viewport.setAttribute(
-        'content',
-        'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover'
-      );
-    }
-
-    // Prevent zoom on input focus (iOS)
-    const style = document.createElement('style');
-    style.textContent = `
-      @media screen and (max-width: 768px) {
-        input, textarea, select {
-          font-size: 16px !important;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
-
-  return null;
-};
-
 const App = () => (
-  <ErrorBoundary>
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <InstitutionProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <MobileViewportConfig />
-            <BrowserRouter>
-              <RealtimeProvider>
-                  <PWAInstallPrompt />
-                  <PWAUpdatePrompt />
-                  <MobileAppInstallPrompt />
-                <Suspense fallback={<LoadingFallback />}>
-                <Routes>
+  <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <InstitutionProvider>
+        <TooltipProvider>
+          <Sonner />
+          <BrowserRouter>
+            <Suspense fallback={<LoadingFallback />}>
+            <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
             
@@ -401,15 +352,13 @@ const App = () => (
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </RealtimeProvider>
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
       </InstitutionProvider>
     </AuthProvider>
   </QueryClientProvider>
-  </ErrorBoundary>
 );
 
 export default App;
