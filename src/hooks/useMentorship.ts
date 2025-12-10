@@ -1,6 +1,9 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
+import type { Database } from '@/integrations/supabase/types';
+
+type SessionType = Database['public']['Enums']['mentorship_session_type'];
 
 export interface MentorshipRelationship {
   id: string;
@@ -27,7 +30,7 @@ export interface MentorshipRelationship {
 export interface MentorshipSession {
   id: string;
   relationship_id: string;
-  session_type: string;
+  session_type: SessionType;
   scheduled_at: string;
   started_at: string | null;
   ended_at: string | null;
@@ -86,7 +89,12 @@ export const useMentorship = () => {
   });
 
   const createSession = useMutation({
-    mutationFn: async (session: Partial<MentorshipSession>) => {
+    mutationFn: async (session: {
+      relationship_id: string;
+      session_type: SessionType;
+      scheduled_at: string;
+      topics_discussed?: any[];
+    }) => {
       const { data, error } = await supabase
         .from('mentorship_sessions')
         .insert(session)
@@ -102,7 +110,7 @@ export const useMentorship = () => {
   });
 
   const updateSession = useMutation({
-    mutationFn: async ({ id, ...updates }: Partial<MentorshipSession> & { id: string }) => {
+    mutationFn: async ({ id, ...updates }: { id: string; session_type?: SessionType } & Partial<Omit<MentorshipSession, 'id' | 'session_type'>>) => {
       const { data, error } = await supabase
         .from('mentorship_sessions')
         .update(updates)

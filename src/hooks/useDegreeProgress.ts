@@ -1,6 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
+import type { Database } from '@/integrations/supabase/types';
+
+type ProficiencyLevel = 'novice' | 'beginner' | 'intermediate' | 'advanced' | 'expert' | 'master' | 'prophet';
+type DegreeLevelType = Database['public']['Enums']['scroll_degree_level'];
 
 export interface DegreeProgress {
   id: string;
@@ -103,7 +107,7 @@ export const useDegreeProgress = () => {
         .insert({
           user_id: user.id,
           skill_id: skillId,
-          proficiency_level: 'novice',
+          proficiency_level: 'novice' as ProficiencyLevel,
         })
         .select()
         .single();
@@ -117,7 +121,7 @@ export const useDegreeProgress = () => {
   });
 
   const updateSkillProficiency = useMutation({
-    mutationFn: async ({ skillId, proficiency, xpEarned }: { skillId: string; proficiency: string; xpEarned?: number }) => {
+    mutationFn: async ({ skillId, proficiency, xpEarned }: { skillId: string; proficiency: ProficiencyLevel; xpEarned?: number }) => {
       if (!user?.id) throw new Error('Not authenticated');
       const { data, error } = await supabase
         .from('student_skills')
@@ -140,7 +144,7 @@ export const useDegreeProgress = () => {
   });
 
   const startDegreeProgram = useMutation({
-    mutationFn: async ({ degreeLevel, facultyId }: { degreeLevel: string; facultyId?: string }) => {
+    mutationFn: async ({ degreeLevel, facultyId }: { degreeLevel: DegreeLevelType; facultyId?: string }) => {
       if (!user?.id) throw new Error('Not authenticated');
       const { data, error } = await supabase
         .from('degree_progress')

@@ -1,12 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
+import type { Database } from '@/integrations/supabase/types';
+
+type AssessmentType = Database['public']['Enums']['assessment_type'];
 
 export interface DivineAssessment {
   id: string;
   title: string;
   description: string | null;
-  assessment_type: string;
+  assessment_type: AssessmentType;
   faculty_id: string | null;
   course_id: string | null;
   module_id: string | null;
@@ -139,7 +142,25 @@ export const useDivineAssessments = (facultyId?: string, courseId?: string) => {
   });
 
   const createAssessment = useMutation({
-    mutationFn: async (assessment: Partial<DivineAssessment>) => {
+    mutationFn: async (assessment: {
+      title: string;
+      assessment_type: AssessmentType;
+      rubric?: any;
+      description?: string;
+      faculty_id?: string;
+      course_id?: string;
+      module_id?: string;
+      academic_weight?: number;
+      prophetic_weight?: number;
+      character_weight?: number;
+      max_score?: number;
+      passing_score?: number;
+      time_limit_minutes?: number;
+      skills_assessed?: string[];
+      xp_reward?: number;
+      scrollgold_reward?: number;
+      is_published?: boolean;
+    }) => {
       if (!user?.id) throw new Error('Not authenticated');
       const { data, error } = await supabase
         .from('divine_assessments')
