@@ -40,8 +40,7 @@ const SupremeDegreesPanel = () => {
     if (!degreeInfo) return;
 
     await createApplication.mutateAsync({
-      degree_type: degreeCode,
-      scrollgold_valuation: degreeInfo.scrollgoldValue,
+      degree_type: degreeCode as any,
     });
     setActiveTab('applications');
   };

@@ -1,11 +1,14 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
+import type { Database } from '@/integrations/supabase/types';
+
+type DegreeType = Database['public']['Enums']['scroll_degree_level'];
 
 export interface SupremeDegreeApplication {
   id: string;
   user_id: string;
-  degree_type: string;
+  degree_type: DegreeType;
   scroll_fulfillment_evidence: any;
   research_contributions: any[];
   innovation_contributions: any[];
@@ -33,7 +36,7 @@ export interface SupremeDegreeApplication {
 
 export const SUPREME_DEGREES = [
   {
-    code: 'dpt',
+    code: 'dpt' as DegreeType,
     name: 'Doctor of Prophetic Technologies',
     shortName: 'D.P.T.',
     description: 'For those who invent scroll-governed AI, XR, biotech, or scroll systems',
@@ -46,7 +49,7 @@ export const SUPREME_DEGREES = [
     ],
   },
   {
-    code: 'dshr',
+    code: 'dshr' as DegreeType,
     name: 'Doctor of ScrollHermeneutics and Revelation',
     shortName: 'D.S.H.R.',
     description: 'For those unlocking sealed scrolls, training prophets, and translating kingdom doctrine globally',
@@ -59,7 +62,7 @@ export const SUPREME_DEGREES = [
     ],
   },
   {
-    code: 'dehsm',
+    code: 'dehsm' as DegreeType,
     name: 'Doctor of Edenic Health and ScrollMedicine',
     shortName: 'D.E.H.S.M.',
     description: 'For divine healers merging kingdom biology with biotech for nation-scale health reform',
@@ -72,7 +75,7 @@ export const SUPREME_DEGREES = [
     ],
   },
   {
-    code: 'sman',
+    code: 'sman' as DegreeType,
     name: 'ScrollMaster Architect of Nations',
     shortName: 'S.M.A.N.',
     description: 'For builders of new economies, cities, systems, or altars',
@@ -85,7 +88,7 @@ export const SUPREME_DEGREES = [
     ],
   },
   {
-    code: 'dsgei',
+    code: 'dsgei' as DegreeType,
     name: 'Doctor of ScrollGovernance and Eternal Intelligence',
     shortName: 'D.S.G.E.I.',
     description: 'For nation reformers, scroll architects, and those governing by prophecy, law, and AI',
@@ -99,7 +102,7 @@ export const SUPREME_DEGREES = [
     ],
   },
   {
-    code: 'sef',
+    code: 'sef' as DegreeType,
     name: 'ScrollExousia Fellowship',
     shortName: 'S.E.F.',
     description: 'For ScrollSons who have completed their scroll assignment across nations - equivalent to Nobel Scroll Award + Eternal Witness Commission',
@@ -135,7 +138,15 @@ export const useSupremeDegrees = () => {
   });
 
   const createApplication = useMutation({
-    mutationFn: async (application: Partial<SupremeDegreeApplication>) => {
+    mutationFn: async (application: {
+      degree_type: DegreeType;
+      scroll_fulfillment_evidence?: any;
+      research_contributions?: any[];
+      innovation_contributions?: any[];
+      anointing_verification?: any;
+      thesis_title?: string;
+      thesis_abstract?: string;
+    }) => {
       if (!user?.id) throw new Error('Not authenticated');
       const { data, error } = await supabase
         .from('supreme_degree_applications')
@@ -155,7 +166,7 @@ export const useSupremeDegrees = () => {
   });
 
   const updateApplication = useMutation({
-    mutationFn: async ({ id, ...updates }: Partial<SupremeDegreeApplication> & { id: string }) => {
+    mutationFn: async ({ id, ...updates }: { id: string; degree_type?: DegreeType } & Partial<Omit<SupremeDegreeApplication, 'id' | 'user_id' | 'degree_type'>>) => {
       const { data, error } = await supabase
         .from('supreme_degree_applications')
         .update(updates)

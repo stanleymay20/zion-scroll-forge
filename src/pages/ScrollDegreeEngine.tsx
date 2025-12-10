@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Helmet } from 'react-helmet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -33,18 +32,12 @@ import ScrollTranscriptPanel from '@/components/degree-engine/ScrollTranscriptPa
 const ScrollDegreeEngine = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const { degreeProgress, studentSkills, stats: degreeStats } = useDegreeProgress();
-  const { relationships, stats: mentorshipStats } = useMentorship();
-  const { myAttempts, stats: assessmentStats } = useDivineAssessments();
+  const { stats: mentorshipStats } = useMentorship();
+  const { stats: assessmentStats } = useDivineAssessments();
   const { applications } = useSupremeDegrees();
 
   return (
-    <>
-      <Helmet>
-        <title>ScrollDegree Engine | ScrollUniversity</title>
-        <meta name="description" content="Track your divine academic journey with real-time skill tracking, prophetic assessments, and supreme degree progress." />
-      </Helmet>
-
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
         <div className="container mx-auto px-4 py-8">
           {/* Hero Section */}
           <div className="mb-8">
@@ -271,7 +264,6 @@ const ScrollDegreeEngine = () => {
           </Tabs>
         </div>
       </div>
-    </>
   );
 };
 

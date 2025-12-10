@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { useDegreeProgress } from '@/hooks/useDegreeProgress';
 import { useDivineAssessments } from '@/hooks/useDivineAssessments';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/contexts/AuthContext';
 
 const ScrollTranscriptPanel = () => {
   const { user } = useAuth();
