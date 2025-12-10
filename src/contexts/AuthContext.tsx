@@ -1,15 +1,14 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
-  signOut: () => Promise<void>;
+  signUp: (email: string, password: string) => Promise<{ error?: string }>;
+  signIn: (email: string, password: string) => Promise<{ error?: string }>;
+  signOut: () => Promise<{ error?: string }>;
   refreshSession: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -23,7 +22,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
   const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Automatic token refresh
@@ -55,7 +53,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             }
           } catch (error) {
             console.error('Token refresh failed:', error);
-            // Don't show toast for silent refresh failures
           }
         }, refreshTime);
       }
@@ -75,14 +72,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error: any) {
       console.error('Session refresh failed:', error);
-      toast({
-        title: 'Session refresh failed',
-        description: 'Please sign in again',
-        variant: 'destructive',
-      });
       throw error;
     }
-  }, [setupTokenRefresh, toast]);
+  }, [setupTokenRefresh]);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -123,7 +115,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [setupTokenRefresh]);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string): Promise<{ error?: string }> => {
     try {
       const { error } = await supabase.auth.signUp({
         email,
@@ -134,22 +126,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (error) throw error;
-
-      toast({
-        title: 'Account created successfully',
-        description: 'Welcome to ScrollUniversity! You can now sign in.',
-      });
+      return {};
     } catch (error: any) {
-      toast({
-        title: 'Sign up failed',
-        description: error.message,
-        variant: 'destructive',
-      });
-      throw error;
+      return { error: error.message };
     }
   };
 
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string): Promise<{ error?: string }> => {
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -157,37 +140,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (error) throw error;
-
-      toast({
-        title: 'Signed in successfully',
-        description: 'Welcome back to ScrollUniversity!',
-      });
+      return {};
     } catch (error: any) {
-      toast({
-        title: 'Sign in failed',
-        description: error.message,
-        variant: 'destructive',
-      });
-      throw error;
+      return { error: error.message };
     }
   };
 
-  const signOut = async () => {
+  const signOut = async (): Promise<{ error?: string }> => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-
-      toast({
-        title: 'Signed out successfully',
-        description: 'Come back soon!',
-      });
+      return {};
     } catch (error: any) {
-      toast({
-        title: 'Sign out failed',
-        description: error.message,
-        variant: 'destructive',
-      });
-      throw error;
+      return { error: error.message };
     }
   };
 
