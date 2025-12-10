@@ -1,10 +1,9 @@
 /**
- * Performance Optimizer Component - Removed PerformanceOptimizer to avoid issues
- * Applies various performance optimizations to the application
- * Uses dynamic imports to avoid circular dependencies
+ * Performance Optimization Utilities
+ * Simple utilities that don't cause circular dependencies
  */
 
-import React, { useEffect, lazy, Suspense, useState, useRef, useCallback } from 'react';
+import React, { Suspense, lazy, useState, useEffect, useRef, useCallback } from 'react';
 
 /**
  * Lazy load wrapper with loading fallback
@@ -36,21 +35,7 @@ export function LazyLoad({ children, fallback }: LazyLoadProps) {
 export function lazyLoadRoute(
   importFunc: () => Promise<{ default: React.ComponentType<any> }>
 ) {
-  return lazy(() => {
-    const start = performance.now();
-    return importFunc().then((module) => {
-      const duration = performance.now() - start;
-      // Record metric asynchronously to avoid blocking
-      import('@/lib/performance-monitor').then(({ performanceMonitor }) => {
-        performanceMonitor.recordMetric({
-          name: 'route-load-time',
-          value: duration,
-          timestamp: Date.now(),
-        });
-      }).catch(() => {});
-      return module;
-    });
-  });
+  return lazy(importFunc);
 }
 
 /**
@@ -60,7 +45,7 @@ export function prefetchRoute(
   importFunc: () => Promise<{ default: React.ComponentType<any> }>
 ) {
   if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
-    requestIdleCallback(() => {
+    (window as any).requestIdleCallback(() => {
       importFunc();
     });
   } else if (typeof window !== 'undefined') {
@@ -77,62 +62,28 @@ interface OptimizedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> 
   src: string;
   alt: string;
   lazy?: boolean;
-  responsive?: boolean;
-  quality?: number;
 }
 
 export function OptimizedImage({
   src,
   alt,
   lazy = true,
-  responsive = true,
-  quality = 80,
   className = '',
   ...props
 }: OptimizedImageProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const imgRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    if (!lazy || !imgRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const img = entry.target as HTMLImageElement;
-            const dataSrc = img.dataset.src;
-            if (dataSrc) {
-              img.src = dataSrc;
-              setIsLoaded(true);
-            }
-            observer.unobserve(img);
-          }
-        });
-      },
-      { rootMargin: '50px' }
-    );
-
-    observer.observe(imgRef.current);
-
-    return () => observer.disconnect();
-  }, [lazy]);
-
   return (
     <img
-      ref={imgRef}
-      data-src={lazy ? src : undefined}
-      src={lazy ? undefined : src}
+      src={src}
       alt={alt}
       loading={lazy ? 'lazy' : 'eager'}
-      className={`${className} ${isLoaded ? 'loaded' : 'loading'}`}
+      className={className}
       {...props}
     />
   );
 }
 
 /**
- * Debounced component re-render
+ * Debounced value hook
  */
 export function useDebouncedValue<T>(value: T, delay: number = 300): T {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -151,7 +102,7 @@ export function useDebouncedValue<T>(value: T, delay: number = 300): T {
 }
 
 /**
- * Throttled callback
+ * Throttled callback hook
  */
 export function useThrottledCallback<T extends (...args: any[]) => any>(
   callback: T,
@@ -172,7 +123,7 @@ export function useThrottledCallback<T extends (...args: any[]) => any>(
 }
 
 /**
- * Intersection observer hook for lazy loading
+ * Intersection observer hook
  */
 export function useIntersectionObserver(
   ref: React.RefObject<Element>,
