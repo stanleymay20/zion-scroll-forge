@@ -4,6 +4,7 @@
  */
 
 export {
+  PerformanceOptimizer,
   LazyLoad,
   lazyLoadRoute,
   prefetchRoute,
@@ -12,7 +13,7 @@ export {
   useThrottledCallback,
   useIntersectionObserver,
   memo,
-} from './utils';
+} from './PerformanceOptimizer';
 
 export {
   VirtualList,

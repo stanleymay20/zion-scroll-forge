@@ -1,7 +1,6 @@
 /**
  * Course Learning Experience Page
- * Comprehensive learning interface with live video sessions, notes, quizzes, assignments, and discussions
- * Features: Live interactive video with text/voice/voice-to-text interaction
+ * Comprehensive learning interface with video player, notes, quizzes, assignments, and discussions
  * Requirements: 4.2, 4.3, 4.4
  */
 
@@ -25,11 +24,10 @@ import {
   Loader2,
   AlertCircle,
   ChevronLeft,
-  ChevronRight,
-  Video
+  ChevronRight
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { LiveVideoSession } from '@/components/course/LiveVideoSession';
+import { VideoPlayer } from '@/components/course/VideoPlayer';
 import { LectureNotes } from '@/components/course/LectureNotes';
 import { QuizInterface } from '@/components/course/QuizInterface';
 import { AssignmentSubmission } from '@/components/course/AssignmentSubmission';
@@ -84,24 +82,15 @@ export default function CourseLearn() {
     enabled: !!courseId && !!user
   });
 
-  // Get all lectures/modules - use course_modules directly as lectures
-  // If learning_materials exist, use those; otherwise treat modules as lectures
+  // Get all lectures from all modules
   const allLectures = courseData?.course_modules
-    ?.sort((a: any, b: any) => (a.order_index || 0) - (b.order_index || 0))
-    ?.map((module: any) => {
-      // If module has learning materials, we could expand them
-      // For now, treat each module as a lecture
-      return {
-        id: module.id,
-        title: module.title,
-        content: module.content_md,
-        url: module.material_url,
+    ?.flatMap((module: any) => 
+      module.learning_materials?.map((material: any) => ({
+        ...material,
         moduleTitle: module.title,
-        moduleId: module.id,
-        duration_minutes: module.duration_minutes,
-        learning_materials: module.learning_materials || []
-      };
-    }) || [];
+        moduleId: module.id
+      })) || []
+    ) || [];
 
   const currentLecture = allLectures[currentLectureIndex];
 
@@ -243,8 +232,8 @@ export default function CourseLearn() {
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <TabsList className="grid w-full grid-cols-5">
               <TabsTrigger value="video" className="flex items-center gap-2">
-                <Video className="h-4 w-4" />
-                <span className="hidden sm:inline">Live Session</span>
+                <BookOpen className="h-4 w-4" />
+                <span className="hidden sm:inline">Video</span>
               </TabsTrigger>
               <TabsTrigger value="notes" className="flex items-center gap-2">
                 <FileText className="h-4 w-4" />
@@ -265,13 +254,12 @@ export default function CourseLearn() {
             </TabsList>
 
             <TabsContent value="video" className="mt-6">
-              <LiveVideoSession
-                lectureId={currentLecture.id}
-                lectureTitle={currentLecture.title}
-                lecturerName="Dr. Emmanuel Scroll"
+              <VideoPlayer
+                videoUrl={currentLecture.url || ''}
+                title={currentLecture.title}
                 onComplete={markLectureComplete}
+                lectureId={currentLecture.id}
                 enrollmentId={enrollment.id}
-                moduleContent={currentLecture.content}
               />
             </TabsContent>
 

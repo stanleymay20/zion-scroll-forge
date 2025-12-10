@@ -1,13 +1,14 @@
 /**
  * ScrollUniversity Error Handling Context
  * Global error handling state and utilities
- * Uses sonner toast to avoid circular dependency with use-toast hook
  */
 
 import React, { createContext, useContext, useCallback, ReactNode } from 'react';
-import { toast } from 'sonner';
-import { parseError, reportError, AppError } from '@/lib/error-handler';
+import { useToast } from '@/hooks/use-toast';
+import { parseError, reportError, AppError, isRetryableError } from '@/lib/error-handler';
 import { retryWithBackoff } from '@/lib/retry-handler';
+import { OfflineIndicator } from '@/components/error/OfflineIndicator';
+import { LoadingOverlay } from '@/components/error/LoadingOverlay';
 
 interface ErrorHandlingContextValue {
   handleError: (error: any, context?: any) => AppError;
@@ -22,11 +23,17 @@ const ErrorHandlingContext = createContext<ErrorHandlingContextValue | undefined
 
 export interface ErrorHandlingProviderProps {
   children: ReactNode;
+  showOfflineIndicator?: boolean;
+  showLoadingOverlay?: boolean;
 }
 
 export const ErrorHandlingProvider: React.FC<ErrorHandlingProviderProps> = ({
-  children
+  children,
+  showOfflineIndicator = true,
+  showLoadingOverlay = true
 }) => {
+  const { toast } = useToast();
+  
   const handleError = useCallback((error: any, context?: any): AppError => {
     const appError = parseError(error);
     
@@ -34,23 +41,26 @@ export const ErrorHandlingProvider: React.FC<ErrorHandlingProviderProps> = ({
     reportError(appError, context);
     
     // Show toast
-    toast.error(appError.userMessage, {
-      duration: 5000,
-      description: '❌ Error'
+    toast({
+      variant: 'destructive',
+      title: '❌ Error',
+      description: appError.userMessage,
+      duration: 5000
     });
     
     // Show spiritual message if available
     if (appError.spiritualMessage) {
       setTimeout(() => {
-        toast.info(appError.spiritualMessage, {
-          duration: 7000,
-          description: '✝️ Encouragement'
+        toast({
+          title: '✝️ Encouragement',
+          description: appError.spiritualMessage,
+          duration: 7000
         });
       }, 500);
     }
     
     return appError;
-  }, []);
+  }, [toast]);
   
   const handleErrorWithRetry = useCallback(async <T,>(
     fn: () => Promise<T>,
@@ -60,7 +70,8 @@ export const ErrorHandlingProvider: React.FC<ErrorHandlingProviderProps> = ({
       return await retryWithBackoff(fn, {
         maxAttempts,
         onRetry: (attempt, error) => {
-          toast.loading(`Retrying... (Attempt ${attempt}/${maxAttempts})`, {
+          toast({
+            title: `🔄 Retrying... (Attempt ${attempt}/${maxAttempts})`,
             description: error.userMessage,
             duration: 3000
           });
@@ -70,40 +81,51 @@ export const ErrorHandlingProvider: React.FC<ErrorHandlingProviderProps> = ({
       handleError(error);
       throw error;
     }
-  }, [handleError]);
+  }, [toast, handleError]);
   
   const showError = useCallback((message: string, spiritualMessage?: string) => {
-    toast.error(message, {
+    toast({
+      variant: 'destructive',
+      title: '❌ Error',
+      description: message,
       duration: 5000
     });
     
     if (spiritualMessage) {
       setTimeout(() => {
-        toast.info(spiritualMessage, {
-          duration: 7000,
-          description: '✝️ Encouragement'
+        toast({
+          title: '✝️ Encouragement',
+          description: spiritualMessage,
+          duration: 7000
         });
       }, 500);
     }
-  }, []);
+  }, [toast]);
   
   const showSuccess = useCallback((message: string) => {
-    toast.success(message, {
+    toast({
+      title: '✅ Success',
+      description: message,
       duration: 3000
     });
-  }, []);
+  }, [toast]);
   
   const showWarning = useCallback((message: string) => {
-    toast.warning(message, {
+    toast({
+      variant: 'default',
+      title: '⚠️ Warning',
+      description: message,
       duration: 4000
     });
-  }, []);
+  }, [toast]);
   
   const showInfo = useCallback((message: string) => {
-    toast.info(message, {
+    toast({
+      title: 'ℹ️ Info',
+      description: message,
       duration: 3000
     });
-  }, []);
+  }, [toast]);
   
   const value: ErrorHandlingContextValue = {
     handleError,
@@ -116,6 +138,8 @@ export const ErrorHandlingProvider: React.FC<ErrorHandlingProviderProps> = ({
   
   return (
     <ErrorHandlingContext.Provider value={value}>
+      {showOfflineIndicator && <OfflineIndicator />}
+      {showLoadingOverlay && <LoadingOverlay />}
       {children}
     </ErrorHandlingContext.Provider>
   );

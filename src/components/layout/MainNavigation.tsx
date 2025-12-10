@@ -92,9 +92,6 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       title: "Academic Progress",
       icon: GraduationCap,
       items: [
-        { label: "Academic Year", href: "/academic-year", icon: Calendar },
-        { label: "My Timeline", href: "/academic-year/students", icon: Activity },
-        { label: "Graduation", href: "/academic-year/graduation", icon: GraduationCap },
         { label: "Transcript", href: "/transcript", icon: FileText },
         { label: "Degree Audit", href: "/degree-audit", icon: GraduationCap },
         { label: "Academic Calendar", href: "/academic-calendar", icon: Calendar },
@@ -119,9 +116,6 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       roles: ["admin"],
       items: [
         { label: "Admin Dashboard", href: "/admin", icon: Shield, roles: ["admin"] },
-        { label: "Academic Year", href: "/academic-year", icon: Calendar, roles: ["admin"] },
-        { label: "Create Year", href: "/academic-year/create", icon: Calendar, roles: ["admin"] },
-        { label: "Course Scheduling", href: "/academic-year/scheduling", icon: Workflow, roles: ["admin"] },
         { label: "Academic Terms", href: "/admin/academic-terms", icon: Calendar, roles: ["admin"] },
         { label: "Admissions Review", href: "/admin/admissions", icon: Users, roles: ["admin"] },
         { label: "Analytics", href: "/analytics/dashboard", icon: BarChart3, roles: ["admin"] },

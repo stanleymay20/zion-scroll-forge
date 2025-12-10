@@ -1,22 +1,20 @@
-import React, { Suspense } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React, { Suspense, useEffect } from "react";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/queryClient";
 import { AuthProvider } from "./contexts/AuthContext";
 import { InstitutionProvider } from "./contexts/InstitutionContext";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { ErrorHandlingProvider } from "./contexts/ErrorHandlingContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
+import { useRealtimeSubscriptions } from "@/hooks/useRealtime";
 import { MainLayout } from "./components/layout/MainLayout";
+import { MobileAppInstallPrompt } from "@/components/mobile";
+import { PWAInstallPrompt, OfflineIndicator, PWAUpdatePrompt } from "@/components/pwa";
 import { Loader2 } from "lucide-react";
-
-// Create query client inline to avoid import issues
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5,
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Login from "./pages/auth/Login";
@@ -127,15 +125,6 @@ import ScrollLibrary from "./pages/ScrollLibrary";
 import ScrollLibraryBookReader from "./pages/ScrollLibraryBookReader";
 import AcademicTermAdmin from "./pages/AcademicTermAdmin";
 
-// Academic Year Pages (SUYAS)
-import {
-  AcademicDashboard,
-  CreateAcademicYear,
-  CourseScheduling,
-  GraduationDashboard,
-  StudentAcademicTimeline
-} from "./pages/AcademicYear";
-
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
@@ -169,13 +158,60 @@ const LoadingFallback = () => (
   </div>
 );
 
+// Realtime subscriptions wrapper
+const RealtimeProvider = ({ children }: { children: React.ReactNode }) => {
+  useRealtimeSubscriptions();
+  return <>{children}</>;
+};
+
+// Mobile viewport configuration
+const MobileViewportConfig = () => {
+  useEffect(() => {
+    // Set viewport meta tag for mobile devices
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (viewport) {
+      viewport.setAttribute(
+        'content',
+        'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover'
+      );
+    }
+
+    // Prevent zoom on input focus (iOS)
+    const style = document.createElement('style');
+    style.textContent = `
+      @media screen and (max-width: 768px) {
+        input, textarea, select {
+          font-size: 16px !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  return null;
+};
+
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <InstitutionProvider>
-        <BrowserRouter>
-          <Suspense fallback={<LoadingFallback />}>
-          <Routes>
+  <ErrorBoundary>
+    <QueryClientProvider client={queryClient}>
+      <ErrorHandlingProvider>
+        <AuthProvider>
+          <InstitutionProvider>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <MobileViewportConfig />
+              <BrowserRouter>
+                <RealtimeProvider>
+                  <PWAInstallPrompt />
+                  <PWAUpdatePrompt />
+                  <MobileAppInstallPrompt />
+                <Suspense fallback={<LoadingFallback />}>
+                <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
             
@@ -336,24 +372,20 @@ const App = () => (
             <Route path="scroll-library" element={<ScrollLibrary />} />
             <Route path="scroll-library/book/:bookId" element={<ScrollLibraryBookReader />} />
             <Route path="admin/academic-terms" element={<AcademicTermAdmin />} />
-            
-            {/* Academic Year Management (SUYAS) */}
-            <Route path="academic-year" element={<AcademicDashboard />} />
-            <Route path="academic-year/create" element={<CreateAcademicYear />} />
-            <Route path="academic-year/scheduling" element={<CourseScheduling />} />
-            <Route path="academic-year/graduation" element={<GraduationDashboard />} />
-            <Route path="academic-year/students" element={<StudentAcademicTimeline />} />
-            <Route path="academic-year/notifications" element={<AcademicDashboard />} />
           </Route>
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-      </BrowserRouter>
+              </Routes>
+            </Suspense>
+          </RealtimeProvider>
+        </BrowserRouter>
+      </TooltipProvider>
       </InstitutionProvider>
     </AuthProvider>
+    </ErrorHandlingProvider>
   </QueryClientProvider>
+  </ErrorBoundary>
 );
 
 export default App;

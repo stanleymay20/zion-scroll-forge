@@ -1,14 +1,15 @@
-import React, { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<{ error?: string }>;
-  signIn: (email: string, password: string) => Promise<{ error?: string }>;
-  signOut: () => Promise<{ error?: string }>;
+  signUp: (email: string, password: string) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
   refreshSession: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -22,6 +23,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
   const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Automatic token refresh
@@ -53,6 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             }
           } catch (error) {
             console.error('Token refresh failed:', error);
+            // Don't show toast for silent refresh failures
           }
         }, refreshTime);
       }
@@ -72,9 +75,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error: any) {
       console.error('Session refresh failed:', error);
+      toast({
+        title: 'Session refresh failed',
+        description: 'Please sign in again',
+        variant: 'destructive',
+      });
       throw error;
     }
-  }, [setupTokenRefresh]);
+  }, [setupTokenRefresh, toast]);
 
   useEffect(() => {
     // Set up auth state listener FIRST
@@ -115,7 +123,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
   }, [setupTokenRefresh]);
 
-  const signUp = async (email: string, password: string): Promise<{ error?: string }> => {
+  const signUp = async (email: string, password: string) => {
     try {
       const { error } = await supabase.auth.signUp({
         email,
@@ -126,13 +134,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (error) throw error;
-      return {};
+
+      toast({
+        title: 'Account created successfully',
+        description: 'Welcome to ScrollUniversity! You can now sign in.',
+      });
     } catch (error: any) {
-      return { error: error.message };
+      toast({
+        title: 'Sign up failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+      throw error;
     }
   };
 
-  const signIn = async (email: string, password: string): Promise<{ error?: string }> => {
+  const signIn = async (email: string, password: string) => {
     try {
       const { error } = await supabase.auth.signInWithPassword({
         email,
@@ -140,19 +157,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (error) throw error;
-      return {};
+
+      toast({
+        title: 'Signed in successfully',
+        description: 'Welcome back to ScrollUniversity!',
+      });
     } catch (error: any) {
-      return { error: error.message };
+      toast({
+        title: 'Sign in failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+      throw error;
     }
   };
 
-  const signOut = async (): Promise<{ error?: string }> => {
+  const signOut = async () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      return {};
+
+      toast({
+        title: 'Signed out successfully',
+        description: 'Come back soon!',
+      });
     } catch (error: any) {
-      return { error: error.message };
+      toast({
+        title: 'Sign out failed',
+        description: error.message,
+        variant: 'destructive',
+      });
+      throw error;
     }
   };
 
