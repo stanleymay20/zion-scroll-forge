@@ -1188,6 +1188,118 @@ export type Database = {
           },
         ]
       }
+      degree_applications: {
+        Row: {
+          applied_at: string | null
+          conditions: string | null
+          created_at: string | null
+          degree_id: string
+          id: string
+          prerequisites_met: Json | null
+          qualifications_submitted: Json | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          reviewer_notes: string | null
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          applied_at?: string | null
+          conditions?: string | null
+          created_at?: string | null
+          degree_id: string
+          id?: string
+          prerequisites_met?: Json | null
+          qualifications_submitted?: Json | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          applied_at?: string | null
+          conditions?: string | null
+          created_at?: string | null
+          degree_id?: string
+          id?: string
+          prerequisites_met?: Json | null
+          qualifications_submitted?: Json | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          reviewer_notes?: string | null
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "degree_applications_degree_id_fkey"
+            columns: ["degree_id"]
+            isOneToOne: false
+            referencedRelation: "degree_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "degree_applications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "degree_applications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      degree_prerequisites: {
+        Row: {
+          alternative_path: string | null
+          created_at: string | null
+          degree_level: string
+          description: string
+          id: string
+          is_required: boolean | null
+          min_courses_completed: number | null
+          min_credits: number | null
+          min_xp: number | null
+          prerequisite_level: string | null
+          prerequisite_type: string
+        }
+        Insert: {
+          alternative_path?: string | null
+          created_at?: string | null
+          degree_level: string
+          description: string
+          id?: string
+          is_required?: boolean | null
+          min_courses_completed?: number | null
+          min_credits?: number | null
+          min_xp?: number | null
+          prerequisite_level?: string | null
+          prerequisite_type: string
+        }
+        Update: {
+          alternative_path?: string | null
+          created_at?: string | null
+          degree_level?: string
+          description?: string
+          id?: string
+          is_required?: boolean | null
+          min_courses_completed?: number | null
+          min_credits?: number | null
+          min_xp?: number | null
+          prerequisite_level?: string | null
+          prerequisite_type?: string
+        }
+        Relationships: []
+      }
       degree_programs: {
         Row: {
           created_at: string | null
@@ -1196,6 +1308,7 @@ export type Database = {
           faculty: string | null
           id: string
           level: string | null
+          scroll_level: string | null
           title: string
         }
         Insert: {
@@ -1205,6 +1318,7 @@ export type Database = {
           faculty?: string | null
           id?: string
           level?: string | null
+          scroll_level?: string | null
           title: string
         }
         Update: {
@@ -1214,6 +1328,7 @@ export type Database = {
           faculty?: string | null
           id?: string
           level?: string | null
+          scroll_level?: string | null
           title?: string
         }
         Relationships: []
@@ -4534,6 +4649,69 @@ export type Database = {
           },
           {
             foreignKeyName: "student_module_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      student_qualifications: {
+        Row: {
+          created_at: string | null
+          field_of_study: string | null
+          graduation_date: string | null
+          id: string
+          institution_name: string | null
+          is_verified: boolean | null
+          level: string
+          qualification_name: string
+          qualification_type: string
+          scroll_degree_id: string | null
+          updated_at: string | null
+          user_id: string
+          verification_document_url: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          field_of_study?: string | null
+          graduation_date?: string | null
+          id?: string
+          institution_name?: string | null
+          is_verified?: boolean | null
+          level: string
+          qualification_name: string
+          qualification_type: string
+          scroll_degree_id?: string | null
+          updated_at?: string | null
+          user_id: string
+          verification_document_url?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          field_of_study?: string | null
+          graduation_date?: string | null
+          id?: string
+          institution_name?: string | null
+          is_verified?: boolean | null
+          level?: string
+          qualification_name?: string
+          qualification_type?: string
+          scroll_degree_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+          verification_document_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_qualifications_scroll_degree_id_fkey"
+            columns: ["scroll_degree_id"]
+            isOneToOne: false
+            referencedRelation: "degree_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_qualifications_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "leaderboard"
