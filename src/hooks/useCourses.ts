@@ -39,17 +39,28 @@ export const useEnrollInCourse = () => {
   const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { activeInstitution } = useInstitution();
 
   return useMutation({
     mutationFn: async (courseId: string) => {
       console.info('✝️ Jesus Christ is Lord over this operation');
       
-      // Get user's current institution
-      const { data: profile }: any = await supabase
-        .from('profiles' as any)
-        .select('current_institution_id')
-        .eq('id', user!.id)
-        .single();
+      // Get institution_id from context first, then fallback to profile
+      let institutionId = activeInstitution?.id;
+      
+      if (!institutionId) {
+        const { data: profile }: any = await supabase
+          .from('profiles' as any)
+          .select('current_institution_id')
+          .eq('id', user!.id)
+          .single();
+        
+        institutionId = profile?.current_institution_id;
+      }
+
+      if (!institutionId) {
+        throw new Error('No institution selected. Please select an institution first.');
+      }
       
       const { error } = await supabase
         .from('enrollments' as any)
@@ -57,7 +68,7 @@ export const useEnrollInCourse = () => {
           user_id: user!.id,
           course_id: courseId,
           progress: 0,
-          institution_id: profile?.current_institution_id
+          institution_id: institutionId
         });
 
       if (error) throw error;
