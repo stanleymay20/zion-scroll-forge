@@ -67,13 +67,15 @@ export const StudyGroupList: React.FC<StudyGroupListProps> = ({
     }
   };
 
-  const fetchGroupsPlaceholder = async () => {
-    // Placeholder for future implementation
-    const data: any[] = [];
-    const error: any = null;
+  // Future: Implement actual Supabase query when study_groups table is available
+  const fetchGroupsFromSupabase = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await (supabase as any)
+        .from('study_groups')
+        .select('*, study_group_members(*)');
 
       if (error) {
-        // If table doesn't exist, show empty state
         console.log('Study groups not available:', error.message);
         setGroups([]);
         return;
@@ -91,7 +93,6 @@ export const StudyGroupList: React.FC<StudyGroupListProps> = ({
         meetingSchedule: group.meeting_schedule
       }));
 
-      // Filter by tags if selected
       let filteredGroups = mappedGroups;
       if (selectedTags.length > 0) {
         filteredGroups = mappedGroups.filter(g => 
