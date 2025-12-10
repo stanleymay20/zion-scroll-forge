@@ -1,9 +1,8 @@
-import React, { Suspense, useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./lib/queryClient";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./contexts/AuthContext";
 import { InstitutionProvider } from "./contexts/InstitutionContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
@@ -15,6 +14,17 @@ import { MainLayout } from "./components/layout/MainLayout";
 import { MobileAppInstallPrompt } from "@/components/mobile";
 import { PWAInstallPrompt, OfflineIndicator, PWAUpdatePrompt } from "@/components/pwa";
 import { Loader2 } from "lucide-react";
+
+// Create query client inline to avoid import issues
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      retry: 1,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import Login from "./pages/auth/Login";
