@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./contexts/AuthContext";
 import { InstitutionProvider } from "./contexts/InstitutionContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { ErrorHandlingProvider } from "./contexts/ErrorHandlingContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import { useRealtimeSubscriptions } from "@/hooks/useRealtime";
@@ -217,15 +216,14 @@ const MobileViewportConfig = () => {
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
-      <ErrorHandlingProvider>
-        <AuthProvider>
-          <InstitutionProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <MobileViewportConfig />
-              <BrowserRouter>
-                <RealtimeProvider>
+      <AuthProvider>
+        <InstitutionProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <MobileViewportConfig />
+            <BrowserRouter>
+              <RealtimeProvider>
                   <PWAInstallPrompt />
                   <PWAUpdatePrompt />
                   <MobileAppInstallPrompt />
@@ -410,7 +408,6 @@ const App = () => (
       </TooltipProvider>
       </InstitutionProvider>
     </AuthProvider>
-    </ErrorHandlingProvider>
   </QueryClientProvider>
   </ErrorBoundary>
 );
