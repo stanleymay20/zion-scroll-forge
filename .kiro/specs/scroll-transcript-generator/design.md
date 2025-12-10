@@ -18,7 +18,7 @@ graph TB
     B --> F[Academic Records]
     B --> G[Spiritual Formation]
     B --> H[Project Portfolio]
-    B --> I[ScrollCoin Activity]
+    B --> I[ScrollGold Activity]
     
     C --> J[Template Engine]
     C --> K[Content Validator]
@@ -72,7 +72,7 @@ graph TB
       "real_world_impact": "decimal"
     },
     "economic_activity": {
-      "total_scrollcoins_earned": "decimal",
+      "total_ScrollGolds_earned": "decimal",
       "current_balance": "decimal",
       "stewardship_score": "decimal",
       "economic_independence": "boolean"
@@ -217,7 +217,7 @@ graph TB
 - **scroll-course-spec:** Course completion data and academic records
 - **scroll-degree-engine:** Degree progress and skill assessments
 - **scroll-projects-spec:** Project portfolio and practical achievements
-- **scroll-scrollcoin-meter:** Economic activity and ScrollCoin transactions
+- **scroll-ScrollGold-meter:** Economic activity and ScrollGold transactions
 - **scroll-seal-certification:** Certification status and credential verification
 
 ### Data Flow (Outgoing)
@@ -284,24 +284,24 @@ graph TB
 
 ### Generation Costs
 - **Basic Transcript:** Free for students (included in education)
-- **Premium Formats:** 25 ScrollCoins for enhanced layouts and additional features
-- **Rush Generation:** 50 ScrollCoins for expedited processing and delivery
-- **Multiple Formats:** 10 ScrollCoins per additional format beyond standard PDF
+- **Premium Formats:** 25 ScrollGolds for enhanced layouts and additional features
+- **Rush Generation:** 50 ScrollGolds for expedited processing and delivery
+- **Multiple Formats:** 10 ScrollGolds per additional format beyond standard PDF
 
 ### Verification Services
-- **Instant Verification:** 5 ScrollCoins per verification request for employers
-- **Detailed Validation:** 15 ScrollCoins for comprehensive authenticity reports
-- **Bulk Verification:** 100 ScrollCoins for institutional verification packages
-- **API Access:** 200 ScrollCoins monthly for automated verification integration
+- **Instant Verification:** 5 ScrollGolds per verification request for employers
+- **Detailed Validation:** 15 ScrollGolds for comprehensive authenticity reports
+- **Bulk Verification:** 100 ScrollGolds for institutional verification packages
+- **API Access:** 200 ScrollGolds monthly for automated verification integration
 
 ### Premium Features
-- **Real-time Updates:** 50 ScrollCoins annually for automatic transcript updates
-- **Advanced Analytics:** 75 ScrollCoins for detailed transcript performance metrics
-- **Custom Branding:** 100 ScrollCoins for personalized transcript design
-- **Priority Support:** 150 ScrollCoins annually for dedicated transcript assistance
+- **Real-time Updates:** 50 ScrollGolds annually for automatic transcript updates
+- **Advanced Analytics:** 75 ScrollGolds for detailed transcript performance metrics
+- **Custom Branding:** 100 ScrollGolds for personalized transcript design
+- **Priority Support:** 150 ScrollGolds annually for dedicated transcript assistance
 
 ### Revenue Sharing
-- **Student Earnings:** Students earn 10 ScrollCoins when employers verify their transcripts
-- **Mentor Bonuses:** Mentors receive 25 ScrollCoins when their students' transcripts are verified
+- **Student Earnings:** Students earn 10 ScrollGolds when employers verify their transcripts
+- **Mentor Bonuses:** Mentors receive 25 ScrollGolds when their students' transcripts are verified
 - **Institution Benefits:** ScrollUniversity earns reputation points for high-verification transcripts
 - **Quality Incentives:** Additional rewards for transcripts with exceptional employer feedback

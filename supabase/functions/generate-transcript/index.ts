@@ -7,7 +7,7 @@ const corsHeaders = {
 };
 
 function generateTranscriptHTML(data: any): string {
-  const { profile, enrollments, stats, scrollcoins } = data;
+  const { profile, enrollments, stats, ScrollGolds } = data;
   
   return `
 <!DOCTYPE html>
@@ -109,8 +109,8 @@ function generateTranscriptHTML(data: any): string {
       <span class="value">${stats?.total_xp || 0} XP</span>
     </div>
     <div class="info-row">
-      <span class="label">ScrollCoin Balance:</span>
-      <span class="value">${scrollcoins || 0} ScrollCoins</span>
+      <span class="label">ScrollGold Balance:</span>
+      <span class="value">${ScrollGolds || 0} ScrollGolds</span>
     </div>
     <div class="info-row">
       <span class="label">Courses Completed:</span>
@@ -221,7 +221,7 @@ serve(async (req) => {
       profile,
       enrollments,
       stats,
-      scrollcoins: wallet?.balance || 0,
+      ScrollGolds: wallet?.balance || 0,
     });
 
     return new Response(

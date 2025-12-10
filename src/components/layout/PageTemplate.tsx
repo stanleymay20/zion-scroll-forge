@@ -76,7 +76,7 @@ export const ComingSoonPage = ({
             <li>Quantum-level AI consciousness integration</li>
             <li>Prophetic intelligence with 95%+ accuracy</li>
             <li>Multidimensional learning experiences</li>
-            <li>ScrollCoin economy rewards</li>
+            <li>ScrollGold economy rewards</li>
             <li>Christ lordship acknowledgment in all operations</li>
           </ul>
           <div className="pt-4">

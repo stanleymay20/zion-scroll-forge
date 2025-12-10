@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.97% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>14/156</span>
+                <span class='fraction'>0/156</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">9.09% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/22</span>
+                <span class='fraction'>0/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">9.58% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/146</span>
+                <span class='fraction'>0/146</span>
             </div>
         
             
@@ -633,7 +633,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -645,19 +645,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">100x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">100x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -705,8 +705,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">100x</span>
-<span class="cline-any cline-yes">100x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -907,8 +907,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">100x</span>
-<span class="cline-any cline-yes">100x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -971,8 +971,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">100x</span>
-<span class="cline-any cline-yes">100x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1192,13 +1192,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Notification Service
  * Core notification management and delivery orchestration
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
 import {
   Notification,
   NotificationPreferences,
@@ -1210,19 +1210,19 @@ import {
   NotificationCategory,
   NotificationEngagement,
 } from '../types/notification.types';
-import { notificationConfig } from '../config/notification.config';
-import { logger } from '../utils/logger';
+<span class="cstat-no" title="statement not covered" >import { notificationConfig } from '../config/notification.config';</span>
+<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
-export class NotificationService {
+<span class="cstat-no" title="statement not covered" >export class N</span>otificationService {
   /**
    * Create a new notification
    */
-  async createNotification(request: CreateNotificationRequest): Promise&lt;Notification&gt; {
-    try {
+<span class="fstat-no" title="function not covered" >  async </span>createNotification(request: CreateNotificationRequest): Promise&lt;Notification&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
       // Get user preferences
-      const preferences = await this.getUserPreferences(request.userId);
+      const preferences = <span class="cstat-no" title="statement not covered" >await this.getUserPreferences(request.userId);</span>
 &nbsp;
       // Filter channels based on preferences
       const allowedChannels = <span class="cstat-no" title="statement not covered" >this.filterChannelsByPreferences(</span>
@@ -1270,8 +1270,8 @@ export class NotificationService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return notification as Notification;</span>
     } catch (error) {
-      logger.error('Error creating notification', { error, request });
-      throw new Error('Failed to create notification');
+<span class="cstat-no" title="statement not covered" >      logger.error('Error creating notification', { error, request });</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error('Failed to create notification');</span>
     }
   }
 &nbsp;
@@ -1471,9 +1471,9 @@ export class NotificationService {
   /**
    * Get user notification preferences
    */
-  async getUserPreferences(userId: string): Promise&lt;NotificationPreferences&gt; {
-    try {
-      let preferences = await prisma.notificationPreferences.findUnique({
+<span class="fstat-no" title="function not covered" >  async </span>getUserPreferences(userId: string): Promise&lt;NotificationPreferences&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      let preferences = <span class="cstat-no" title="statement not covered" >await prisma.notificationPreferences.findUnique({</span>
         where: { userId },
       });
 &nbsp;
@@ -1536,8 +1536,8 @@ export class NotificationService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return preferences as unknown as NotificationPreferences;</span>
     } catch (error) {
-      logger.error('Error getting user preferences', { error, userId });
-      throw new Error('Failed to get user preferences');
+<span class="cstat-no" title="statement not covered" >      logger.error('Error getting user preferences', { error, userId });</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error('Failed to get user preferences');</span>
     }
   }
 &nbsp;
@@ -1757,7 +1757,7 @@ export class NotificationService {
   }
 }
 &nbsp;
-export default NotificationService;
+<span class="cstat-no" title="statement not covered" >export default NotificationService;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1765,7 +1765,7 @@ export default NotificationService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:03.756Z
+                at 2025-12-02T16:54:09.620Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

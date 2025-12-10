@@ -5,7 +5,7 @@
 1. [Getting Started Tutorial](#getting-started-tutorial)
 2. [Course Enrollment Tutorial](#course-enrollment-tutorial)
 3. [AI Tutor Tutorial](#ai-tutor-tutorial)
-4. [ScrollCoin Wallet Tutorial](#scrollcoin-wallet-tutorial)
+4. [ScrollGold Wallet Tutorial](#ScrollGold-wallet-tutorial)
 5. [Spiritual Formation Tutorial](#spiritual-formation-tutorial)
 6. [Study Groups Tutorial](#study-groups-tutorial)
 7. [Mobile App Tutorial](#mobile-app-tutorial)
@@ -64,7 +64,7 @@ On the left, you'll see the main navigation:
 - Courses: Browse and access your courses
 - AI Tutor: Get personalized help 24/7
 - Community: Connect with other students
-- ScrollCoin: Manage your digital wallet
+- ScrollGold: Manage your digital wallet
 - Spiritual Formation: Daily devotions and prayer
 
 In the center, you'll see:
@@ -76,7 +76,7 @@ In the center, you'll see:
 On the right:
 - Quick actions
 - Notifications
-- Your ScrollCoin balance
+- Your ScrollGold balance
 - Today's devotion"
 
 
@@ -98,9 +98,9 @@ Here you can:
 - Check the instructor's credentials
 - Read student reviews
 
-This course costs 500 ScrollCoin or $49. New students receive 1000 ScrollCoin as a welcome bonus, so let's use that!
+This course costs 500 ScrollGold or $49. New students receive 1000 ScrollGold as a welcome bonus, so let's use that!
 
-Click 'Enroll Now', select 'Pay with ScrollCoin', and confirm. Congratulations! You're now enrolled!"
+Click 'Enroll Now', select 'Pay with ScrollGold', and confirm. Congratulations! You're now enrolled!"
 
 **[OUTRO - 4:45-5:00]**
 
@@ -147,7 +147,7 @@ Great! We have several leadership courses. Let's explore one."
 - Title and description
 - Instructor information
 - Duration and difficulty
-- Price in USD and ScrollCoin
+- Price in USD and ScrollGold
 
 **Preview Video:**
 - Watch a 2-3 minute introduction
@@ -180,12 +180,12 @@ Take your time reviewing all this information before enrolling."
 Click the 'Enroll Now' button. You'll see the enrollment modal with three payment options:
 
 1. **Credit Card**: Pay with Stripe (secure payment processing)
-2. **ScrollCoin**: Use your digital currency
+2. **ScrollGold**: Use your digital currency
 3. **Scholarship**: Apply for financial aid
 
-I'll use ScrollCoin since new students get 1000 SC as a welcome bonus!
+I'll use ScrollGold since new students get 1000 SC as a welcome bonus!
 
-Select 'Pay with ScrollCoin', review the details, and click 'Confirm Enrollment'.
+Select 'Pay with ScrollGold', review the details, and click 'Confirm Enrollment'.
 
 Success! You're now enrolled. The course appears in your dashboard under 'My Courses'."
 
@@ -310,41 +310,41 @@ You can also rate responses to help improve the AI!"
 
 ---
 
-## ScrollCoin Wallet Tutorial
+## ScrollGold Wallet Tutorial
 
 **Duration:** 5 minutes  
 **Target Audience:** All users  
 **Learning Objectives:**
-- Understand ScrollCoin
+- Understand ScrollGold
 - Manage wallet
-- Send and receive ScrollCoin
+- Send and receive ScrollGold
 - Track earnings
 
 ### Script
 
 **[INTRO - 0:00-0:20]**
 
-"Welcome to the ScrollCoin Wallet tutorial! ScrollCoin is our blockchain-based digital currency that rewards your learning achievements. In this video, you'll learn how to manage your wallet, earn ScrollCoin, and use it on the platform. Let's get started!"
+"Welcome to the ScrollGold Wallet tutorial! ScrollGold is our blockchain-based digital currency that rewards your learning achievements. In this video, you'll learn how to manage your wallet, earn ScrollGold, and use it on the platform. Let's get started!"
 
 **[SCENE 1: Wallet Overview - 0:20-1:20]**
 
-"Click 'ScrollCoin' in the navigation to access your wallet.
+"Click 'ScrollGold' in the navigation to access your wallet.
 
 Your wallet dashboard shows:
 
-**Current Balance**: Your total ScrollCoin
+**Current Balance**: Your total ScrollGold
 **Pending Transactions**: Transactions being confirmed on the blockchain
 **Recent Activity**: Your latest transactions
-**Earning Opportunities**: Ways to earn more ScrollCoin
-**Spending Options**: What you can buy with ScrollCoin
+**Earning Opportunities**: Ways to earn more ScrollGold
+**Spending Options**: What you can buy with ScrollGold
 
-New students receive 1000 ScrollCoin as a welcome bonus!
+New students receive 1000 ScrollGold as a welcome bonus!
 
 Your wallet address is displayed at the top - this is your unique identifier on the blockchain."
 
-**[SCENE 2: Earning ScrollCoin - 1:20-2:30]**
+**[SCENE 2: Earning ScrollGold - 1:20-2:30]**
 
-"There are many ways to earn ScrollCoin:
+"There are many ways to earn ScrollGold:
 
 **Course Completion**: 100-500 SC per course
 **High Grades**: Bonus 10-50 SC for excellent performance
@@ -357,9 +357,9 @@ Click 'Earning Opportunities' to see all available ways to earn.
 
 The more you engage with the platform, the more you earn!"
 
-**[SCENE 3: Sending ScrollCoin - 2:30-3:45]**
+**[SCENE 3: Sending ScrollGold - 2:30-3:45]**
 
-"Want to send ScrollCoin to another student? Here's how:
+"Want to send ScrollGold to another student? Here's how:
 
 1. Click 'Send' in your wallet
 2. Enter recipient's email or wallet address
@@ -372,23 +372,23 @@ The transaction is submitted to the blockchain and typically confirms within 2-5
 
 You'll receive a notification when confirmed, and both you and the recipient can view the transaction on the blockchain explorer."
 
-**[SCENE 4: Spending ScrollCoin - 3:45-4:45]**
+**[SCENE 4: Spending ScrollGold - 3:45-4:45]**
 
-"ScrollCoin can be used for:
+"ScrollGold can be used for:
 
-**Course Enrollment**: Pay for courses with ScrollCoin
+**Course Enrollment**: Pay for courses with ScrollGold
 **Study Materials**: Purchase additional resources
 **Premium Features**: Unlock advanced features
 **Donations**: Support other students' scholarships
-**Marketplace**: Buy from the ScrollCoin marketplace
+**Marketplace**: Buy from the ScrollGold marketplace
 
 Click 'Spending Options' to see what's available.
 
-Most courses accept ScrollCoin as payment, often at a discount compared to USD pricing!"
+Most courses accept ScrollGold as payment, often at a discount compared to USD pricing!"
 
 **[OUTRO - 4:45-5:00]**
 
-"ScrollCoin makes learning rewarding! Keep earning through your educational journey and use it to access more courses and features. Check your wallet regularly to track your progress!"
+"ScrollGold makes learning rewarding! Keep earning through your educational journey and use it to access more courses and features. Check your wallet regularly to track your progress!"
 
 ---
 

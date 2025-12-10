@@ -27,7 +27,7 @@ graph TB
     C --> K[Full Experience Path]
     
     D --> L[Traditional Payments]
-    D --> M[ScrollCoin Integration]
+    D --> M[ScrollGold Integration]
     D --> N[Value Demonstration]
     
     E --> O[AI Content Generation]
@@ -98,15 +98,15 @@ class SpiritualJourneyService {
 ```typescript
 interface HybridPaymentSystem {
   traditionalPayments: PaymentMethod[];
-  scrollCoinIntegration: ScrollCoinOptions;
+  ScrollGoldIntegration: ScrollGoldOptions;
   valueComparison: PricingComparison;
   transitionIncentives: IncentiveProgram[];
 }
 
 class HybridPaymentService {
   async processTraditionalPayment(paymentData: PaymentRequest): Promise<PaymentResult>
-  async calculateScrollCoinEquivalent(usdAmount: number): Promise<ScrollCoinAmount>
-  async demonstrateScrollCoinBenefits(userId: string): Promise<BenefitAnalysis>
+  async calculateScrollGoldEquivalent(usdAmount: number): Promise<ScrollGoldAmount>
+  async demonstrateScrollGoldBenefits(userId: string): Promise<BenefitAnalysis>
   async createTransitionIncentive(userId: string): Promise<IncentiveOffer>
 }
 ```
@@ -265,7 +265,7 @@ interface FeatureUnlockStatus {
   propheticAI: boolean;
   spiritualFormation: boolean;
   kingdomPurpose: boolean;
-  scrollCoinEconomy: boolean;
+  ScrollGoldEconomy: boolean;
   advancedCommunity: boolean;
 }
 ```
@@ -349,7 +349,7 @@ interface QualityScore {
 3. **Value Demonstration Engine**
    - Deploy ROI calculators and benefit demonstrations
    - Implement progressive feature unlock system
-   - Launch ScrollCoin transition incentive programs
+   - Launch ScrollGold transition incentive programs
 
 ### Phase 3: Market Leadership (Months 7-12)
 1. **Advanced Feature Rollout**
@@ -373,7 +373,7 @@ interface QualityScore {
 - New user registration rate: 300% increase
 - User retention at 30 days: 85%+
 - Conversion from Quick Start to Full Experience: 40%+
-- ScrollCoin adoption rate: 60% of active users
+- ScrollGold adoption rate: 60% of active users
 
 ### Market Position
 - SEO ranking for key education terms: Top 3

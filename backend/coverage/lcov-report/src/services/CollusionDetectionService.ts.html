@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/200</span>
+                <span class='fraction'>0/200</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.22% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/31</span>
+                <span class='fraction'>0/31</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.62% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/173</span>
+                <span class='fraction'>0/173</span>
             </div>
         
             
@@ -612,7 +612,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -622,17 +622,17 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1148,14 +1148,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Collusion Detection Service
  * Detects unauthorized collaboration between students
  * "The LORD detests dishonest scales, but accurate weights find favor with him" - Proverbs 11:1
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
 import {
   CollusionDetectionRequest,
   CollusionDetectionResult,
@@ -1165,17 +1165,17 @@ import {
   MatchedSection,
   RiskLevel,
 } from '../types/integrity.types';
-import { integrityConfig, MIN_COLLUSION_SIMILARITY, COLLUSION_TIME_WINDOW } from '../config/integrity.config';
-import { VectorStoreService } from './VectorStoreService';
-import { logger } from '../utils/logger';
+<span class="cstat-no" title="statement not covered" >import { integrityConfig, MIN_COLLUSION_SIMILARITY, COLLUSION_TIME_WINDOW } from '../config/integrity.config';</span>
+<span class="cstat-no" title="statement not covered" >import { VectorStoreService } from './VectorStoreService';</span>
+<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
-export class CollusionDetectionService {
+<span class="cstat-no" title="statement not covered" >export class C</span>ollusionDetectionService {
   private vectorStore: VectorStoreService;
 &nbsp;
-  constructor() {
-    this.vectorStore = new VectorStoreService();
+<span class="fstat-no" title="function not covered" >  constructor() {</span>
+<span class="cstat-no" title="statement not covered" >    this.vectorStore = new VectorStoreService();</span>
   }
 &nbsp;
   /**
@@ -1691,7 +1691,7 @@ export class CollusionDetectionService {
   }
 }
 &nbsp;
-export default CollusionDetectionService;
+<span class="cstat-no" title="statement not covered" >export default CollusionDetectionService;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1699,7 +1699,7 @@ export default CollusionDetectionService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:03.756Z
+                at 2025-12-02T16:54:09.620Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

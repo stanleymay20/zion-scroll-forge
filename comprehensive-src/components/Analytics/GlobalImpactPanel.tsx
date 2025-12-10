@@ -55,7 +55,7 @@ const GlobalImpactPanel: React.FC<GlobalImpactPanelProps> = ({
               { id: 'overview', label: 'Overview', icon: '📊' },
               { id: 'geographic', label: 'Geographic', icon: '🌍' },
               { id: 'pathways', label: 'Career Pathways', icon: '🛤️' },
-              { id: 'economy', label: 'ScrollCoin Economy', icon: '🪙' },
+              { id: 'economy', label: 'ScrollGold Economy', icon: '🪙' },
               { id: 'kingdom', label: 'Kingdom Impact', icon: '👑' }
             ].map((tab) => (
               <button
@@ -141,9 +141,9 @@ const GlobalImpactPanel: React.FC<GlobalImpactPanelProps> = ({
                 <span className="text-2xl">🪙</span>
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-600">ScrollCoin Circulation</p>
+                <p className="text-sm font-medium text-gray-600">ScrollGold Circulation</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {formatNumber(globalImpact.scrollCoinEconomy.totalCirculation)}
+                  {formatNumber(globalImpact.ScrollGoldEconomy.totalCirculation)}
                 </p>
               </div>
             </div>
@@ -314,22 +314,22 @@ const GlobalImpactPanel: React.FC<GlobalImpactPanelProps> = ({
         </div>
       )}
 
-      {/* ScrollCoin Economy */}
+      {/* ScrollGold Economy */}
       {selectedView === 'economy' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-white p-6 rounded-lg shadow">
               <h4 className="text-lg font-semibold text-gray-900 mb-4">Total Circulation</h4>
               <div className="text-3xl font-bold text-yellow-600 mb-2">
-                {formatNumber(globalImpact.scrollCoinEconomy.totalCirculation)}
+                {formatNumber(globalImpact.ScrollGoldEconomy.totalCirculation)}
               </div>
-              <p className="text-sm text-gray-600">ScrollCoins in circulation</p>
+              <p className="text-sm text-gray-600">ScrollGolds in circulation</p>
             </div>
             
             <div className="bg-white p-6 rounded-lg shadow">
               <h4 className="text-lg font-semibold text-gray-900 mb-4">Daily Transactions</h4>
               <div className="text-3xl font-bold text-blue-600 mb-2">
-                {formatNumber(globalImpact.scrollCoinEconomy.dailyTransactions)}
+                {formatNumber(globalImpact.ScrollGoldEconomy.dailyTransactions)}
               </div>
               <p className="text-sm text-gray-600">Transactions per day</p>
             </div>
@@ -337,7 +337,7 @@ const GlobalImpactPanel: React.FC<GlobalImpactPanelProps> = ({
             <div className="bg-white p-6 rounded-lg shadow">
               <h4 className="text-lg font-semibold text-gray-900 mb-4">Economic Health</h4>
               <div className="text-3xl font-bold text-green-600 mb-2">
-                {(globalImpact.scrollCoinEconomy.economicHealth * 100).toFixed(1)}%
+                {(globalImpact.ScrollGoldEconomy.economicHealth * 100).toFixed(1)}%
               </div>
               <p className="text-sm text-gray-600">Overall health score</p>
             </div>
@@ -347,19 +347,19 @@ const GlobalImpactPanel: React.FC<GlobalImpactPanelProps> = ({
               <div className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Course Completion</span>
-                  <span className="text-sm font-medium">{globalImpact.scrollCoinEconomy.rewardDistribution.courseCompletion}%</span>
+                  <span className="text-sm font-medium">{globalImpact.ScrollGoldEconomy.rewardDistribution.courseCompletion}%</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Peer Assistance</span>
-                  <span className="text-sm font-medium">{globalImpact.scrollCoinEconomy.rewardDistribution.peerAssistance}%</span>
+                  <span className="text-sm font-medium">{globalImpact.ScrollGoldEconomy.rewardDistribution.peerAssistance}%</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Sacred Technology</span>
-                  <span className="text-sm font-medium">{globalImpact.scrollCoinEconomy.rewardDistribution.sacredTechnology}%</span>
+                  <span className="text-sm font-medium">{globalImpact.ScrollGoldEconomy.rewardDistribution.sacredTechnology}%</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">Community Building</span>
-                  <span className="text-sm font-medium">{globalImpact.scrollCoinEconomy.rewardDistribution.communityBuilding}%</span>
+                  <span className="text-sm font-medium">{globalImpact.ScrollGoldEconomy.rewardDistribution.communityBuilding}%</span>
                 </div>
               </div>
             </div>

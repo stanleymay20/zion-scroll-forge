@@ -37,7 +37,7 @@ export class StudentProfileService {
         
         academicLevel: user.academicLevel,
         enrollmentStatus: user.enrollmentStatus,
-        scrollCoinBalance: user.scrollCoinBalance,
+        scrollGoldBalance: user.scrollGoldBalance,
         workTradeCredits: user.workTradeCredits,
         
         scrollCalling: user.scrollCalling || undefined,
@@ -102,7 +102,7 @@ export class StudentProfileService {
           preferredLanguage: data.preferredLanguage || 'en',
           timeZone: data.timeZone || 'UTC',
           
-          scrollCoinBalance: 0,
+          scrollGoldBalance: 0,
           workTradeCredits: 0
         }
       });
@@ -255,10 +255,10 @@ export class StudentProfileService {
    */
   async getProfileStats(userId: string): Promise<any> {
     try {
-      const [enrollments, completedCourses, scrollCoinTransactions] = await Promise.all([
+      const [enrollments, completedCourses, scrollGoldTransactions] = await Promise.all([
         prisma.enrollment.count({ where: { userId } }),
         prisma.enrollment.count({ where: { userId, completedAt: { not: null } } }),
-        prisma.scrollCoinTransaction.count({ where: { userId } })
+        prisma.scrollGoldTransaction.count({ where: { userId } })
       ]);
 
       const user = await prisma.user.findUnique({
@@ -268,8 +268,8 @@ export class StudentProfileService {
       return {
         enrollments,
         completedCourses,
-        scrollCoinTransactions,
-        scrollCoinBalance: user?.scrollCoinBalance || 0,
+        scrollGoldTransactions,
+        scrollGoldBalance: user?.scrollGoldBalance || 0,
         workTradeCredits: user?.workTradeCredits || 0,
         scrollAlignment: user?.scrollAlignment || 0,
         profileCompletion: user ? this.calculateProfileCompletion(user) : 0

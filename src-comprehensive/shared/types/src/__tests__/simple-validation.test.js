@@ -33,7 +33,7 @@ const SimpleUserSchema = z.object({
   preferredLanguage: z.string().length(2).default('en'),
   timeZone: z.string().default('UTC'),
   role: UserRoleSchema.default('student'),
-  scrollCoinBalance: z.number().min(0).default(0),
+  scrollGoldBalance: z.number().min(0).default(0),
   spiritualGifts: z.array(z.string()).default([]),
   scrollAlignment: z.number().min(0).max(1).default(0),
   createdAt: z.string(),
@@ -47,7 +47,7 @@ const SimpleCourseSchema = z.object({
   level: CourseLevelSchema.default('Introductory'),
   durationWeeks: z.number().int().min(1).max(52).default(4),
   xpReward: z.number().int().min(0).default(100),
-  scrollCoinCost: z.number().min(0).default(0),
+  scrollGoldCost: z.number().min(0).default(0),
   prerequisites: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
   enrollmentOpen: z.boolean().default(true),
@@ -90,7 +90,7 @@ describe('Portal Models Validation', () => {
       preferredLanguage: 'en',
       timeZone: 'UTC',
       role: 'student',
-      scrollCoinBalance: 1500.50,
+      scrollGoldBalance: 1500.50,
       spiritualGifts: ['wisdom', 'knowledge'],
       scrollAlignment: 0.85,
       createdAt: '2024-01-01T00:00:00Z',
@@ -119,7 +119,7 @@ describe('Portal Models Validation', () => {
     expect(result.preferredLanguage).toBe('en');
     expect(result.timeZone).toBe('UTC');
     expect(result.role).toBe('student');
-    expect(result.scrollCoinBalance).toBe(0);
+    expect(result.scrollGoldBalance).toBe(0);
     expect(result.spiritualGifts).toEqual([]);
     expect(result.scrollAlignment).toBe(0);
   });
@@ -146,7 +146,7 @@ describe('Portal Models Validation', () => {
       level: 'Intermediate',
       durationWeeks: 8,
       xpReward: 200,
-      scrollCoinCost: 50.00,
+      scrollGoldCost: 50.00,
       prerequisites: ['course_101', 'course_102'],
       featured: true,
       enrollmentOpen: true,
@@ -176,7 +176,7 @@ describe('Portal Models Validation', () => {
     expect(result.level).toBe('Introductory');
     expect(result.durationWeeks).toBe(4);
     expect(result.xpReward).toBe(100);
-    expect(result.scrollCoinCost).toBe(0);
+    expect(result.scrollGoldCost).toBe(0);
     expect(result.prerequisites).toEqual([]);
     expect(result.featured).toBe(false);
     expect(result.enrollmentOpen).toBe(true);
@@ -225,7 +225,7 @@ describe('Data Transformations', () => {
     }
 
     expect(camelToSnake('firstName')).toBe('first_name');
-    expect(camelToSnake('scrollCoinBalance')).toBe('scroll_coin_balance');
+    expect(camelToSnake('scrollGoldBalance')).toBe('scroll_gold_balance');
     expect(camelToSnake('portalCourseId')).toBe('portal_course_id');
     expect(camelToSnake('xrEnvironmentId')).toBe('xr_environment_id');
   });
@@ -236,7 +236,7 @@ describe('Data Transformations', () => {
     }
 
     expect(snakeToCamel('first_name')).toBe('firstName');
-    expect(snakeToCamel('scroll_coin_balance')).toBe('scrollCoinBalance');
+    expect(snakeToCamel('scroll_gold_balance')).toBe('scrollGoldBalance');
     expect(snakeToCamel('portal_course_id')).toBe('portalCourseId');
     expect(snakeToCamel('xr_environment_id')).toBe('xrEnvironmentId');
   });
@@ -262,7 +262,7 @@ describe('Data Transformations', () => {
     const camelCaseObj = {
       firstName: 'John',
       lastName: 'Doe',
-      scrollCoinBalance: 1500,
+      scrollGoldBalance: 1500,
       userPreferences: {
         preferredLanguage: 'en',
         timeZone: 'UTC'
@@ -273,7 +273,7 @@ describe('Data Transformations', () => {
     
     expect(result.first_name).toBe('John');
     expect(result.last_name).toBe('Doe');
-    expect(result.scroll_coin_balance).toBe(1500);
+    expect(result.scroll_gold_balance).toBe(1500);
     expect(result.user_preferences.preferred_language).toBe('en');
     expect(result.user_preferences.time_zone).toBe('UTC');
   });
@@ -286,7 +286,7 @@ describe('Data Transformations', () => {
         username: apiUser.username,
         firstName: apiUser.first_name,
         lastName: apiUser.last_name,
-        scrollCoinWallet: apiUser.scroll_coin_wallet,
+        scrollGoldWallet: apiUser.scroll_gold_wallet,
         preferredLanguage: apiUser.preferred_language,
         timeZone: apiUser.time_zone,
         scrollNodeId: apiUser.scroll_node_id,
@@ -299,7 +299,7 @@ describe('Data Transformations', () => {
         role: apiUser.role,
         enrollmentStatus: apiUser.enrollment_status,
         academicLevel: apiUser.academic_level,
-        scrollCoinBalance: apiUser.scroll_coin_balance,
+        scrollGoldBalance: apiUser.scroll_gold_balance,
         workTradeCredits: apiUser.work_trade_credits,
         createdAt: apiUser.created_at,
         updatedAt: apiUser.updated_at,
@@ -313,7 +313,7 @@ describe('Data Transformations', () => {
       username: 'testuser',
       first_name: 'John',
       last_name: 'Doe',
-      scroll_coin_wallet: 'wallet_123',
+      scroll_gold_wallet: 'wallet_123',
       preferred_language: 'en',
       time_zone: 'UTC',
       scroll_node_id: 'node_123',
@@ -326,7 +326,7 @@ describe('Data Transformations', () => {
       role: 'student',
       enrollment_status: 'active',
       academic_level: 'scroll_degree',
-      scroll_coin_balance: 1500.50,
+      scroll_gold_balance: 1500.50,
       work_trade_credits: 250.00,
       created_at: '2024-01-01T00:00:00Z',
       updated_at: '2024-01-02T00:00:00Z',
@@ -338,7 +338,7 @@ describe('Data Transformations', () => {
     expect(result.user_id).toBe('user_123');
     expect(result.firstName).toBe('John');
     expect(result.lastName).toBe('Doe');
-    expect(result.scrollCoinWallet).toBe('wallet_123');
+    expect(result.scrollGoldWallet).toBe('wallet_123');
     expect(result.preferredLanguage).toBe('en');
     expect(result.spiritualGifts).toEqual(['wisdom', 'knowledge']);
   });

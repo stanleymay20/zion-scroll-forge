@@ -46,7 +46,7 @@ Every module includes:
 - ✅ 1000+ words of transformative content
 - ✅ Scripture integration with verse text
 - ✅ Scroll Invocation (kingdom prayer/declaration)
-- ✅ ScrollCoin reward markers ("✝️ Complete to earn 10 ScrollCoins")
+- ✅ ScrollGold reward markers ("✝️ Complete to earn 10 ScrollGolds")
 - ✅ Christ-Lordship governance statement
 - ✅ 8-question quiz with explanations
 - ✅ 4 learning materials (PDF, slides, infographic, video)

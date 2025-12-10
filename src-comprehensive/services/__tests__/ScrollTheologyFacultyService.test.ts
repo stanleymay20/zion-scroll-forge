@@ -310,21 +310,21 @@ describe('ScrollTheologyFacultyService', () => {
       expect(sbt405.prerequisites).toContain('SBT305');
     });
 
-    test('courses should have appropriate XP rewards and ScrollCoin costs', async () => {
+    test('courses should have appropriate XP rewards and ScrollGold costs', async () => {
       const sbt101 = await courseContentService.createSBT101ScrollHermeneutics();
       const sbt305 = await courseContentService.createSBT305ChristologyMessianicProphecy();
       const sbtcert = await courseContentService.createSBTCERTScrollWarfareProtocols();
       
       // Foundational course should be free with moderate XP
-      expect(sbt101.scrollCoinCost).toBe(0);
+      expect(sbt101.ScrollGoldCost).toBe(0);
       expect(sbt101.xpReward).toBe(150);
       
       // Advanced course should cost more with higher XP
-      expect(sbt305.scrollCoinCost).toBe(50);
+      expect(sbt305.ScrollGoldCost).toBe(50);
       expect(sbt305.xpReward).toBe(300);
       
       // Certification course should cost most with highest XP
-      expect(sbtcert.scrollCoinCost).toBe(100);
+      expect(sbtcert.ScrollGoldCost).toBe(100);
       expect(sbtcert.xpReward).toBe(500);
     });
   });

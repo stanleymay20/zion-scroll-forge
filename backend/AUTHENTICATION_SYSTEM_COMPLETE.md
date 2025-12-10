@@ -65,7 +65,7 @@ SUPER_ADMIN (Level 4)
 - Assessment permissions (view, create, grade, submit)
 - Content permissions (view, create, edit, delete, publish)
 - Analytics permissions (view, export)
-- Financial permissions (payment processing, ScrollCoin minting)
+- Financial permissions (payment processing, ScrollGold minting)
 - Spiritual formation permissions (view, guide)
 - System permissions (config, logs, backup)
 

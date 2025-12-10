@@ -86,7 +86,7 @@ export class CourseFactory {
         difficulty: overrides.difficulty || 'BEGINNER',
         duration: overrides.duration || 60,
         scrollXPReward: overrides.scrollXPReward || 100,
-        scrollCoinCost: overrides.scrollCoinCost || 0,
+        scrollGoldCost: overrides.scrollGoldCost || 0,
         facultyId,
         ...overrides
       }

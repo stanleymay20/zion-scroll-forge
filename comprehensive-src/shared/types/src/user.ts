@@ -4,7 +4,7 @@ import { z } from 'zod';
 export interface ScrollUser {
   user_id: string;
   email: string;
-  scroll_coin_wallet: string;
+  scroll_gold_wallet: string;
   preferred_language: string;
   role: UserRole;
   profile: UserProfile;
@@ -62,7 +62,7 @@ export interface PrivacyPreferences {
 // Authentication Types
 export interface LoginCredentials {
   email?: string;
-  scroll_coin_wallet?: string;
+  scroll_gold_wallet?: string;
   password?: string;
   wallet_signature?: string;
 }
@@ -91,7 +91,7 @@ export interface DashboardData {
   progress_summary: ProgressSummary;
   recent_activities: Activity[];
   notifications: Notification[];
-  scroll_coin_balance: number;
+  scroll_gold_balance: number;
   upcoming_sessions: UpcomingSession[];
 }
 
@@ -126,7 +126,7 @@ export type ActivityType =
   | 'achievement_earned'
   | 'ai_tutor_session'
   | 'xr_session_attended'
-  | 'scroll_coin_earned';
+  | 'scroll_gold_earned';
 
 export interface Notification {
   notification_id: string;
@@ -159,7 +159,7 @@ export interface UpcomingSession {
 export const ScrollUserSchema = z.object({
   user_id: z.string().uuid(),
   email: z.string().email(),
-  scroll_coin_wallet: z.string(),
+  scroll_gold_wallet: z.string(),
   preferred_language: z.string().length(2),
   role: z.enum(['student', 'faculty', 'ai_dean', 'admin', 'global_ambassador']),
   profile: z.object({
@@ -177,11 +177,11 @@ export const ScrollUserSchema = z.object({
 
 export const LoginCredentialsSchema = z.object({
   email: z.string().email().optional(),
-  scroll_coin_wallet: z.string().optional(),
+  scroll_gold_wallet: z.string().optional(),
   password: z.string().optional(),
   wallet_signature: z.string().optional()
 }).refine(data => 
-  (data.email && data.password) || (data.scroll_coin_wallet && data.wallet_signature),
+  (data.email && data.password) || (data.scroll_gold_wallet && data.wallet_signature),
   { message: "Either email/password or wallet/signature must be provided" }
 );
 

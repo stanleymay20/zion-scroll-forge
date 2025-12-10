@@ -166,31 +166,31 @@ export class LoadTestingFramework {
   }
 
   /**
-   * Test ScrollCoin transaction performance
+   * Test ScrollGold transaction performance
    */
-  async testScrollCoinPerformance(): Promise<LoadTestResult> {
+  async testScrollGoldPerformance(): Promise<LoadTestResult> {
     const scenario: LoadTestScenario = {
-      name: 'ScrollCoin Transactions',
+      name: 'ScrollGold Transactions',
       weight: 100,
       steps: [
         {
           name: 'Get Wallet Balance',
-          endpoint: '/api/scrollcoin/wallet/balance',
+          endpoint: '/api/ScrollGold/wallet/balance',
           method: 'GET',
           expectedResponseTime: 300,
           successCriteria: (response) => response.status === 200 && typeof response.data.balance === 'number'
         },
         {
-          name: 'Award ScrollCoin',
-          endpoint: '/api/scrollcoin/award',
+          name: 'Award ScrollGold',
+          endpoint: '/api/ScrollGold/award',
           method: 'POST',
           payload: { amount: 10, reason: 'course_completion' },
           expectedResponseTime: 1000,
           successCriteria: (response) => response.status === 200 && response.data.transaction
         },
         {
-          name: 'Transfer ScrollCoin',
-          endpoint: '/api/scrollcoin/transfer',
+          name: 'Transfer ScrollGold',
+          endpoint: '/api/ScrollGold/transfer',
           method: 'POST',
           payload: { toUserId: 'user123', amount: 5 },
           expectedResponseTime: 1200,
@@ -574,7 +574,7 @@ class LoadTestUser {
       };
     }
     
-    if (step.endpoint.includes('/scrollcoin/')) {
+    if (step.endpoint.includes('/ScrollGold/')) {
       return {
         balance: 150,
         transaction: { id: 'tx_123', amount: 10 },

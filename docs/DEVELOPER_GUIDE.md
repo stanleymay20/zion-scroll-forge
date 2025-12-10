@@ -131,7 +131,7 @@ with cutting-edge technology.
 │  │   Auth   │ │  Course  │ │ AI Tutor │ │ Payment  │      │
 │  └──────────┘ └──────────┘ └──────────┘ └──────────┘      │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐      │
-│  │Spiritual │ │Community │ │Analytics │ │ScrollCoin│      │
+│  │Spiritual │ │Community │ │Analytics │ │ScrollGold│      │
 │  └──────────┘ └──────────┘ └──────────┘ └──────────┘      │
 └─────────────────────────────────────────────────────────────┘
                               │
@@ -149,7 +149,7 @@ with cutting-edge technology.
 │                   External Services                          │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐      │
 │  │ OpenAI   │ │  Stripe  │ │Ethereum  │ │  D-ID    │      │
-│  │ GPT-4o+  │ │ Payments │ │ScrollCoin│ │  Avatar  │      │
+│  │ GPT-4o+  │ │ Payments │ │ScrollGold│ │  Avatar  │      │
 │  └──────────┘ └──────────┘ └──────────┘ └──────────┘      │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -539,7 +539,7 @@ model Course {
   modules     Module[]
   enrollments Enrollment[]
   
-  scrollCoinCost Int
+  ScrollGoldCost Int
   usdPrice      Decimal
   
   createdAt   DateTime @default(now())
@@ -601,7 +601,7 @@ async function main() {
       description: 'Comprehensive introduction to Bible study',
       faculty: 'THEOLOGY',
       instructorId: admin.id,
-      scrollCoinCost: 500,
+      ScrollGoldCost: 500,
       usdPrice: 49.99
     }
   });

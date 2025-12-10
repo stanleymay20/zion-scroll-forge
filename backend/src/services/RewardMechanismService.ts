@@ -4,7 +4,7 @@
  */
 
 import { PrismaClient } from '@prisma/client';
-import ScrollCoinService from './ScrollCoinService';
+import ScrollGoldService from './ScrollGoldService';
 import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
@@ -26,10 +26,10 @@ export enum RewardEventType {
 
 export class RewardMechanismService {
   private static instance: RewardMechanismService;
-  private scrollCoinService: ScrollCoinService;
+  private ScrollGoldService: ScrollGoldService;
 
   private constructor() {
-    this.scrollCoinService = ScrollCoinService.getInstance();
+    this.ScrollGoldService = ScrollGoldService.getInstance();
   }
 
   public static getInstance(): RewardMechanismService {
@@ -69,7 +69,7 @@ export class RewardMechanismService {
 
       amount = Math.floor(amount);
 
-      const transaction = await this.scrollCoinService.mintScrollCoin(
+      const transaction = await this.ScrollGoldService.mintScrollGold(
         userId,
         'courseCompletion',
         `Course completion reward`,
@@ -107,7 +107,7 @@ export class RewardMechanismService {
         amount *= 1.5;
       }
 
-      const transaction = await this.scrollCoinService.mintScrollCoin(
+      const transaction = await this.ScrollGoldService.mintScrollGold(
         helperId,
         'peerAssistance',
         'Peer assistance reward',
@@ -146,7 +146,7 @@ export class RewardMechanismService {
     recentRewards: any[];
   }> {
     try {
-      const transactions = await prisma.scrollCoinTransaction.findMany({
+      const transactions = await prisma.ScrollGoldTransaction.findMany({
         where: {
           userId,
           type: { in: ['EARNED', 'BONUS'] }

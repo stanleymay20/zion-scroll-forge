@@ -168,7 +168,7 @@ export const PersonalizedContent = ({
           </div>
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span>Earn 1000 ScrollCoins</span>
+              <span>Earn 1000 ScrollGolds</span>
               <span className="text-muted-foreground">650/1000</span>
             </div>
             <Progress value={65} className="h-2" />
@@ -207,7 +207,7 @@ export const PersonalizedContent = ({
             </div>
             <div className="flex-1">
               <h4 className="font-medium">First Course Completed</h4>
-              <p className="text-sm text-muted-foreground">Earned 100 ScrollCoins</p>
+              <p className="text-sm text-muted-foreground">Earned 100 ScrollGolds</p>
             </div>
           </div>
           <Link to="/achievements">

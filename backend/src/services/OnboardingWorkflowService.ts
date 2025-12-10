@@ -61,7 +61,7 @@ export class OnboardingWorkflowService {
           'ai_tutor',
           'community',
           'spiritual_formation',
-          'scrollcoin_wallet'
+          'ScrollGold_wallet'
         ]
       }
     },
@@ -99,8 +99,8 @@ export class OnboardingWorkflowService {
       }
     },
     {
-      stepId: 'scrollcoin_tutorial',
-      title: 'Understanding ScrollCoin',
+      stepId: 'ScrollGold_tutorial',
+      title: 'Understanding ScrollGold',
       description: 'Learn about our divine economy and how to earn rewards',
       order: 8,
       isRequired: false,
@@ -129,7 +129,7 @@ export class OnboardingWorkflowService {
       content: {
         type: 'celebration',
         reward: {
-          scrollCoins: 100,
+          ScrollGolds: 100,
           badge: 'onboarding_complete'
         }
       }
@@ -275,8 +275,8 @@ export class OnboardingWorkflowService {
    */
   private async awardOnboardingCompletion(userId: string): Promise<void> {
     try {
-      // Award ScrollCoins
-      await prisma.scrollCoinTransaction.create({
+      // Award ScrollGolds
+      await prisma.ScrollGoldTransaction.create({
         data: {
           userId,
           amount: 100,
@@ -289,7 +289,7 @@ export class OnboardingWorkflowService {
       await prisma.user.update({
         where: { id: userId },
         data: {
-          scrollCoinBalance: {
+          ScrollGoldBalance: {
             increment: 100
           }
         }

@@ -11,7 +11,7 @@ The Complete Production System specification addresses the comprehensive impleme
 - **Frontend**: React web application with TypeScript, Tailwind CSS, and Shadcn UI components
 - **Supabase**: Backend-as-a-Service platform providing authentication, database, and real-time features
 - **AI Tutor**: GPT-4o+ powered interactive teaching assistant with video avatar capabilities
-- **ScrollCoin**: Blockchain-based cryptocurrency reward system for educational achievements
+- **ScrollGold**: Blockchain-based cryptocurrency reward system for educational achievements
 - **ScrollBadge**: NFT-based digital credentials for course completion and skill mastery
 - **XR Classroom**: Extended Reality immersive learning environment using WebXR
 - **Spiritual Formation**: Character development and kingdom-focused growth tracking system
@@ -64,7 +64,7 @@ The Complete Production System specification addresses the comprehensive impleme
 2. WHEN a student views a lecture THEN the System SHALL stream high-quality video with closed captions and transcripts
 3. WHEN a student downloads materials THEN the System SHALL provide PDF notes, slides, and supplementary resources
 4. WHEN a student completes an assessment THEN the System SHALL grade automatically and provide immediate feedback
-5. WHEN a student progresses through a course THEN the System SHALL track completion percentage and award ScrollCoin rewards
+5. WHEN a student progresses through a course THEN the System SHALL track completion percentage and award ScrollGold rewards
 
 ### Requirement 5: Community and Social Features
 
@@ -80,12 +80,12 @@ The Complete Production System specification addresses the comprehensive impleme
 
 ### Requirement 6: Payment and Billing Integration
 
-**User Story:** As a student, I want to pay for courses using credit cards, ScrollCoin, or scholarships, so that I can access premium content and degree programs.
+**User Story:** As a student, I want to pay for courses using credit cards, ScrollGold, or scholarships, so that I can access premium content and degree programs.
 
 #### Acceptance Criteria
 
 1. WHEN a student selects a payment method THEN the System SHALL integrate with Stripe for credit card processing
-2. WHEN a student pays with ScrollCoin THEN the System SHALL deduct the amount from their wallet and grant access immediately
+2. WHEN a student pays with ScrollGold THEN the System SHALL deduct the amount from their wallet and grant access immediately
 3. WHEN a student applies for a scholarship THEN the System SHALL process the application and notify them of the decision
 4. WHEN a payment fails THEN the System SHALL retry automatically and notify the student with clear instructions
 5. WHEN a student views their billing history THEN the System SHALL display all transactions with receipts and invoices
@@ -102,15 +102,15 @@ The Complete Production System specification addresses the comprehensive impleme
 4. WHEN a student completes a prophetic check-in THEN the System SHALL assess spiritual growth and provide personalized guidance
 5. WHEN a student requests prayer THEN the System SHALL connect them with intercessors and track answered prayers
 
-### Requirement 8: ScrollCoin Economy and Blockchain Integration
+### Requirement 8: ScrollGold Economy and Blockchain Integration
 
-**User Story:** As a student, I want to earn ScrollCoin for learning activities and spend it on courses, resources, and rewards, so that I participate in a divine economy.
+**User Story:** As a student, I want to earn ScrollGold for learning activities and spend it on courses, resources, and rewards, so that I participate in a divine economy.
 
 #### Acceptance Criteria
 
-1. WHEN a student completes a course THEN the System SHALL mint ScrollCoin tokens and add them to the student's wallet
-2. WHEN a student helps another learner THEN the System SHALL reward them with bonus ScrollCoin
-3. WHEN a student spends ScrollCoin THEN the System SHALL record the transaction on the blockchain with a verification hash
+1. WHEN a student completes a course THEN the System SHALL mint ScrollGold tokens and add them to the student's wallet
+2. WHEN a student helps another learner THEN the System SHALL reward them with bonus ScrollGold
+3. WHEN a student spends ScrollGold THEN the System SHALL record the transaction on the blockchain with a verification hash
 4. WHEN a student views their wallet THEN the System SHALL display balance, transaction history, and earning opportunities
 5. WHEN the economy operates THEN the System SHALL maintain transparent pricing and prevent fraud through smart contracts
 

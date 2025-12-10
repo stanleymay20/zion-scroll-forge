@@ -88,7 +88,7 @@ December 24, 2024
 - `createChallenge()` - Create memorization challenges
 - `joinChallenge()` - Join existing challenges
 - `getActiveChallenges()` - List active challenges
-- ScrollCoin rewards integration
+- ScrollGold rewards integration
 - Badge rewards support
 
 #### Statistics
@@ -203,7 +203,7 @@ December 24, 2024
 - Participant tracking
 - Progress monitoring
 - Ranking system
-- ScrollCoin rewards
+- ScrollGold rewards
 - Badge rewards
 
 ### ✅ Verse Sharing and Social Features
@@ -274,7 +274,7 @@ December 24, 2024
 - ✅ Scripture memory as part of spiritual growth
 - ✅ Progress tracking for spiritual development
 - ✅ Community engagement features
-- ✅ Reward system integration (ScrollCoin)
+- ✅ Reward system integration (ScrollGold)
 
 ## API Documentation
 
@@ -411,7 +411,7 @@ POST /api/scripture-memory/quiz/submit
 ### Integration Opportunities
 - Daily Devotion System integration
 - Prayer Journal verse references
-- ScrollCoin reward automation
+- ScrollGold reward automation
 - ScrollBadge NFT for mastery achievements
 - AI Tutor scripture teaching
 - Community feed integration

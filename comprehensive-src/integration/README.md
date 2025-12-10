@@ -22,7 +22,7 @@ The framework manages integration between these ScrollUniversity specs:
 - `scroll-university-platform` - Core platform infrastructure
 - `scroll-student-profile-spec` - Student profile and spiritual formation
 - `scroll-course-spec` - Course management and delivery
-- `scroll-scrollcoin-meter` - ScrollCoin economy and rewards
+- `scroll-ScrollGold-meter` - ScrollGold economy and rewards
 - `scroll-faculty-ai` - AI tutoring and faculty management
 - `scroll-assessment-engine` - Assessment and evaluation system
 - `scroll-projects-spec` - Project management and tracking
@@ -51,7 +51,7 @@ await integrationFramework.publishEvent({
 integrationFramework.subscribeToEvent('course.completed', async (event) => {
   // Handle course completion
   await updateStudentProfile(event.data.userId);
-  await awardScrollCoin(event.data.userId, 100);
+  await awardScrollGold(event.data.userId, 100);
 });
 ```
 
@@ -128,7 +128,7 @@ The framework defines comprehensive shared data models:
 - **SpiritualProfile** - Spiritual formation and growth tracking
 - **AcademicProfile** - Academic progress and achievements
 - **Course** - Course structure and content
-- **ScrollCoinAccount** - Economic transactions and rewards
+- **ScrollGoldAccount** - Economic transactions and rewards
 - **Assessment** - Evaluation and testing
 - **ScrollProject** - Project management and deliverables
 - **PrayerRequest** - Prayer coverage and intercession
@@ -201,7 +201,7 @@ interface ScrollCourseInterface {
 ### Course Completion Flow
 1. `scroll-course-spec` publishes `course.completed`
 2. `scroll-student-profile-spec` updates academic progress
-3. `scroll-scrollcoin-meter` awards ScrollCoin
+3. `scroll-ScrollGold-meter` awards ScrollGold
 4. `scroll-seal-certification` checks for badge eligibility
 5. `scroll-assessment-engine` triggers next assessment
 

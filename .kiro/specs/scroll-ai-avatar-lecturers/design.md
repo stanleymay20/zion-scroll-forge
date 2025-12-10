@@ -41,7 +41,7 @@ graph TB
         CS[Course Service]
         US[User Service]
         AS_INT[Assessment Service]
-        SC[ScrollCoin Service]
+        SC[ScrollGold Service]
     end
     
     subgraph "Data Layer"
@@ -293,7 +293,7 @@ interface AvatarResponse {
 4. **Integration Errors**
    - Course service unavailability
    - User service authentication failures
-   - ScrollCoin transaction errors
+   - ScrollGold transaction errors
    - Assessment service integration issues
 
 ### Error Handling Strategy

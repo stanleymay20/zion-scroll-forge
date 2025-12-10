@@ -14,7 +14,7 @@ const schema = z.object({
   enablePayments: z.boolean(),
   enableAITutors: z.boolean(),
   enableXRClassrooms: z.boolean(),
-  enableScrollCoin: z.boolean(),
+  enableScrollGold: z.boolean(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -34,7 +34,7 @@ export const AdminConfiguration = ({ onComplete, onBack, institutionId }: Props)
       enablePayments: false,
       enableAITutors: true,
       enableXRClassrooms: true,
-      enableScrollCoin: true,
+      enableScrollGold: true,
     },
   });
 
@@ -48,7 +48,7 @@ export const AdminConfiguration = ({ onComplete, onBack, institutionId }: Props)
             payments_enabled: data.enablePayments,
             ai_tutors_enabled: data.enableAITutors,
             xr_classrooms_enabled: data.enableXRClassrooms,
-            scrollcoin_enabled: data.enableScrollCoin,
+            ScrollGold_enabled: data.enableScrollGold,
           },
         })
         .eq('id', institutionId);
@@ -141,11 +141,11 @@ export const AdminConfiguration = ({ onComplete, onBack, institutionId }: Props)
 
           <FormField
             control={form.control}
-            name="enableScrollCoin"
+            name="enableScrollGold"
             render={({ field }) => (
               <FormItem className="flex items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
-                  <FormLabel className="text-base">ScrollCoin Economy</FormLabel>
+                  <FormLabel className="text-base">ScrollGold Economy</FormLabel>
                   <FormDescription>
                     Enable the gamification and rewards system
                   </FormDescription>

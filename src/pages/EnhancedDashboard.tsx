@@ -51,7 +51,7 @@ export default function EnhancedDashboard() {
       color: "text-blue-500"
     },
     { 
-      label: "ScrollCoins Balance", 
+      label: "ScrollGolds Balance", 
       value: String(Math.round(dashboardData.balance)), 
       change: "Live balance", 
       icon: Coins,
@@ -203,9 +203,9 @@ export default function EnhancedDashboard() {
                   <div className="flex items-start space-x-2">
                     <Badge variant="outline">Update</Badge>
                     <div>
-                      <h4 className="font-medium">ScrollCoin Rewards Increased</h4>
+                      <h4 className="font-medium">ScrollGold Rewards Increased</h4>
                       <p className="text-sm text-muted-foreground mt-1">
-                        Earn 50% more ScrollCoins for course completions this month!
+                        Earn 50% more ScrollGolds for course completions this month!
                       </p>
                     </div>
                   </div>

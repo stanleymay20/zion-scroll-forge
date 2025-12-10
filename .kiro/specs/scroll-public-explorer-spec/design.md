@@ -49,7 +49,7 @@ graph LR
     A --> F[Course Management System]
     A --> G[Assessment Engine]
     A --> H[University Portal]
-    A --> I[ScrollCoin Meter]
+    A --> I[ScrollGold Meter]
     A --> J[Audit Trail System]
 ```
 

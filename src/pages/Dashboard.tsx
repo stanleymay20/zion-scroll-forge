@@ -31,7 +31,7 @@ export default function Dashboard() {
 
   const quickStats = [
     { label: "Courses Enrolled", value: String(dashboardData.courses_enrolled), change: `${enrollments?.length ?? 0} active`, icon: Book },
-    { label: "ScrollCoins Balance", value: String(Math.round(dashboardData.balance)), change: "Live balance", icon: Coins },
+    { label: "ScrollGolds Balance", value: String(Math.round(dashboardData.balance)), change: "Live balance", icon: Coins },
     { label: "Prayer Requests", value: String(dashboardData.total_prayers), change: `${dashboardData.prayers_answered} answered`, icon: Heart },
     { label: "Avg Progress", value: `${Math.round(dashboardData.avg_progress ?? 0)}%`, change: "Across all courses", icon: TrendingUp },
   ];

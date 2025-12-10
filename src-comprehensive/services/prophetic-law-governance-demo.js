@@ -73,7 +73,7 @@ async function demonstratePropheticLawFaculty() {
       console.log(`   Department: ${course.department}`);
       console.log(`   Duration: ${course.estimatedHours} hours`);
       console.log(`   XP Reward: ${course.xpReward}`);
-      console.log(`   ScrollCoin Cost: ${course.scrollCoinCost}`);
+      console.log(`   ScrollGold Cost: ${course.ScrollGoldCost}`);
       console.log(`   Delivery Modes: ${course.deliveryModes.join(', ')}`);
       console.log(`   Prerequisites: ${course.prerequisites.length > 0 ? course.prerequisites.join(', ') : 'None'}`);
       

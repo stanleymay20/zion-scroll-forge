@@ -28,8 +28,8 @@ async function handleCourseCompletion(
   finalGrade: number
 ) {
   try {
-    // Award ScrollCoin (existing logic)
-    await ScrollCoinService.mintReward({
+    // Award ScrollGold (existing logic)
+    await ScrollGoldService.mintReward({
       userId,
       amount: 100,
       reason: 'Course Completion',

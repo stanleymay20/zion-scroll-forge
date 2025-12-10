@@ -54,7 +54,7 @@ This document details the comprehensive performance optimization implementation 
 
 **Cache Tags:**
 - COURSES, USER, ENROLLMENTS, ASSIGNMENTS
-- GRADES, COMMUNITY, SCROLLCOIN, BADGES
+- GRADES, COMMUNITY, SCROLLGOLD, BADGES
 - ANALYTICS, SPIRITUAL
 
 **Files:**

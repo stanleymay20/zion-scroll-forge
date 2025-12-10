@@ -152,7 +152,7 @@
 - [ ] 6. Implement technology innovation comparison system
   - [ ] 6.1 Create ScrollUniversity innovation showcase
     - Document prophetic AI and divine scorecard systems
-    - Map blockchain integration and ScrollCoin economy
+    - Map blockchain integration and ScrollGold economy
     - Create XR/VR capabilities and mobile features documentation
     - _Requirements: 5.1, 5.2_
 

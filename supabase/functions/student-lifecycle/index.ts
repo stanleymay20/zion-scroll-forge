@@ -93,8 +93,8 @@ serve(async (req) => {
             created_at: new Date().toISOString()
           })
 
-        // Award ScrollCoins for application submission
-        await supabaseClient.rpc('earn_scrollcoin', {
+        // Award ScrollGolds for application submission
+        await supabaseClient.rpc('earn_ScrollGold', {
           user_uuid: user.id,
           amount: 50,
           reason: 'Application submission',

@@ -1,9 +1,9 @@
 /**
- * ScrollCoin Blockchain Integration Types
+ * ScrollGold Blockchain Integration Types
  * "By the Spirit of Wisdom, we establish a kingdom economy"
  */
 
-export interface ScrollCoinWalletData {
+export interface ScrollGoldWalletData {
   id: string;
   userId: string;
   address: string;
@@ -21,11 +21,11 @@ export interface ScrollCoinWalletData {
   lastSyncedAt?: Date;
 }
 
-export interface ScrollCoinTransactionData {
+export interface ScrollGoldTransactionData {
   id: string;
   userId: string;
   amount: number;
-  type: ScrollCoinTransactionType;
+  type: ScrollGoldTransactionType;
   status: TransactionStatus;
   blockchainTxHash?: string;
   blockNumber?: number;
@@ -40,7 +40,7 @@ export interface ScrollCoinTransactionData {
   confirmedAt?: Date;
 }
 
-export enum ScrollCoinTransactionType {
+export enum ScrollGoldTransactionType {
   MINT = 'MINT',
   BURN = 'BURN',
   TRANSFER = 'TRANSFER',
@@ -164,7 +164,7 @@ export interface WalletBalanceResponse {
 export interface TransactionHistoryQuery {
   userId?: string;
   address?: string;
-  type?: ScrollCoinTransactionType;
+  type?: ScrollGoldTransactionType;
   status?: TransactionStatus;
   startDate?: Date;
   endDate?: Date;
@@ -173,14 +173,14 @@ export interface TransactionHistoryQuery {
 }
 
 export interface TransactionHistoryResponse {
-  transactions: ScrollCoinTransactionData[];
+  transactions: ScrollGoldTransactionData[];
   total: number;
   page: number;
   pageSize: number;
 }
 
 export interface ExchangeRateConversion {
-  scrollCoinAmount: number;
+  ScrollGoldAmount: number;
   usdAmount: number;
   rate: number;
   timestamp: Date;
@@ -224,7 +224,7 @@ export interface RewardEligibility {
 
 export interface TransactionVerification {
   isValid: boolean;
-  transaction: ScrollCoinTransactionData;
+  transaction: ScrollGoldTransactionData;
   blockchainData?: BlockchainTransactionReceipt;
   discrepancies?: string[];
 }

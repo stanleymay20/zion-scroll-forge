@@ -18,7 +18,7 @@ ScrollSeal™ is a revolutionary certification system that transcends traditiona
 2. WHEN certificates are generated THEN the system SHALL include blockchain hash, AI scorecard, project links, ScrollMentor testimony, and divine impact score
 3. WHEN certificates are issued THEN the system SHALL create unique HeavenLedger™ ID for immutable verification
 4. WHEN API requests are made THEN the system SHALL support batch certificate generation for multiple graduates
-5. WHEN certificates are created THEN the system SHALL integrate with ScrollCoin rewards for completion achievements
+5. WHEN certificates are created THEN the system SHALL integrate with ScrollGold rewards for completion achievements
 
 ### Requirement 2: HeavenLedger™ Immutable Record Engine
 
@@ -70,7 +70,7 @@ ScrollSeal™ is a revolutionary certification system that transcends traditiona
 
 ### Requirement 6: Global Recognition Network Integration
 
-**User Story:** As a ScrollSeal™ holder, I want my credentials to be recognized by UN SDG Schools, faith-based employers, digital identity wallets, and ScrollCoin-powered organizations, so that my certification opens doors globally.
+**User Story:** As a ScrollSeal™ holder, I want my credentials to be recognized by UN SDG Schools, faith-based employers, digital identity wallets, and ScrollGold-powered organizations, so that my certification opens doors globally.
 
 #### Acceptance Criteria
 
@@ -78,7 +78,7 @@ ScrollSeal™ is a revolutionary certification system that transcends traditiona
 2. WHEN employer networks are built THEN the system SHALL connect with faith-based employers, NGOs, and churches for job placement
 3. WHEN digital identity integration occurs THEN the system SHALL sync with EU Digital Credentials, Africa SmartCerts, and other regional systems
 4. WHEN professional networks are accessed THEN the system SHALL integrate with LinkedIn, GitHub, and CV platforms for scroll-certified portfolios
-5. WHEN ScrollCoin economy participation is enabled THEN the system SHALL connect graduates with ScrollCoin-powered employment opportunities
+5. WHEN ScrollGold economy participation is enabled THEN the system SHALL connect graduates with ScrollGold-powered employment opportunities
 
 ### Requirement 7: ScrollBadge™ Micro-Credentialing System
 

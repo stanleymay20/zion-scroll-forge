@@ -963,19 +963,19 @@
  * Wallet Management Service
  * "By the Spirit of Wisdom, we secure the treasures of the kingdom"
  * 
- * Service for managing ScrollCoin wallets, including creation, security,
+ * Service for managing ScrollGold wallets, including creation, security,
  * and key management with encryption.
  */
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
 <span class="cstat-no" title="statement not covered" >import crypto from 'crypto';</span>
 <span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
-<span class="cstat-no" title="statement not covered" >import scrollCoinConfig from '../config/scrollcoin.config';</span>
+<span class="cstat-no" title="statement not covered" >import ScrollGoldConfig from '../config/ScrollGold.config';</span>
 import {
-  ScrollCoinWalletData,
+  ScrollGoldWalletData,
   WalletCreationRequest,
   WalletSecuritySettings
-} from '../types/scrollcoin.types';
+} from '../types/ScrollGold.types';
 &nbsp;
 const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
@@ -1000,12 +1000,12 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   /**
    * Create a new wallet for a user
    */
-<span class="fstat-no" title="function not covered" >  async </span>createWallet(request: WalletCreationRequest): Promise&lt;ScrollCoinWalletData&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>createWallet(request: WalletCreationRequest): Promise&lt;ScrollGoldWalletData&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      logger.info('Creating new ScrollCoin wallet', { userId: request.userId });</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Creating new ScrollGold wallet', { userId: request.userId });</span>
 &nbsp;
       // Check if wallet already exists
-      const existingWallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.findUnique({</span>
+      const existingWallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.findUnique({</span>
         where: { userId: request.userId }
       });
 &nbsp;
@@ -1020,7 +1020,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
       const encryptedPrivateKey = <span class="cstat-no" title="statement not covered" >this.encryptPrivateKey(privateKey);</span>
 &nbsp;
       // Create wallet in database
-      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.create({</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.create({</span>
         data: {
           userId: request.userId,
           address,
@@ -1032,17 +1032,17 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
           isActive: true,
           isBlacklisted: false,
           isWhitelisted: false,
-          dailyTransferLimit: scrollCoinConfig.dailyTransferLimit,
-          maxTransactionAmount: scrollCoinConfig.maxTransactionAmount
+          dailyTransferLimit: ScrollGoldConfig.dailyTransferLimit,
+          maxTransactionAmount: ScrollGoldConfig.maxTransactionAmount
         }
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger.info('ScrollCoin wallet created successfully', {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('ScrollGold wallet created successfully', {</span>
         userId: request.userId,
         address: wallet.address
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return wallet as ScrollCoinWalletData;</span>
+<span class="cstat-no" title="statement not covered" >      return wallet as ScrollGoldWalletData;</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Error creating wallet:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
@@ -1052,13 +1052,13 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   /**
    * Get wallet by user ID
    */
-<span class="fstat-no" title="function not covered" >  async </span>getWalletByUserId(userId: string): Promise&lt;ScrollCoinWalletData | null&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>getWalletByUserId(userId: string): Promise&lt;ScrollGoldWalletData | null&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.findUnique({</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.findUnique({</span>
         where: { userId }
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return wallet as ScrollCoinWalletData | null;</span>
+<span class="cstat-no" title="statement not covered" >      return wallet as ScrollGoldWalletData | null;</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Error getting wallet by user ID:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
@@ -1068,13 +1068,13 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   /**
    * Get wallet by address
    */
-<span class="fstat-no" title="function not covered" >  async </span>getWalletByAddress(address: string): Promise&lt;ScrollCoinWalletData | null&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>getWalletByAddress(address: string): Promise&lt;ScrollGoldWalletData | null&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.findUnique({</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.findUnique({</span>
         where: { address }
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return wallet as ScrollCoinWalletData | null;</span>
+<span class="cstat-no" title="statement not covered" >      return wallet as ScrollGoldWalletData | null;</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Error getting wallet by address:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
@@ -1087,11 +1087,11 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="fstat-no" title="function not covered" >  async </span>updateSecuritySettings(
     userId: string,
     settings: Partial&lt;WalletSecuritySettings&gt;
-  ): Promise&lt;ScrollCoinWalletData&gt; {
+  ): Promise&lt;ScrollGoldWalletData&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      logger.info('Updating wallet security settings', { userId, settings });</span>
 &nbsp;
-      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.update({</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.update({</span>
         where: { userId },
         data: {
           dailyTransferLimit: settings.dailyTransferLimit,
@@ -1103,7 +1103,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      logger.info('Wallet security settings updated', { userId });</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return wallet as ScrollCoinWalletData;</span>
+<span class="cstat-no" title="statement not covered" >      return wallet as ScrollGoldWalletData;</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Error updating wallet security settings:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
@@ -1117,7 +1117,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      logger.warn('Blacklisting wallet', { userId, reason });</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await prisma.scrollCoinWallet.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.ScrollGoldWallet.update({</span>
         where: { userId },
         data: { isBlacklisted: true, isActive: false }
       });
@@ -1136,7 +1136,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      logger.info('Whitelisting wallet', { userId });</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await prisma.scrollCoinWallet.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.ScrollGoldWallet.update({</span>
         where: { userId },
         data: { isWhitelisted: true }
       });
@@ -1155,7 +1155,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      logger.info('Deactivating wallet', { userId });</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await prisma.scrollCoinWallet.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.ScrollGoldWallet.update({</span>
         where: { userId },
         data: { isActive: false }
       });
@@ -1174,7 +1174,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      logger.info('Reactivating wallet', { userId });</span>
 &nbsp;
-      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.findUnique({</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.findUnique({</span>
         where: { userId }
       });
 &nbsp;
@@ -1182,7 +1182,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >        throw new Error('Cannot reactivate blacklisted wallet');</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await prisma.scrollCoinWallet.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.ScrollGoldWallet.update({</span>
         where: { userId },
         data: { isActive: true }
       });
@@ -1201,7 +1201,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      logger.info('Syncing wallet balance with blockchain', { userId });</span>
 &nbsp;
-      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.findUnique({</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.findUnique({</span>
         where: { userId }
       });
 &nbsp;
@@ -1213,7 +1213,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
       // For now, return current balance
       const blockchainBalance = <span class="cstat-no" title="statement not covered" >wallet.balance;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      await prisma.scrollCoinWallet.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.ScrollGoldWallet.update({</span>
         where: { userId },
         data: {
           balance: blockchainBalance,
@@ -1241,7 +1241,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >        throw new Error('Unauthorized access to private key');</span>
       }
 &nbsp;
-      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.findUnique({</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.findUnique({</span>
         where: { userId }
       });
 &nbsp;
@@ -1339,9 +1339,9 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   /**
    * Export wallet data (excluding private key)
    */
-<span class="fstat-no" title="function not covered" >  async </span>exportWalletData(userId: string): Promise&lt;Partial&lt;ScrollCoinWalletData&gt;&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>exportWalletData(userId: string): Promise&lt;Partial&lt;ScrollGoldWalletData&gt;&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.findUnique({</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.findUnique({</span>
         where: { userId }
       });
 &nbsp;
@@ -1352,7 +1352,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
       // Return wallet data without private key
       const { privateKeyHash, ...walletData } = <span class="cstat-no" title="statement not covered" >wallet;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      return walletData as Partial&lt;ScrollCoinWalletData&gt;;</span>
+<span class="cstat-no" title="statement not covered" >      return walletData as Partial&lt;ScrollGoldWalletData&gt;;</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Error exporting wallet data:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
@@ -1372,7 +1372,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
     lastTransactionDate?: Date;
   }&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.findUnique({</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.findUnique({</span>
         where: { userId }
       });
 &nbsp;
@@ -1380,7 +1380,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >        throw new Error('Wallet not found');</span>
       }
 &nbsp;
-      const transactions = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinTransaction.findMany({</span>
+      const transactions = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldTransaction.findMany({</span>
         where: { userId },
         orderBy: { createdAt: 'desc' }
       });
@@ -1414,7 +1414,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:03.756Z
+                at 2025-12-02T16:54:09.620Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

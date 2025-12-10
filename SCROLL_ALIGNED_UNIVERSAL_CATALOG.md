@@ -152,7 +152,7 @@ This catalog ensures ScrollUniversity offers world-class education across **ALL 
 - **Blockchain Technology** (100 courses)
 - **Smart Contracts** (75 courses)
 - **Decentralized Systems** (75 courses)
-- **ScrollCoin Economics** (50 courses)
+- **ScrollGold Economics** (50 courses)
 
 ### Faculty of Digital Media & Design (200 courses)
 - **Graphic Design** (75 courses)

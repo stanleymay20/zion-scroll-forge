@@ -18,7 +18,7 @@ Complete guide for students and faculty using the platform.
 - Course enrollment and learning
 - AI Tutor usage
 - Community features
-- ScrollCoin economy
+- ScrollGold economy
 - ScrollBadge credentials
 - Spiritual formation tools
 - Mobile app usage
@@ -53,7 +53,7 @@ Scripts for video tutorials covering key platform features.
 - Getting started tutorial
 - Course enrollment tutorial
 - AI Tutor tutorial
-- ScrollCoin wallet tutorial
+- ScrollGold wallet tutorial
 - Spiritual formation tutorial
 - Study groups tutorial
 - Mobile app tutorial
@@ -108,7 +108,7 @@ Complete API reference with OpenAPI/Swagger specification.
 - Course management APIs
 - AI Tutor APIs
 - Community APIs
-- ScrollCoin APIs
+- ScrollGold APIs
 - ScrollBadge APIs
 - Spiritual formation APIs
 - Analytics APIs
@@ -316,7 +316,7 @@ We welcome feedback on our documentation:
 
 ## Glossary
 
-**ScrollCoin**: Blockchain-based digital currency for the platform  
+**ScrollGold**: Blockchain-based digital currency for the platform  
 **ScrollBadge**: NFT-based digital credentials  
 **AI Tutor**: GPT-4o+ powered personalized teaching assistant  
 **Spiritual Formation**: Character development and kingdom-focused growth  

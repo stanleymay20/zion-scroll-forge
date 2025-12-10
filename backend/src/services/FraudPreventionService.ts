@@ -2,22 +2,22 @@
  * Fraud Prevention Service
  * "By the Spirit of Discernment, we protect the kingdom economy"
  * 
- * Service for detecting and preventing fraudulent ScrollCoin transactions,
+ * Service for detecting and preventing fraudulent ScrollGold transactions,
  * monitoring suspicious patterns, and managing fraud alerts.
  */
 
 import { PrismaClient } from '@prisma/client';
 import { logger } from '../utils/logger';
-import scrollCoinConfig from '../config/scrollcoin.config';
+import ScrollGoldConfig from '../config/ScrollGold.config';
 import {
   FraudCheckResult,
   FraudAlertData,
   FraudAlertType,
   FraudSeverity,
   AlertStatus,
-  ScrollCoinTransactionData,
-  ScrollCoinTransactionType
-} from '../types/scrollcoin.types';
+  ScrollGoldTransactionData,
+  ScrollGoldTransactionType
+} from '../types/ScrollGold.types';
 
 const prisma = new PrismaClient();
 
@@ -39,10 +39,10 @@ export class FraudPreventionService {
   async checkTransaction(
     userId: string,
     amount: number,
-    type: ScrollCoinTransactionType
+    type: ScrollGoldTransactionType
   ): Promise<FraudCheckResult> {
     try {
-      if (!scrollCoinConfig.fraudDetectionEnabled) {
+      if (!ScrollGoldConfig.fraudDetectionEnabled) {
         return {
           isValid: true,
           alerts: [],
@@ -53,7 +53,7 @@ export class FraudPreventionService {
       const alerts: FraudAlertData[] = [];
 
       // Check if user is blacklisted
-      const wallet = await prisma.scrollCoinWallet.findUnique({
+      const wallet = await prisma.ScrollGoldWallet.findUnique({
         where: { userId }
       });
 
@@ -76,12 +76,12 @@ export class FraudPreventionService {
       }
 
       // Check for suspicious amount
-      if (amount > scrollCoinConfig.suspiciousAmountThreshold) {
+      if (amount > ScrollGoldConfig.suspiciousAmountThreshold) {
         const alert = await this.createAlert({
           userId,
           alertType: FraudAlertType.SUSPICIOUS_AMOUNT,
           severity: FraudSeverity.HIGH,
-          description: `Large transaction amount: ${amount} ScrollCoin`,
+          description: `Large transaction amount: ${amount} ScrollGold`,
           amount
         });
         alerts.push(alert);
@@ -115,9 +115,9 @@ export class FraudPreventionService {
       }
 
       // Check daily limit
-      if (type === ScrollCoinTransactionType.TRANSFER && !wallet?.isWhitelisted) {
+      if (type === ScrollGoldTransactionType.TRANSFER && !wallet?.isWhitelisted) {
         const dailyTotal = await this.getDailyTransferTotal(userId);
-        if (dailyTotal + amount > (wallet?.dailyTransferLimit || scrollCoinConfig.dailyTransferLimit)) {
+        if (dailyTotal + amount > (wallet?.dailyTransferLimit || ScrollGoldConfig.dailyTransferLimit)) {
           const alert = await this.createAlert({
             userId,
             alertType: FraudAlertType.DAILY_LIMIT_EXCEEDED,
@@ -160,13 +160,13 @@ export class FraudPreventionService {
     reason?: string;
   }> {
     try {
-      const { window, limit } = scrollCoinConfig.rapidTransactionWindow 
-        ? { window: scrollCoinConfig.rapidTransactionWindow, limit: scrollCoinConfig.rapidTransactionLimit }
+      const { window, limit } = ScrollGoldConfig.rapidTransactionWindow 
+        ? { window: ScrollGoldConfig.rapidTransactionWindow, limit: ScrollGoldConfig.rapidTransactionLimit }
         : { window: 300, limit: 10 }; // 5 minutes, 10 transactions
 
       const windowStart = new Date(Date.now() - window * 1000);
 
-      const recentTransactions = await prisma.scrollCoinTransaction.count({
+      const recentTransactions = await prisma.ScrollGoldTransaction.count({
         where: {
           userId,
           createdAt: { gte: windowStart }
@@ -193,7 +193,7 @@ export class FraudPreventionService {
   private async checkUnusualPatterns(
     userId: string,
     amount: number,
-    type: ScrollCoinTransactionType
+    type: ScrollGoldTransactionType
   ): Promise<{
     isValid: boolean;
     reason?: string;
@@ -201,7 +201,7 @@ export class FraudPreventionService {
   }> {
     try {
       // Get user's transaction history
-      const transactions = await prisma.scrollCoinTransaction.findMany({
+      const transactions = await prisma.ScrollGoldTransaction.findMany({
         where: {
           userId,
           status: 'CONFIRMED'
@@ -254,10 +254,10 @@ export class FraudPreventionService {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
-      const result = await prisma.scrollCoinTransaction.aggregate({
+      const result = await prisma.ScrollGoldTransaction.aggregate({
         where: {
           userId,
-          type: ScrollCoinTransactionType.TRANSFER,
+          type: ScrollGoldTransactionType.TRANSFER,
           status: 'CONFIRMED',
           createdAt: { gte: today }
         },
@@ -284,7 +284,7 @@ export class FraudPreventionService {
     suspiciousPattern?: string;
   }): Promise<FraudAlertData> {
     try {
-      const alert = await prisma.scrollCoinFraudAlert.create({
+      const alert = await prisma.ScrollGoldFraudAlert.create({
         data: {
           userId: data.userId,
           alertType: data.alertType,
@@ -317,7 +317,7 @@ export class FraudPreventionService {
    */
   async getPendingAlerts(limit: number = 50): Promise<FraudAlertData[]> {
     try {
-      const alerts = await prisma.scrollCoinFraudAlert.findMany({
+      const alerts = await prisma.ScrollGoldFraudAlert.findMany({
         where: {
           status: AlertStatus.PENDING
         },
@@ -345,7 +345,7 @@ export class FraudPreventionService {
     reviewNotes?: string
   ): Promise<FraudAlertData> {
     try {
-      const alert = await prisma.scrollCoinFraudAlert.update({
+      const alert = await prisma.ScrollGoldFraudAlert.update({
         where: { id: alertId },
         data: {
           status,
@@ -376,7 +376,7 @@ export class FraudPreventionService {
    */
   async getUserAlerts(userId: string, limit: number = 20): Promise<FraudAlertData[]> {
     try {
-      const alerts = await prisma.scrollCoinFraudAlert.findMany({
+      const alerts = await prisma.ScrollGoldFraudAlert.findMany({
         where: { userId },
         orderBy: { detectedAt: 'desc' },
         take: limit
@@ -407,7 +407,7 @@ export class FraudPreventionService {
         if (endDate) where.detectedAt.lte = endDate;
       }
 
-      const alerts = await prisma.scrollCoinFraudAlert.findMany({ where });
+      const alerts = await prisma.ScrollGoldFraudAlert.findMany({ where });
 
       const totalAlerts = alerts.length;
 
@@ -455,7 +455,7 @@ export class FraudPreventionService {
   /**
    * Monitor transaction for fraud after completion
    */
-  async monitorTransaction(transaction: ScrollCoinTransactionData): Promise<void> {
+  async monitorTransaction(transaction: ScrollGoldTransactionData): Promise<void> {
     try {
       // This runs asynchronously after transaction completion
       const check = await this.checkTransaction(
@@ -472,7 +472,7 @@ export class FraudPreventionService {
 
         // Update alerts with transaction ID
         for (const alert of check.alerts) {
-          await prisma.scrollCoinFraudAlert.update({
+          await prisma.ScrollGoldFraudAlert.update({
             where: { id: alert.id },
             data: { transactionId: transaction.id }
           });

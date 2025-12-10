@@ -45,7 +45,7 @@ import ContentGeneration from "./pages/ContentGeneration";
 import Community from "./pages/Community";
 import { UserProfilePage } from "./components/community";
 import Assessments from "./pages/Assessments";
-import ScrollCoin from "./pages/ScrollCoin";
+import ScrollGold from "./pages/ScrollGold";
 import Wallet from "./pages/Wallet";
 import SpiritualFormation from "./pages/SpiritualFormation";
 import PrayerRequests from "./pages/PrayerRequests";
@@ -80,8 +80,8 @@ import DegreePrograms from "./pages/DegreePrograms";
 import DegreeProgramDetail from "./pages/DegreeProgramDetail";
 import BillingDashboard from "./pages/BillingDashboard";
 import PaymentBilling from "./pages/PaymentBilling";
-import ScrollCoinWallet from "./pages/ScrollCoinWallet";
-import ScrollCoinLeaderboard from "./pages/ScrollCoinLeaderboard";
+import ScrollGoldWallet from "./pages/ScrollGoldWallet";
+import ScrollGoldLeaderboard from "./pages/ScrollGoldLeaderboard";
 import AITutorsCatalog from "./pages/AITutorsCatalog";
 import TutorSession from "./pages/TutorSession";
 import AITutorInterface from "./pages/AITutorInterface";
@@ -119,6 +119,7 @@ import ApplicationStatus from "./pages/ApplicationStatus";
 import StudentProfile from "./pages/StudentProfile";
 import MobileFeaturesDemo from "./pages/MobileFeaturesDemo";
 import RealtimeDemo from "./pages/RealtimeDemo";
+import CriticalThinking from "./pages/CriticalThinking";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -267,7 +268,7 @@ const App = () => (
               <Route path="content-generation" element={<ContentGeneration />} />
               <Route path="community" element={<Community />} />
               <Route path="community/users/:userId" element={<UserProfilePage />} />
-              <Route path="scrollcoin" element={<ScrollCoin />} />
+              <Route path="ScrollGold" element={<ScrollGold />} />
               <Route path="wallet" element={<Wallet />} />
               <Route path="spiritual-formation" element={<SpiritualFormation />} />
               <Route path="prayer-requests" element={<PrayerRequests />} />
@@ -304,7 +305,7 @@ const App = () => (
               <Route path="degree-audit" element={<DegreeAudit />} />
               <Route path="scholarships" element={<ScholarshipsPage />} />
               
-              {/* ScrollCoin Economy */}
+              {/* ScrollGold Economy */}
               <Route path="redemption-store" element={<RedemptionStore />} />
             
             {/* Dynamic pages */}
@@ -320,8 +321,8 @@ const App = () => (
             <Route path="events/:id" element={<EventDetail />} />
             <Route path="billing" element={<BillingDashboard />} />
             <Route path="payment-billing" element={<PaymentBilling />} />
-            <Route path="scrollcoin-wallet" element={<ScrollCoinWallet />} />
-            <Route path="scrollcoin-leaderboard" element={<ScrollCoinLeaderboard />} />
+            <Route path="ScrollGold-wallet" element={<ScrollGoldWallet />} />
+            <Route path="ScrollGold-leaderboard" element={<ScrollGoldLeaderboard />} />
             <Route path="ai-tutors-catalog" element={<AITutorsCatalog />} />
             <Route path="ai-tutor-interface" element={<AITutorInterface />} />
             <Route path="ai-tutors/:id" element={<TutorSession />} />
@@ -360,6 +361,7 @@ const App = () => (
             <Route path="help" element={<ComingSoonPage title="Help Center" />} />
             <Route path="mobile-demo" element={<MobileFeaturesDemo />} />
             <Route path="realtime-demo" element={<RealtimeDemo />} />
+            <Route path="critical-thinking" element={<CriticalThinking />} />
           </Route>
           
           {/* Catch-all route for 404 */}

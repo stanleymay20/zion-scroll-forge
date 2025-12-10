@@ -84,7 +84,7 @@ export interface MemorizationChallenge {
   startDate: Date;
   endDate: Date;
   participantCount: number;
-  scrollCoinReward: number;
+  scrollGoldReward: number;
   badgeReward?: string;
   isActive: boolean;
   createdBy: string;
@@ -103,7 +103,7 @@ export interface ChallengeParticipation {
   totalVerses: number;
   rank?: number;
   completedAt?: Date;
-  scrollCoinEarned: number;
+  scrollGoldEarned: number;
   joinedAt: Date;
 }
 
@@ -154,7 +154,7 @@ export interface CreateChallengeRequest {
   verseIds: string[];
   startDate: Date;
   endDate: Date;
-  scrollCoinReward: number;
+  scrollGoldReward: number;
   badgeReward?: string;
 }
 
@@ -179,7 +179,7 @@ export interface MemoryStatistics {
   longestStreak: number;
   totalReviews: number;
   averageAccuracy: number;
-  scrollCoinEarned: number;
+  scrollGoldEarned: number;
   challengesCompleted: number;
   rank?: number;
 }

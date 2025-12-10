@@ -37,7 +37,7 @@ const BalanceText = styled.span`
   font-family: 'ScrollFont', -apple-system, BlinkMacSystemFont, sans-serif;
 `;
 
-export const ScrollCoinBalance: React.FC = () => {
+export const ScrollGoldBalance: React.FC = () => {
   // Mock balance - in real implementation, this would come from state/API
   const balance = 1247.50;
 
@@ -49,4 +49,4 @@ export const ScrollCoinBalance: React.FC = () => {
   );
 };
 
-export default ScrollCoinBalance;
+export default ScrollGoldBalance;

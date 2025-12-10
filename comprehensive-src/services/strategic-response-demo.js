@@ -129,7 +129,7 @@ async function demonstrateStrategicResponse() {
     console.log(`✅ Free Tier Status:`);
     console.log(`   • Basic Courses Access: ${freeTier.basicCoursesAccess ? '✅ Active' : '❌ Inactive'}`);
     console.log(`   • Traditional Payments: ${freeTier.traditionalPaymentOptions ? '✅ Enabled' : '❌ Disabled'}`);
-    console.log(`   • ScrollCoin Upgrade Path: ${freeTier.scrollCoinUpgradePath ? '✅ Available' : '❌ Unavailable'}`);
+    console.log(`   • ScrollGold Upgrade Path: ${freeTier.ScrollGoldUpgradePath ? '✅ Available' : '❌ Unavailable'}`);
     console.log(`   • Value Comparison: ${freeTier.valueComparison ? '✅ Displayed' : '❌ Hidden'}`);
 
     // Simplified onboarding

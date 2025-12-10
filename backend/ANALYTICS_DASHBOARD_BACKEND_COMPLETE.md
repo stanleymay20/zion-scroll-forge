@@ -15,7 +15,7 @@ December 2024
 - Real-time metrics (active users, sessions, enrollments, assessments)
 - Student analytics (enrollment, performance, engagement, learning patterns)
 - Course analytics (enrollment metrics, performance, engagement, satisfaction)
-- Financial analytics (revenue, ScrollCoin metrics, scholarships)
+- Financial analytics (revenue, ScrollGold metrics, scholarships)
 - Spiritual formation analytics (devotions, prayers, scripture memory)
 - System analytics (users, content, performance, storage)
 - Custom metrics calculation
@@ -187,7 +187,7 @@ POST   /api/analytics/aggregation/initialize                 - Initialize aggreg
 ## Database Integration
 All services integrate with existing Prisma schema:
 - User, Enrollment, Course, Assignment, Payment tables
-- ScrollCoin transactions
+- ScrollGold transactions
 - Spiritual formation tables (devotions, prayers, scripture memory)
 - Lecture progress tracking
 - Community engagement (posts, comments)

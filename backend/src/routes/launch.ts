@@ -11,7 +11,7 @@ router.get('/metrics', async (req: Request, res: Response) => {
       coursesLaunched: 3,
       globalReach: 2500000,
       partnershipsActive: 15,
-      scrollCoinsAwarded: 125000,
+      scrollGoldsAwarded: 125000,
       nationsImpacted: 42,
       lastUpdated: new Date().toISOString()
     };
@@ -39,7 +39,7 @@ router.get('/courses', async (req: Request, res: Response) => {
         description: 'Foundational course integrating biblical principles with legal frameworks for kingdom governance and justice systems.',
         level: 'Foundational',
         duration: '8 weeks',
-        scrollCoins: 500,
+        scrollGolds: 500,
         enrollments: 423,
         completionRate: 0.87,
         satisfaction: 4.9,
@@ -51,7 +51,7 @@ router.get('/courses', async (req: Request, res: Response) => {
         description: 'Introduction to AI development with spiritual alignment, covering GPT integration and prophetic intelligence systems.',
         level: 'Intermediate',
         duration: '10 weeks',
-        scrollCoins: 750,
+        scrollGolds: 750,
         enrollments: 312,
         completionRate: 0.82,
         satisfaction: 4.8,
@@ -63,7 +63,7 @@ router.get('/courses', async (req: Request, res: Response) => {
         description: 'Immersive biblical experiences using extended reality technology to walk through scripture and sacred history.',
         level: 'Beginner',
         duration: '6 weeks',
-        scrollCoins: 400,
+        scrollGolds: 400,
         enrollments: 512,
         completionRate: 0.91,
         satisfaction: 4.95,
@@ -120,7 +120,7 @@ router.post('/onboard', async (req: Request, res: Response) => {
         'prophetic-law',
         'xr-bible-intro'
       ],
-      scrollCoinsAwarded: 100, // Welcome bonus
+      scrollGoldsAwarded: 100, // Welcome bonus
       message: 'Welcome to ScrollUniversity! Your journey to transform nations begins now.'
     };
 
@@ -316,7 +316,7 @@ router.post('/enroll', async (req: Request, res: Response) => {
       enrollmentDate: new Date().toISOString(),
       status: 'active',
       progress: 0,
-      scrollCoinsAwarded: 50, // Enrollment bonus
+      scrollGoldsAwarded: 50, // Enrollment bonus
       nextSteps: [
         'Complete course introduction module',
         'Meet your AI tutor',

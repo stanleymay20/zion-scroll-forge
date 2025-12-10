@@ -774,7 +774,7 @@ export class ArchitectureComparisonVisualizationService {
         scrollUniversity: {
           apiCount: 31,
           systemIntegrations: [
-            'HeavenLedger Blockchain', 'ScrollCoin Economy', 'Prophetic AI System',
+            'HeavenLedger Blockchain', 'ScrollGold Economy', 'Prophetic AI System',
             'XR Learning Environment', 'Global Mesh Network', 'Spiritual Formation Tracker',
             'Assessment Engine', 'Career Pathway System', 'Community Platform',
             'Research Engine', 'Admissions System', 'Accreditation Framework'
@@ -785,7 +785,7 @@ export class ArchitectureComparisonVisualizationService {
           ],
           blockchainFeatures: [
             'Immutable credentials', 'Smart contracts', 'Decentralized identity',
-            'ScrollCoin transactions', 'Prophetic validation', 'Global verification'
+            'ScrollGold transactions', 'Prophetic validation', 'Global verification'
           ],
           integrationPatterns: [
             'API Gateway', 'Event-driven architecture', 'Microservices',

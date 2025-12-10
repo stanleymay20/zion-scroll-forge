@@ -27,7 +27,7 @@ export class AdmissionsTestConfiguration {
           'student-profile',
           'assessment-engine',
           'university-portal',
-          'scrollcoin',
+          'scrollgold',
           'prayer',
           'audit-trail'
         ],

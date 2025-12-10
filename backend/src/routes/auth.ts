@@ -128,7 +128,7 @@ router.post('/register', async (req, res, next) => {
         role: 'STUDENT',
         enrollmentStatus: 'ACTIVE',
         academicLevel: 'SCROLL_OPEN',
-        scrollCoinBalance: 10.0, // Welcome bonus
+        ScrollGoldBalance: 10.0, // Welcome bonus
         scrollAlignment: 0.1 // Starting alignment
       },
       select: {
@@ -138,14 +138,14 @@ router.post('/register', async (req, res, next) => {
         firstName: true,
         lastName: true,
         role: true,
-        scrollCoinBalance: true,
+        ScrollGoldBalance: true,
         scrollAlignment: true,
         createdAt: true
       }
     });
     
-    // Award welcome ScrollCoin
-    await prisma.scrollCoinTransaction.create({
+    // Award welcome ScrollGold
+    await prisma.ScrollGoldTransaction.create({
       data: {
         userId: newUser.id,
         amount: 10.0,
@@ -204,7 +204,7 @@ router.post('/login', async (req, res, next) => {
         lastName: true,
         role: true,
         enrollmentStatus: true,
-        scrollCoinBalance: true,
+        ScrollGoldBalance: true,
         scrollAlignment: true,
         lastLoginAt: true
       }

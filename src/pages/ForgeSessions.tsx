@@ -45,7 +45,7 @@ const ForgeSessions = () => {
     },
     {
       id: 3,
-      name: "ScrollCoin Economic Model Review",
+      name: "ScrollGold Economic Model Review",
       description: "Analyzing and optimizing the token economy",
       status: "Completed",
       type: "Analysis",

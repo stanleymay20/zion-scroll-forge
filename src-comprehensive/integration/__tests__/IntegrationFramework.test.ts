@@ -30,7 +30,7 @@ describe('ScrollUniversity Integration Framework', () => {
         'scroll-university-platform',
         'scroll-student-profile-spec',
         'scroll-course-spec',
-        'scroll-scrollcoin-meter',
+        'scroll-scrollgold-meter',
         'scroll-faculty-ai',
         'scroll-assessment-engine',
         'scroll-projects-spec',
@@ -242,7 +242,7 @@ describe('ScrollUniversity Integration Framework', () => {
         'scroll-university-platform',
         'scroll-student-profile-spec',
         'scroll-course-spec',
-        'scroll-scrollcoin-meter'
+        'scroll-scrollgold-meter'
       ];
 
       for (const systemName of systems) {

@@ -64,7 +64,7 @@ class CompetitiveAnalysisMatrixService {
         advantage: 'scrolluniversity',
         keyDifferentiators: [
           'HeavenLedger blockchain foundation',
-          'ScrollCoin economy',
+          'ScrollGold economy',
           'Immutable credential verification',
           'Smart contract automation'
         ]
@@ -281,7 +281,7 @@ class CompetitiveAnalysisMatrixService {
       'Emphasize blockchain credentialing system in marketing materials',
       'Expand global accessibility features to underserved markets',
       'Develop partnerships to enhance XR learning capabilities',
-      'Create case studies showcasing ScrollCoin economic model success',
+      'Create case studies showcasing ScrollGold economic model success',
       'Build community around kingdom-focused collaborative projects'
     ];
 

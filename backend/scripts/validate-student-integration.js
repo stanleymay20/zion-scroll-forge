@@ -24,7 +24,7 @@ async function validateStudentIntegration() {
                 phoneNumber: '+1234567890',
                 role: client_1.UserRole.STUDENT,
                 academicLevel: client_1.AcademicLevel.SCROLL_OPEN,
-                scrollCoinBalance: 0.0,
+                ScrollGoldBalance: 0.0,
                 workTradeCredits: 0.0
             }
         });
@@ -212,7 +212,7 @@ async function validateStudentIntegration() {
         console.log(`   - Role: ${updatedUser.role}`);
         console.log(`   - Academic Level: ${updatedUser.academicLevel}`);
         console.log(`   - Scroll Calling: ${updatedUser.scrollCalling}`);
-        console.log(`   - ScrollCoin Balance: ${updatedUser.scrollCoinBalance}\n`);
+        console.log(`   - ScrollGold Balance: ${updatedUser.ScrollGoldBalance}\n`);
         console.log('📚 Test 6: Testing enrollment initialization...');
         const enrollmentData = {
             programType: 'SCROLL_DEGREE',
@@ -319,7 +319,7 @@ async function validateStudentIntegration() {
                 lastName: 'Test',
                 role: client_1.UserRole.STUDENT,
                 academicLevel: client_1.AcademicLevel.SCROLL_OPEN,
-                scrollCoinBalance: 0.0,
+                ScrollGoldBalance: 0.0,
                 workTradeCredits: 0.0
             }
         });

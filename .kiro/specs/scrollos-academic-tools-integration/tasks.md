@@ -25,7 +25,7 @@ The implementation follows a modular approach, starting with core infrastructure
 
   - Create TypeScript interfaces for tool manifests and configurations
   - Build dynamic manifest loading system with validation
-  - Implement tool categorization by academic discipline
+-  - Implement tool categorization by academic discipline
   - _Requirements: 8.1, 8.5_
 
 - [x] 1.2 Write property test for tool manifest loading

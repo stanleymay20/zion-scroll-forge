@@ -133,8 +133,8 @@ export const FinancialAnalyticsDashboard: React.FC = () => {
         />
         <MetricCard
           metric={{
-            name: 'ScrollCoin Volume',
-            value: analytics.scrollCoinMetrics.transactionVolume,
+            name: 'ScrollGold Volume',
+            value: analytics.ScrollGoldMetrics.transactionVolume,
             change: 18.3,
             trend: 'up',
             unit: '',
@@ -201,7 +201,7 @@ export const FinancialAnalyticsDashboard: React.FC = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Coins className="h-5 w-5" />
-              ScrollCoin Metrics
+              ScrollGold Metrics
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -209,25 +209,25 @@ export const FinancialAnalyticsDashboard: React.FC = () => {
               <div>
                 <p className="text-sm text-muted-foreground">Total Minted</p>
                 <p className="text-2xl font-bold">
-                  {analytics.scrollCoinMetrics.totalMinted.toLocaleString()}
+                  {analytics.ScrollGoldMetrics.totalMinted.toLocaleString()}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Total Burned</p>
                 <p className="text-2xl font-bold">
-                  {analytics.scrollCoinMetrics.totalBurned.toLocaleString()}
+                  {analytics.ScrollGoldMetrics.totalBurned.toLocaleString()}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Circulating Supply</p>
                 <p className="text-2xl font-bold text-blue-600">
-                  {analytics.scrollCoinMetrics.circulatingSupply.toLocaleString()}
+                  {analytics.ScrollGoldMetrics.circulatingSupply.toLocaleString()}
                 </p>
               </div>
               <div>
                 <p className="text-sm text-muted-foreground">Avg Balance</p>
                 <p className="text-2xl font-bold">
-                  {analytics.scrollCoinMetrics.averageBalance.toLocaleString()}
+                  {analytics.ScrollGoldMetrics.averageBalance.toLocaleString()}
                 </p>
               </div>
             </div>

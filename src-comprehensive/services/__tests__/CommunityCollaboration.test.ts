@@ -50,7 +50,7 @@ describe('CommunityCollaborationService', () => {
         studyGroups: [],
         projects: [],
         connections: [],
-        scrollCoinBalance: 150,
+        scrollGoldBalance: 150,
         communityRank: 'Active Contributor',
         spiritualImpact: { level: 'Growing', kingdomImpactScore: 0.6 },
         recentActivity: []
@@ -65,7 +65,7 @@ describe('CommunityCollaborationService', () => {
       expect(dashboard).toHaveProperty('studyGroups');
       expect(dashboard).toHaveProperty('projects');
       expect(dashboard).toHaveProperty('connections');
-      expect(dashboard).toHaveProperty('scrollCoinBalance');
+      expect(dashboard).toHaveProperty('scrollGoldBalance');
       expect(dashboard).toHaveProperty('communityRank');
       expect(dashboard).toHaveProperty('spiritualImpact');
       expect(dashboard).toHaveProperty('recentActivity');
@@ -210,14 +210,14 @@ describe('CommunityCollaborationService', () => {
       expect(analytics).toHaveProperty('activeMentorships');
       expect(analytics).toHaveProperty('activeStudyGroups');
       expect(analytics).toHaveProperty('activeProjects');
-      expect(analytics).toHaveProperty('scrollCoinsDistributed');
+      expect(analytics).toHaveProperty('scrollGoldsDistributed');
       expect(analytics).toHaveProperty('spiritualImpactMetrics');
       expect(analytics).toHaveProperty('globalReach');
       expect(analytics).toHaveProperty('peerAssistanceStats');
       
       expect(typeof analytics.totalUsers).toBe('number');
       expect(typeof analytics.activeForums).toBe('number');
-      expect(typeof analytics.scrollCoinsDistributed).toBe('number');
+      expect(typeof analytics.scrollGoldsDistributed).toBe('number');
     });
   });
 });

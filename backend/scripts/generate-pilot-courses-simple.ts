@@ -33,7 +33,7 @@ const PILOT_COURSES: PilotCourse[] = [
   
   // Economics Faculty
   { code: 'ECON101', title: 'Kingdom Economics Foundations', faculty: 'ScrollEconomy & Financial Reformation', level: 100, description: 'Introduction to biblical economic principles.', credits: 3 },
-  { code: 'ECON201', title: 'ScrollCoin & Digital Currency Systems', faculty: 'ScrollEconomy & Financial Reformation', level: 200, description: 'Intermediate course on cryptocurrency and blockchain.', credits: 4 },
+  { code: 'ECON201', title: 'ScrollGold & Digital Currency Systems', faculty: 'ScrollEconomy & Financial Reformation', level: 200, description: 'Intermediate course on cryptocurrency and blockchain.', credits: 4 },
   { code: 'ECON301', title: 'Global Trade & Kingdom Commerce', faculty: 'ScrollEconomy & Financial Reformation', level: 300, description: 'Advanced study of international trade.', credits: 4 },
   { code: 'ECON401', title: 'AI Trading & Financial Technology', faculty: 'ScrollEconomy & Financial Reformation', level: 400, description: 'Strategic course on AI-powered trading systems.', credits: 4 }
 ];

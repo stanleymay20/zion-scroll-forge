@@ -153,7 +153,7 @@ npx ts-node scripts/test-onboarding-flow.ts
 ### Step 4: Platform Tour
 - **Type**: Interactive
 - **Required**: Yes
-- **Features**: Dashboard, courses, AI tutor, community, spiritual formation, ScrollCoin
+- **Features**: Dashboard, courses, AI tutor, community, spiritual formation, ScrollGold
 - **Route**: `/onboarding/tour`
 
 ### Step 5: Choose Your First Course
@@ -174,11 +174,11 @@ npx ts-node scripts/test-onboarding-flow.ts
 - **Content**: Introduction template
 - **Route**: `/community`
 
-### Step 8: Understanding ScrollCoin
+### Step 8: Understanding ScrollGold
 - **Type**: Tutorial
 - **Required**: No
 - **Topics**: Earning, spending, wallet management
-- **Route**: `/scrollcoin/tutorial`
+- **Route**: `/ScrollGold/tutorial`
 
 ### Step 9: Set Up Spiritual Formation
 - **Type**: Setup
@@ -189,7 +189,7 @@ npx ts-node scripts/test-onboarding-flow.ts
 ### Step 10: Onboarding Complete
 - **Type**: Celebration
 - **Required**: Yes
-- **Reward**: 100 ScrollCoins + Onboarding Badge
+- **Reward**: 100 ScrollGolds + Onboarding Badge
 - **Route**: `/dashboard`
 
 ---
@@ -197,17 +197,17 @@ npx ts-node scripts/test-onboarding-flow.ts
 ## 💰 Rewards System
 
 ### Onboarding Completion
-- **ScrollCoins**: 100
+- **ScrollGolds**: 100
 - **Badge**: "Onboarding Complete"
 - **Unlock**: Full platform access
 
 ### Orientation Completion
-- **ScrollCoins**: 50
+- **ScrollGolds**: 50
 - **Certificate**: Orientation Certificate
 - **Unlock**: Advanced features
 
 ### First Course Enrollment
-- **ScrollCoins**: Varies by course
+- **ScrollGolds**: Varies by course
 - **ScrollXP**: Based on course completion
 - **Unlock**: Learning journey begins
 
@@ -269,7 +269,7 @@ npx ts-node scripts/test-onboarding-flow.ts
 - `/onboarding/tour` - Platform tour
 - `/advisor` - Academic advisor
 - `/community` - Community feed
-- `/scrollcoin/tutorial` - ScrollCoin tutorial
+- `/ScrollGold/tutorial` - ScrollGold tutorial
 - `/spiritual-formation/setup` - Spiritual formation setup
 
 ### Backend APIs
@@ -284,7 +284,7 @@ npx ts-node scripts/test-onboarding-flow.ts
 - `Enrollment` - Course enrollments
 - `UserPreferences` - Onboarding/orientation progress
 - `Mentorship` - Advisor assignments
-- `ScrollCoinTransaction` - Reward tracking
+- `ScrollGoldTransaction` - Reward tracking
 - `Payment` - Payment processing
 
 ---
@@ -410,8 +410,8 @@ Returns:
 - **Check**: Console for API errors
 
 **Issue**: Rewards not awarded
-- **Solution**: Check ScrollCoin transaction logs
-- **Check**: Database `ScrollCoinTransaction` table
+- **Solution**: Check ScrollGold transaction logs
+- **Check**: Database `ScrollGoldTransaction` table
 
 **Issue**: Advisor not assigned
 - **Solution**: Ensure faculty users exist

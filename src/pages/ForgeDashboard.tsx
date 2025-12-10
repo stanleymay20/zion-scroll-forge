@@ -204,7 +204,7 @@ const ForgeDashboard = () => {
                 {[
                   { name: "Scroll University Architecture", author: "System Team", time: "2 hours ago", status: "Updated" },
                   { name: "AI Tutor Specification", author: "AI Team", time: "1 day ago", status: "Draft" },
-                  { name: "ScrollCoin Economic Model", author: "Economics Team", time: "3 days ago", status: "Published" }
+                  { name: "ScrollGold Economic Model", author: "Economics Team", time: "3 days ago", status: "Published" }
                 ].map((spec, index) => (
                   <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
                     <div className="flex items-center gap-3">

@@ -1,0 +1,37 @@
+﻿# How to Download Your Database
+
+## Quick Start (3 Steps)
+
+### Step 1: Start Docker Desktop
+- Open Docker Desktop application
+- Wait until it's fully running (whale icon steady in system tray)
+
+### Step 2: Run the Download Script
+```powershell
+.\DOWNLOAD-DATABASE-COMPLETE.ps1
+```
+
+### Step 3: Find Your Data
+- Look in: database-backups\backup-[timestamp]\
+- Files: database-full.sql and database-data.json
+
+## What You Get
+
+ Complete SQL dump (can restore anywhere)
+ JSON export (easy to read/analyze)
+ All tables and data
+ README with restore instructions
+
+## Troubleshooting
+
+**Docker not running?**
+Start Docker Desktop first, then run the script.
+
+**Supabase not running?**
+The script will start it automatically.
+
+**Need help?**
+Check: database-backups\backup-[timestamp]\README.md
+
+---
+Your data is precious. Back it up regularly!

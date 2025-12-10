@@ -153,7 +153,7 @@ export const ComprehensiveCourseCard: React.FC<ComprehensiveCourseCardProps> = (
                 </div>
                 <div className="flex items-center gap-1">
                   <Star className="h-3 w-3" />
-                  <span>{enrollment.total_scrollcoin_earned} Coins</span>
+                  <span>{enrollment.total_scrollgold_earned} Coins</span>
                 </div>
               </div>
             )}
@@ -265,7 +265,7 @@ export const ComprehensiveCourseCard: React.FC<ComprehensiveCourseCardProps> = (
               </span>
               <span className="flex items-center gap-1">
                 <Star className="h-3 w-3" />
-                {course.milestone_rewards.find(r => r.percentage === 100)?.scrollcoin_reward || 0} Coins
+                {course.milestone_rewards.find(r => r.percentage === 100)?.scrollgold_reward || 0} Coins
               </span>
             </div>
           </div>

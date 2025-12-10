@@ -25,7 +25,7 @@ const privacySchema = z.object({
   showDateOfBirth: z.boolean(),
   showCourseProgress: z.boolean(),
   showAchievements: z.boolean(),
-  showScrollCoinBalance: z.boolean(),
+  showScrollGoldBalance: z.boolean(),
   showSpiritualGrowth: z.boolean(),
   allowMessagesFrom: z.enum(["everyone", "connections", "nobody"]),
   allowFriendRequests: z.boolean(),
@@ -71,7 +71,7 @@ export function PrivacySettings() {
       showDateOfBirth: settings?.showDateOfBirth ?? false,
       showCourseProgress: settings?.showCourseProgress ?? true,
       showAchievements: settings?.showAchievements ?? true,
-      showScrollCoinBalance: settings?.showScrollCoinBalance ?? false,
+      showScrollGoldBalance: settings?.showScrollGoldBalance ?? false,
       showSpiritualGrowth: settings?.showSpiritualGrowth ?? true,
       allowMessagesFrom: settings?.allowMessagesFrom || "everyone",
       allowFriendRequests: settings?.allowFriendRequests ?? true,
@@ -242,13 +242,13 @@ export function PrivacySettings() {
               </div>
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <Label htmlFor="showScrollCoinBalance">Show ScrollCoin Balance</Label>
+                  <Label htmlFor="showScrollGoldBalance">Show ScrollGold Balance</Label>
                   <p className="text-sm text-muted-foreground">Display your wallet balance</p>
                 </div>
                 <Switch
-                  id="showScrollCoinBalance"
-                  checked={watch("showScrollCoinBalance")}
-                  onCheckedChange={(checked) => setValue("showScrollCoinBalance", checked)}
+                  id="showScrollGoldBalance"
+                  checked={watch("showScrollGoldBalance")}
+                  onCheckedChange={(checked) => setValue("showScrollGoldBalance", checked)}
                 />
               </div>
               <div className="flex items-center justify-between">

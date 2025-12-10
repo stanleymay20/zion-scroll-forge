@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.55% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/162</span>
+                <span class='fraction'>0/162</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.55% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/18</span>
+                <span class='fraction'>0/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.62% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/160</span>
+                <span class='fraction'>0/160</span>
             </div>
         
             
@@ -629,11 +629,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -656,16 +656,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1185,16 +1185,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">/**
+<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * ScrollUniversity Production Health Check Service
  * "Beloved, I pray that you may prosper in all things and be in health" - 3 John 1:2
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
-import { cacheService } from './CacheService';
-import { logger, HealthMonitor } from '../utils/productionLogger';
-import os from 'os';
-import fs from 'fs/promises';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
+<span class="cstat-no" title="statement not covered" >import { cacheService } from './CacheService';</span>
+<span class="cstat-no" title="statement not covered" >import { logger, HealthMonitor } from '../utils/productionLogger';</span>
+<span class="cstat-no" title="statement not covered" >import os from 'os';</span>
+<span class="cstat-no" title="statement not covered" >import fs from 'fs/promises';</span>
 &nbsp;
 export interface HealthStatus {
   status: 'healthy' | 'unhealthy' | 'degraded';
@@ -1217,16 +1217,16 @@ export interface HealthCheckResult {
   details?: any;
 }
 &nbsp;
-export class HealthCheckService {
+<span class="cstat-no" title="statement not covered" >export class H</span>ealthCheckService {
   private prisma: PrismaClient;
-  private readonly thresholds = {
+  private readonly <span class="cstat-no" title="statement not covered" >thresholds = {</span>
     memory: 0.9, // 90% memory usage threshold
     disk: 0.9,   // 90% disk usage threshold
     responseTime: 5000 // 5 second response time threshold
   };
 &nbsp;
-  constructor() {
-    this.prisma = new PrismaClient();
+<span class="fstat-no" title="function not covered" >  constructor() {</span>
+<span class="cstat-no" title="statement not covered" >    this.prisma = new PrismaClient();</span>
   }
 &nbsp;
   /**
@@ -1746,14 +1746,14 @@ export class HealthCheckService {
   }
 }
 &nbsp;
-export const healthCheckService = new HealthCheckService();</pre></td></tr></table></pre>
+export const <span class="cstat-no" title="statement not covered" >healthCheckService = new HealthCheckService();</span></pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:09.019Z
+                at 2025-12-02T16:54:11.658Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

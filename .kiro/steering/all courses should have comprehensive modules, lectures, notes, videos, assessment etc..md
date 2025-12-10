@@ -58,7 +58,7 @@ interface CourseModule {
 - Automated grading via `AIGradingService` where appropriate
 - Rubrics with clear evaluation criteria
 - Immediate feedback and learning recommendations
-- Integration with `ScrollCoin` reward system
+- Integration with `ScrollGold` reward system
 
 #### Practical Assignments
 - Real-world application opportunities
@@ -113,7 +113,7 @@ Track comprehensive metrics including:
 - Spiritual growth indicators
 - Community interaction levels
 - Career pathway progression
-- ScrollCoin earning patterns
+- ScrollGold earning patterns
 
 ### Compliance Requirements
 - FERPA compliance for all student data

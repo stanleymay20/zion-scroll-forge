@@ -49,7 +49,7 @@
 **Missing Components**: deployment_pathways.md
 
 ### ⚠️ COURSE_ECON201
-**Course Name**: ScrollCoin & Digital Currency Systems
+**Course Name**: ScrollGold & Digital Currency Systems
 **Status**: INCOMPLETE
 **Content Stats**:
 - Modules: 0

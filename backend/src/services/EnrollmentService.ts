@@ -73,8 +73,8 @@ export class EnrollmentService {
       }
 
       // Process payment if required
-      if (course.scrollCoinCost > 0) {
-        await this.processEnrollmentPayment(request, course.scrollCoinCost);
+      if (course.ScrollGoldCost > 0) {
+        await this.processEnrollmentPayment(request, course.ScrollGoldCost);
       }
 
       // Calculate expiration date (1 year from now)
@@ -121,30 +121,30 @@ export class EnrollmentService {
     request: EnrollmentRequest,
     amount: number
   ): Promise<void> {
-    const paymentMethod = request.paymentMethod || 'scroll_coin';
+    const paymentMethod = request.paymentMethod || 'scroll_gold';
 
-    if (paymentMethod === 'scroll_coin') {
+    if (paymentMethod === 'scroll_gold') {
       // Check user balance
       const user = await prisma.user.findUnique({
         where: { id: request.userId }
       });
 
-      if (!user || user.scrollCoinBalance < amount) {
-        throw new Error('Insufficient ScrollCoin balance');
+      if (!user || user.ScrollGoldBalance < amount) {
+        throw new Error('Insufficient ScrollGold balance');
       }
 
-      // Deduct ScrollCoin
+      // Deduct ScrollGold
       await prisma.user.update({
         where: { id: request.userId },
         data: {
-          scrollCoinBalance: {
+          ScrollGoldBalance: {
             decrement: amount
           }
         }
       });
 
       // Record transaction
-      await prisma.scrollCoinTransaction.create({
+      await prisma.ScrollGoldTransaction.create({
         data: {
           userId: request.userId,
           amount: -amount,
@@ -172,7 +172,7 @@ export class EnrollmentService {
         data: {
           userId: request.userId,
           amount: amount,
-          currency: 'ScrollCoin',
+          currency: 'ScrollGold',
           method: 'SCHOLARSHIP',
           description: `Scholarship payment for course enrollment`,
           status: 'COMPLETED'
@@ -310,8 +310,8 @@ export class EnrollmentService {
         if (enrollment) {
           updateData.scrollXPEarned = enrollment.course.scrollXPReward;
 
-          // Award ScrollCoin bonus
-          await prisma.scrollCoinTransaction.create({
+          // Award ScrollGold bonus
+          await prisma.ScrollGoldTransaction.create({
             data: {
               userId: enrollment.userId,
               amount: enrollment.course.scrollXPReward,
@@ -325,7 +325,7 @@ export class EnrollmentService {
           await prisma.user.update({
             where: { id: enrollment.userId },
             data: {
-              scrollCoinBalance: {
+              ScrollGoldBalance: {
                 increment: enrollment.course.scrollXPReward
               }
             }

@@ -1,5 +1,5 @@
 /**
- * RewardService - ScrollCoin and XP management for ScrollProjectsSpec
+ * RewardService - ScrollGold and XP management for ScrollProjectsSpec
  * Handles reward calculations, distribution, and usage tracking
  */
 
@@ -20,13 +20,13 @@ export interface XPTrackerIntegration {
   getStudentXP(studentId: string): Promise<number>;
 }
 
-export interface ScrollCoinIntegration {
-  transferScrollCoin(fromAccount: string, toAccount: string, amount: number, reason: string): Promise<boolean>;
+export interface ScrollGoldIntegration {
+  transferScrollGold(fromAccount: string, toAccount: string, amount: number, reason: string): Promise<boolean>;
   getAccountBalance(accountId: string): Promise<number>;
-  createTransaction(transaction: ScrollCoinTransaction): Promise<string>;
+  createTransaction(transaction: ScrollGoldTransaction): Promise<string>;
 }
 
-export interface ScrollCoinTransaction {
+export interface ScrollGoldTransaction {
   transaction_id: string;
   from_account: string;
   to_account: string;
@@ -40,16 +40,16 @@ export interface ScrollCoinTransaction {
 
 export class RewardService {
   private xpTracker: XPTrackerIntegration;
-  private scrollCoinService: ScrollCoinIntegration;
+  private ScrollGoldService: ScrollGoldIntegration;
   private rewardConfig: RewardConfiguration;
 
   constructor(
     xpTracker: XPTrackerIntegration,
-    scrollCoinService: ScrollCoinIntegration,
+    ScrollGoldService: ScrollGoldIntegration,
     config?: Partial<RewardConfiguration>
   ) {
     this.xpTracker = xpTracker;
-    this.scrollCoinService = scrollCoinService;
+    this.ScrollGoldService = ScrollGoldService;
     this.rewardConfig = { ...this.getDefaultRewardConfig(), ...config };
   }
 
@@ -113,14 +113,14 @@ export class RewardService {
       }
 
       // Calculate totals
-      const totalScrollCoin = breakdown.reduce((sum, item) => sum + item.amount, 0);
-      const xpAwarded = Math.floor(totalScrollCoin * this.rewardConfig.scrollCoinToXPRatio);
+      const totalScrollGold = breakdown.reduce((sum, item) => sum + item.amount, 0);
+      const xpAwarded = Math.floor(totalScrollGold * this.rewardConfig.ScrollGoldToXPRatio);
 
       return {
-        base_scrollcoin: baseReward,
+        base_ScrollGold: baseReward,
         impact_bonus: impactBonus,
         mentor_bonus: mentorBonus,
-        total_scrollcoin: totalScrollCoin,
+        total_ScrollGold: totalScrollGold,
         xp_awarded: xpAwarded,
         calculation_details: breakdown
       };
@@ -135,31 +135,31 @@ export class RewardService {
    */
   async distributeRewards(studentId: string, rewards: RewardCalculation): Promise<void> {
     try {
-      // Create ScrollCoin transaction
-      const transaction: ScrollCoinTransaction = {
+      // Create ScrollGold transaction
+      const transaction: ScrollGoldTransaction = {
         transaction_id: uuidv4(),
         from_account: 'scroll_university_rewards',
         to_account: studentId,
-        amount: rewards.total_scrollcoin,
+        amount: rewards.total_ScrollGold,
         transaction_type: 'reward',
-        description: `Project completion rewards: ${rewards.total_scrollcoin} ScrollCoin`,
+        description: `Project completion rewards: ${rewards.total_ScrollGold} ScrollGold`,
         timestamp: new Date()
       };
 
-      // Transfer ScrollCoin
-      const scrollCoinSuccess = await this.scrollCoinService.transferScrollCoin(
+      // Transfer ScrollGold
+      const ScrollGoldSuccess = await this.ScrollGoldService.transferScrollGold(
         transaction.from_account,
         transaction.to_account,
         transaction.amount,
         transaction.description
       );
 
-      if (!scrollCoinSuccess) {
-        throw new Error('ScrollCoin transfer failed');
+      if (!ScrollGoldSuccess) {
+        throw new Error('ScrollGold transfer failed');
       }
 
       // Record transaction
-      await this.scrollCoinService.createTransaction(transaction);
+      await this.ScrollGoldService.createTransaction(transaction);
 
       // Update XP
       const xpSuccess = await this.xpTracker.updateStudentXP(
@@ -220,9 +220,9 @@ export class RewardService {
   }
 
   /**
-   * Updates ScrollCoin earnings for a project
+   * Updates ScrollGold earnings for a project
    */
-  async updateScrollCoinEarnings(projectId: string, earnings: number): Promise<void> {
+  async updateScrollGoldEarnings(projectId: string, earnings: number): Promise<void> {
     try {
       // Load project to get student ID
       const project = await this.loadProject(projectId);
@@ -231,7 +231,7 @@ export class RewardService {
       }
 
       // Create earnings transaction
-      const transaction: ScrollCoinTransaction = {
+      const transaction: ScrollGoldTransaction = {
         transaction_id: uuidv4(),
         from_account: 'marketplace_revenue',
         to_account: project.student_id,
@@ -243,7 +243,7 @@ export class RewardService {
       };
 
       // Transfer earnings
-      const success = await this.scrollCoinService.transferScrollCoin(
+      const success = await this.ScrollGoldService.transferScrollGold(
         transaction.from_account,
         transaction.to_account,
         transaction.amount,
@@ -255,14 +255,14 @@ export class RewardService {
       }
 
       // Record transaction
-      await this.scrollCoinService.createTransaction(transaction);
+      await this.ScrollGoldService.createTransaction(transaction);
 
       // Update project earnings
-      project.scrollcoin_earned += earnings;
+      project.ScrollGold_earned += earnings;
       await this.saveProject(project);
 
     } catch (error) {
-      throw new Error(`Failed to update ScrollCoin earnings: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw new Error(`Failed to update ScrollGold earnings: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -289,15 +289,15 @@ export class RewardService {
    * Gets reward history for a student
    */
   async getStudentRewardHistory(studentId: string): Promise<{
-    total_scrollcoin_earned: number;
+    total_ScrollGold_earned: number;
     total_xp_earned: number;
-    recent_transactions: ScrollCoinTransaction[];
+    recent_transactions: ScrollGoldTransaction[];
     reward_breakdown_by_project: Record<string, number>;
   }> {
     try {
       // This would integrate with actual transaction history
       const transactions = await this.loadStudentTransactions(studentId);
-      const totalScrollCoin = transactions.reduce((sum, tx) => sum + tx.amount, 0);
+      const totalScrollGold = transactions.reduce((sum, tx) => sum + tx.amount, 0);
       const totalXP = await this.xpTracker.getStudentXP(studentId);
 
       const recentTransactions = transactions
@@ -312,7 +312,7 @@ export class RewardService {
       });
 
       return {
-        total_scrollcoin_earned: totalScrollCoin,
+        total_ScrollGold_earned: totalScrollGold,
         total_xp_earned: totalXP,
         recent_transactions: recentTransactions,
         reward_breakdown_by_project: projectBreakdown
@@ -320,7 +320,7 @@ export class RewardService {
     } catch (error) {
       console.error(`Failed to get reward history for student ${studentId}:`, error);
       return {
-        total_scrollcoin_earned: 0,
+        total_ScrollGold_earned: 0,
         total_xp_earned: 0,
         recent_transactions: [],
         reward_breakdown_by_project: {}
@@ -469,14 +469,14 @@ export class RewardService {
       rewards += Math.floor(metrics.revenue_generated * 0.1);
     }
 
-    return Math.min(rewards, 1000); // Cap at 1000 ScrollCoin per period
+    return Math.min(rewards, 1000); // Cap at 1000 ScrollGold per period
   }
 
   private async distributeUsageRewards(projectId: string, rewards: number, metrics: UsageMetrics): Promise<void> {
     const project = await this.loadProject(projectId);
     if (!project) return;
 
-    const transaction: ScrollCoinTransaction = {
+    const transaction: ScrollGoldTransaction = {
       transaction_id: uuidv4(),
       from_account: 'usage_rewards_pool',
       to_account: project.student_id,
@@ -487,14 +487,14 @@ export class RewardService {
       timestamp: new Date()
     };
 
-    await this.scrollCoinService.transferScrollCoin(
+    await this.ScrollGoldService.transferScrollGold(
       transaction.from_account,
       transaction.to_account,
       transaction.amount,
       transaction.description
     );
 
-    await this.scrollCoinService.createTransaction(transaction);
+    await this.ScrollGoldService.createTransaction(transaction);
   }
 
   private getDefaultRewardConfig(): RewardConfiguration {
@@ -502,7 +502,7 @@ export class RewardService {
       baseProjectReward: 500,
       baseMilestoneReward: 100,
       impactBonusBase: 200,
-      scrollCoinToXPRatio: 2.0,
+      ScrollGoldToXPRatio: 2.0,
       maxDailyRewards: 2000,
       usageRewardMultiplier: 1.0
     };
@@ -510,7 +510,7 @@ export class RewardService {
 
   private async logRewardDistribution(studentId: string, rewards: RewardCalculation, transactionId: string): Promise<void> {
     // Placeholder for logging reward distribution
-    console.log(`Distributed ${rewards.total_scrollcoin} ScrollCoin and ${rewards.xp_awarded} XP to student ${studentId}`);
+    console.log(`Distributed ${rewards.total_ScrollGold} ScrollGold and ${rewards.xp_awarded} XP to student ${studentId}`);
   }
 
   // Database integration methods (placeholders)
@@ -531,7 +531,7 @@ export class RewardService {
     return {};
   }
 
-  private async loadStudentTransactions(studentId: string): Promise<ScrollCoinTransaction[]> {
+  private async loadStudentTransactions(studentId: string): Promise<ScrollGoldTransaction[]> {
     // Placeholder - would integrate with transaction database
     console.log(`Loading transactions for student ${studentId}`);
     return [];
@@ -542,7 +542,7 @@ interface RewardConfiguration {
   baseProjectReward: number;
   baseMilestoneReward: number;
   impactBonusBase: number;
-  scrollCoinToXPRatio: number;
+  ScrollGoldToXPRatio: number;
   maxDailyRewards: number;
   usageRewardMultiplier: number;
 }

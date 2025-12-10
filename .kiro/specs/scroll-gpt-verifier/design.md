@@ -297,15 +297,15 @@ graph TB
 
 ### Validation Services
 - **Basic Validation:** Included in all AI interactions (no additional cost)
-- **Detailed Analysis:** 5 ScrollCoins for comprehensive validation reports
-- **Human Review:** 15 ScrollCoins for expert human validation when needed
-- **Priority Validation:** 10 ScrollCoins for expedited validation processing
+- **Detailed Analysis:** 5 ScrollGolds for comprehensive validation reports
+- **Human Review:** 15 ScrollGolds for expert human validation when needed
+- **Priority Validation:** 10 ScrollGolds for expedited validation processing
 
 ### Quality Contributions
-- **Accurate Feedback:** Users earn 2 ScrollCoins for validated correction suggestions
-- **Quality Reports:** 5 ScrollCoins for identifying significant validation issues
-- **System Improvement:** 10 ScrollCoins for contributions that enhance validation accuracy
-- **Expert Validation:** Human validators earn 25 ScrollCoins per complex review
+- **Accurate Feedback:** Users earn 2 ScrollGolds for validated correction suggestions
+- **Quality Reports:** 5 ScrollGolds for identifying significant validation issues
+- **System Improvement:** 10 ScrollGolds for contributions that enhance validation accuracy
+- **Expert Validation:** Human validators earn 25 ScrollGolds per complex review
 
 ### Performance Incentives
 - **High Accuracy:** System earns efficiency points for maintaining validation accuracy above 95%

@@ -92,7 +92,7 @@ export class StripePaymentService {
         throw new Error('User not found');
       }
 
-      let customerId = user.scrollCoinWallet; // Reusing this field temporarily for Stripe customer ID
+      let customerId = user.scrollGoldWallet; // Reusing this field temporarily for Stripe customer ID
       
       if (!customerId) {
         const customer = await this.stripe.customers.create({
@@ -107,7 +107,7 @@ export class StripePaymentService {
         // Update user with customer ID
         await prisma.user.update({
           where: { id: user.id },
-          data: { scrollCoinWallet: customerId },
+          data: { scrollGoldWallet: customerId },
         });
       }
 
@@ -158,11 +158,24 @@ export class StripePaymentService {
   }
 
   /**
-   * Create a subscription for recurring payments
+   * Create a subscription for recurring payments with full tier support
+   * Supports: FREE_TIER, ALL_ACCESS_MONTHLY, ALL_ACCESS_YEARLY, ELITE_LEADERSHIP, INSTITUTIONAL
    */
   async createSubscription(request: CreateSubscriptionRequest): Promise<SubscriptionResponse> {
+    this.ensureConfigured();
     try {
-      logger.info('Creating subscription', { userId: request.userId, priceId: request.priceId });
+      logger.info('Creating subscription', { 
+        userId: request.userId, 
+        tier: request.tier,
+        priceId: request.priceId 
+      });
+
+      // Import billing config
+      const { PRODUCT_CONFIGS, getProductConfig } = await import('../config/billing.config');
+      const { SubscriptionTier } = await import('../types/billing.types');
+
+      // Get product configuration for the tier
+      const productConfig = getProductConfig(request.tier);
 
       // Get user and customer
       const user = await prisma.user.findUnique({
@@ -173,7 +186,7 @@ export class StripePaymentService {
         throw new Error('User not found');
       }
 
-      let customerId = user.scrollCoinWallet;
+      let customerId = user.scrollGoldWallet;
       
       if (!customerId) {
         const customer = await this.stripe.customers.create({
@@ -187,8 +200,45 @@ export class StripePaymentService {
         
         await prisma.user.update({
           where: { id: user.id },
-          data: { scrollCoinWallet: customerId },
+          data: { scrollGoldWallet: customerId },
         });
+      }
+
+      // Handle FREE_TIER - no Stripe subscription needed
+      if (request.tier === SubscriptionTier.FREE_TIER) {
+        logger.info('Creating FREE_TIER subscription (no payment required)');
+        
+        // Create subscription record in database only
+        const subscription = await prisma.subscription.create({
+          data: {
+            userId: request.userId,
+            stripeCustomerId: customerId,
+            tier: request.tier,
+            status: 'ACTIVE',
+            amountCents: 0,
+            currency: productConfig.currency,
+            interval: productConfig.interval,
+            aiTutorMinutes: productConfig.features.aiTutorMinutes,
+            courseAccessType: productConfig.features.courseAccessType,
+            hasCertificates: productConfig.features.hasCertificates,
+            hasLabAccess: productConfig.features.hasLabAccess,
+            hasCommunityAccess: productConfig.features.hasCommunityAccess,
+            metadata: request.metadata || {},
+          },
+        });
+
+        return {
+          success: true,
+          subscriptionId: subscription.id,
+          status: 'active',
+          currentPeriodEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year
+          cancelAtPeriodEnd: false,
+        };
+      }
+
+      // For paid tiers, require payment method
+      if (!request.paymentMethodId) {
+        throw new Error('Payment method required for paid subscriptions');
       }
 
       // Attach payment method to customer
@@ -203,34 +253,91 @@ export class StripePaymentService {
         },
       });
 
-      // Create subscription
-      const subscription = await this.stripe.subscriptions.create({
+      // Prepare subscription metadata with tier-specific features
+      const subscriptionMetadata: Record<string, string> = {
+        userId: request.userId,
+        tier: request.tier,
+        aiTutorMinutes: productConfig.features.aiTutorMinutes.toString(),
+        courseAccessType: productConfig.features.courseAccessType,
+        hasCertificates: productConfig.features.hasCertificates.toString(),
+        hasLabAccess: productConfig.features.hasLabAccess.toString(),
+        hasCommunityAccess: productConfig.features.hasCommunityAccess.toString(),
+        ...(request.metadata || {}),
+      };
+
+      // Add ELITE_LEADERSHIP specific features
+      if (request.tier === SubscriptionTier.ELITE_LEADERSHIP) {
+        subscriptionMetadata.hasScrollIntelAccess = 'true';
+        subscriptionMetadata.hasScrollArkAccess = 'true';
+        subscriptionMetadata.hasMentorshipAccess = 'true';
+        subscriptionMetadata.hasEntrepreneurshipStudio = 'true';
+      }
+
+      // Add INSTITUTIONAL specific features
+      if (request.tier === SubscriptionTier.INSTITUTIONAL) {
+        subscriptionMetadata.hasScrollIntelAccess = 'true';
+        subscriptionMetadata.hasScrollArkAccess = 'true';
+        subscriptionMetadata.hasMentorshipAccess = 'true';
+        subscriptionMetadata.hasEntrepreneurshipStudio = 'true';
+        subscriptionMetadata.minSeats = '20';
+        subscriptionMetadata.customPortal = 'true';
+        subscriptionMetadata.dedicatedSupport = 'true';
+      }
+
+      // Create subscription in Stripe
+      const stripeSubscription = await this.stripe.subscriptions.create({
         customer: customerId,
         items: [{ price: request.priceId }],
         payment_behavior: 'default_incomplete',
         payment_settings: { save_default_payment_method: 'on_subscription' },
         expand: ['latest_invoice.payment_intent'],
-        metadata: {
+        metadata: subscriptionMetadata,
+      });
+
+      // Create subscription record in database
+      await prisma.subscription.create({
+        data: {
           userId: request.userId,
-          ...request.metadata,
+          stripeSubscriptionId: stripeSubscription.id,
+          stripeCustomerId: customerId,
+          tier: request.tier,
+          status: stripeSubscription.status.toUpperCase() as any,
+          amountCents: productConfig.amountCents,
+          currency: productConfig.currency,
+          interval: productConfig.interval,
+          currentPeriodStart: new Date(stripeSubscription.current_period_start * 1000),
+          currentPeriodEnd: new Date(stripeSubscription.current_period_end * 1000),
+          aiTutorMinutes: productConfig.features.aiTutorMinutes,
+          courseAccessType: productConfig.features.courseAccessType,
+          hasCertificates: productConfig.features.hasCertificates,
+          hasLabAccess: productConfig.features.hasLabAccess,
+          hasCommunityAccess: productConfig.features.hasCommunityAccess,
+          metadata: subscriptionMetadata,
         },
       });
 
-      logger.info('Subscription created successfully', { subscriptionId: subscription.id });
+      logger.info('Subscription created successfully', { 
+        subscriptionId: stripeSubscription.id,
+        tier: request.tier 
+      });
 
-      const latestInvoice = subscription.latest_invoice as Stripe.Invoice;
+      const latestInvoice = stripeSubscription.latest_invoice as Stripe.Invoice;
       const paymentIntent = latestInvoice?.payment_intent as Stripe.PaymentIntent;
 
       return {
         success: true,
-        subscriptionId: subscription.id,
+        subscriptionId: stripeSubscription.id,
         clientSecret: paymentIntent?.client_secret,
-        status: subscription.status,
-        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-        cancelAtPeriodEnd: subscription.cancel_at_period_end,
+        status: stripeSubscription.status,
+        currentPeriodEnd: new Date(stripeSubscription.current_period_end * 1000),
+        cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
       };
     } catch (error: any) {
-      logger.error('Error creating subscription', { error: error.message, userId: request.userId });
+      logger.error('Error creating subscription', { 
+        error: error.message, 
+        userId: request.userId,
+        tier: request.tier 
+      });
       throw new Error(`Failed to create subscription: ${error.message}`);
     }
   }
@@ -239,6 +346,7 @@ export class StripePaymentService {
    * Update an existing subscription
    */
   async updateSubscription(request: UpdateSubscriptionRequest): Promise<SubscriptionResponse> {
+    this.ensureConfigured();
     try {
       logger.info('Updating subscription', { subscriptionId: request.subscriptionId });
 
@@ -273,6 +381,1141 @@ export class StripePaymentService {
     } catch (error: any) {
       logger.error('Error updating subscription', { error: error.message, subscriptionId: request.subscriptionId });
       throw new Error(`Failed to update subscription: ${error.message}`);
+    }
+  }
+
+  /**
+   * Upgrade subscription tier with prorated billing
+   */
+  async upgradeTier(
+    userId: string,
+    currentTier: string,
+    newTier: string,
+    newPriceId: string
+  ): Promise<SubscriptionResponse> {
+    this.ensureConfigured();
+    try {
+      logger.info('Upgrading subscription tier', { userId, currentTier, newTier });
+
+      // Import billing config
+      const { isUpgradeAllowed, getProductConfig, TIER_CHANGE_RULES } = await import('../config/billing.config');
+
+      // Validate upgrade is allowed
+      if (!isUpgradeAllowed(currentTier as any, newTier as any)) {
+        throw new Error(`Upgrade from ${currentTier} to ${newTier} is not allowed`);
+      }
+
+      // Get current subscription from database
+      const dbSubscription = await prisma.subscription.findFirst({
+        where: {
+          userId,
+          status: 'ACTIVE',
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+      if (!dbSubscription) {
+        throw new Error('No active subscription found');
+      }
+
+      // If no Stripe subscription (e.g., FREE_TIER), create new subscription
+      if (!dbSubscription.stripeSubscriptionId) {
+        logger.info('Upgrading from FREE_TIER, creating new Stripe subscription');
+        
+        // Get user for customer ID
+        const user = await prisma.user.findUnique({
+          where: { id: userId },
+        });
+
+        if (!user || !user.scrollGoldWallet) {
+          throw new Error('Customer ID not found');
+        }
+
+        // Create new subscription
+        const newSubscription = await this.stripe.subscriptions.create({
+          customer: user.scrollGoldWallet,
+          items: [{ price: newPriceId }],
+          proration_behavior: 'create_prorations',
+          metadata: {
+            userId,
+            tier: newTier,
+            upgradedFrom: currentTier,
+          },
+        });
+
+        // Update database subscription
+        await prisma.subscription.update({
+          where: { id: dbSubscription.id },
+          data: {
+            stripeSubscriptionId: newSubscription.id,
+            tier: newTier,
+            status: newSubscription.status.toUpperCase() as any,
+            amountCents: getProductConfig(newTier as any).amountCents,
+            currentPeriodStart: new Date(newSubscription.current_period_start * 1000),
+            currentPeriodEnd: new Date(newSubscription.current_period_end * 1000),
+            ...getProductConfig(newTier as any).features,
+          },
+        });
+
+        logger.info('Tier upgraded successfully (from FREE_TIER)', { 
+          subscriptionId: newSubscription.id,
+          newTier 
+        });
+
+        return {
+          success: true,
+          subscriptionId: newSubscription.id,
+          status: newSubscription.status,
+          currentPeriodEnd: new Date(newSubscription.current_period_end * 1000),
+          cancelAtPeriodEnd: newSubscription.cancel_at_period_end,
+        };
+      }
+
+      // Retrieve current Stripe subscription
+      const stripeSubscription = await this.stripe.subscriptions.retrieve(
+        dbSubscription.stripeSubscriptionId
+      );
+
+      // Update subscription with new price (prorated automatically by Stripe)
+      const updatedSubscription = await this.stripe.subscriptions.update(
+        dbSubscription.stripeSubscriptionId,
+        {
+          items: [{
+            id: stripeSubscription.items.data[0].id,
+            price: newPriceId,
+          }],
+          proration_behavior: TIER_CHANGE_RULES.prorateUpgrades ? 'create_prorations' : 'none',
+          metadata: {
+            ...stripeSubscription.metadata,
+            tier: newTier,
+            upgradedFrom: currentTier,
+            upgradedAt: new Date().toISOString(),
+          },
+        }
+      );
+
+      // Update database subscription
+      const productConfig = getProductConfig(newTier as any);
+      await prisma.subscription.update({
+        where: { id: dbSubscription.id },
+        data: {
+          tier: newTier,
+          amountCents: productConfig.amountCents,
+          currentPeriodStart: new Date(updatedSubscription.current_period_start * 1000),
+          currentPeriodEnd: new Date(updatedSubscription.current_period_end * 1000),
+          ...productConfig.features,
+          metadata: {
+            ...dbSubscription.metadata,
+            upgradedFrom: currentTier,
+            upgradedAt: new Date().toISOString(),
+          },
+        },
+      });
+
+      logger.info('Tier upgraded successfully', { 
+        subscriptionId: updatedSubscription.id,
+        currentTier,
+        newTier 
+      });
+
+      return {
+        success: true,
+        subscriptionId: updatedSubscription.id,
+        status: updatedSubscription.status,
+        currentPeriodEnd: new Date(updatedSubscription.current_period_end * 1000),
+        cancelAtPeriodEnd: updatedSubscription.cancel_at_period_end,
+      };
+    } catch (error: any) {
+      logger.error('Error upgrading tier', { 
+        error: error.message, 
+        userId,
+        currentTier,
+        newTier 
+      });
+      throw new Error(`Failed to upgrade tier: ${error.message}`);
+    }
+  }
+
+  /**
+   * Downgrade subscription tier with prorated billing
+   */
+  async downgradeTier(
+    userId: string,
+    currentTier: string,
+    newTier: string,
+    newPriceId: string
+  ): Promise<SubscriptionResponse> {
+    this.ensureConfigured();
+    try {
+      logger.info('Downgrading subscription tier', { userId, currentTier, newTier });
+
+      // Import billing config
+      const { getProductConfig, TIER_CHANGE_RULES } = await import('../config/billing.config');
+
+      // Get current subscription from database
+      const dbSubscription = await prisma.subscription.findFirst({
+        where: {
+          userId,
+          status: 'ACTIVE',
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+      if (!dbSubscription || !dbSubscription.stripeSubscriptionId) {
+        throw new Error('No active Stripe subscription found');
+      }
+
+      // Retrieve current Stripe subscription
+      const stripeSubscription = await this.stripe.subscriptions.retrieve(
+        dbSubscription.stripeSubscriptionId
+      );
+
+      // Determine if downgrade should be immediate or at period end
+      const immediateDowngrade = !TIER_CHANGE_RULES.immediateDowngrades;
+
+      if (immediateDowngrade) {
+        // Schedule downgrade for end of current period
+        logger.info('Scheduling downgrade for end of period');
+        
+        await this.stripe.subscriptions.update(
+          dbSubscription.stripeSubscriptionId,
+          {
+            cancel_at_period_end: false,
+            metadata: {
+              ...stripeSubscription.metadata,
+              scheduledDowngradeTier: newTier,
+              scheduledDowngradePriceId: newPriceId,
+              downgradedFrom: currentTier,
+            },
+          }
+        );
+
+        // Update database with scheduled downgrade info
+        await prisma.subscription.update({
+          where: { id: dbSubscription.id },
+          data: {
+            metadata: {
+              ...dbSubscription.metadata,
+              scheduledDowngradeTier: newTier,
+              scheduledDowngradePriceId: newPriceId,
+              downgradedFrom: currentTier,
+            },
+          },
+        });
+
+        return {
+          success: true,
+          subscriptionId: stripeSubscription.id,
+          status: stripeSubscription.status,
+          currentPeriodEnd: new Date(stripeSubscription.current_period_end * 1000),
+          cancelAtPeriodEnd: false,
+          message: `Downgrade to ${newTier} scheduled for end of current period`,
+        };
+      }
+
+      // Immediate downgrade with proration
+      const updatedSubscription = await this.stripe.subscriptions.update(
+        dbSubscription.stripeSubscriptionId,
+        {
+          items: [{
+            id: stripeSubscription.items.data[0].id,
+            price: newPriceId,
+          }],
+          proration_behavior: TIER_CHANGE_RULES.prorateDowngrades ? 'create_prorations' : 'none',
+          metadata: {
+            ...stripeSubscription.metadata,
+            tier: newTier,
+            downgradedFrom: currentTier,
+            downgradedAt: new Date().toISOString(),
+          },
+        }
+      );
+
+      // Update database subscription
+      const productConfig = getProductConfig(newTier as any);
+      await prisma.subscription.update({
+        where: { id: dbSubscription.id },
+        data: {
+          tier: newTier,
+          amountCents: productConfig.amountCents,
+          currentPeriodStart: new Date(updatedSubscription.current_period_start * 1000),
+          currentPeriodEnd: new Date(updatedSubscription.current_period_end * 1000),
+          ...productConfig.features,
+          metadata: {
+            ...dbSubscription.metadata,
+            downgradedFrom: currentTier,
+            downgradedAt: new Date().toISOString(),
+          },
+        },
+      });
+
+      logger.info('Tier downgraded successfully', { 
+        subscriptionId: updatedSubscription.id,
+        currentTier,
+        newTier 
+      });
+
+      return {
+        success: true,
+        subscriptionId: updatedSubscription.id,
+        status: updatedSubscription.status,
+        currentPeriodEnd: new Date(updatedSubscription.current_period_end * 1000),
+        cancelAtPeriodEnd: updatedSubscription.cancel_at_period_end,
+      };
+    } catch (error: any) {
+      logger.error('Error downgrading tier', { 
+        error: error.message, 
+        userId,
+        currentTier,
+        newTier 
+      });
+      throw new Error(`Failed to downgrade tier: ${error.message}`);
+    }
+  }
+
+  /**
+   * Calculate proration amount for tier change
+   */
+  async calculateProration(
+    subscriptionId: string,
+    newPriceId: string
+  ): Promise<{ proratedAmount: number; currency: string }> {
+    this.ensureConfigured();
+    try {
+      logger.info('Calculating proration', { subscriptionId, newPriceId });
+
+      // Retrieve current subscription
+      const subscription = await this.stripe.subscriptions.retrieve(subscriptionId);
+
+      // Create a preview of the upcoming invoice with the new price
+      const upcomingInvoice = await this.stripe.invoices.retrieveUpcoming({
+        customer: subscription.customer as string,
+        subscription: subscriptionId,
+        subscription_items: [{
+          id: subscription.items.data[0].id,
+          price: newPriceId,
+        }],
+        subscription_proration_behavior: 'create_prorations',
+      });
+
+      logger.info('Proration calculated', { 
+        proratedAmount: upcomingInvoice.amount_due,
+        currency: upcomingInvoice.currency 
+      });
+
+      return {
+        proratedAmount: upcomingInvoice.amount_due,
+        currency: upcomingInvoice.currency,
+      };
+    } catch (error: any) {
+      logger.error('Error calculating proration', { 
+        error: error.message, 
+        subscriptionId 
+      });
+      throw new Error(`Failed to calculate proration: ${error.message}`);
+    }
+  }
+
+  /**
+   * Apply ScrollGold discount to a payment
+   * 100 ScrollGold = €5 discount (configurable)
+   * Maximum 50% discount
+   */
+  async applyScrollGoldDiscount(
+    userId: string,
+    amountCents: number,
+    scrollgoldAmount: number
+  ): Promise<{
+    discountCents: number;
+    finalAmountCents: number;
+    scrollgoldUsed: number;
+    scrollgoldRemaining: number;
+  }> {
+    try {
+      logger.info('Applying ScrollGold discount', { 
+        userId, 
+        amountCents, 
+        scrollgoldAmount 
+      });
+
+      // Import ScrollGold config
+      const { calculateScrollGoldDiscount, scrollGoldConfig } = await import('../config/billing.config');
+
+      // Get user's ScrollGold wallet
+      const wallet = await prisma.scrollGoldWallet.findUnique({
+        where: { userId },
+      });
+
+      if (!wallet) {
+        throw new Error('ScrollGold wallet not found');
+      }
+
+      // Validate user has enough ScrollGold
+      if (wallet.balance < scrollgoldAmount) {
+        throw new Error(`Insufficient ScrollGold balance. Available: ${wallet.balance}, Requested: ${scrollgoldAmount}`);
+      }
+
+      // Calculate discount in cents
+      const discountCents = calculateScrollGoldDiscount(scrollgoldAmount);
+
+      // Apply maximum discount limit (50%)
+      const maxDiscountCents = Math.floor(amountCents * scrollGoldConfig.maxDiscountPercentage);
+      const actualDiscountCents = Math.min(discountCents, maxDiscountCents);
+
+      // Calculate actual ScrollGold to use (in case we hit the max discount)
+      const actualScrollGoldUsed = actualDiscountCents === discountCents 
+        ? scrollgoldAmount 
+        : Math.floor(actualDiscountCents / (scrollGoldConfig.discountRate * 100));
+
+      // Calculate final amount
+      const finalAmountCents = Math.max(0, amountCents - actualDiscountCents);
+
+      logger.info('ScrollGold discount calculated', {
+        userId,
+        originalAmount: amountCents,
+        discountCents: actualDiscountCents,
+        finalAmount: finalAmountCents,
+        scrollgoldUsed: actualScrollGoldUsed,
+      });
+
+      return {
+        discountCents: actualDiscountCents,
+        finalAmountCents,
+        scrollgoldUsed: actualScrollGoldUsed,
+        scrollgoldRemaining: wallet.balance - actualScrollGoldUsed,
+      };
+    } catch (error: any) {
+      logger.error('Error applying ScrollGold discount', { 
+        error: error.message, 
+        userId 
+      });
+      throw new Error(`Failed to apply ScrollGold discount: ${error.message}`);
+    }
+  }
+
+  /**
+   * Create checkout session with ScrollGold discount support
+   */
+  async createCheckoutSession(
+    userId: string,
+    tier: string,
+    priceId: string,
+    scrollgoldDiscount?: number,
+    successUrl?: string,
+    cancelUrl?: string
+  ): Promise<{
+    sessionId: string;
+    url: string;
+    amountTotal: number;
+    currency: string;
+  }> {
+    this.ensureConfigured();
+    try {
+      logger.info('Creating checkout session', { 
+        userId, 
+        tier, 
+        scrollgoldDiscount 
+      });
+
+      // Get user and customer
+      const user = await prisma.user.findUnique({
+        where: { id: userId },
+      });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      let customerId = user.scrollGoldWallet;
+      
+      if (!customerId) {
+        const customer = await this.stripe.customers.create({
+          email: user.email,
+          name: `${user.firstName} ${user.lastName}`,
+          metadata: {
+            userId: user.id,
+          },
+        });
+        customerId = customer.id;
+        
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { scrollGoldWallet: customerId },
+        });
+      }
+
+      // Get product config
+      const { getProductConfig } = await import('../config/billing.config');
+      const productConfig = getProductConfig(tier as any);
+
+      // Prepare session params
+      const sessionParams: Stripe.Checkout.SessionCreateParams = {
+        customer: customerId,
+        mode: productConfig.interval === 'one_time' ? 'payment' : 'subscription',
+        line_items: [{
+          price: priceId,
+          quantity: 1,
+        }],
+        success_url: successUrl || `${process.env.FRONTEND_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: cancelUrl || `${process.env.FRONTEND_URL}/payment/cancel`,
+        metadata: {
+          userId,
+          tier,
+        },
+      };
+
+      // Apply ScrollGold discount if provided
+      if (scrollgoldDiscount && scrollgoldDiscount > 0) {
+        const discountResult = await this.applyScrollGoldDiscount(
+          userId,
+          productConfig.amountCents,
+          scrollgoldDiscount
+        );
+
+        // Create coupon for the discount
+        const coupon = await this.stripe.coupons.create({
+          amount_off: discountResult.discountCents,
+          currency: productConfig.currency.toLowerCase(),
+          duration: 'once',
+          name: `ScrollGold Discount (${scrollgoldDiscount} ScrollGold)`,
+          metadata: {
+            userId,
+            scrollgoldAmount: scrollgoldDiscount.toString(),
+            scrollgoldUsed: discountResult.scrollgoldUsed.toString(),
+          },
+        });
+
+        sessionParams.discounts = [{
+          coupon: coupon.id,
+        }];
+
+        sessionParams.metadata!.scrollgoldDiscount = scrollgoldDiscount.toString();
+        sessionParams.metadata!.scrollgoldDiscountCents = discountResult.discountCents.toString();
+      }
+
+      // Create checkout session
+      const session = await this.stripe.checkout.sessions.create(sessionParams);
+
+      logger.info('Checkout session created', { 
+        sessionId: session.id,
+        amountTotal: session.amount_total 
+      });
+
+      return {
+        sessionId: session.id,
+        url: session.url!,
+        amountTotal: session.amount_total || productConfig.amountCents,
+        currency: session.currency || productConfig.currency,
+      };
+    } catch (error: any) {
+      logger.error('Error creating checkout session', { 
+        error: error.message, 
+        userId 
+      });
+      throw new Error(`Failed to create checkout session: ${error.message}`);
+    }
+  }
+
+  /**
+   * Deduct ScrollGold from wallet after successful payment
+   */
+  async deductScrollGold(
+    userId: string,
+    amount: number,
+    paymentId: string,
+    description: string
+  ): Promise<void> {
+    try {
+      logger.info('Deducting ScrollGold', { userId, amount, paymentId });
+
+      // Get wallet
+      const wallet = await prisma.scrollGoldWallet.findUnique({
+        where: { userId },
+      });
+
+      if (!wallet) {
+        throw new Error('ScrollGold wallet not found');
+      }
+
+      if (wallet.balance < amount) {
+        throw new Error('Insufficient ScrollGold balance');
+      }
+
+      // Deduct from wallet
+      const updatedWallet = await prisma.scrollGoldWallet.update({
+        where: { userId },
+        data: {
+          balance: wallet.balance - amount,
+          lifetimeSpent: wallet.lifetimeSpent + amount,
+          spentOnDiscounts: wallet.spentOnDiscounts + amount,
+        },
+      });
+
+      // Create transaction record
+      await prisma.scrollGoldTransaction.create({
+        data: {
+          walletId: wallet.id,
+          userId,
+          type: 'SPEND',
+          amount: -amount,
+          balanceAfter: updatedWallet.balance,
+          reason: description,
+          category: 'discount',
+          relatedEntityType: 'payment',
+          relatedEntityId: paymentId,
+          metadata: {
+            paymentId,
+            description,
+          },
+        },
+      });
+
+      logger.info('ScrollGold deducted successfully', { 
+        userId, 
+        amount, 
+        newBalance: updatedWallet.balance 
+      });
+    } catch (error: any) {
+      logger.error('Error deducting ScrollGold', { 
+        error: error.message, 
+        userId 
+      });
+      throw new Error(`Failed to deduct ScrollGold: ${error.message}`);
+    }
+  }
+
+  /**
+   * Update subscription metadata (feature flags, limits, etc.)
+   */
+  async updateSubscriptionMetadata(
+    subscriptionId: string,
+    metadata: Record<string, string>
+  ): Promise<void> {
+    this.ensureConfigured();
+    try {
+      logger.info('Updating subscription metadata', { subscriptionId, metadata });
+
+      // Update Stripe subscription metadata
+      await this.stripe.subscriptions.update(subscriptionId, {
+        metadata,
+      });
+
+      // Update database subscription metadata
+      const dbSubscription = await prisma.subscription.findFirst({
+        where: { stripeSubscriptionId: subscriptionId },
+      });
+
+      if (dbSubscription) {
+        await prisma.subscription.update({
+          where: { id: dbSubscription.id },
+          data: {
+            metadata: {
+              ...dbSubscription.metadata,
+              ...metadata,
+            },
+          },
+        });
+      }
+
+      logger.info('Subscription metadata updated successfully', { subscriptionId });
+    } catch (error: any) {
+      logger.error('Error updating subscription metadata', { 
+        error: error.message, 
+        subscriptionId 
+      });
+      throw new Error(`Failed to update subscription metadata: ${error.message}`);
+    }
+  }
+
+  /**
+   * Get subscription feature flags
+   */
+  async getSubscriptionFeatures(userId: string): Promise<{
+    tier: string;
+    features: {
+      aiTutorMinutes: number;
+      courseAccessType: string;
+      hasCertificates: boolean;
+      hasLabAccess: boolean;
+      hasCommunityAccess: boolean;
+      hasScrollIntelAccess?: boolean;
+      hasScrollArkAccess?: boolean;
+      hasMentorshipAccess?: boolean;
+      hasEntrepreneurshipStudio?: boolean;
+    };
+    metadata: Record<string, any>;
+  }> {
+    try {
+      logger.info('Getting subscription features', { userId });
+
+      // Get active subscription from database
+      const subscription = await prisma.subscription.findFirst({
+        where: {
+          userId,
+          status: 'ACTIVE',
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+      if (!subscription) {
+        // Return FREE_TIER features if no subscription
+        const { getProductConfig } = await import('../config/billing.config');
+        const { SubscriptionTier } = await import('../types/billing.types');
+        const freeConfig = getProductConfig(SubscriptionTier.FREE_TIER);
+
+        return {
+          tier: SubscriptionTier.FREE_TIER,
+          features: freeConfig.features,
+          metadata: {},
+        };
+      }
+
+      // Extract features from subscription
+      const features = {
+        aiTutorMinutes: subscription.aiTutorMinutes,
+        courseAccessType: subscription.courseAccessType,
+        hasCertificates: subscription.hasCertificates,
+        hasLabAccess: subscription.hasLabAccess,
+        hasCommunityAccess: subscription.hasCommunityAccess,
+        ...(subscription.metadata?.hasScrollIntelAccess && {
+          hasScrollIntelAccess: subscription.metadata.hasScrollIntelAccess === 'true',
+        }),
+        ...(subscription.metadata?.hasScrollArkAccess && {
+          hasScrollArkAccess: subscription.metadata.hasScrollArkAccess === 'true',
+        }),
+        ...(subscription.metadata?.hasMentorshipAccess && {
+          hasMentorshipAccess: subscription.metadata.hasMentorshipAccess === 'true',
+        }),
+        ...(subscription.metadata?.hasEntrepreneurshipStudio && {
+          hasEntrepreneurshipStudio: subscription.metadata.hasEntrepreneurshipStudio === 'true',
+        }),
+      };
+
+      logger.info('Subscription features retrieved', { userId, tier: subscription.tier });
+
+      return {
+        tier: subscription.tier,
+        features,
+        metadata: subscription.metadata || {},
+      };
+    } catch (error: any) {
+      logger.error('Error getting subscription features', { 
+        error: error.message, 
+        userId 
+      });
+      throw new Error(`Failed to get subscription features: ${error.message}`);
+    }
+  }
+
+  /**
+   * Check if user has access to a specific feature
+   */
+  async hasFeatureAccess(
+    userId: string,
+    featureName: string
+  ): Promise<boolean> {
+    try {
+      logger.info('Checking feature access', { userId, featureName });
+
+      const subscriptionFeatures = await this.getSubscriptionFeatures(userId);
+
+      // Check feature access based on feature name
+      switch (featureName) {
+        case 'certificates':
+          return subscriptionFeatures.features.hasCertificates;
+        case 'labs':
+          return subscriptionFeatures.features.hasLabAccess;
+        case 'community':
+          return subscriptionFeatures.features.hasCommunityAccess;
+        case 'scrollintel':
+          return subscriptionFeatures.features.hasScrollIntelAccess || false;
+        case 'scrollark':
+          return subscriptionFeatures.features.hasScrollArkAccess || false;
+        case 'mentorship':
+          return subscriptionFeatures.features.hasMentorshipAccess || false;
+        case 'entrepreneurship':
+          return subscriptionFeatures.features.hasEntrepreneurshipStudio || false;
+        case 'unlimited_ai':
+          return subscriptionFeatures.features.aiTutorMinutes === 0;
+        case 'all_courses':
+          return subscriptionFeatures.features.courseAccessType === 'all';
+        default:
+          logger.warn('Unknown feature name', { featureName });
+          return false;
+      }
+    } catch (error: any) {
+      logger.error('Error checking feature access', { 
+        error: error.message, 
+        userId,
+        featureName 
+      });
+      return false;
+    }
+  }
+
+  /**
+   * Update feature flags for a subscription
+   */
+  async updateFeatureFlags(
+    userId: string,
+    features: Partial<{
+      aiTutorMinutes: number;
+      courseAccessType: string;
+      hasCertificates: boolean;
+      hasLabAccess: boolean;
+      hasCommunityAccess: boolean;
+    }>
+  ): Promise<void> {
+    try {
+      logger.info('Updating feature flags', { userId, features });
+
+      // Get active subscription
+      const subscription = await prisma.subscription.findFirst({
+        where: {
+          userId,
+          status: 'ACTIVE',
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+
+      if (!subscription) {
+        throw new Error('No active subscription found');
+      }
+
+      // Update database subscription
+      await prisma.subscription.update({
+        where: { id: subscription.id },
+        data: features,
+      });
+
+      // Update Stripe metadata if Stripe subscription exists
+      if (subscription.stripeSubscriptionId) {
+        const metadata: Record<string, string> = {};
+        
+        if (features.aiTutorMinutes !== undefined) {
+          metadata.aiTutorMinutes = features.aiTutorMinutes.toString();
+        }
+        if (features.courseAccessType !== undefined) {
+          metadata.courseAccessType = features.courseAccessType;
+        }
+        if (features.hasCertificates !== undefined) {
+          metadata.hasCertificates = features.hasCertificates.toString();
+        }
+        if (features.hasLabAccess !== undefined) {
+          metadata.hasLabAccess = features.hasLabAccess.toString();
+        }
+        if (features.hasCommunityAccess !== undefined) {
+          metadata.hasCommunityAccess = features.hasCommunityAccess.toString();
+        }
+
+        await this.updateSubscriptionMetadata(subscription.stripeSubscriptionId, metadata);
+      }
+
+      logger.info('Feature flags updated successfully', { userId });
+    } catch (error: any) {
+      logger.error('Error updating feature flags', { 
+        error: error.message, 
+        userId 
+      });
+      throw new Error(`Failed to update feature flags: ${error.message}`);
+    }
+  }
+
+  /**
+   * Calculate Monthly Recurring Revenue (MRR)
+   */
+  async calculateMRR(): Promise<number> {
+    try {
+      logger.info('Calculating MRR');
+
+      // Get all active subscriptions
+      const activeSubscriptions = await prisma.subscription.findMany({
+        where: {
+          status: 'ACTIVE',
+        },
+      });
+
+      let totalMRR = 0;
+
+      for (const subscription of activeSubscriptions) {
+        // Convert to monthly amount based on interval
+        if (subscription.interval === 'month') {
+          totalMRR += subscription.amountCents;
+        } else if (subscription.interval === 'year') {
+          // Divide annual by 12 for monthly
+          totalMRR += Math.floor(subscription.amountCents / 12);
+        }
+        // one_time subscriptions don't contribute to MRR
+      }
+
+      logger.info('MRR calculated', { mrrCents: totalMRR, mrrEuros: totalMRR / 100 });
+
+      return totalMRR;
+    } catch (error: any) {
+      logger.error('Error calculating MRR', { error: error.message });
+      throw new Error(`Failed to calculate MRR: ${error.message}`);
+    }
+  }
+
+  /**
+   * Calculate Annual Recurring Revenue (ARR)
+   */
+  async calculateARR(): Promise<number> {
+    try {
+      logger.info('Calculating ARR');
+
+      const mrr = await this.calculateMRR();
+      const arr = mrr * 12;
+
+      logger.info('ARR calculated', { arrCents: arr, arrEuros: arr / 100 });
+
+      return arr;
+    } catch (error: any) {
+      logger.error('Error calculating ARR', { error: error.message });
+      throw new Error(`Failed to calculate ARR: ${error.message}`);
+    }
+  }
+
+  /**
+   * Calculate churn rate for a given period
+   */
+  async calculateChurnRate(periodDays: number = 30): Promise<number> {
+    try {
+      logger.info('Calculating churn rate', { periodDays });
+
+      const periodStart = new Date();
+      periodStart.setDate(periodStart.getDate() - periodDays);
+
+      // Get subscriptions active at start of period
+      const subscriptionsAtStart = await prisma.subscription.count({
+        where: {
+          createdAt: {
+            lte: periodStart,
+          },
+          OR: [
+            { status: 'ACTIVE' },
+            {
+              AND: [
+                { status: 'CANCELED' },
+                { canceledAt: { gte: periodStart } },
+              ],
+            },
+          ],
+        },
+      });
+
+      // Get subscriptions canceled during period
+      const canceledDuringPeriod = await prisma.subscription.count({
+        where: {
+          status: 'CANCELED',
+          canceledAt: {
+            gte: periodStart,
+            lte: new Date(),
+          },
+        },
+      });
+
+      // Calculate churn rate
+      const churnRate = subscriptionsAtStart > 0 
+        ? (canceledDuringPeriod / subscriptionsAtStart) * 100 
+        : 0;
+
+      logger.info('Churn rate calculated', { 
+        churnRate: churnRate.toFixed(2) + '%',
+        subscriptionsAtStart,
+        canceledDuringPeriod,
+        periodDays 
+      });
+
+      return churnRate;
+    } catch (error: any) {
+      logger.error('Error calculating churn rate', { error: error.message });
+      throw new Error(`Failed to calculate churn rate: ${error.message}`);
+    }
+  }
+
+  /**
+   * Calculate Average Revenue Per User (ARPU)
+   */
+  async calculateARPU(): Promise<number> {
+    try {
+      logger.info('Calculating ARPU');
+
+      const mrr = await this.calculateMRR();
+
+      const activeSubscriptionCount = await prisma.subscription.count({
+        where: {
+          status: 'ACTIVE',
+        },
+      });
+
+      const arpu = activeSubscriptionCount > 0 
+        ? mrr / activeSubscriptionCount 
+        : 0;
+
+      logger.info('ARPU calculated', { arpuCents: arpu, arpuEuros: arpu / 100 });
+
+      return arpu;
+    } catch (error: any) {
+      logger.error('Error calculating ARPU', { error: error.message });
+      throw new Error(`Failed to calculate ARPU: ${error.message}`);
+    }
+  }
+
+  /**
+   * Calculate Customer Lifetime Value (LTV)
+   */
+  async calculateLTV(userId?: string): Promise<number> {
+    try {
+      logger.info('Calculating LTV', { userId });
+
+      if (userId) {
+        // Calculate LTV for specific user
+        const payments = await prisma.payment.findMany({
+          where: {
+            userId,
+            status: 'COMPLETED',
+          },
+        });
+
+        const totalRevenue = payments.reduce((sum, payment) => sum + payment.amount, 0);
+
+        logger.info('User LTV calculated', { userId, ltvCents: totalRevenue * 100 });
+
+        return totalRevenue * 100; // Convert to cents
+      }
+
+      // Calculate average LTV across all users
+      const { ANALYTICS_CONFIG } = await import('../config/billing.config');
+
+      const arpu = await this.calculateARPU();
+      const churnRate = await this.calculateChurnRate();
+
+      // LTV = ARPU / (Churn Rate / 100)
+      // Assuming monthly churn rate
+      const monthlyChurnRate = churnRate / 100;
+      const ltv = monthlyChurnRate > 0 
+        ? arpu / monthlyChurnRate 
+        : arpu * ANALYTICS_CONFIG.ltvMonths;
+
+      logger.info('Average LTV calculated', { ltvCents: ltv, ltvEuros: ltv / 100 });
+
+      return ltv;
+    } catch (error: any) {
+      logger.error('Error calculating LTV', { error: error.message });
+      throw new Error(`Failed to calculate LTV: ${error.message}`);
+    }
+  }
+
+  /**
+   * Get comprehensive subscription analytics
+   */
+  async getSubscriptionAnalytics(): Promise<{
+    totalSubscriptions: number;
+    activeSubscriptions: number;
+    canceledSubscriptions: number;
+    mrrCents: number;
+    arrCents: number;
+    churnRate: number;
+    arpuCents: number;
+    ltvCents: number;
+    tierDistribution: Record<string, number>;
+  }> {
+    try {
+      logger.info('Getting subscription analytics');
+
+      // Get subscription counts
+      const totalSubscriptions = await prisma.subscription.count();
+      const activeSubscriptions = await prisma.subscription.count({
+        where: { status: 'ACTIVE' },
+      });
+      const canceledSubscriptions = await prisma.subscription.count({
+        where: { status: 'CANCELED' },
+      });
+
+      // Calculate metrics
+      const mrrCents = await this.calculateMRR();
+      const arrCents = await this.calculateARR();
+      const churnRate = await this.calculateChurnRate();
+      const arpuCents = await this.calculateARPU();
+      const ltvCents = await this.calculateLTV();
+
+      // Get tier distribution
+      const subscriptions = await prisma.subscription.findMany({
+        where: { status: 'ACTIVE' },
+        select: { tier: true },
+      });
+
+      const tierDistribution: Record<string, number> = {};
+      for (const sub of subscriptions) {
+        tierDistribution[sub.tier] = (tierDistribution[sub.tier] || 0) + 1;
+      }
+
+      const analytics = {
+        totalSubscriptions,
+        activeSubscriptions,
+        canceledSubscriptions,
+        mrrCents,
+        arrCents,
+        churnRate,
+        arpuCents,
+        ltvCents,
+        tierDistribution,
+      };
+
+      logger.info('Subscription analytics retrieved', analytics);
+
+      return analytics;
+    } catch (error: any) {
+      logger.error('Error getting subscription analytics', { error: error.message });
+      throw new Error(`Failed to get subscription analytics: ${error.message}`);
+    }
+  }
+
+  /**
+   * Track subscription event for analytics
+   */
+  async trackSubscriptionEvent(
+    eventType: 'created' | 'upgraded' | 'downgraded' | 'canceled' | 'renewed',
+    userId: string,
+    subscriptionId: string,
+    metadata?: Record<string, any>
+  ): Promise<void> {
+    try {
+      logger.info('Tracking subscription event', { 
+        eventType, 
+        userId, 
+        subscriptionId 
+      });
+
+      // Create analytics event record
+      await prisma.analyticsEvent.create({
+        data: {
+          eventType: `subscription_${eventType}`,
+          userId,
+          entityType: 'subscription',
+          entityId: subscriptionId,
+          metadata: metadata || {},
+          timestamp: new Date(),
+        },
+      });
+
+      logger.info('Subscription event tracked', { eventType, userId });
+    } catch (error: any) {
+      // Log error but don't throw - analytics tracking shouldn't break main flow
+      logger.error('Error tracking subscription event', { 
+        error: error.message, 
+        eventType,
+        userId 
+      });
     }
   }
 
@@ -539,7 +1782,7 @@ export class StripePaymentService {
         where: { id: query.userId },
       });
 
-      if (!user || !user.scrollCoinWallet) {
+      if (!user || !user.scrollGoldWallet) {
         return {
           success: true,
           payments: [],
@@ -550,7 +1793,7 @@ export class StripePaymentService {
 
       // Fetch payment intents from Stripe
       const paymentIntents = await this.stripe.paymentIntents.list({
-        customer: user.scrollCoinWallet,
+        customer: user.scrollGoldWallet,
         limit: query.limit || 10,
         starting_after: query.startingAfter,
         ending_before: query.endingBefore,
@@ -704,7 +1947,7 @@ export class StripePaymentService {
       // Update user with customer ID
       await prisma.user.update({
         where: { id: request.userId },
-        data: { scrollCoinWallet: customer.id },
+        data: { scrollGoldWallet: customer.id },
       });
 
       return {

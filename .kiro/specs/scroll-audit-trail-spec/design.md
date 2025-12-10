@@ -46,7 +46,7 @@ graph LR
     A --> C[Student Profile System]
     A --> D[Course Management System]
     A --> E[Assessment Engine]
-    A --> F[ScrollCoin Meter]
+    A --> F[ScrollGold Meter]
     A --> G[Faculty AI System]
     A --> H[Prayer Integration System]
     A --> I[University Platform]

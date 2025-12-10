@@ -159,7 +159,7 @@ export interface FinancialAnalytics {
     subscriptionRevenue: number;
     oneTimePayments: number;
   };
-  scrollCoinMetrics: {
+  scrollGoldMetrics: {
     totalMinted: number;
     totalBurned: number;
     circulatingSupply: number;

@@ -134,7 +134,7 @@ export class ScrollTheologyCourseContentService {
       prerequisites: [],
       estimatedHours: 45,
       xpReward: 150,
-      scrollCoinCost: 0,
+      scrollGoldCost: 0,
       
       deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.XR_MODE],
       
@@ -619,7 +619,7 @@ export class ScrollTheologyCourseContentService {
       prerequisites: ['SBT101'],
       estimatedHours: 60,
       xpReward: 200,
-      scrollCoinCost: 25,
+      scrollGoldCost: 25,
       
       deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.AI_TUTOR],
       
@@ -861,7 +861,7 @@ export class ScrollTheologyCourseContentService {
       prerequisites: ['SBT101', 'SBT201'],
       estimatedHours: 75,
       xpReward: 300,
-      scrollCoinCost: 50,
+      scrollGoldCost: 50,
       
       deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.MENTOR_SESSIONS],
       
@@ -1103,7 +1103,7 @@ export class ScrollTheologyCourseContentService {
       prerequisites: ['SBT101', 'SBT150', 'SBT305'],
       estimatedHours: 90,
       xpReward: 400,
-      scrollCoinCost: 75,
+      scrollGoldCost: 75,
       
       deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.MENTOR_SESSIONS],
       
@@ -1365,7 +1365,7 @@ export class ScrollTheologyCourseContentService {
       prerequisites: ['SBT101', 'Character Assessment', 'Ministry Experience'],
       estimatedHours: 120,
       xpReward: 500,
-      scrollCoinCost: 100,
+      scrollGoldCost: 100,
       
       deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.MENTOR_SESSIONS, DeliveryMode.XR_MODE],
       
@@ -1649,7 +1649,7 @@ export class ScrollTheologyCourseContentService {
       prerequisites: ['SBT101', 'Basic XR Technology Familiarity'],
       estimatedHours: 60,
       xpReward: 350,
-      scrollCoinCost: 125,
+      scrollGoldCost: 125,
       
       deliveryModes: [DeliveryMode.XR_MODE, DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR],
       

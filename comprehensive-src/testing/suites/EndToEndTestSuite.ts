@@ -111,9 +111,9 @@ export class EndToEndTestSuite {
             }
           },
           {
-            name: 'Initialize ScrollCoin wallet',
+            name: 'Initialize ScrollGold wallet',
             action: async () => {
-              const coinService = this.platformIntegrator.getService('scrollCoin');
+              const coinService = this.platformIntegrator.getService('ScrollGold');
               const wallet = await coinService.createWallet('test-student-id');
               return wallet.balance === 0;
             }
@@ -191,9 +191,9 @@ export class EndToEndTestSuite {
             }
           },
           {
-            name: 'Receive ScrollCoin rewards',
+            name: 'Receive ScrollGold rewards',
             action: async () => {
-              const coinService = this.platformIntegrator.getService('scrollCoin');
+              const coinService = this.platformIntegrator.getService('ScrollGold');
               await coinService.awardCoins('test-student-id', 100, 'course-completion');
               const balance = await coinService.getBalance('test-student-id');
               return balance >= 100;
@@ -416,7 +416,7 @@ export class EndToEndTestSuite {
             }
           },
           {
-            name: 'Detect ScrollCoin fraud attempt',
+            name: 'Detect ScrollGold fraud attempt',
             action: async () => {
               const securityService = this.platformIntegrator.getService('security');
               const fraud = await securityService.detectFraud({

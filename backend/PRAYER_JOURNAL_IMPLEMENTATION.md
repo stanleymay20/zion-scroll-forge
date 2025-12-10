@@ -251,7 +251,7 @@ Features:
 ### Integration Opportunities
 1. **Daily Devotion Integration**: Link prayers to daily devotions
 2. **Course Integration**: Course-specific prayer walls
-3. **ScrollCoin Rewards**: Reward consistent prayer practice
+3. **ScrollGold Rewards**: Reward consistent prayer practice
 4. **Community Feed**: Share testimonies in community feed
 5. **AI Tutor Integration**: Prayer guidance from AI tutors
 

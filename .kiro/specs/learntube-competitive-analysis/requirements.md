@@ -37,7 +37,7 @@ This competitive analysis examines ScrollUniversity's revolutionary education pl
 1. WHEN creating feature matrix THEN the system SHALL categorize features into core education, AI capabilities, community features, and unique differentiators
 2. WHEN comparing AI features THEN the system SHALL highlight ScrollUniversity's advanced conversational AI, XR integration, and cultural fluency
 3. WHEN analyzing community features THEN the system SHALL showcase ScrollUniversity's global networking, mentorship systems, and collaborative projects
-4. WHEN evaluating unique features THEN the system SHALL emphasize ScrollUniversity's ScrollCoin economy, spiritual formation tools, and prophetic check-ins
+4. WHEN evaluating unique features THEN the system SHALL emphasize ScrollUniversity's ScrollGold economy, spiritual formation tools, and prophetic check-ins
 
 ### Requirement 4: Market Positioning and Value Proposition Analysis
 
@@ -57,7 +57,7 @@ This competitive analysis examines ScrollUniversity's revolutionary education pl
 #### Acceptance Criteria
 
 1. WHEN comparing AI capabilities THEN the system SHALL highlight ScrollUniversity's prophetic intelligence and divine scorecard systems
-2. WHEN analyzing blockchain integration THEN the system SHALL demonstrate ScrollUniversity's comprehensive credential verification and ScrollCoin economy
+2. WHEN analyzing blockchain integration THEN the system SHALL demonstrate ScrollUniversity's comprehensive credential verification and ScrollGold economy
 3. WHEN evaluating XR/VR features THEN the system SHALL showcase ScrollUniversity's immersive learning environments and angelic tutors
 4. WHEN assessing mobile capabilities THEN the system SHALL compare ScrollUniversity's offline-first approach with comprehensive sync capabilities
 

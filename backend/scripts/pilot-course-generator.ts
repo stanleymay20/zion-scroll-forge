@@ -128,10 +128,10 @@ const PILOT_COURSES: PilotCourse[] = [
   },
   {
     code: 'ECON201',
-    title: 'ScrollCoin & Digital Currency Systems',
+    title: 'ScrollGold & Digital Currency Systems',
     faculty: 'ScrollEconomy & Financial Reformation',
     level: 200,
-    description: 'Intermediate course on cryptocurrency, blockchain, and the ScrollCoin economy. Students learn to build and manage digital currency systems.',
+    description: 'Intermediate course on cryptocurrency, blockchain, and the ScrollGold economy. Students learn to build and manage digital currency systems.',
     credits: 4
   },
   {

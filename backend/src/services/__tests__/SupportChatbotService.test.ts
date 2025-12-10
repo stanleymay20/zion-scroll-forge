@@ -152,8 +152,8 @@ describe('SupportChatbotService', () => {
                 shouldEscalate: false
             },
             {
-                query: 'What is ScrollCoin and how do I earn it?',
-                expectedTopics: ['scrollcoin', 'reward', 'earn'],
+                query: 'What is ScrollGold and how do I earn it?',
+                expectedTopics: ['ScrollGold', 'reward', 'earn'],
                 shouldEscalate: false
             },
             {

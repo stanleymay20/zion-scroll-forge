@@ -165,9 +165,9 @@ export class ScholarshipRecommendationService {
         break;
     }
 
-    // Add ScrollCoin-based reasons
-    if (user.scrollCoinBalance > 1000) {
-      reasons.push('Your ScrollCoin balance demonstrates active engagement');
+    // Add ScrollGold-based reasons
+    if (user.ScrollGoldBalance > 1000) {
+      reasons.push('Your ScrollGold balance demonstrates active engagement');
     }
 
     // Add deadline urgency

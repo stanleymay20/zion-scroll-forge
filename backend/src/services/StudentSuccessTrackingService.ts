@@ -58,7 +58,7 @@ export class StudentSuccessTrackingService {
               submissions: true
             }
           },
-          scrollCoinTransactions: true
+          ScrollGoldTransactions: true
         }
       });
 
@@ -114,14 +114,14 @@ export class StudentSuccessTrackingService {
       const studyGroupParticipation = await this.countStudyGroupParticipation(userId);
       const peerInteractions = await this.countPeerInteractions(userId);
 
-      // ScrollCoin Economy
-      const scrollCoinsEarned = user.scrollCoinTransactions
+      // ScrollGold Economy
+      const ScrollGoldsEarned = user.ScrollGoldTransactions
         .filter(t => t.type === 'EARNED')
         .reduce((sum, t) => sum + t.amount, 0);
-      const scrollCoinsSpent = user.scrollCoinTransactions
+      const ScrollGoldsSpent = user.ScrollGoldTransactions
         .filter(t => t.type === 'SPENT')
         .reduce((sum, t) => sum + Math.abs(t.amount), 0);
-      const scrollCoinBalance = user.scrollCoinBalance;
+      const ScrollGoldBalance = user.ScrollGoldBalance;
 
       // Risk Assessment
       const atRiskScore = this.calculateAtRiskScore({
@@ -186,9 +186,9 @@ export class StudentSuccessTrackingService {
         studyGroupParticipation,
         peerInteractions,
         
-        scrollCoinsEarned,
-        scrollCoinsSpent,
-        scrollCoinBalance,
+        ScrollGoldsEarned,
+        ScrollGoldsSpent,
+        ScrollGoldBalance,
         
         atRiskScore,
         riskFactors,

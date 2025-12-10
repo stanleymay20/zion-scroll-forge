@@ -11,7 +11,7 @@ import { SharedDataModels } from './SharedDataModels';
 import { APIGatewayService } from '../gateway/GatewayServer';
 import { UserManagementService } from '../services/UserManagementService';
 import { CourseService } from '../services/CourseService';
-import { ScrollCoinService } from '../services/ScrollCoinService';
+import { ScrollGoldService } from '../services/ScrollGoldService';
 import { ScrollBadgeSystem } from '../services/ScrollBadgeSystem';
 import { MultilingualService } from '../services/MultilingualService';
 import { SpiritualGrowthService } from '../services/SpiritualGrowthService';
@@ -117,9 +117,9 @@ export class PlatformIntegrator {
     const courseService = new CourseService();
     this.services.set('courseManagement', courseService);
 
-    // ScrollCoin Economy
-    const scrollCoinService = new ScrollCoinService();
-    this.services.set('scrollCoin', scrollCoinService);
+    // ScrollGold Economy
+    const ScrollGoldService = new ScrollGoldService();
+    this.services.set('ScrollGold', ScrollGoldService);
 
     // ScrollBadge Certification
     const badgeService = new ScrollBadgeSystem();
@@ -290,7 +290,7 @@ export class PlatformIntegrator {
    * Get platform integration status
    */
   public getIntegrationStatus(): IntegrationStatus {
-    const coreServices = this.getServiceGroupStatus(['userManagement', 'courseManagement', 'scrollCoin', 'scrollBadge']);
+    const coreServices = this.getServiceGroupStatus(['userManagement', 'courseManagement', 'ScrollGold', 'scrollBadge']);
     const aiServices = this.getServiceGroupStatus(['propheticIntelligence', 'advancedAI', 'spiritualGrowth']);
     const globalServices = this.getServiceGroupStatus(['multilingual', 'globalAccessibility', 'scrollMesh']);
     const communityServices = this.getServiceGroupStatus(['careerPathways', 'community', 'partnerships']);
@@ -473,7 +473,7 @@ export class PlatformIntegrator {
   private async testCourseCompletionJourney(): Promise<boolean> {
     const courseService = this.getService('courseManagement');
     const badgeService = this.getService('scrollBadge');
-    const coinService = this.getService('scrollCoin');
+    const coinService = this.getService('ScrollGold');
 
     // Simulate course completion
     const studentId = 'test-student-id';
@@ -487,7 +487,7 @@ export class PlatformIntegrator {
     // 2. Award ScrollBadge
     const badge = await badgeService.mintBadge(studentId, courseId);
 
-    // 3. Award ScrollCoin
+    // 3. Award ScrollGold
     await coinService.awardCoins(studentId, 100, 'course-completion');
 
     return badge !== null;

@@ -2,20 +2,20 @@
  * Blockchain Integration Service
  * "By the Spirit of Truth, we establish immutable records on the blockchain"
  * 
- * Service for interacting with Ethereum blockchain and ScrollCoin smart contract.
+ * Service for interacting with Ethereum blockchain and ScrollGold smart contract.
  * Handles minting, transfers, burning, and verification of on-chain transactions.
  */
 
 import { ethers } from 'ethers';
 import { logger } from '../utils/logger';
-import scrollCoinConfig from '../config/scrollcoin.config';
+import ScrollGoldConfig from '../config/ScrollGold.config';
 import {
   BlockchainTransactionReceipt,
   BlockchainNetworkStatus,
   GasEstimate,
   TransactionVerification,
-  ScrollCoinTransactionData
-} from '../types/scrollcoin.types';
+  ScrollGoldTransactionData
+} from '../types/ScrollGold.types';
 
 export class BlockchainIntegrationService {
   private static instance: BlockchainIntegrationService;
@@ -39,13 +39,13 @@ export class BlockchainIntegrationService {
    */
   private initializeProvider(): void {
     try {
-      if (!scrollCoinConfig.blockchainEnabled) {
+      if (!ScrollGoldConfig.blockchainEnabled) {
         logger.info('Blockchain integration disabled');
         return;
       }
 
       // Initialize provider
-      this.provider = new ethers.JsonRpcProvider(scrollCoinConfig.rpcUrl);
+      this.provider = new ethers.JsonRpcProvider(ScrollGoldConfig.rpcUrl);
 
       // Initialize wallet (in production, use secure key management)
       const privateKey = process.env.BLOCKCHAIN_PRIVATE_KEY;
@@ -54,17 +54,17 @@ export class BlockchainIntegrationService {
       }
 
       // Initialize contract
-      if (scrollCoinConfig.contractAddress && scrollCoinConfig.contractABI) {
+      if (ScrollGoldConfig.contractAddress && ScrollGoldConfig.contractABI) {
         this.contract = new ethers.Contract(
-          scrollCoinConfig.contractAddress,
-          scrollCoinConfig.contractABI,
+          ScrollGoldConfig.contractAddress,
+          ScrollGoldConfig.contractABI,
           this.wallet || this.provider
         );
       }
 
       logger.info('Blockchain provider initialized', {
-        network: scrollCoinConfig.networkName,
-        contractAddress: scrollCoinConfig.contractAddress
+        network: ScrollGoldConfig.networkName,
+        contractAddress: ScrollGoldConfig.contractAddress
       });
     } catch (error) {
       logger.error('Error initializing blockchain provider:', error);
@@ -89,7 +89,7 @@ export class BlockchainIntegrationService {
         blockNumber,
         networkName: network.name,
         gasPrice: feeData.gasPrice?.toString() || '0',
-        contractAddress: scrollCoinConfig.contractAddress
+        contractAddress: ScrollGoldConfig.contractAddress
       };
     } catch (error) {
       logger.error('Error getting network status:', error);
@@ -98,13 +98,13 @@ export class BlockchainIntegrationService {
         blockNumber: 0,
         networkName: 'unknown',
         gasPrice: '0',
-        contractAddress: scrollCoinConfig.contractAddress
+        contractAddress: ScrollGoldConfig.contractAddress
       };
     }
   }
 
   /**
-   * Mint ScrollCoin tokens on blockchain
+   * Mint ScrollGold tokens on blockchain
    */
   async mintTokens(
     toAddress: string,
@@ -157,7 +157,7 @@ export class BlockchainIntegrationService {
   }
 
   /**
-   * Transfer ScrollCoin tokens on blockchain
+   * Transfer ScrollGold tokens on blockchain
    */
   async transferTokens(
     fromAddress: string,
@@ -203,7 +203,7 @@ export class BlockchainIntegrationService {
   }
 
   /**
-   * Burn ScrollCoin tokens on blockchain
+   * Burn ScrollGold tokens on blockchain
    */
   async burnTokens(
     fromAddress: string,
@@ -272,7 +272,7 @@ export class BlockchainIntegrationService {
    */
   async verifyTransaction(
     txHash: string,
-    expectedData: Partial<ScrollCoinTransactionData>
+    expectedData: Partial<ScrollGoldTransactionData>
   ): Promise<TransactionVerification> {
     try {
       if (!this.provider) {
@@ -285,7 +285,7 @@ export class BlockchainIntegrationService {
       if (!receipt) {
         return {
           isValid: false,
-          transaction: expectedData as ScrollCoinTransactionData,
+          transaction: expectedData as ScrollGoldTransactionData,
           discrepancies: ['Transaction not found on blockchain']
         };
       }
@@ -296,7 +296,7 @@ export class BlockchainIntegrationService {
       if (!tx) {
         return {
           isValid: false,
-          transaction: expectedData as ScrollCoinTransactionData,
+          transaction: expectedData as ScrollGoldTransactionData,
           discrepancies: ['Transaction details not found']
         };
       }
@@ -326,7 +326,7 @@ export class BlockchainIntegrationService {
 
       return {
         isValid: discrepancies.length === 0,
-        transaction: expectedData as ScrollCoinTransactionData,
+        transaction: expectedData as ScrollGoldTransactionData,
         blockchainData,
         discrepancies: discrepancies.length > 0 ? discrepancies : undefined
       };
@@ -466,7 +466,7 @@ export class BlockchainIntegrationService {
    * Check if blockchain is enabled and connected
    */
   isEnabled(): boolean {
-    return scrollCoinConfig.blockchainEnabled && this.provider !== null;
+    return ScrollGoldConfig.blockchainEnabled && this.provider !== null;
   }
 }
 

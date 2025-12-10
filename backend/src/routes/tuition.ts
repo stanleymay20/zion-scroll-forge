@@ -31,8 +31,8 @@ router.get('/info', async (req, res) => {
         description: 'ScrollUniversity operates on a revolutionary tuition model that eliminates debt',
         options: [
           {
-            name: 'ScrollCoin Payment',
-            description: 'Pay with earned ScrollCoin through academic achievement',
+            name: 'ScrollGold Payment',
+            description: 'Pay with earned ScrollGold through academic achievement',
             cost: 'Variable based on performance'
           },
           {

@@ -55,10 +55,10 @@
 
 
 
-- [ ] 3.3 Create RewardService for ScrollCoin and XP management
+- [ ] 3.3 Create RewardService for ScrollGold and XP management
   - Implement RewardService class with calculation algorithms for project-based rewards
   - Create integration points with ScrollXPTracker for reward distribution
-  - Implement real-world usage tracking and ScrollCoin earning logic
+  - Implement real-world usage tracking and ScrollGold earning logic
   - Write unit tests for reward calculation and distribution
   - _Requirements: 4.3, 6.1, 6.2_
 
@@ -115,7 +115,7 @@
 
 - [ ] 5.2 Implement ScrollMarketplace integration
   - Create MarketplaceService with publication and metadata synchronization
-  - Implement usage tracking for ScrollCoin calculation
+  - Implement usage tracking for ScrollGold calculation
   - Add revenue sharing integration with reward distribution
   - Write unit tests with mocked marketplace API
   - _Requirements: 4.1, 4.3, 4.4_
@@ -153,7 +153,7 @@
 - [ ] 7.1 Create integration tests for complete workflows
   - Write integration tests for full project lifecycle from creation to marketplace publication
   - Create test scenarios for mentor validation workflows and feedback cycles
-  - Implement end-to-end testing for ScrollCoin earning and XP distribution
+  - Implement end-to-end testing for ScrollGold earning and XP distribution
   - Add performance tests for milestone processing and GPT summary generation
   - _Requirements: All requirements validation_
 

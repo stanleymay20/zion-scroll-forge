@@ -1,4 +1,4 @@
-# ScrollCoin & Digital Currency Systems
+# ScrollGold & Digital Currency Systems
 
 **Course Code:** ECON201  
 **Faculty:** ScrollEconomy & Financial Reformation  

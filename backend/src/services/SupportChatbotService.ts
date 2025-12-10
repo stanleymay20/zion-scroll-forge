@@ -211,7 +211,7 @@ If the question is urgent, complex, or you're not confident, recommend escalatio
 
         if (lowerMessage.includes('payment') || lowerMessage.includes('tuition')) {
             actions.push('View Payment Options');
-            actions.push('Check ScrollCoin Balance');
+            actions.push('Check ScrollGold Balance');
         }
 
         if (lowerMessage.includes('grade') || lowerMessage.includes('assignment')) {

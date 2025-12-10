@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">6.57% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/152</span>
+                <span class='fraction'>0/152</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">1.28% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/78</span>
+                <span class='fraction'>0/78</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/20</span>
+                <span class='fraction'>0/20</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">6.75% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>10/148</span>
+                <span class='fraction'>0/148</span>
             </div>
         
             
@@ -710,8 +710,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -726,9 +726,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1011,11 +1011,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1114,8 +1114,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1332,7 +1332,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Course Content Management Service
  * "Let every course be a scroll that opens the kingdom to hungry hearts"
@@ -1345,8 +1345,8 @@
  * - Course preview and enrollment
  */
 &nbsp;
-import { PrismaClient, Difficulty } from '@prisma/client';
-import { logger } from '../utils/logger';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient, Difficulty } from '@prisma/client';</span>
+<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
 import {
   CourseCreateInput,
   CourseUpdateInput,
@@ -1361,9 +1361,9 @@ import {
   VersionHistoryResponse
 } from '../types/course.types';
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
-export class CourseService {
+<span class="cstat-no" title="statement not covered" >export class C</span>ourseService {
   /**
    * Create a new course with comprehensive validation
    */
@@ -1400,7 +1400,7 @@ export class CourseService {
           difficulty: input.difficulty,
           duration: input.duration,
           scrollXPReward: input.scrollXPReward || 10,
-          scrollCoinCost: input.scrollCoinCost || 0.0,
+          ScrollGoldCost: input.ScrollGoldCost || 0.0,
           facultyId: input.facultyId,
           prerequisites: input.prerequisites || [],
           videoUrl: input.videoUrl,
@@ -1523,7 +1523,7 @@ export class CourseService {
         difficulty,
         minDuration,
         maxDuration,
-        maxScrollCoinCost,
+        maxScrollGoldCost,
         isActive = <span class="branch-0 cbranch-no" title="branch not covered" >true,</span>
         page = <span class="branch-0 cbranch-no" title="branch not covered" >1,</span>
         limit = <span class="branch-0 cbranch-no" title="branch not covered" >20,</span>
@@ -1557,8 +1557,8 @@ export class CourseService {
 <span class="cstat-no" title="statement not covered" >        where.duration = { ...where.duration, lte: maxDuration };</span>
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (maxScrollCoinCost !== undefined) {</span>
-<span class="cstat-no" title="statement not covered" >        where.scrollCoinCost = { lte: maxScrollCoinCost };</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (maxScrollGoldCost !== undefined) {</span>
+<span class="cstat-no" title="statement not covered" >        where.ScrollGoldCost = { lte: maxScrollGoldCost };</span>
       }
 &nbsp;
       // Get total count
@@ -1645,12 +1645,12 @@ export class CourseService {
   /**
    * Enroll user in course
    */
-  async enrollInCourse(userId: string, request: EnrollmentRequest): Promise&lt;EnrollmentResponse&gt; {
-    try {
-      logger.info('Enrolling user in course', { userId, courseId: request.courseId });
+<span class="fstat-no" title="function not covered" >  async </span>enrollInCourse(userId: string, request: EnrollmentRequest): Promise&lt;EnrollmentResponse&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('Enrolling user in course', { userId, courseId: request.courseId });</span>
 &nbsp;
       // Check if course exists and is active
-      const course = await prisma.course.findUnique({
+      const course = <span class="cstat-no" title="statement not covered" >await prisma.course.findUnique({</span>
         where: { id: request.courseId }
       });
 &nbsp;
@@ -1693,28 +1693,28 @@ export class CourseService {
       }
 &nbsp;
       // Handle payment if required
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (course.scrollCoinCost &gt; 0 &amp;&amp; request.paymentMethod === 'SCROLL_COIN') {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (course.ScrollGoldCost &gt; 0 &amp;&amp; request.paymentMethod === 'SCROLL_COIN') {</span>
         const user = <span class="cstat-no" title="statement not covered" >await prisma.user.findUnique({</span>
           where: { id: userId }
         });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!user || user.scrollCoinBalance &lt; course.scrollCoinCost) {</span>
-<span class="cstat-no" title="statement not covered" >          throw new Error('Insufficient ScrollCoin balance');</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (!user || user.ScrollGoldBalance &lt; course.ScrollGoldCost) {</span>
+<span class="cstat-no" title="statement not covered" >          throw new Error('Insufficient ScrollGold balance');</span>
         }
 &nbsp;
-        // Deduct ScrollCoin
+        // Deduct ScrollGold
 <span class="cstat-no" title="statement not covered" >        await prisma.user.update({</span>
           where: { id: userId },
           data: {
-            scrollCoinBalance: user.scrollCoinBalance - course.scrollCoinCost
+            ScrollGoldBalance: user.ScrollGoldBalance - course.ScrollGoldCost
           }
         });
 &nbsp;
         // Record transaction
-<span class="cstat-no" title="statement not covered" >        await prisma.scrollCoinTransaction.create({</span>
+<span class="cstat-no" title="statement not covered" >        await prisma.ScrollGoldTransaction.create({</span>
           data: {
             userId,
-            amount: -course.scrollCoinCost,
+            amount: -course.ScrollGoldCost,
             type: 'SPENT',
             description: `Enrolled in course: ${course.title}`,
             activityType: 'COURSE_COMPLETION',
@@ -1749,8 +1749,8 @@ export class CourseService {
         completedAt: enrollment.completedAt || undefined
       };
     } catch (error) {
-      logger.error('Error enrolling in course:', error);
-      throw new Error(`Failed to enroll in course: ${error instanceof Error ? error.message : <span class="branch-1 cbranch-no" title="branch not covered" >'Unknown error'}</span>`);
+<span class="cstat-no" title="statement not covered" >      logger.error('Error enrolling in course:', error);</span>
+<span class="cstat-no" title="statement not covered" >      throw new Error(`Failed to enroll in course: ${error instanceof Error ? error.message : 'Unknown error'}`);</span>
     }
   }
 &nbsp;
@@ -1882,7 +1882,7 @@ export class CourseService {
         averageProgress: enrollments.length &gt; 0 ? totalProgress / enrollments.length : 0,
         averageRating: 0, // TODO: Implement rating system
         totalScrollXPAwarded: totalScrollXP,
-        totalScrollCoinEarned: 0, // TODO: Calculate from transactions
+        totalScrollGoldEarned: 0, // TODO: Calculate from transactions
         popularModules: [],
         engagementMetrics: {
           averageTimeSpent: 0,
@@ -1927,7 +1927,7 @@ export class CourseService {
       difficulty: course.difficulty,
       duration: course.duration,
       scrollXPReward: course.scrollXPReward,
-      scrollCoinCost: course.scrollCoinCost,
+      ScrollGoldCost: course.ScrollGoldCost,
       facultyId: course.facultyId,
       faculty: course.faculty ? {
         id: course.faculty.id,
@@ -1967,7 +1967,7 @@ export class CourseService {
   }
 }
 &nbsp;
-export default CourseService;
+<span class="cstat-no" title="statement not covered" >export default CourseService;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1975,7 +1975,7 @@ export default CourseService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:03.756Z
+                at 2025-12-02T16:54:09.620Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

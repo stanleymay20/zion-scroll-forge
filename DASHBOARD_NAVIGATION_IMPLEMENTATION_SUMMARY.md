@@ -14,7 +14,7 @@ November 19, 2025
 
 - [x] **Create main dashboard with personalized content**
   - Enhanced dashboard with dynamic greeting
-  - Quick stats cards (Courses, ScrollCoins, Prayers, Progress)
+  - Quick stats cards (Courses, ScrollGolds, Prayers, Progress)
   - Christ Lordship acknowledgment
   - Quick actions grid (12 actions)
   - Recent activity feed
@@ -50,7 +50,7 @@ November 19, 2025
 - [x] **Implement user profile dropdown menu**
   - User avatar with fallback
   - Name, email, role display
-  - ScrollCoin balance
+  - ScrollGold balance
   - Quick links (Profile, Transcript, Wallet, Achievements, Settings)
   - Role-based admin access
   - Sign out action
@@ -103,7 +103,7 @@ November 19, 2025
 
 ### Navigation Features
 - **Role-Based Access**: Different menus for students, faculty, admins
-- **8 Main Sections**: Overview, Learning, Spiritual Formation, Community, ScrollCoin, Academic Progress, Faculty Tools, Administration
+- **8 Main Sections**: Overview, Learning, Spiritual Formation, Community, ScrollGold, Academic Progress, Faculty Tools, Administration
 - **Collapsible Sections**: Expand/collapse for better organization
 - **Active Highlighting**: Clear indication of current page
 - **User Profile**: Quick access to profile and settings
@@ -127,7 +127,7 @@ November 19, 2025
 2. Learning
 3. Spiritual Formation
 4. Community
-5. ScrollCoin Economy
+5. ScrollGold Economy
 6. Academic Progress
 
 **Total Items:** ~30 navigation items
@@ -217,14 +217,14 @@ November 19, 2025
 - `useDashboard()` - Dashboard statistics
 - `useUserEnrollments()` - Course enrollments
 - `useProfile()` - User profile data
-- `useScrollCoin()` - ScrollCoin balance
+- `useScrollGold()` - ScrollGold balance
 - `useNotifications()` - Notifications
 
 ### Real-time Updates
 - Supabase subscriptions
 - Notification delivery
 - Course progress updates
-- ScrollCoin balance changes
+- ScrollGold balance changes
 
 ### Routing
 - React Router v6
@@ -275,7 +275,7 @@ November 19, 2025
 describe('UserProfileDropdown', () => {
   it('renders user information', () => {});
   it('shows role badge', () => {});
-  it('displays ScrollCoin balance', () => {});
+  it('displays ScrollGold balance', () => {});
 });
 
 // Role-based filtering

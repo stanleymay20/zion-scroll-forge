@@ -69,6 +69,7 @@ CREATE TABLE IF NOT EXISTS assessments (
 -- Practical assignments
 CREATE TABLE IF NOT EXISTS assignments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  course_id UUID REFERENCES courses(id) ON DELETE CASCADE,
   module_id UUID REFERENCES course_modules(id) ON DELETE CASCADE,
   title TEXT NOT NULL,
   description TEXT NOT NULL,
@@ -314,7 +315,7 @@ CREATE OR REPLACE VIEW v_student_learning_analytics
 WITH (security_invoker=true) AS
 SELECT 
   p.id as user_id,
-  p.email,
+  u.email,
   COUNT(DISTINCT e.course_id) as enrolled_courses,
   COUNT(DISTINCT cc.course_id) as completed_courses,
   AVG(e.progress) as avg_progress,
@@ -325,13 +326,14 @@ SELECT
   (SELECT AVG(final_score) FROM course_completions WHERE user_id = p.id) as avg_final_score,
   (SELECT COUNT(*) FROM course_completions WHERE user_id = p.id AND ministry_readiness_score >= 0.8) as ministry_ready_courses
 FROM profiles p
+LEFT JOIN auth.users u ON u.id = p.id
 LEFT JOIN enrollments e ON e.user_id = p.id
 LEFT JOIN course_completions cc ON cc.user_id = p.id
 LEFT JOIN course_progress cp ON cp.user_id = p.id
 LEFT JOIN student_submissions ss ON ss.user_id = p.id
 LEFT JOIN forum_posts fp ON fp.user_id = p.id
 WHERE p.id = auth.uid()
-GROUP BY p.id, p.email;
+GROUP BY p.id, u.email;
 
 -- Integrity verification
 INSERT INTO scroll_integrity_logs (module, hash, verified, verified_at)

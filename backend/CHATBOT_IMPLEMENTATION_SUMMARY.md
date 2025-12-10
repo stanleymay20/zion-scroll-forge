@@ -78,7 +78,7 @@ PASS src/services/__tests__/SupportChatbotService.test.ts
     Sample Query Tests
       ✓ should handle query: How do I reset my password?
       ✓ should handle query: How do I enroll in a course?
-      ✓ should handle query: What is ScrollCoin and how do I earn it?
+      ✓ should handle query: What is ScrollGold and how do I earn it?
       ✓ should handle query: URGENT: I cannot access my exam and the deadline is in 1 hour!
       ✓ should handle query: I need help with my financial aid application
     Escalation Logic
@@ -120,7 +120,7 @@ Tests:       13 passed, 13 total
 ### 4. Knowledge Base
 Pre-populated with:
 - Academic policies (integrity, grading, enrollment)
-- Common FAQs (password reset, enrollment, ScrollCoin)
+- Common FAQs (password reset, enrollment, ScrollGold)
 - Course information
 - Technical requirements
 - Financial aid information

@@ -84,7 +84,7 @@ describe('ScrollUniversityArchitectureDocumentationService', () => {
       expect(result.spiritualFormationSystems.propheticCheckins.name).toBe('Prophetic Check-ins Service');
 
       // Verify blockchain systems
-      expect(result.blockchainSystems.scrollCoinEconomy).toBeDefined();
+      expect(result.blockchainSystems.scrollGoldEconomy).toBeDefined();
       expect(result.blockchainSystems.credentialVerification).toBeDefined();
 
       // Verify integration capabilities
@@ -193,7 +193,7 @@ describe('ScrollUniversityArchitectureDocumentationService', () => {
 
       // Verify pricing model
       expect(result.pricingModel.model).toBe('revolutionary-tuition');
-      expect(result.pricingModel.scrollCoinIntegration).toBe(true);
+      expect(result.pricingModel.scrollGoldIntegration).toBe(true);
       expect(result.pricingModel.spiritualEconomyAlignment).toBe(true);
 
       // Verify strengths include key differentiators

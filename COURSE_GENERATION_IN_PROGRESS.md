@@ -25,7 +25,7 @@ Generating complete learning materials for **15 incomplete courses**:
 
 ### Economics Courses (4)
 7. ⏳ COURSE_ECON101 - Kingdom Economics Foundations (8 modules, 32 lectures)
-8. ⏳ COURSE_ECON201 - ScrollCoin & Digital Currency (8 modules, 32 lectures)
+8. ⏳ COURSE_ECON201 - ScrollGold & Digital Currency (8 modules, 32 lectures)
 9. ⏳ COURSE_ECON301 - Global Trade & Kingdom Commerce (10 modules, 40 lectures)
 10. ⏳ COURSE_ECON401 - AI Trading & FinTech (10 modules, 40 lectures)
 

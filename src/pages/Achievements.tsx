@@ -131,7 +131,7 @@ export default function Achievements() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <span>+{achievement.scrollcoin_reward} ScrollCoins</span>
+                      <span>+{achievement.ScrollGold_reward} ScrollGolds</span>
                       <span>+{achievement.xp_reward} XP</span>
                     </div>
                   </CardContent>

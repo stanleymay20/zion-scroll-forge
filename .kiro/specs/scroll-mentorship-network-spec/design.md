@@ -48,7 +48,7 @@ graph LR
     A --> F[Prayer Integration System]
     A --> G[Assessment Engine]
     A --> H[University Portal]
-    A --> I[ScrollCoin Meter]
+    A --> I[ScrollGold Meter]
     A --> J[Seal Certification System]
 ```
 

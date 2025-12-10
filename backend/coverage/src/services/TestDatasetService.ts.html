@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.6% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>13/89</span>
+                <span class='fraction'>0/89</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">9.52% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/21</span>
+                <span class='fraction'>0/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">14.77% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/88</span>
+                <span class='fraction'>0/88</span>
             </div>
         
             
@@ -713,24 +713,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -755,8 +755,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -771,8 +771,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -794,8 +794,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1352,30 +1352,30 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Test Dataset Service
  * Manages test cases and ground truth datasets for AI services
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
 import {
   TestCase,
   GroundTruthDataset,
   AIServiceType,
   TestCategory,
 } from '../types/qa.types';
-import { logger } from '../utils/logger';
+<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
-export class TestDatasetService {
+<span class="cstat-no" title="statement not covered" >export class T</span>estDatasetService {
   /**
    * Create a new test case
    */
-  async createTestCase(testCase: Omit&lt;TestCase, 'id' | 'createdAt' | 'updatedAt'&gt;): Promise&lt;TestCase&gt; {
-    try {
-      const created = await prisma.aITestCase.create({
+<span class="fstat-no" title="function not covered" >  async </span>createTestCase(testCase: Omit&lt;TestCase, 'id' | 'createdAt' | 'updatedAt'&gt;): Promise&lt;TestCase&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const created = <span class="cstat-no" title="statement not covered" >await prisma.aITestCase.create({</span>
         data: {
           serviceType: testCase.serviceType,
           input: testCase.input,
@@ -1400,15 +1400,15 @@ export class TestDatasetService {
         updatedAt: created.updatedAt,
       };
     } catch (error) {
-      logger.error('Error creating test case', { error });
-      throw error;
+<span class="cstat-no" title="statement not covered" >      logger.error('Error creating test case', { error });</span>
+<span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
   /**
    * Get test cases for a service
    */
-  async getTestCases(
+<span class="fstat-no" title="function not covered" >  async </span>getTestCases(
     serviceType: AIServiceType,
     options?: {
       category?: TestCategory;
@@ -1416,8 +1416,8 @@ export class TestDatasetService {
       limit?: number;
     }
   ): Promise&lt;TestCase[]&gt; {
-    try {
-      const testCases = await prisma.aITestCase.findMany({
+<span class="cstat-no" title="statement not covered" >    try {</span>
+      const testCases = <span class="cstat-no" title="statement not covered" >await prisma.aITestCase.findMany({</span>
         where: {
           serviceType,
           ...(options?.category &amp;&amp; { category: options.category }),
@@ -1439,8 +1439,8 @@ export class TestDatasetService {
         updatedAt: tc.updatedAt,
       }));
     } catch (error) {
-      logger.error('Error fetching test cases', { error, serviceType });
-      throw error;
+<span class="cstat-no" title="statement not covered" >      logger.error('Error fetching test cases', { error, serviceType });</span>
+<span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
@@ -1997,7 +1997,7 @@ export class TestDatasetService {
   }
 }
 &nbsp;
-export default TestDatasetService;
+<span class="cstat-no" title="statement not covered" >export default TestDatasetService;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -2005,7 +2005,7 @@ export default TestDatasetService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:09.019Z
+                at 2025-12-02T16:54:11.658Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

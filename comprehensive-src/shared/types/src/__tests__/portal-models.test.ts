@@ -70,7 +70,7 @@ describe('Portal Data Models Validation', () => {
         username: 'testuser',
         firstName: 'John',
         lastName: 'Doe',
-        scrollCoinWallet: 'wallet_123',
+        scrollGoldWallet: 'wallet_123',
         preferredLanguage: 'en',
         timeZone: 'UTC',
         scrollNodeId: 'node_123',
@@ -83,7 +83,7 @@ describe('Portal Data Models Validation', () => {
         role: 'student',
         enrollmentStatus: 'active',
         academicLevel: 'scroll_degree',
-        scrollCoinBalance: 1500.50,
+        scrollGoldBalance: 1500.50,
         workTradeCredits: 250.00,
         profile: {
           firstName: 'John',
@@ -130,7 +130,7 @@ describe('Portal Data Models Validation', () => {
       expect(result.role).toBe('student');
       expect(result.enrollmentStatus).toBe('active');
       expect(result.academicLevel).toBe('scroll_open');
-      expect(result.scrollCoinBalance).toBe(0);
+      expect(result.scrollGoldBalance).toBe(0);
       expect(result.spiritualGifts).toEqual([]);
       expect(result.scrollAlignment).toBe(0);
     });
@@ -167,7 +167,7 @@ describe('Portal Data Models Validation', () => {
         level: 'Intermediate',
         durationWeeks: 8,
         xpReward: 200,
-        scrollCoinCost: 50.00,
+        scrollGoldCost: 50.00,
         prerequisites: ['course_101', 'course_102'],
         featured: true,
         enrollmentOpen: true,
@@ -197,7 +197,7 @@ describe('Portal Data Models Validation', () => {
       expect(result.level).toBe('Introductory');
       expect(result.durationWeeks).toBe(4);
       expect(result.xpReward).toBe(100);
-      expect(result.scrollCoinCost).toBe(0);
+      expect(result.scrollGoldCost).toBe(0);
       expect(result.prerequisites).toEqual([]);
       expect(result.featured).toBe(false);
       expect(result.enrollmentOpen).toBe(true);
@@ -332,7 +332,7 @@ describe('Portal Data Transformers', () => {
         username: 'testuser',
         first_name: 'John',
         last_name: 'Doe',
-        scroll_coin_wallet: 'wallet_123',
+        scroll_gold_wallet: 'wallet_123',
         preferred_language: 'en',
         time_zone: 'UTC',
         scroll_node_id: 'node_123',
@@ -345,7 +345,7 @@ describe('Portal Data Transformers', () => {
         role: 'student',
         enrollment_status: 'active',
         academic_level: 'scroll_degree',
-        scroll_coin_balance: 1500.50,
+        scroll_gold_balance: 1500.50,
         work_trade_credits: 250.00,
         created_at: '2024-01-01T00:00:00Z',
         updated_at: '2024-01-02T00:00:00Z',
@@ -357,7 +357,7 @@ describe('Portal Data Transformers', () => {
       expect(result.user_id).toBe('user_123');
       expect(result.firstName).toBe('John');
       expect(result.lastName).toBe('Doe');
-      expect(result.scrollCoinWallet).toBe('wallet_123');
+      expect(result.scrollGoldWallet).toBe('wallet_123');
       expect(result.preferredLanguage).toBe('en');
       expect(result.spiritualGifts).toEqual(['wisdom', 'knowledge']);
       expect(result.profile.firstName).toBe('John');
@@ -371,7 +371,7 @@ describe('Portal Data Transformers', () => {
         username: 'testuser',
         firstName: 'John',
         lastName: 'Doe',
-        scrollCoinWallet: 'wallet_123',
+        scrollGoldWallet: 'wallet_123',
         preferredLanguage: 'en',
         timeZone: 'UTC',
         scrollNodeId: 'node_123',
@@ -384,7 +384,7 @@ describe('Portal Data Transformers', () => {
         role: 'student',
         enrollmentStatus: 'active',
         academicLevel: 'scroll_degree',
-        scrollCoinBalance: 1500.50,
+        scrollGoldBalance: 1500.50,
         workTradeCredits: 250.00
       };
 
@@ -393,7 +393,7 @@ describe('Portal Data Transformers', () => {
       expect(result.user_id).toBe('user_123');
       expect(result.first_name).toBe('John');
       expect(result.last_name).toBe('Doe');
-      expect(result.scroll_coin_wallet).toBe('wallet_123');
+      expect(result.scroll_gold_wallet).toBe('wallet_123');
       expect(result.preferred_language).toBe('en');
       expect(result.spiritual_gifts).toEqual(['wisdom', 'knowledge']);
     });
@@ -410,7 +410,7 @@ describe('Portal Data Transformers', () => {
         level: 'Intermediate',
         duration_weeks: 8,
         xp_reward: 200,
-        scroll_coin_cost: 50.00,
+        scroll_gold_cost: 50.00,
         prerequisites: ['course_101', 'course_102'],
         featured: true,
         enrollment_open: true,
@@ -427,7 +427,7 @@ describe('Portal Data Transformers', () => {
       expect(result.title).toBe('Introduction to Prophetic Programming');
       expect(result.durationWeeks).toBe(8);
       expect(result.xpReward).toBe(200);
-      expect(result.scrollCoinCost).toBe(50.00);
+      expect(result.scrollGoldCost).toBe(50.00);
       expect(result.prerequisites).toEqual(['course_101', 'course_102']);
     });
 
@@ -441,7 +441,7 @@ describe('Portal Data Transformers', () => {
         level: 'Intermediate',
         durationWeeks: 8,
         xpReward: 200,
-        scrollCoinCost: 50.00,
+        scrollGoldCost: 50.00,
         prerequisites: ['course_101', 'course_102'],
         featured: true,
         enrollmentOpen: true,
@@ -456,7 +456,7 @@ describe('Portal Data Transformers', () => {
       expect(result.title).toBe('Introduction to Prophetic Programming');
       expect(result.duration_weeks).toBe(8);
       expect(result.xp_reward).toBe(200);
-      expect(result.scroll_coin_cost).toBe(50.00);
+      expect(result.scroll_gold_cost).toBe(50.00);
       expect(result.prerequisites).toEqual(['course_101', 'course_102']);
     });
   });
@@ -464,14 +464,14 @@ describe('Portal Data Transformers', () => {
   describe('Key Transformation Utilities', () => {
     it('should convert camelCase to snake_case', () => {
       expect(camelToSnake('firstName')).toBe('first_name');
-      expect(camelToSnake('scrollCoinBalance')).toBe('scroll_coin_balance');
+      expect(camelToSnake('scrollGoldBalance')).toBe('scroll_gold_balance');
       expect(camelToSnake('portalCourseId')).toBe('portal_course_id');
       expect(camelToSnake('xrEnvironmentId')).toBe('xr_environment_id');
     });
 
     it('should convert snake_case to camelCase', () => {
       expect(snakeToCamel('first_name')).toBe('firstName');
-      expect(snakeToCamel('scroll_coin_balance')).toBe('scrollCoinBalance');
+      expect(snakeToCamel('scroll_gold_balance')).toBe('scrollGoldBalance');
       expect(snakeToCamel('portal_course_id')).toBe('portalCourseId');
       expect(snakeToCamel('xr_environment_id')).toBe('xrEnvironmentId');
     });
@@ -480,7 +480,7 @@ describe('Portal Data Transformers', () => {
       const camelCaseObj = {
         firstName: 'John',
         lastName: 'Doe',
-        scrollCoinBalance: 1500,
+        scrollGoldBalance: 1500,
         userPreferences: {
           preferredLanguage: 'en',
           timeZone: 'UTC'
@@ -491,7 +491,7 @@ describe('Portal Data Transformers', () => {
       
       expect(result.first_name).toBe('John');
       expect(result.last_name).toBe('Doe');
-      expect(result.scroll_coin_balance).toBe(1500);
+      expect(result.scroll_gold_balance).toBe(1500);
       expect(result.user_preferences.preferred_language).toBe('en');
       expect(result.user_preferences.time_zone).toBe('UTC');
     });
@@ -500,7 +500,7 @@ describe('Portal Data Transformers', () => {
       const snakeCaseObj = {
         first_name: 'John',
         last_name: 'Doe',
-        scroll_coin_balance: 1500,
+        scroll_gold_balance: 1500,
         user_preferences: {
           preferred_language: 'en',
           time_zone: 'UTC'
@@ -511,7 +511,7 @@ describe('Portal Data Transformers', () => {
       
       expect(result.firstName).toBe('John');
       expect(result.lastName).toBe('Doe');
-      expect(result.scrollCoinBalance).toBe(1500);
+      expect(result.scrollGoldBalance).toBe(1500);
       expect(result.userPreferences.preferredLanguage).toBe('en');
       expect(result.userPreferences.timeZone).toBe('UTC');
     });

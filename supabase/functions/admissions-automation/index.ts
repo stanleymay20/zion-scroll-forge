@@ -52,8 +52,8 @@ serve(async (req) => {
             status: 'active',
           });
 
-        // Award welcome ScrollCoins
-        await supabaseClient.rpc('earn_scrollcoin', {
+        // Award welcome ScrollGolds
+        await supabaseClient.rpc('earn_ScrollGold', {
           p_user_id: application.user_id,
           p_amount: 100,
           p_desc: 'Welcome to ScrollUniversity! 🎓',

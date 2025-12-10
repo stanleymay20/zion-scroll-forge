@@ -48,7 +48,7 @@ export class UoPeopleCompetitiveAnalysis {
           category: 'Global Recognition',
           advantage: 'Degrees accepted by employers and graduate schools worldwide',
           impact: 'HIGH',
-          scrollUniversityGap: 'Limited employer recognition of ScrollCoin credentials',
+          scrollUniversityGap: 'Limited employer recognition of ScrollGold credentials',
           strategicResponse: 'Build employer partnership program and credential recognition system'
         },
         {
@@ -64,15 +64,15 @@ export class UoPeopleCompetitiveAnalysis {
           category: 'Cost Structure',
           advantage: 'Completely tuition-free model with only assessment fees ($5,460 total)',
           impact: 'HIGH',
-          scrollUniversityGap: 'Complex ScrollCoin economy may seem expensive/confusing',
+          scrollUniversityGap: 'Complex ScrollGold economy may seem expensive/confusing',
           strategicResponse: 'Implement free tier with traditional payment options'
         },
         {
           category: 'Financial Accessibility',
           advantage: 'No hidden costs, transparent fee structure',
           impact: 'MEDIUM',
-          scrollUniversityGap: 'ScrollCoin pricing unclear to traditional users',
-          strategicResponse: 'Create transparent USD pricing alongside ScrollCoin options'
+          scrollUniversityGap: 'ScrollGold pricing unclear to traditional users',
+          strategicResponse: 'Create transparent USD pricing alongside ScrollGold options'
         },
         {
           category: 'Global Reach',
@@ -207,7 +207,7 @@ export class UoPeopleCompetitiveAnalysis {
         {
           gapId: 'gap-002',
           category: 'Cost Transparency',
-          description: 'ScrollCoin economy creates pricing confusion vs free model',
+          description: 'ScrollGold economy creates pricing confusion vs free model',
           competitorStrength: 10,
           scrollUniversityStrength: 4,
           priorityLevel: 'CRITICAL',

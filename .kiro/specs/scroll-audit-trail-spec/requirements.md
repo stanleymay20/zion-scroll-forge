@@ -110,13 +110,13 @@ The ScrollAuditTrailSpec provides comprehensive, immutable logging and monitorin
 5. WHEN API performance is assessed THEN the system SHALL track response times, throughput, and reliability metrics
 6. WHEN integration reports are needed THEN the system SHALL provide comprehensive API usage and performance analytics
 
-### Requirement 9: Financial and ScrollCoin Transaction Auditing
+### Requirement 9: Financial and ScrollGold Transaction Auditing
 
-**User Story:** As a financial administrator, I want complete auditing of all ScrollCoin transactions, tuition payments, and financial activities, so that I can ensure financial integrity and regulatory compliance.
+**User Story:** As a financial administrator, I want complete auditing of all ScrollGold transactions, tuition payments, and financial activities, so that I can ensure financial integrity and regulatory compliance.
 
 #### Acceptance Criteria
 
-1. WHEN ScrollCoin transactions occur THEN the system SHALL log all coin transfers, earnings, and expenditures with complete details
+1. WHEN ScrollGold transactions occur THEN the system SHALL log all coin transfers, earnings, and expenditures with complete details
 2. WHEN tuition payments are processed THEN the system SHALL record payment details, processing status, and reconciliation information
 3. WHEN financial reports are generated THEN the system SHALL provide comprehensive transaction histories and financial analytics
 4. WHEN fraud detection occurs THEN the system SHALL identify suspicious financial patterns and alert appropriate administrators

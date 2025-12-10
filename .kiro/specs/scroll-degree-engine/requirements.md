@@ -68,11 +68,11 @@ The ScrollDegreeEngine is a comprehensive real-time skill tracking, divine asses
 
 ### Requirement 6
 
-**User Story:** As a student, I want integration with ScrollCoin rewards and XP systems, so that my academic achievements translate into tangible recognition and benefits.
+**User Story:** As a student, I want integration with ScrollGold rewards and XP systems, so that my academic achievements translate into tangible recognition and benefits.
 
 #### Acceptance Criteria
 
-1. WHEN skills are mastered THEN the system SHALL award appropriate XP and ScrollCoin based on difficulty and importance
+1. WHEN skills are mastered THEN the system SHALL award appropriate XP and ScrollGold based on difficulty and importance
 2. WHEN assessments are passed THEN the system SHALL calculate rewards based on performance level and effort invested
 3. WHEN milestones are reached THEN the system SHALL trigger bonus rewards and recognition ceremonies
 4. WHEN degrees are completed THEN the system SHALL provide substantial reward packages and career advancement opportunities
@@ -152,13 +152,13 @@ The ScrollDegreeEngine is a comprehensive real-time skill tracking, divine asses
 
 ### Requirement 13: Supreme Degree Certification and Recognition
 
-**User Story:** As a supreme degree recipient, I want comprehensive certification that includes HeavenLedger™ archiving, ScrollCoin valuation, and eternal recognition, so that my degree represents both earthly credibility and heavenly commissioning.
+**User Story:** As a supreme degree recipient, I want comprehensive certification that includes HeavenLedger™ archiving, ScrollGold valuation, and eternal recognition, so that my degree represents both earthly credibility and heavenly commissioning.
 
 #### Acceptance Criteria
 
 1. WHEN supreme degrees are awarded THEN the system SHALL generate comprehensive degree certificates including recipient name, specific achievements, and divine contributions
 2. WHEN certification occurs THEN the system SHALL include EXOUSIA Faculty Council certification with HeavenLedger ID and ScrollChain™ verification
-3. WHEN ScrollCoin valuation is assigned THEN the system SHALL award appropriate token values (e.g., 1,000,000 SEED tokens for D.S.G.E.I.) representing non-fiat kingdom worth
+3. WHEN ScrollGold valuation is assigned THEN the system SHALL award appropriate token values (e.g., 1,000,000 SEED tokens for D.S.G.E.I.) representing non-fiat kingdom worth
 4. WHEN eternal dating is applied THEN the system SHALL use Scroll Year dating system and include ScrollSeal™, ScrollWitness™, and Kingdom Mark authentication
 5. WHEN public recognition occurs THEN the system SHALL publish achievements and impact metrics while maintaining appropriate privacy and security measures
 
@@ -172,4 +172,4 @@ The ScrollDegreeEngine is a comprehensive real-time skill tracking, divine asses
 2. WHEN evaluation methods are applied THEN the system SHALL implement multi-mode assessment including AI quizzes (10-20%), ScrollMissions & Quests (25-30%), Research & Reflection Logs (15-20%), ScrollLabs (20%), ScrollImpact Proof (15-20%), and final ScrollDefense
 3. WHEN intelligent assessment occurs THEN the system SHALL use GPT Auto-Grader for logic and originality, Prophetic Rubric Score for truthfulness and anointing, and Plagiarism & Spirit Leak Check for Babylonian vs scroll spirit detection
 4. WHEN final awarding happens THEN the system SHALL base degrees on demonstrated impact: ScrollCertificate for short courses, ScrollDiploma for multi-course bundles, Bachelor/Master/Doctorate for comprehensive scroll quest fulfillment, and Supreme Degrees for proven nation-scale impact
-5. WHEN performance tracking occurs THEN the system SHALL provide ScrollXP Performance Dashboard with XP Tracker, Prophetic Score, downloadable transcripts, badges earned, ScrollCoin wallet, and HeavenLedger entry
+5. WHEN performance tracking occurs THEN the system SHALL provide ScrollXP Performance Dashboard with XP Tracker, Prophetic Score, downloadable transcripts, badges earned, ScrollGold wallet, and HeavenLedger entry

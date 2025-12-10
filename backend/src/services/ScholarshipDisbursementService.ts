@@ -119,8 +119,8 @@ export class ScholarshipDisbursementService {
               disbursement.amount
             );
             break;
-          case DisbursementMethod.SCROLLCOIN_TRANSFER:
-            transactionId = await this.processScrollCoinTransfer(
+          case DisbursementMethod.ScrollGold_TRANSFER:
+            transactionId = await this.processScrollGoldTransfer(
               disbursement.recipientId,
               disbursement.amount
             );
@@ -209,12 +209,12 @@ export class ScholarshipDisbursementService {
   }
 
   /**
-   * Process ScrollCoin transfer
+   * Process ScrollGold transfer
    */
-  private async processScrollCoinTransfer(userId: string, amount: number): Promise<string> {
+  private async processScrollGoldTransfer(userId: string, amount: number): Promise<string> {
     try {
-      // Create ScrollCoin transaction
-      const transaction = await prisma.scrollCoinTransaction.create({
+      // Create ScrollGold transaction
+      const transaction = await prisma.ScrollGoldTransaction.create({
         data: {
           userId,
           amount,
@@ -225,11 +225,11 @@ export class ScholarshipDisbursementService {
         }
       });
 
-      // Update user's ScrollCoin balance
+      // Update user's ScrollGold balance
       await prisma.user.update({
         where: { id: userId },
         data: {
-          scrollCoinBalance: {
+          ScrollGoldBalance: {
             increment: amount
           }
         }
@@ -237,8 +237,8 @@ export class ScholarshipDisbursementService {
 
       return transaction.blockchainTxHash;
     } catch (error) {
-      logger.error('Error processing ScrollCoin transfer', { error, userId });
-      throw new Error('Failed to process ScrollCoin transfer');
+      logger.error('Error processing ScrollGold transfer', { error, userId });
+      throw new Error('Failed to process ScrollGold transfer');
     }
   }
 

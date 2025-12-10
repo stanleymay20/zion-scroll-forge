@@ -319,11 +319,11 @@ export class AnalyticsService {
   }
 
   /**
-   * Get ScrollCoin economy analytics
+   * Get ScrollGold economy analytics
    */
-  async getScrollCoinAnalytics(filters?: AnalyticsFilters): Promise<any> {
+  async getScrollGoldAnalytics(filters?: AnalyticsFilters): Promise<any> {
     try {
-      const response = await fetch(`${this.baseUrl}/analytics/scrollcoin-economy`, {
+      const response = await fetch(`${this.baseUrl}/analytics/ScrollGold-economy`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -333,12 +333,12 @@ export class AnalyticsService {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch ScrollCoin analytics');
+        throw new Error('Failed to fetch ScrollGold analytics');
       }
 
       return await response.json();
     } catch (error) {
-      console.error('Error fetching ScrollCoin analytics:', error);
+      console.error('Error fetching ScrollGold analytics:', error);
       throw error;
     }
   }

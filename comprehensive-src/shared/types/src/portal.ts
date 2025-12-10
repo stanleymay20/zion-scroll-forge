@@ -16,7 +16,7 @@ export interface ScrollUniversityPortalApp {
   admin: AdminModule;
   scrollNodes: ScrollNodeModule;
   scholarships: ScholarshipModule;
-  scrollCoin: ScrollCoinModule;
+  ScrollGold: ScrollGoldModule;
   credentials: CredentialModule;
 }
 
@@ -100,7 +100,7 @@ export interface ScholarshipModule {
   applyForScholarship: (scholarshipId: string, application: ScholarshipApplication) => Promise<Application>;
 }
 
-export interface ScrollCoinModule {
+export interface ScrollGoldModule {
   getBalance: () => Promise<number>;
   getTransactions: () => Promise<Transaction[]>;
   transfer: (to: string, amount: number) => Promise<Transaction>;
@@ -120,7 +120,7 @@ export const PortalConfigSchema = z.object({
     xrEnabled: z.boolean(),
     aiTutorsEnabled: z.boolean(),
     offlineMode: z.boolean(),
-    scrollCoinEnabled: z.boolean()
+    ScrollGoldEnabled: z.boolean()
   })
 });
 

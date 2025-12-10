@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: academic-year-config
+  namespace: academic-year-system
+  labels:
+    app: scrolluniversity
+    component: academic-year-automation
+data:
+  # Application Configuration
+  NODE_ENV: "production"
+  PORT: "3000"
+  HOST: "0.0.0.0"
+  SERVICE_NAME: "academic-year-automation-system"
+  
+  # Database Configuration
+  DATABASE_POOL_MIN: "10"
+  DATABASE_POOL_MAX: "50"
+  DATABASE_IDLE_TIMEOUT: "30000"
+  DATABASE_CONNECTION_TIMEOUT: "10000"
+  DATABASE_SSL_ENABLED: "true"
+  DATABASE_STATEMENT_TIMEOUT: "60000"
+  
+  # Redis Configuration
+  REDIS_TLS_ENABLED: "true"
+  REDIS_MAX_RETRIES: "5"
+  REDIS_RETRY_DELAY: "1000"
+  REDIS_CONNECT_TIMEOUT: "10000"
+  
+  # Academic Calendar Engine
+  CALENDAR_DEFAULT_TYPE: "semester"
+  CALENDAR_NOTIFICATION_LEAD_DAYS: "7,3,1"
+  CALENDAR_CONFLICT_CHECK_ENABLED: "true"
+  CALENDAR_AUTO_GENERATION_ENABLED: "true"
+  
+  # Student Lifecycle Engine
+  ADMISSION_AUTO_LETTER_GENERATION: "true"
+  REGISTRATION_PREREQUISITE_CHECK: "true"
+  REGISTRATION_CAPACITY_CHECK: "true"
+  GRADUATION_AUTO_AUDIT: "true"
+  GRADUATION_PREDICTION_ENABLED: "true"
+  
+  # Faculty & Teaching Operations
+  TEACHING_LOAD_AUTO_OPTIMIZATION: "true"
+  TEACHING_LOAD_MAX_CREDITS: "12"
+  CONTENT_GENERATION_ENABLED: "true"
+  GRADING_AUTOMATION_ENABLED: "true"
+  GRADING_CONFIDENCE_THRESHOLD: "0.85"
+  
+  # Course Execution Engine
+  MODULE_AUTO_RELEASE: "true"
+  MODULE_RELEASE_CHECK_INTERVAL: "3600000"
+  AI_TUTOR_ENABLED: "true"
+  AI_TUTOR_CONTEXT_WINDOW: "4096"
+  
+  # Workflow & Notifications
+  WORKFLOW_ENGINE_ENABLED: "true"
+  WORKFLOW_RETRY_MAX_ATTEMPTS: "3"
+  WORKFLOW_RETRY_DELAY: "5000"
+  NOTIFICATION_CHANNELS: "email,sms,push,in-app"
+  NOTIFICATION_BATCH_SIZE: "100"
+  NOTIFICATION_BATCH_INTERVAL: "60000"
+  EVENT_BUS_ENABLED: "true"
+  EVENT_BUS_RETENTION_DAYS: "90"
+  
+  # AI Agent Configuration
+  SCROLLREGISTRAR_ENABLED: "true"
+  SCROLLPROFESSOR_ENABLED: "true"
+  SCROLLTUTOR_ENABLED: "true"
+  SCROLLEXAMINER_ENABLED: "true"
+  SCROLLSCHEDULER_ENABLED: "true"
+  AI_AGENT_TIMEOUT: "120000"
+  AI_AGENT_MAX_RETRIES: "3"
+  
+  # Security Configuration
+  JWT_EXPIRES_IN: "7d"
+  JWT_REFRESH_EXPIRES_IN: "30d"
+  BCRYPT_ROUNDS: "14"
+  RATE_LIMIT_WINDOW: "15"
+  RATE_LIMIT_MAX: "1000"
+  AUDIT_LOG_ENABLED: "true"
+  AUDIT_LOG_RETENTION_DAYS: "2555"
+  
+  # Monitoring & Logging
+  LOG_LEVEL: "info"
+  LOG_FORMAT: "json"
+  LOG_ROTATION: "daily"
+  LOG_MAX_FILES: "30"
+  LOG_MAX_SIZE: "100m"
+  METRICS_ENABLED: "true"
+  METRICS_PORT: "9090"
+  PROMETHEUS_ENABLED: "true"
+  TRACING_ENABLED: "true"
+  TRACING_SAMPLE_RATE: "0.1"
+  
+  # Performance Configuration
+  CLUSTER_ENABLED: "true"
+  CLUSTER_WORKERS: "auto"
+  COMPRESSION_ENABLED: "true"
+  COMPRESSION_LEVEL: "6"
+  CACHE_ENABLED: "true"
+  CACHE_TTL: "3600"
+  
+  # Backup Configuration
+  BACKUP_ENABLED: "true"
+  BACKUP_SCHEDULE: "0 2 * * *"
+  BACKUP_RETENTION_DAYS: "90"
+  BACKUP_ENCRYPTION: "true"
+  
+  # Compliance
+  GDPR_ENABLED: "true"
+  FERPA_ENABLED: "true"
+  DATA_RETENTION_DAYS: "2555"
+  
+  # Feature Flags
+  FEATURE_ACADEMIC_CALENDAR: "true"
+  FEATURE_STUDENT_LIFECYCLE: "true"
+  FEATURE_FACULTY_OPERATIONS: "true"
+  FEATURE_COURSE_EXECUTION: "true"
+  FEATURE_WORKFLOW_ORCHESTRATION: "true"
+  FEATURE_AI_AGENTS: "true"

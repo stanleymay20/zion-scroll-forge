@@ -144,9 +144,9 @@ export class APIGatewayService {
         }
       },
       {
-        name: 'scrollcoin-meter',
-        path: '/api/scrollcoin',
-        target: process.env.SCROLLCOIN_SERVICE_URL || 'http://localhost:3001',
+        name: 'scrollgold-meter',
+        path: '/api/scrollgold',
+        target: process.env.scrollgold_SERVICE_URL || 'http://localhost:3001',
         healthCheck: '/health',
         version: 'v1',
         auth: true,

@@ -298,7 +298,7 @@ All personalization maintains:
 4. Set up PathOptimizationService
 5. Test ContentCreationService integration
 6. Monitor adaptation effectiveness
-7. Track ScrollCoin rewards for enrichment
+7. Track ScrollGold rewards for enrichment
 
 ## Documentation
 

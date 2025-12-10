@@ -306,9 +306,9 @@ const ContentGeneration = () => {
                 <div className="space-y-1">
                   <div className="flex items-center gap-2 text-muted-foreground text-sm">
                     <Award className="h-4 w-4" />
-                    ScrollCoins
+                    ScrollGolds
                   </div>
-                  <div className="text-2xl font-bold">{report.totalScrollCoins.toLocaleString()}</div>
+                  <div className="text-2xl font-bold">{report.totalScrollGolds.toLocaleString()}</div>
                 </div>
               </div>
 

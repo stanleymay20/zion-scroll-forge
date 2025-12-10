@@ -56,17 +56,17 @@ export class ScrollEconomyCourseContentService {
       },
       {
         id: this.generateId(),
-        title: 'ScrollCoin Introduction and Divine Currency',
-        description: 'Introduction to ScrollCoin as divine currency and its role in kingdom economics',
+        title: 'ScrollGold Introduction and Divine Currency',
+        description: 'Introduction to ScrollGold as divine currency and its role in kingdom economics',
         orderIndex: 3,
         estimatedHours: 10,
         learningObjectives: [
-          'Understand ScrollCoin principles and divine backing',
-          'Set up and manage ScrollCoin wallet',
-          'Participate in kingdom economy through ScrollCoin transactions'
+          'Understand ScrollGold principles and divine backing',
+          'Set up and manage ScrollGold wallet',
+          'Participate in kingdom economy through ScrollGold transactions'
         ],
-        content: this.generateScrollCoinIntroContent(),
-        assessments: this.generateScrollCoinIntroAssessments()
+        content: this.generateScrollGoldIntroContent(),
+        assessments: this.generateScrollGoldIntroAssessments()
       },
       {
         id: this.generateId(),
@@ -132,7 +132,7 @@ export class ScrollEconomyCourseContentService {
             Discussion Questions:
             1. How does recognizing God as wealth source change your business approach?
             2. What are practical ways to partner with God in wealth creation?
-            3. How can ScrollCoin reflect divine wealth principles?
+            3. How can ScrollGold reflect divine wealth principles?
             
             Prayer Focus:
             - Thank God for His provision and wealth-creating ability
@@ -158,12 +158,12 @@ export class ScrollEconomyCourseContentService {
             3. The storehouse system provides community economic security
             4. God invites us to "test" His economic system
             
-            In ScrollEconomy, we implement digital tithing through ScrollCoin, creating automated systems that honor God's ownership while enabling supernatural blessing flows.
+            In ScrollEconomy, we implement digital tithing through ScrollGold, creating automated systems that honor God's ownership while enabling supernatural blessing flows.
             
             The tithe is not just about giving 10% - it's about acknowledging that 100% belongs to God, and we are stewards of His resources. This mindset transforms every economic decision from ownership to stewardship.
             
             Modern applications include:
-            - Automated ScrollCoin tithing systems
+            - Automated ScrollGold tithing systems
             - Digital storehouse for community support
             - Blockchain-verified faithful stewardship
             - Prophetic guidance for resource allocation
@@ -177,11 +177,11 @@ export class ScrollEconomyCourseContentService {
             - Malachi 3:10 - Test God's economic system
             - Tithe establishes divine ownership principle
             - Storehouse system for community security
-            - ScrollCoin automated tithing implementation
+            - ScrollGold automated tithing implementation
             - 100% stewardship vs 10% giving mindset
             
             Practical Applications:
-            1. Set up automated ScrollCoin tithing
+            1. Set up automated ScrollGold tithing
             2. Calculate true cost of stewardship
             3. Track supernatural multiplication results
             4. Participate in digital storehouse system
@@ -424,7 +424,7 @@ export class ScrollEconomyCourseContentService {
             - Environmental destruction for short-term gain
             
             ScrollEconomy represents a return to covenant economics through:
-            - Divine backing of ScrollCoin currency
+            - Divine backing of ScrollGold currency
             - Automated tithing and kingdom distribution
             - Prophetic guidance in economic decisions
             - Community-centered wealth building
@@ -566,36 +566,36 @@ export class ScrollEconomyCourseContentService {
   }
 
   /**
-   * Generate content for ScrollCoin Introduction module
+   * Generate content for ScrollGold Introduction module
    */
-  private generateScrollCoinIntroContent(): ModuleContent {
+  private generateScrollGoldIntroContent(): ModuleContent {
     return {
       lectures: [
         {
           id: this.generateId(),
-          title: 'ScrollCoin: Divine Currency for Kingdom Economics',
-          description: 'Introduction to ScrollCoin principles, divine backing, and kingdom applications',
+          title: 'ScrollGold: Divine Currency for Kingdom Economics',
+          description: 'Introduction to ScrollGold principles, divine backing, and kingdom applications',
           duration: 35,
-          videoUrl: '/videos/sec101/scrollcoin-divine-currency.mp4',
-          audioUrl: '/audio/sec101/scrollcoin-divine-currency.mp3',
+          videoUrl: '/videos/sec101/ScrollGold-divine-currency.mp4',
+          audioUrl: '/audio/sec101/ScrollGold-divine-currency.mp3',
           transcript: `
-            ScrollCoin represents a revolutionary approach to digital currency, backed not by government decree or market speculation, but by divine covenant and kingdom principles.
+            ScrollGold represents a revolutionary approach to digital currency, backed not by government decree or market speculation, but by divine covenant and kingdom principles.
             
-            Key ScrollCoin Principles:
-            1. Divine Backing: ScrollCoin value is anchored in God's covenant promises
+            Key ScrollGold Principles:
+            1. Divine Backing: ScrollGold value is anchored in God's covenant promises
             2. Kingdom Purpose: Every transaction serves kingdom advancement
             3. Prophetic Guidance: Value and distribution guided by prophetic insight
             4. Community Blessing: Designed to bless communities, not exploit them
             5. Righteous Exchange: All transactions must align with biblical ethics
             
-            Unlike Bitcoin or other cryptocurrencies that derive value from scarcity or speculation, ScrollCoin derives its value from:
+            Unlike Bitcoin or other cryptocurrencies that derive value from scarcity or speculation, ScrollGold derives its value from:
             - Divine covenant backing
             - Kingdom impact measurement
             - Community blessing generation
             - Prophetic accuracy validation
             - Righteous transaction verification
             
-            ScrollCoin Applications:
+            ScrollGold Applications:
             - Automated tithing and offering systems
             - Kingdom business transactions
             - Community development funding
@@ -603,22 +603,22 @@ export class ScrollEconomyCourseContentService {
             - Global missions financing
             - Educational investment (like this course!)
             
-            The technology behind ScrollCoin includes:
+            The technology behind ScrollGold includes:
             - Blockchain verification of righteous transactions
             - Smart contracts for automated kingdom distribution
             - Prophetic validation algorithms
             - Community impact measurement systems
             - Divine guidance integration protocols
             
-            As we build the ScrollEconomy, ScrollCoin serves as the medium of exchange that ensures every transaction serves God's kingdom purposes.
+            As we build the ScrollEconomy, ScrollGold serves as the medium of exchange that ensures every transaction serves God's kingdom purposes.
           `,
           slides: [
-            '/slides/sec101/scrollcoin-principles-slide1.jpg',
-            '/slides/sec101/scrollcoin-principles-slide2.jpg',
-            '/slides/sec101/scrollcoin-principles-slide3.jpg'
+            '/slides/sec101/ScrollGold-principles-slide1.jpg',
+            '/slides/sec101/ScrollGold-principles-slide2.jpg',
+            '/slides/sec101/ScrollGold-principles-slide3.jpg'
           ],
           notes: `
-            ScrollCoin Core Principles:
+            ScrollGold Core Principles:
             - Divine covenant backing (not government or speculation)
             - Kingdom purpose in every transaction
             - Prophetic guidance for value and distribution
@@ -652,20 +652,20 @@ export class ScrollEconomyCourseContentService {
       readings: [
         {
           id: this.generateId(),
-          title: 'ScrollCoin White Paper: Divine Currency Architecture',
-          author: 'ScrollCoin Development Team',
+          title: 'ScrollGold White Paper: Divine Currency Architecture',
+          author: 'ScrollGold Development Team',
           type: ReadingType.RESEARCH_PAPER,
           pages: '1-35',
           estimatedTime: 90,
-          url: '/readings/scrollcoin-whitepaper.pdf'
+          url: '/readings/ScrollGold-whitepaper.pdf'
         }
       ],
       videos: [
         {
           id: this.generateId(),
-          title: 'ScrollCoin Wallet Setup Tutorial',
-          description: 'Step-by-step guide to setting up your ScrollCoin wallet',
-          url: '/videos/sec101/scrollcoin-wallet-setup.mp4',
+          title: 'ScrollGold Wallet Setup Tutorial',
+          description: 'Step-by-step guide to setting up your ScrollGold wallet',
+          url: '/videos/sec101/ScrollGold-wallet-setup.mp4',
           duration: 15
         }
       ],
@@ -673,8 +673,8 @@ export class ScrollEconomyCourseContentService {
         {
           id: this.generateId(),
           type: InteractiveType.SIMULATION,
-          title: 'ScrollCoin Transaction Simulator',
-          description: 'Practice ScrollCoin transactions in a safe simulation environment',
+          title: 'ScrollGold Transaction Simulator',
+          description: 'Practice ScrollGold transactions in a safe simulation environment',
           configuration: {
             scenarios: ['Tithing Transaction', 'Kingdom Business Payment', 'Community Donation'],
             walletBalance: 1000,
@@ -687,22 +687,22 @@ export class ScrollEconomyCourseContentService {
   }
 
   /**
-   * Generate assessments for ScrollCoin Introduction module
+   * Generate assessments for ScrollGold Introduction module
    */
-  private generateScrollCoinIntroAssessments(): ModuleAssessment[] {
+  private generateScrollGoldIntroAssessments(): ModuleAssessment[] {
     return [
       {
         id: this.generateId(),
         type: AssessmentType.PRACTICAL_APPLICATION,
-        title: 'ScrollCoin Wallet Setup and First Transaction',
-        description: 'Demonstrate ability to set up ScrollCoin wallet and complete kingdom transaction',
+        title: 'ScrollGold Wallet Setup and First Transaction',
+        description: 'Demonstrate ability to set up ScrollGold wallet and complete kingdom transaction',
         points: 100,
         dueDate: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000), // 10 days from now
         rubric: {
           criteria: [
             {
               name: 'Wallet Setup',
-              description: 'Successfully sets up and secures ScrollCoin wallet',
+              description: 'Successfully sets up and secures ScrollGold wallet',
               points: 40,
               levels: [
                 { name: 'Excellent', description: 'Perfect wallet setup with security', points: 40 },
@@ -771,12 +771,12 @@ export class ScrollEconomyCourseContentService {
             - Practice generous giving and tithing
             - Build wealth through righteous means only
             
-            ScrollCoin Integration:
-            - Earn ScrollCoin through kingdom service
-            - Invest ScrollCoin in kingdom businesses
-            - Use ScrollCoin for automated tithing
+            ScrollGold Integration:
+            - Earn ScrollGold through kingdom service
+            - Invest ScrollGold in kingdom businesses
+            - Use ScrollGold for automated tithing
             - Participate in community wealth building
-            - Support global missions through ScrollCoin
+            - Support global missions through ScrollGold
             
             Remember: The goal is not to become rich, but to become a faithful steward who can be trusted with much for kingdom purposes.
           `,
@@ -799,7 +799,7 @@ export class ScrollEconomyCourseContentService {
             - Practice generous giving
             - Use only righteous means
             
-            ScrollCoin Applications:
+            ScrollGold Applications:
             - Earn through kingdom service
             - Invest in kingdom businesses
             - Automated tithing systems
@@ -840,7 +840,7 @@ export class ScrollEconomyCourseContentService {
             prompts: [
               'What unique value can you create that serves kingdom purposes?',
               'How will you ensure your wealth creation blesses the community?',
-              'What role will ScrollCoin play in your wealth building strategy?'
+              'What role will ScrollGold play in your wealth building strategy?'
             ],
             minWords: 150
           }

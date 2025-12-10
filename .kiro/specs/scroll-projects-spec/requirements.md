@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The ScrollProjectsSpec module governs the full lifecycle of real-world projects that students must build during their studies at ScrollUniversity. This system manages projects from initial proposal through final marketplace publication, ensuring scroll-alignment, milestone tracking, mentor validation, and integration with the broader ScrollUniversity ecosystem. Projects can include startups, apps, tools, non-profits, papers, dashboards, or policies, all designed to create real-world impact while earning ScrollCoin rewards.
+The ScrollProjectsSpec module governs the full lifecycle of real-world projects that students must build during their studies at ScrollUniversity. This system manages projects from initial proposal through final marketplace publication, ensuring scroll-alignment, milestone tracking, mentor validation, and integration with the broader ScrollUniversity ecosystem. Projects can include startups, apps, tools, non-profits, papers, dashboards, or policies, all designed to create real-world impact while earning ScrollGold rewards.
 
 ## Requirements
 
@@ -43,13 +43,13 @@ The ScrollProjectsSpec module governs the full lifecycle of real-world projects 
 
 ### Requirement 4
 
-**User Story:** As a student, I want my completed projects to be automatically published to the ScrollMarketplace, so that my work can have real-world impact and earn ScrollCoin rewards.
+**User Story:** As a student, I want my completed projects to be automatically published to the ScrollMarketplace, so that my work can have real-world impact and earn ScrollGold rewards.
 
 #### Acceptance Criteria
 
 1. WHEN a project passes final validation THEN the system SHALL automatically publish it to the ScrollMarketplace
 2. WHEN a project is published THEN the system SHALL generate a public-facing GPT summary for marketplace display
-3. IF a project generates real-world usage THEN the system SHALL calculate and award ScrollCoin to the student
+3. IF a project generates real-world usage THEN the system SHALL calculate and award ScrollGold to the student
 4. WHEN a project is listed THEN the system SHALL link it to the student's scroll transcript and degree certification
 5. WHEN a project is published THEN the system SHALL ensure all governance and integrity requirements are met
 
@@ -72,7 +72,7 @@ The ScrollProjectsSpec module governs the full lifecycle of real-world projects 
 #### Acceptance Criteria
 
 1. WHEN a project is completed THEN the system SHALL calculate appropriate XP rewards based on project scope and impact
-2. WHEN a project earns ScrollCoin THEN the system SHALL update the student's ScrollXPTracker record
+2. WHEN a project earns ScrollGold THEN the system SHALL update the student's ScrollXPTracker record
 3. WHEN a project is finalized THEN the system SHALL link it to the student's transcript via ScrollTranscriptGenerator
 4. WHEN degree review occurs THEN the system SHALL make project data available to ScrollVerifyPortal
 5. IF a student has not completed the required project minimum THEN the system SHALL prevent degree certification

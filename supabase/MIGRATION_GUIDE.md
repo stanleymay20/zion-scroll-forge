@@ -39,7 +39,7 @@ Rollback testing and verification:
 
 #### Payment & Economy
 - `payments` - Payment transactions
-- `scrollcoin_transactions` - ScrollCoin blockchain transactions
+- `ScrollGold_transactions` - ScrollGold blockchain transactions
 
 #### Credentials & Achievements
 - `certifications` - Academic certifications
@@ -86,7 +86,7 @@ Rollback testing and verification:
 - Users can view/create their own payments
 - Admins can view all payments
 
-### ScrollCoin Transactions
+### ScrollGold Transactions
 - Users can view their own transactions
 - System can create transactions
 
@@ -115,9 +115,9 @@ Rollback testing and verification:
 ### enroll_in_course(user_id, course_id)
 Enrolls a student in a course:
 - Checks course availability and cost
-- Verifies user has sufficient ScrollCoin balance
+- Verifies user has sufficient ScrollGold balance
 - Creates enrollment record
-- Deducts ScrollCoin and records transaction
+- Deducts ScrollGold and records transaction
 
 ### grade_submission(submission_id, score, feedback, grader_id)
 Grades a student submission:
@@ -128,13 +128,13 @@ Grades a student submission:
 ### complete_course(enrollment_id)
 Completes a course and awards rewards:
 - Updates enrollment status to GRADUATED
-- Awards ScrollCoin based on XP earned
+- Awards ScrollGold based on XP earned
 - Records completion transaction
 
 ### process_payment(user_id, amount, currency, method, description, external_id)
 Processes a payment:
 - Creates payment record
-- Deducts ScrollCoin if payment method is SCROLL_COIN
+- Deducts ScrollGold if payment method is SCROLL_COIN
 - Records transaction
 
 ### get_course_progress(user_id, course_id)
@@ -161,7 +161,7 @@ Returns top users by XP:
 Awards daily login streak bonus:
 - Checks last activity date
 - Calculates streak bonus
-- Awards ScrollCoin
+- Awards ScrollGold
 
 ## Database Triggers
 
@@ -185,7 +185,7 @@ Logs all INSERT, UPDATE, DELETE operations on:
 - enrollments
 - submissions
 - payments
-- scrollcoin_transactions
+- ScrollGold_transactions
 - applications
 
 ## Storage Buckets
@@ -258,7 +258,7 @@ Enabled for:
 - enrollments (progress updates)
 - submissions (grading updates)
 - ai_tutor_sessions (live sessions)
-- scrollcoin_transactions (balance updates)
+- ScrollGold_transactions (balance updates)
 
 ## Running Migrations
 

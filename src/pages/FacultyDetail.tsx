@@ -3,7 +3,7 @@ import { useFaculty } from '@/hooks/useFaculties';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { enrollInCourse } from '@/services/courses';
-import { spendScrollCoin } from '@/services/scrollcoin';
+import { spendScrollGold } from '@/services/ScrollGold';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -90,8 +90,8 @@ const FacultyDetail = () => {
 
     if (!wallet || wallet.balance < coursePrice) {
       toast({
-        title: 'Insufficient ScrollCoins',
-        description: `You need ${coursePrice} ScrollCoins to enroll. Current balance: ${wallet?.balance || 0}`,
+        title: 'Insufficient ScrollGolds',
+        description: `You need ${coursePrice} ScrollGolds to enroll. Current balance: ${wallet?.balance || 0}`,
         variant: 'destructive',
       });
       return;
@@ -100,8 +100,8 @@ const FacultyDetail = () => {
     setEnrollingCourse(courseId);
 
     try {
-      // Deduct ScrollCoins
-      await spendScrollCoin(user.id, coursePrice, `Enrollment in course`);
+      // Deduct ScrollGolds
+      await spendScrollGold(user.id, coursePrice, `Enrollment in course`);
       
       // Enroll in course
       await enrollInCourse(user.id, courseId);
@@ -252,7 +252,7 @@ const FacultyDetail = () => {
                       <div className="flex items-center gap-2 mt-3">
                         <Badge variant="secondary" className="gap-1">
                           <Coins className="h-3 w-3" />
-                          {course.price || 0} ScrollCoins
+                          {course.price || 0} ScrollGolds
                         </Badge>
                       </div>
                     </div>

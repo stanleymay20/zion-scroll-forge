@@ -74,7 +74,7 @@ export interface ScrollCourse {
   prerequisites: string[];
   estimatedHours: number;
   xpReward: number;
-  scrollCoinCost: number;
+  scrollGoldCost: number;
   
   // Delivery Configuration
   deliveryModes: DeliveryMode[];

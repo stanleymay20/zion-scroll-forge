@@ -39,8 +39,8 @@ const ScrollSpecs = () => {
     },
     {
       id: 3,
-      title: "ScrollCoin Economic Model",
-      description: "Token economics and reward mechanisms for the ScrollCoin system",
+      title: "ScrollGold Economic Model",
+      description: "Token economics and reward mechanisms for the ScrollGold system",
       author: "Economics Team",
       version: "3.0.1",
       status: "Active",

@@ -11,7 +11,7 @@
   - Create DataAggregationService to collect academic records from all ScrollUniversity systems
   - Implement spiritual formation data collection from mentor assessments and character tracking
   - Build project portfolio integration with practical skills and impact measurements
-  - Create ScrollCoin activity aggregation for economic stewardship documentation
+  - Create ScrollGold activity aggregation for economic stewardship documentation
   - Write unit tests for data accuracy and completeness validation
   - _Requirements: 1.1, 2.1, 3.1, 4.1_
 
@@ -42,8 +42,8 @@
   - Write integration tests for project linking and portfolio accuracy validation
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6_
 
-- [ ] 6. Implement ScrollCoin economic activity and stewardship tracking
-  - Create EconomicActivityService for ScrollCoin earning history and spending pattern analysis
+- [ ] 6. Implement ScrollGold economic activity and stewardship tracking
+  - Create EconomicActivityService for ScrollGold earning history and spending pattern analysis
   - Build stewardship assessment with wise spending and generous giving pattern tracking
   - Implement economic impact measurement with value creation and community contribution metrics
   - Create financial responsibility demonstration with debt-free education and economic independence tracking
@@ -117,7 +117,7 @@
 - [ ] 14. Create ScrollUniversity ecosystem integration and synchronization
   - Implement SystemIntegrationService for automatic data pulling from all ScrollUniversity components
   - Build data synchronization with course-spec, student-profile-spec, and degree-engine consistency
-  - Create real-time integration with project-spec, scrollcoin-meter, and seal-certification systems
+  - Create real-time integration with project-spec, ScrollGold-meter, and seal-certification systems
   - Add audit trail integration with comprehensive activity logging and accountability tracking
   - Implement API endpoints for external system communication and data exchange
   - Write extensive integration tests for cross-system data consistency and synchronization accuracy

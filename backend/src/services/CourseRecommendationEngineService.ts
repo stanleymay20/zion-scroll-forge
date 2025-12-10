@@ -81,7 +81,7 @@ export class CourseRecommendationEngineService {
             description: course.description,
             difficulty: course.difficulty,
             duration: course.duration,
-            scrollCoinCost: course.scrollCoinCost,
+            scrollGoldCost: course.scrollGoldCost,
             scrollXPReward: course.scrollXPReward,
             matchScore,
             reasons,
@@ -131,7 +131,7 @@ export class CourseRecommendationEngineService {
     score += spiritualScore * 20;
 
     // Budget fit (15 points)
-    if (criteria.budget && course.scrollCoinCost <= criteria.budget) {
+    if (criteria.budget && course.scrollGoldCost <= criteria.budget) {
       score += 15;
     } else if (!criteria.budget) {
       score += 10; // Partial credit if no budget specified
@@ -259,7 +259,7 @@ export class CourseRecommendationEngineService {
       }
     }
 
-    if (criteria.budget && course.scrollCoinCost <= criteria.budget) {
+    if (criteria.budget && course.scrollGoldCost <= criteria.budget) {
       reasons.push('Fits within your budget');
     }
 
@@ -315,7 +315,7 @@ export class CourseRecommendationEngineService {
         description: course.description,
         difficulty: course.difficulty,
         duration: course.duration,
-        scrollCoinCost: course.scrollCoinCost,
+        scrollGoldCost: course.scrollGoldCost,
         scrollXPReward: course.scrollXPReward,
         matchScore: 75, // Default score for trending
         reasons: ['Popular course', `${course._count.enrollments} recent enrollments`],

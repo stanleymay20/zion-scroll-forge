@@ -21,7 +21,7 @@
 
 #### Critical: Prisma Schema Corruption
 The `backend/prisma/schema.prisma` file has duplicate models and enums:
-- Duplicate `ScrollCoinTransaction` model (line 2451)
+- Duplicate `ScrollGoldTransaction` model (line 2451)
 - Duplicate `LectureType` enum (line 2643)
 - Duplicate `Scholarship` model (line 2655)
 - Duplicate `ScholarshipApplication` model (line 2700)
@@ -190,7 +190,7 @@ If schema cleanup is too complex:
 
 ### Prisma Schema Validation Errors
 ```
-error: The model "ScrollCoinTransaction" cannot be defined because a model with that name already exists.
+error: The model "ScrollGoldTransaction" cannot be defined because a model with that name already exists.
   --> prisma\schema.prisma:2451
 
 error: The enum "LectureType" cannot be defined because a enum with that name already exists.

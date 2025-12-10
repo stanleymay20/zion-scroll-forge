@@ -10,7 +10,7 @@ export interface PortalCourse {
   level: CourseLevel;
   duration_weeks: number;
   xp_reward: number;
-  scroll_coin_cost: number;
+  scroll_gold_cost: number;
   prerequisites: string[];
   featured: boolean;
   enrollment_open: boolean;
@@ -81,7 +81,7 @@ export interface Enrollment {
   completion_date?: string;
   progress_percentage: number;
   xp_earned: number;
-  scroll_coins_earned: number;
+  scroll_golds_earned: number;
   current_lesson_id?: string;
   status: EnrollmentStatus;
   grade?: Grade;
@@ -221,7 +221,7 @@ export interface Achievement {
   icon_url: string;
   category: AchievementCategory;
   xp_reward: number;
-  scroll_coin_reward: number;
+  scroll_gold_reward: number;
   earned_at?: string;
   progress?: AchievementProgress;
 }
@@ -250,7 +250,7 @@ export const PortalCourseSchema = z.object({
   level: z.enum(['Introductory', 'Intermediate', 'Advanced']),
   duration_weeks: z.number().positive(),
   xp_reward: z.number().nonnegative(),
-  scroll_coin_cost: z.number().nonnegative(),
+  scroll_gold_cost: z.number().nonnegative(),
   prerequisites: z.array(z.string()),
   featured: z.boolean(),
   enrollment_open: z.boolean(),
@@ -267,7 +267,7 @@ export const EnrollmentSchema = z.object({
   completion_date: z.string().datetime().optional(),
   progress_percentage: z.number().min(0).max(100),
   xp_earned: z.number().nonnegative(),
-  scroll_coins_earned: z.number().nonnegative(),
+  scroll_golds_earned: z.number().nonnegative(),
   current_lesson_id: z.string().uuid().optional(),
   status: z.enum(['active', 'completed', 'paused', 'dropped'])
 });

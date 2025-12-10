@@ -32,7 +32,7 @@ import { monitoringService } from './services/MonitoringService';
 import authRoutes from './routes/auth';
 import userRoutes from './routes/users';
 import courseRoutes from './routes/courses';
-import scrollcoinRoutes from './routes/scrollcoin';
+import scrollgoldRoutes from './routes/scrollgold';
 import tuitionRoutes from './routes/tuition';
 import researchRoutes from './routes/research';
 import aiRoutes from './routes/ai';
@@ -85,6 +85,12 @@ import studentLifecycleRoutes from './routes/student-lifecycle';
 import facultyOperationsRoutes from './routes/faculty-operations';
 import courseExecutionRoutes from './routes/course-execution';
 import workflowNotificationRoutes from './routes/workflow-notifications';
+import prerequisitesRoutes from './routes/prerequisites';
+import courseSequencingRoutes from './routes/course-sequencing';
+import learningOutcomesRoutes from './routes/learning-outcomes';
+import courseOfferingsRoutes from './routes/course-offerings';
+import innovationProblemsRoutes from './routes/innovation-problems';
+import innovationToolkitRoutes from './routes/innovation-toolkit';
 
 // Socket.io service
 import SocketService from './services/SocketService';
@@ -241,7 +247,7 @@ async function startServer() {
   routeWithMonitoring('/api/auth', authRoutes);
   routeWithMonitoring('/api/users', userRoutes);
   routeWithMonitoring('/api/courses', courseRoutes);
-  routeWithMonitoring('/api/scrollcoin', scrollcoinRoutes);
+  routeWithMonitoring('/api/scrollgold', scrollgoldRoutes);
   routeWithMonitoring('/api/tuition', tuitionRoutes);
   routeWithMonitoring('/api/research', researchRoutes);
   routeWithMonitoring('/api/ai', aiRoutes);
@@ -296,6 +302,16 @@ async function startServer() {
   routeWithMonitoring('/api/monitoring', monitoringRoutes);
   routeWithMonitoring('/api/academic-year-monitoring', academicYearMonitoringRoutes);
 
+  // Academic Content Organization routes
+  routeWithMonitoring('/api/prerequisites', prerequisitesRoutes);
+  routeWithMonitoring('/api/course-sequencing', courseSequencingRoutes);
+  routeWithMonitoring('/api/learning-outcomes', learningOutcomesRoutes);
+  routeWithMonitoring('/api/course-offerings', courseOfferingsRoutes);
+
+  // Innovation Engine routes
+  routeWithMonitoring('/api/innovation/problems', innovationProblemsRoutes);
+  routeWithMonitoring('/api/innovation/toolkit', innovationToolkitRoutes);
+
   // Admissions API routes
   routeWithMonitoring('/api/admissions/applications', admissionsApplicationsRoutes);
   routeWithMonitoring('/api/admissions/analytics', admissionsAnalyticsRoutes);
@@ -316,7 +332,7 @@ async function startServer() {
         users: '/api/users',
         courses: '/api/courses',
         admissions: '/api/admissions',
-        scrollcoin: '/api/scrollcoin',
+        scrollgold: '/api/scrollgold',
         analytics: '/api/analytics'
       }
     });

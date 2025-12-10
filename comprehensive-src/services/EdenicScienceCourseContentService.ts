@@ -135,7 +135,7 @@ export class EdenicScienceCourseContentService {
       prerequisites: [],
       estimatedHours: 120,
       xpReward: 1000,
-      scrollCoinCost: 50,
+      scrollGoldCost: 50,
       
       deliveryModes: [DeliveryMode.SCROLLU_APP, DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.AI_TUTOR],
       

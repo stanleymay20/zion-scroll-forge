@@ -220,7 +220,7 @@ export const OnboardingChecklist: React.FC<OnboardingChecklistProps> = ({
               <Award className="h-8 w-8 text-yellow-500" />
               <div>
                 <h3 className="font-semibold text-lg">Congratulations!</h3>
-                <p className="text-sm text-gray-600">You've earned 100 ScrollCoins</p>
+                <p className="text-sm text-gray-600">You've earned 100 ScrollGolds</p>
               </div>
             </div>
             <p className="text-sm text-gray-700 mb-4">

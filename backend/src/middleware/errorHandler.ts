@@ -116,16 +116,16 @@ export class ScrollAuthorizationError extends Error {
   }
 }
 
-export class ScrollCoinError extends Error {
+export class ScrollGoldError extends Error {
   statusCode = 400;
   scrollMessage: string;
   kingdomGuidance: string;
   
   constructor(message: string, scrollMessage?: string, kingdomGuidance?: string) {
     super(message);
-    this.name = 'ScrollCoinError';
-    this.scrollMessage = scrollMessage || 'ScrollCoin transaction failed';
-    this.kingdomGuidance = kingdomGuidance || 'Check your ScrollCoin balance and try again';
+    this.name = 'ScrollGoldError';
+    this.scrollMessage = scrollMessage || 'ScrollGold transaction failed';
+    this.kingdomGuidance = kingdomGuidance || 'Check your ScrollGold balance and try again';
   }
 }
 

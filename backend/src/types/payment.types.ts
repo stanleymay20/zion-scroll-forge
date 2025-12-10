@@ -28,8 +28,9 @@ export interface PaymentIntentResponse {
 // Subscription Types
 export interface CreateSubscriptionRequest {
   userId: string;
+  tier: string; // SubscriptionTier enum value
   priceId: string;
-  paymentMethodId: string;
+  paymentMethodId?: string; // Optional for FREE_TIER
   metadata?: Record<string, string>;
 }
 
@@ -40,6 +41,7 @@ export interface SubscriptionResponse {
   status: string;
   currentPeriodEnd: Date;
   cancelAtPeriodEnd: boolean;
+  message?: string; // Optional message for scheduled changes
 }
 
 export interface UpdateSubscriptionRequest {
@@ -263,7 +265,7 @@ export interface PaymentRecord {
   currency: string;
   method: 'CREDIT_CARD' | 'SCROLL_COIN' | 'CRYPTOCURRENCY' | 'WORK_TRADE' | 'SCHOLARSHIP';
   stripePaymentId?: string;
-  scrollCoinTxId?: string;
+  scrollGoldTxId?: string;
   cryptoTxHash?: string;
   description: string;
   status: 'PENDING' | 'COMPLETED' | 'FAILED' | 'REFUNDED';

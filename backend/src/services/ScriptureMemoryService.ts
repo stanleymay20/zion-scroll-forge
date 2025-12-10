@@ -571,7 +571,7 @@ export class ScriptureMemoryService {
           verseIds: request.verseIds,
           startDate: request.startDate,
           endDate: request.endDate,
-          scrollCoinReward: request.scrollCoinReward,
+          scrollGoldReward: request.scrollGoldReward,
           badgeReward: request.badgeReward,
           isActive: true,
           createdBy: userId,
@@ -613,7 +613,7 @@ export class ScriptureMemoryService {
           progress: 0,
           versesCompleted: 0,
           totalVerses: challenge.verseIds.length,
-          scrollCoinEarned: 0,
+          scrollGoldEarned: 0,
           joinedAt: new Date()
         }
       });
@@ -674,7 +674,7 @@ export class ScriptureMemoryService {
         longestStreak,
         totalReviews,
         averageAccuracy: Math.round(averageAccuracy),
-        scrollCoinEarned: 0, // Would be calculated from actual rewards
+        scrollGoldEarned: 0, // Would be calculated from actual rewards
         challengesCompleted
       };
 

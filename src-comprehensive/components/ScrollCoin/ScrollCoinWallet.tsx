@@ -1,8 +1,8 @@
 /**
- * ScrollCoin Wallet Component
+ * ScrollGold Wallet Component
  * "Your divine currency balance reflects your kingdom contributions"
  * 
- * React component for displaying and managing ScrollCoin wallet functionality
+ * React component for displaying and managing ScrollGold wallet functionality
  */
 
 import React, { useState, useEffect } from 'react';
@@ -22,7 +22,7 @@ import {
   Gift
 } from 'lucide-react';
 
-interface ScrollCoinWallet {
+interface ScrollGoldWallet {
   userId: string;
   balance: number;
   totalEarned: number;
@@ -30,7 +30,7 @@ interface ScrollCoinWallet {
   lastActivity: Date;
 }
 
-interface ScrollCoinTransaction {
+interface ScrollGoldTransaction {
   id: string;
   amount: number;
   type: 'EARNED' | 'SPENT' | 'TRANSFERRED' | 'BONUS';
@@ -47,9 +47,9 @@ interface LeaderboardEntry {
   totalEarned: number;
 }
 
-export const ScrollCoinWallet: React.FC = () => {
-  const [wallet, setWallet] = useState<ScrollCoinWallet | null>(null);
-  const [transactions, setTransactions] = useState<ScrollCoinTransaction[]>([]);
+export const ScrollGoldWallet: React.FC = () => {
+  const [wallet, setWallet] = useState<ScrollGoldWallet | null>(null);
+  const [transactions, setTransactions] = useState<ScrollGoldTransaction[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [transferAmount, setTransferAmount] = useState('');
@@ -65,7 +65,7 @@ export const ScrollCoinWallet: React.FC = () => {
       setLoading(true);
       
       // Load wallet balance
-      const walletResponse = await fetch('/api/scrollcoin/balance');
+      const walletResponse = await fetch('/api/ScrollGold/balance');
       const walletData = await walletResponse.json();
       
       if (walletData.success) {
@@ -73,7 +73,7 @@ export const ScrollCoinWallet: React.FC = () => {
       }
 
       // Load transaction history
-      const transactionsResponse = await fetch('/api/scrollcoin/transactions?limit=20');
+      const transactionsResponse = await fetch('/api/ScrollGold/transactions?limit=20');
       const transactionsData = await transactionsResponse.json();
       
       if (transactionsData.success) {
@@ -81,7 +81,7 @@ export const ScrollCoinWallet: React.FC = () => {
       }
 
       // Load leaderboard
-      const leaderboardResponse = await fetch('/api/scrollcoin/leaderboard?limit=10');
+      const leaderboardResponse = await fetch('/api/ScrollGold/leaderboard?limit=10');
       const leaderboardData = await leaderboardResponse.json();
       
       if (leaderboardData.success) {
@@ -102,7 +102,7 @@ export const ScrollCoinWallet: React.FC = () => {
         return;
       }
 
-      const response = await fetch('/api/scrollcoin/transfer', {
+      const response = await fetch('/api/ScrollGold/transfer', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -110,14 +110,14 @@ export const ScrollCoinWallet: React.FC = () => {
         body: JSON.stringify({
           toUserId: transferRecipient,
           amount,
-          description: transferDescription || 'ScrollCoin transfer'
+          description: transferDescription || 'ScrollGold transfer'
         })
       });
 
       const data = await response.json();
       
       if (data.success) {
-        alert(`Successfully transferred ${amount} ScrollCoin!`);
+        alert(`Successfully transferred ${amount} ScrollGold!`);
         setTransferAmount('');
         setTransferRecipient('');
         setTransferDescription('');
@@ -177,7 +177,7 @@ export const ScrollCoinWallet: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">ScrollCoin Balance</CardTitle>
+            <CardTitle className="text-sm font-medium">ScrollGold Balance</CardTitle>
             <Coins className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
@@ -251,7 +251,7 @@ export const ScrollCoinWallet: React.FC = () => {
               <div className="space-y-4">
                 {transactions.length === 0 ? (
                   <p className="text-center text-gray-500 py-8">
-                    No transactions yet. Start earning ScrollCoin by completing courses!
+                    No transactions yet. Start earning ScrollGold by completing courses!
                   </p>
                 ) : (
                   transactions.map((tx) => (
@@ -288,13 +288,13 @@ export const ScrollCoinWallet: React.FC = () => {
           </Card>
         </TabsContent>
 
-        {/* Transfer ScrollCoin */}
+        {/* Transfer ScrollGold */}
         <TabsContent value="transfer">
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Send className="h-5 w-5 mr-2" />
-                Transfer ScrollCoin
+                Transfer ScrollGold
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -340,7 +340,7 @@ export const ScrollCoinWallet: React.FC = () => {
                 disabled={!transferAmount || !transferRecipient}
               >
                 <Send className="h-4 w-4 mr-2" />
-                Transfer ScrollCoin
+                Transfer ScrollGold
               </Button>
               
               <p className="text-sm text-gray-500 text-center">
@@ -356,7 +356,7 @@ export const ScrollCoinWallet: React.FC = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Crown className="h-5 w-5 mr-2" />
-                ScrollCoin Leaderboard
+                ScrollGold Leaderboard
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -391,4 +391,4 @@ export const ScrollCoinWallet: React.FC = () => {
   );
 };
 
-export default ScrollCoinWallet;
+export default ScrollGoldWallet;

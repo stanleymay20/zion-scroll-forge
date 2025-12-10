@@ -38,7 +38,7 @@ export interface SearchFilters {
   culturalContext?: CulturalContext[];
   propheticThemes?: string[];
   kingdomImpactMin?: number;
-  scrollCoinCostMax?: number;
+  scrollGoldCostMax?: number;
   estimatedHoursMax?: number;
   status?: CourseStatus[];
   tags?: string[];
@@ -62,7 +62,7 @@ export enum SortField {
   KINGDOM_IMPACT = 'kingdomImpact',
   PROPHETIC_ALIGNMENT = 'propheticAlignment',
   XP_REWARD = 'xpReward',
-  SCROLL_COIN_COST = 'scrollCoinCost',
+  SCROLL_COIN_COST = 'scrollGoldCost',
   ESTIMATED_HOURS = 'estimatedHours'
 }
 
@@ -409,7 +409,7 @@ export class CourseSearchEngine {
       if (filters.language && !filters.language.includes(course.language)) continue;
       if (filters.propheticThemes && !course.propheticAlignment.propheticThemes.some(theme => filters.propheticThemes!.includes(theme))) continue;
       if (filters.kingdomImpactMin && course.kingdomImpact.impactScore < filters.kingdomImpactMin) continue;
-      if (filters.scrollCoinCostMax && course.scrollCoinCost > filters.scrollCoinCostMax) continue;
+      if (filters.scrollGoldCostMax && course.scrollGoldCost > filters.scrollGoldCostMax) continue;
       if (filters.estimatedHoursMax && course.estimatedHours > filters.estimatedHoursMax) continue;
       if (filters.status && !filters.status.includes(course.status)) continue;
       if (filters.tags && !course.tags.some(tag => filters.tags!.includes(tag))) continue;
@@ -526,7 +526,7 @@ export class CourseSearchEngine {
           comparison = a.course.xpReward - b.course.xpReward;
           break;
         case SortField.SCROLL_COIN_COST:
-          comparison = a.course.scrollCoinCost - b.course.scrollCoinCost;
+          comparison = a.course.scrollGoldCost - b.course.scrollGoldCost;
           break;
         case SortField.ESTIMATED_HOURS:
           comparison = a.course.estimatedHours - b.course.estimatedHours;

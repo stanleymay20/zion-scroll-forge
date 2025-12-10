@@ -3,7 +3,7 @@
 - [ ] 1. Core Game Engine Foundation
   - Set up game engine architecture with player profiles and progression tracking
   - Implement ScrollXP calculation and award system for different learning activities
-  - Create basic reward bundle system with ScrollCoins, badges, and achievements
+  - Create basic reward bundle system with ScrollGolds, badges, and achievements
   - Build player profile management with spiritual formation integration
   - Implement basic leaderboard system for global rankings
   - _Requirements: 1.1, 1.2, 1.3, 1.4_
@@ -82,7 +82,7 @@
 
 - [ ] 11. ScrollRewards Economy Implementation
   - Create comprehensive reward calculation system for all learning activities
-  - Implement ScrollCoin transaction system with real-world utility integration
+  - Implement ScrollGold transaction system with real-world utility integration
   - Build ScrollBadge issuance system with NFT integration and rarity mechanics
   - Create ScrollKey generation system for mystery puzzle solving
   - Implement Secret Scroll revelation system with bonus biblical content

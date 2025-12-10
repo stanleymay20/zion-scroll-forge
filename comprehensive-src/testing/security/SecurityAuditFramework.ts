@@ -90,7 +90,7 @@ export class SecurityAuditFramework {
       () => this.testAIResponseFiltering(),
       
       // Blockchain Security
-      () => this.testScrollCoinSecurity(),
+      () => this.testScrollGoldSecurity(),
       () => this.testNFTBadgeSecurity(),
       () => this.testSmartContractSecurity(),
       
@@ -547,14 +547,14 @@ export class SecurityAuditFramework {
   }
 
   /**
-   * Test ScrollCoin security
+   * Test ScrollGold security
    */
-  private async testScrollCoinSecurity(): Promise<SecurityAuditResult> {
+  private async testScrollGoldSecurity(): Promise<SecurityAuditResult> {
     const findings: SecurityFinding[] = [];
     let passed = true;
 
     try {
-      const coinService = this.platformIntegrator.getService('scrollCoin');
+      const coinService = this.platformIntegrator.getService('ScrollGold');
       const securityService = this.platformIntegrator.getService('security');
       
       // Test double spending
@@ -569,7 +569,7 @@ export class SecurityAuditFramework {
           findings.push({
             description: 'Double spending vulnerability detected',
             severity: SecuritySeverity.CRITICAL,
-            location: 'ScrollCoin Service'
+            location: 'ScrollGold Service'
           });
           passed = false;
         }
@@ -595,14 +595,14 @@ export class SecurityAuditFramework {
 
     } catch (error) {
       findings.push({
-        description: `ScrollCoin security test error: ${error}`,
+        description: `ScrollGold security test error: ${error}`,
         severity: SecuritySeverity.HIGH,
-        location: 'ScrollCoin Service'
+        location: 'ScrollGold Service'
       });
     }
 
     return {
-      testName: 'ScrollCoin Security',
+      testName: 'ScrollGold Security',
       category: SecurityCategory.BLOCKCHAIN,
       severity: passed ? SecuritySeverity.INFO : SecuritySeverity.HIGH,
       passed,

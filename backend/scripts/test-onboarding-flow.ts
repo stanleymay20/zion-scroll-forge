@@ -88,7 +88,7 @@ class OnboardingFlowTester {
           firstName: 'Test',
           lastName: 'Student',
           role: 'STUDENT',
-          scrollCoinBalance: 1000,
+          scrollGoldBalance: 1000,
           workTradeCredits: 500,
           isActive: true
         }
@@ -108,7 +108,7 @@ class OnboardingFlowTester {
             code: 'SCROLL101',
             description: 'Foundation course for new students',
             credits: 3,
-            scrollCoinCost: 100,
+            scrollGoldCost: 100,
             scrollXPReward: 50,
             isActive: true,
             level: 'SCROLL_FOUNDATION'
@@ -216,7 +216,7 @@ class OnboardingFlowTester {
       const enrollment = await EnrollmentService.createEnrollment({
         userId: this.testUserId,
         courseId: this.testCourseId,
-        paymentMethod: 'scroll_coin'
+        paymentMethod: 'scroll_gold'
       });
 
       this.recordResult('Course Enrollment', true, Date.now() - start, {

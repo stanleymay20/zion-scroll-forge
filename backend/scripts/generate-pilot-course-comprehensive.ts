@@ -153,7 +153,7 @@ By the end of this course, students will be able to:
 3. Apply the Scroll Pedagogy model to their own learning journey
 4. Develop a personal spiritual formation plan
 5. Identify their calling and how it aligns with kingdom purposes
-6. Engage with the ScrollCoin economy and digital credentials system
+6. Engage with the ScrollGold economy and digital credentials system
 7. Build community through study groups and collaborative learning
 8. Demonstrate readiness for advanced coursework
 
@@ -321,7 +321,7 @@ That's ScrollUniversity.
 **The ScrollUniversity Difference:**
 - AI-powered personalized learning with prophetic intelligence
 - Blockchain-verified credentials (ScrollBadges)
-- Kingdom economy rewards (ScrollCoin)
+- Kingdom economy rewards (ScrollGold)
 - Real-world deployment pathways
 - Spiritual formation integrated into every course`,
 
@@ -339,7 +339,7 @@ That's ScrollUniversity.
 - Learns business theories PLUS biblical principles of stewardship
 - AI tutor adapts content to student's calling (e.g., social enterprise)
 - Assignments include real-world projects serving actual ministries
-- Earns ScrollCoin for excellence and service
+- Earns ScrollGold for excellence and service
 - Receives ScrollBadge credential verified on blockchain
 - Connects with mentors and potential employers
 - Develops deployment pathway for post-graduation kingdom impact
@@ -356,7 +356,7 @@ See the difference? It's not just education—it's preparation for your divine a
 2. **Platform Exploration** (15 minutes):
    - Log into your ScrollUniversity dashboard
    - Explore the AI tutor interface
-   - Check your ScrollCoin wallet
+   - Check your ScrollGold wallet
    - Browse the course catalog
 
 3. **Discussion Post** (10 minutes):
@@ -393,7 +393,7 @@ This week, share with one person why you chose ScrollUniversity and what you hop
           'Revelation + Reason learning model',
           'Transformation over Information',
           'Kingdom-focused education',
-          'ScrollCoin economy and ScrollBadge credentials',
+          'ScrollGold economy and ScrollBadge credentials',
           'Real-world deployment pathways',
           'Spiritual formation integration'
         ],
@@ -454,18 +454,18 @@ Today, we're going to explore the vision that makes ScrollUniversity unlike any 
       duration: 35,
       objectives: [
         'Master the ScrollUniversity learning platform',
-        'Understand ScrollCoin economy and ScrollBadge system',
+        'Understand ScrollGold economy and ScrollBadge system',
         'Utilize AI tutor and community features effectively'
       ],
       ignition: 'You\'re about to discover a learning platform unlike anything you\'ve experienced. One that adapts to you, rewards your growth, and connects you to a global kingdom community.',
-      download: 'The ScrollUniversity platform integrates cutting-edge technology with spiritual formation tools. Your AI tutor learns your style, your calling, and your needs. ScrollCoin rewards excellence and service. ScrollBadges provide blockchain-verified credentials recognized worldwide.',
-      demonstration: '[Live platform walkthrough showing: Dashboard, AI Tutor, ScrollCoin Wallet, Course Catalog, Study Groups, Spiritual Formation Hub]',
-      activation: 'Complete the platform scavenger hunt: Find 5 specific features, earn your first ScrollCoin, join a study group, and ask your AI tutor a question about your calling.',
+      download: 'The ScrollUniversity platform integrates cutting-edge technology with spiritual formation tools. Your AI tutor learns your style, your calling, and your needs. ScrollGold rewards excellence and service. ScrollBadges provide blockchain-verified credentials recognized worldwide.',
+      demonstration: '[Live platform walkthrough showing: Dashboard, AI Tutor, ScrollGold Wallet, Course Catalog, Study Groups, Spiritual Formation Hub]',
+      activation: 'Complete the platform scavenger hunt: Find 5 specific features, earn your first ScrollGold, join a study group, and ask your AI tutor a question about your calling.',
       reflection: 'Which platform feature excites you most? How do you see technology enhancing (not replacing) human connection and spiritual growth?',
       commission: 'Set up your complete profile, including your calling statement and spiritual formation goals. Connect with at least 3 classmates.',
       notes: {
-        keyConcepts: ['AI-powered personalization', 'ScrollCoin economy', 'ScrollBadge credentials', 'Community features', 'Spiritual formation tools'],
-        examples: ['AI tutor adapting to learning style', 'Earning ScrollCoin for excellence', 'Blockchain-verified degree'],
+        keyConcepts: ['AI-powered personalization', 'ScrollGold economy', 'ScrollBadge credentials', 'Community features', 'Spiritual formation tools'],
+        examples: ['AI tutor adapting to learning style', 'Earning ScrollGold for excellence', 'Blockchain-verified degree'],
         scriptures: ['1 Corinthians 12:4-7 - Diverse gifts, same Spirit']
       },
       videoScript: '[Interactive platform demo video]'

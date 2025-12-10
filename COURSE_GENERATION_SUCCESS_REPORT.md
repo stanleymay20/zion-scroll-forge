@@ -216,7 +216,7 @@ COURSE_[CODE]/
 2. **Platform Integration**
    - Import courses into database
    - Configure AI tutors
-   - Set up ScrollCoin rewards
+   - Set up ScrollGold rewards
    - Enable enrollment system
 
 3. **Faculty Review**

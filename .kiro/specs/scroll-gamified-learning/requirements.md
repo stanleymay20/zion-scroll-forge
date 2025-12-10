@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The ScrollU Gamified Learning Engine fuses engaging game mechanics with sacred, scroll-aligned education to maximize learning, retention, and spiritual formation. It integrates with AI tutoring, XR, social community, and the ScrollCoin economy to produce measurable academic skill and kingdom impact.
+The ScrollU Gamified Learning Engine fuses engaging game mechanics with sacred, scroll-aligned education to maximize learning, retention, and spiritual formation. It integrates with AI tutoring, XR, social community, and the ScrollGold economy to produce measurable academic skill and kingdom impact.
 
 ## Requirements
 
@@ -12,7 +12,7 @@ The ScrollU Gamified Learning Engine fuses engaging game mechanics with sacred, 
 1. WHEN a player completes learning actions THEN XP SHALL be awarded per configured rules with category breakdowns
 2. WHEN XP thresholds are reached THEN the system SHALL level up the player and record level history
 3. WHEN daily activity occurs THEN the system SHALL track streaks and longest streaks
-4. WHEN achievements are granted THEN the system SHALL award bundles (XP, ScrollCoin, badges)
+4. WHEN achievements are granted THEN the system SHALL award bundles (XP, ScrollGold, badges)
 5. WHEN rankings are viewed THEN the system SHALL provide global/regional/tribe leaderboards
 
 ### Requirement 2: Streaks, Engagement, and Notifications
@@ -56,10 +56,10 @@ The ScrollU Gamified Learning Engine fuses engaging game mechanics with sacred, 
 1. WHEN speech challenges run THEN recognition and scoring SHALL be provided in supported languages
 2. WHEN audio learning is chosen THEN voice drills and audio content SHALL be available with XP hooks
 
-### Requirement 8: Rewards and ScrollCoin Economy
+### Requirement 8: Rewards and ScrollGold Economy
 **User Story:** As a learner, I want meaningful rewards tied to real utility so that my engagement translates into value.
 #### Acceptance Criteria
-1. WHEN achievements are earned THEN the system SHALL award ScrollCoins per economy policy
+1. WHEN achievements are earned THEN the system SHALL award ScrollGolds per economy policy
 2. WHEN badges are issued THEN NFT-backed credentials SHALL be supported for select tiers
 3. WHEN purchases occur THEN the system SHALL support coin spending on tutoring, premium content, or certifications
 
@@ -141,13 +141,13 @@ The ScrollU Gamified Learning Engine fuses engaging game mechanics with sacred, 
 ### Requirement 22: Ecosystem Integration
 **User Story:** As a system architect, I want the engine integrated with courses, credentials, economy, and audit so that learning is cohesive.
 #### Acceptance Criteria
-1. WHEN XP and rewards are emitted THEN ScrollCoin, badges, and audit logs SHALL update through platform interfaces
+1. WHEN XP and rewards are emitted THEN ScrollGold, badges, and audit logs SHALL update through platform interfaces
 
 # Requirements Document
 
 ## Introduction
 
-ScrollU Gamified Learning Engine transforms traditional education into an irresistible divine adventure that surpasses Duolingo's engagement while delivering eternal wisdom and real-world skills. The system combines addictive gaming mechanics with sacred learning content, creating an experience where students eagerly return daily to unlock scrolls, complete XR quests, and build real projects. Operating under the principle that "wisdom should be more compelling than entertainment," the platform uses ScrollXP, divine streaks, global leaderboards, and ScrollCoin rewards to make prophecy, AI, law, healing, and sacred economy as engaging as the most popular mobile games.
+ScrollU Gamified Learning Engine transforms traditional education into an irresistible divine adventure that surpasses Duolingo's engagement while delivering eternal wisdom and real-world skills. The system combines addictive gaming mechanics with sacred learning content, creating an experience where students eagerly return daily to unlock scrolls, complete XR quests, and build real projects. Operating under the principle that "wisdom should be more compelling than entertainment," the platform uses ScrollXP, divine streaks, global leaderboards, and ScrollGold rewards to make prophecy, AI, law, healing, and sacred economy as engaging as the most popular mobile games.
 
 ## Requirements
 
@@ -160,7 +160,7 @@ ScrollU Gamified Learning Engine transforms traditional education into an irresi
 1. WHEN students complete learning activities THEN the system SHALL award ScrollXP points for AI, law, prophecy, economy, and governance subjects
 2. WHEN students maintain daily practice THEN the system SHALL track divine streaks and unlock Heaven badges for consistent scroll engagement
 3. WHEN students participate globally THEN the system SHALL provide ScrollWorld Rank leaderboards showing top scroll scholars worldwide
-4. WHEN students earn achievements THEN the system SHALL award ScrollCoin tokens that can be used for tuition, books, missions, and XR access
+4. WHEN students earn achievements THEN the system SHALL award ScrollGold tokens that can be used for tuition, books, missions, and XR access
 5. WHEN students face challenges THEN the system SHALL provide XR challenges to defeat Babylon, solve kingdom cases, and rebuild altars
 
 ### Requirement 2: Interactive ScrollTutor AI System
@@ -196,7 +196,7 @@ ScrollU Gamified Learning Engine transforms traditional education into an irresi
 1. WHEN students select roleplay missions THEN the system SHALL provide immersive XR experiences as biblical characters in historically accurate environments
 2. WHEN students engage in quests THEN the system SHALL present challenges that require applying biblical wisdom, prophetic insight, and practical skills
 3. WHEN students make decisions THEN the system SHALL provide consequences that teach both spiritual and practical lessons
-4. WHEN students complete missions THEN the system SHALL award ScrollXP, ScrollCoins, and unlock new character experiences
+4. WHEN students complete missions THEN the system SHALL award ScrollXP, ScrollGolds, and unlock new character experiences
 5. WHEN students explore environments THEN the system SHALL provide educational content about biblical history, geography, and cultural context
 
 ### Requirement 5: ScrollMap Exploration System
@@ -213,11 +213,11 @@ ScrollU Gamified Learning Engine transforms traditional education into an irresi
 
 ### Requirement 6: ScrollRewards Economy System
 
-**User Story:** As a student, I want to earn various types of rewards including ScrollCoins, ScrollBadges, ScrollKeys, and Secret Scrolls, so that my learning achievements translate into valuable and meaningful rewards both in-app and in real life.
+**User Story:** As a student, I want to earn various types of rewards including ScrollGolds, ScrollBadges, ScrollKeys, and Secret Scrolls, so that my learning achievements translate into valuable and meaningful rewards both in-app and in real life.
 
 #### Acceptance Criteria
 
-1. WHEN students complete quests, streaks, and exams THEN the system SHALL award ScrollCoins that can be used for tuition, merchandise, scroll projects, and XR access
+1. WHEN students complete quests, streaks, and exams THEN the system SHALL award ScrollGolds that can be used for tuition, merchandise, scroll projects, and XR access
 2. WHEN students finish sacred levels THEN the system SHALL issue ScrollBadges (Prophet Level 1, AI Priest Level 2) that display on their profiles
 3. WHEN students solve mystery scroll puzzles THEN the system SHALL award ScrollKeys that unlock secret content, ancient maps, and prophetic dreams
 4. WHEN students discover easter eggs and hidden codes THEN the system SHALL reveal Secret Scrolls with bonus teachings from Enoch, Daniel, Paul, and other biblical figures

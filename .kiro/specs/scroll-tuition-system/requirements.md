@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The ScrollUniversity Tuition System represents a revolutionary departure from Babylon's model of elitism, student debt, and exclusion. Built on the principle "Freely you have received; freely give — yet let the laborer be worthy of his wages" (Matthew 10:8), this system ensures no student is denied based on finances while maintaining sustainable operations through ScrollCoin integration, work-trade programs, and covenant-based pricing that funds mission rather than empire-building.
+The ScrollUniversity Tuition System represents a revolutionary departure from Babylon's model of elitism, student debt, and exclusion. Built on the principle "Freely you have received; freely give — yet let the laborer be worthy of his wages" (Matthew 10:8), this system ensures no student is denied based on finances while maintaining sustainable operations through ScrollGold integration, work-trade programs, and covenant-based pricing that funds mission rather than empire-building.
 
 ## Requirements
 
@@ -13,22 +13,22 @@ The ScrollUniversity Tuition System represents a revolutionary departure from Ba
 #### Acceptance Criteria
 
 1. WHEN students apply THEN the system SHALL ensure no student is denied based on finances, income, location, or currency availability
-2. WHEN payment options are presented THEN the system SHALL provide multiple pathways including ScrollCoin, work-trade, scholarships, and sliding scale pricing
+2. WHEN payment options are presented THEN the system SHALL provide multiple pathways including ScrollGold, work-trade, scholarships, and sliding scale pricing
 3. WHEN global equity is applied THEN the system SHALL implement location-based pricing where students in Ghana, Pakistan, Brazil pay different rates than students in Germany or the U.S.
 4. WHEN covenant principles are enforced THEN the system SHALL ensure tuition funds mission, infrastructure, and staff rather than profit maximization
 5. WHEN accessibility is measured THEN the system SHALL track and report that 100% of called students can access appropriate education levels
 
-### Requirement 2: ScrollCoin-Powered Payment Integration
+### Requirement 2: ScrollGold-Powered Payment Integration
 
-**User Story:** As a student, I want to pay tuition using ScrollCoin earned through kingdom labor, mission work, and scroll contributions, so that I can access education through service rather than only traditional currency.
+**User Story:** As a student, I want to pay tuition using ScrollGold earned through kingdom labor, mission work, and scroll contributions, so that I can access education through service rather than only traditional currency.
 
 #### Acceptance Criteria
 
-1. WHEN ScrollCoin payments are made THEN the system SHALL accept full or partial tuition payment in ScrollCoin at current exchange rates
-2. WHEN ScrollCoin is earned THEN the system SHALL award coins for daily XP streaks (+1 SC/day), course completion (+10 SC), research publishing (+25 SC), mentoring others (+15 SC), translation work (+20 SC), ScrollTool building (+50+ SC), and mission service (up to 100 SC)
+1. WHEN ScrollGold payments are made THEN the system SHALL accept full or partial tuition payment in ScrollGold at current exchange rates
+2. WHEN ScrollGold is earned THEN the system SHALL award coins for daily XP streaks (+1 SC/day), course completion (+10 SC), research publishing (+25 SC), mentoring others (+15 SC), translation work (+20 SC), ScrollTool building (+50+ SC), and mission service (up to 100 SC)
 3. WHEN work-trade is selected THEN the system SHALL enable students to contribute scroll building, translation, research, coding, or admin work toward tuition reduction
-4. WHEN ScrollCoin discounts apply THEN the system SHALL provide automatic tuition reductions based on accumulated ScrollCoin balances
-5. WHEN payment verification occurs THEN the system SHALL integrate with ScrollCoin wallet systems and maintain transparent transaction records
+4. WHEN ScrollGold discounts apply THEN the system SHALL provide automatic tuition reductions based on accumulated ScrollGold balances
+5. WHEN payment verification occurs THEN the system SHALL integrate with ScrollGold wallet systems and maintain transparent transaction records
 
 ### Requirement 3: Tiered Program Access Structure
 
@@ -37,8 +37,8 @@ The ScrollUniversity Tuition System represents a revolutionary departure from Ba
 #### Acceptance Criteria
 
 1. WHEN ScrollOpen Access is provided THEN the system SHALL offer certificate courses, intro missions, and AudioScrolls completely free for all students
-2. WHEN ScrollStarter programs are accessed THEN the system SHALL price diplomas, bootcamps, language labs, and AI builder courses at $9-$49 or 100-500 ScrollCoin equivalent
-3. WHEN ScrollDegree programs are enrolled THEN the system SHALL offer bachelor and masters programs at $25-$75/month or ScrollCoin work-trade equivalent
+2. WHEN ScrollStarter programs are accessed THEN the system SHALL price diplomas, bootcamps, language labs, and AI builder courses at $9-$49 or 100-500 ScrollGold equivalent
+3. WHEN ScrollDegree programs are enrolled THEN the system SHALL offer bachelor and masters programs at $25-$75/month or ScrollGold work-trade equivalent
 4. WHEN ScrollDoctorate programs are pursued THEN the system SHALL price doctorate, ScrollDefense, and research publication programs at $500-$2,000 full tuition or mission-based ScrollGrant
 5. WHEN ScrollScholarship Track is activated THEN the system SHALL provide free access for orphans, missionaries, refugees, and global south students with ScrollWitness approval
 
@@ -49,7 +49,7 @@ The ScrollUniversity Tuition System represents a revolutionary departure from Ba
 #### Acceptance Criteria
 
 1. WHEN credit/debit payments are processed THEN the system SHALL integrate with Stripe and Flutterwave for global card processing
-2. WHEN ScrollCoin payments are made THEN the system SHALL accept full or partial payment through verified ScrollCoin wallets
+2. WHEN ScrollGold payments are made THEN the system SHALL accept full or partial payment through verified ScrollGold wallets
 3. WHEN cryptocurrency payments are used THEN the system SHALL support USDT, ETH, and BTC through verified wallet integrations
 4. WHEN work-trade is selected THEN the system SHALL enable contribution to ScrollUniversity through AI development, design, missions, or administration
 5. WHEN scholarship codes are applied THEN the system SHALL process codes distributed via mentors, churches, and UN/NGO partners

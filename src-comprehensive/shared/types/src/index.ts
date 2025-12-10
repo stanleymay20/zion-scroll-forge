@@ -4,7 +4,7 @@ export * from './user';
 export * from './course';
 export * from './ai-tutor';
 export * from './xr';
-export * from './scrollcoin';
+export * from './scrollgold';
 export * from './language';
 export * from './api';
 export * from './validation';

@@ -256,7 +256,7 @@ export class StatusPageService {
       'file-storage': 'File and media storage',
       'ai-services': 'AI tutoring and content generation',
       'payment-processing': 'Payment and billing',
-      'blockchain': 'ScrollCoin and ScrollBadge',
+      'blockchain': 'ScrollGold and ScrollBadge',
       'email-service': 'Email notifications',
       'video-streaming': 'Video lecture streaming',
       'real-time-messaging': 'Chat and real-time features'

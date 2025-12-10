@@ -77,7 +77,7 @@
    - 8 modules × 4 lectures = 32 lectures
    - Status: ⏳ QUEUED
 
-8. **COURSE_ECON201** - ScrollCoin & Digital Currency
+8. **COURSE_ECON201** - ScrollGold & Digital Currency
    - 8 modules × 4 lectures = 32 lectures
    - Status: ⏳ QUEUED
 

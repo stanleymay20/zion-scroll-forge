@@ -43,7 +43,7 @@ export const PasswordSchema = z.string()
 export const PhoneNumberSchema = z.string()
   .regex(/^\+?[1-9]\d{1,14}$/, 'Invalid phone number format');
 
-export const ScrollCoinAmountSchema = z.number()
+export const ScrollGoldAmountSchema = z.number()
   .positive('Amount must be positive')
   .multipleOf(0.01, 'Amount must have at most 2 decimal places');
 
@@ -172,11 +172,11 @@ export const AIResponseSchema = z.object({
   safety_flags: createArraySchema(z.string(), 0, 10)
 });
 
-// ScrollCoin Transaction Validation
-export const ScrollCoinTransactionSchema = z.object({
+// ScrollGold Transaction Validation
+export const ScrollGoldTransactionSchema = z.object({
   from_wallet: z.string().min(1),
   to_wallet: z.string().min(1),
-  amount: ScrollCoinAmountSchema,
+  amount: ScrollGoldAmountSchema,
   transaction_type: z.enum([
     'tuition_payment',
     'course_enrollment',
@@ -228,8 +228,8 @@ export const AccessibilityOptionsSchema = z.object({
 
 // Custom Validation Utilities
 export class ValidationUtils {
-  static validateScrollCoinWallet(address: string): boolean {
-    // Implement ScrollCoin wallet address validation logic
+  static validateScrollGoldWallet(address: string): boolean {
+    // Implement ScrollGold wallet address validation logic
     return /^SC[0-9A-Fa-f]{40}$/.test(address);
   }
 

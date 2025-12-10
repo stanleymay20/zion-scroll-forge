@@ -30,7 +30,7 @@ export interface BillingTransaction {
   status: string;
   stripe_payment_intent_id?: string;
   stripe_session_id?: string;
-  scrollcoin_amount: number;
+  scrollgold_amount: number;
   notes?: string;
   metadata?: Record<string, any>;
   created_at: string;
@@ -116,7 +116,7 @@ export async function getActiveSubscription() {
 
 export async function createCheckoutSession(params: {
   product_id: string;
-  scrollcoin_discount?: number;
+  scrollgold_discount?: number;
 }) {
   const { data, error } = await supabase.functions.invoke("create-checkout-session", {
     body: params

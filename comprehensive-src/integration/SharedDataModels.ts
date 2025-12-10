@@ -165,22 +165,22 @@ export enum CourseStatus {
 }
 
 // ============================================================================
-// SCROLLCOIN ECONOMY MODELS
+// ScrollGold ECONOMY MODELS
 // ============================================================================
 
-export interface ScrollCoinAccount {
+export interface ScrollGoldAccount {
   userId: string;
   balance: number;
   totalEarned: number;
   totalSpent: number;
-  transactions: ScrollCoinTransaction[];
+  transactions: ScrollGoldTransaction[];
   walletAddress: string;
   stakingBalance: number;
   rewardMultiplier: number;
   lastUpdated: Date;
 }
 
-export interface ScrollCoinTransaction {
+export interface ScrollGoldTransaction {
   id: string;
   fromUserId: string;
   toUserId: string;
@@ -346,7 +346,7 @@ export interface ScrollProject {
   deliverables: ProjectDeliverable[];
   resources: ProjectResource[];
   kingdomImpact: KingdomImpactMetrics;
-  scrollCoinReward: number;
+  ScrollGoldReward: number;
   startDate: Date;
   dueDate: Date;
   completedDate?: Date;

@@ -172,7 +172,7 @@ interface InnovationChallenge {
   successCriteria: string[]
   resources: Resource[]
   deadline: Date
-  scrollCoinReward: number
+  scrollGoldReward: number
 }
 
 interface InnovationTeam {
@@ -350,7 +350,7 @@ interface DefenseResult {
   feedback: PanelFeedback[]
   recommendations: string[]
   certificationType: CertificationType
-  scrollCoinAwarded: number
+  scrollGoldAwarded: number
 }
 
 interface DefensePanel {
@@ -431,7 +431,7 @@ interface CriticalThinkingChallenge {
   
   // Rewards
   scrollXPReward: number
-  scrollCoinReward: number
+  scrollGoldReward: number
   badgeUnlocked?: string
   
   // Metadata

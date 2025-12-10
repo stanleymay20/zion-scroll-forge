@@ -315,7 +315,7 @@ describe('User Journeys E2E Tests', () => {
       expect(completionResponse.status).toBe(200);
       expect(completionResponse.body.data.enrollment.status).toBe('COMPLETED');
       expect(completionResponse.body.data.certificate).toBeDefined();
-      expect(completionResponse.body.data.scrollCoinReward).toBeGreaterThan(0);
+      expect(completionResponse.body.data.scrollGoldReward).toBeGreaterThan(0);
     });
   });
 

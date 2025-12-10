@@ -51,14 +51,14 @@
   - Implement monitoring and alerting for cross-system dependencies
   - _Requirements: 8.4, 8.5_
 
-- [x] 5. ScrollCoin Economy Foundation
+- [x] 5. ScrollGold Economy Foundation
 
 
 
 
 
   - Implement basic cryptocurrency wallet functionality
-  - Create ScrollCoin minting and transaction system
+  - Create ScrollGold minting and transaction system
   - Build reward mechanism for course completion and peer assistance
   - Integrate blockchain storage for transaction history
   - _Requirements: 4.5, 9.1, 9.2, 9.3, 9.4_
@@ -252,7 +252,7 @@
   - Implement comprehensive security measures for global platform
   - Create data privacy compliance for international regulations
   - Build spiritual content filtering and alignment verification
-  - Implement fraud prevention for ScrollCoin economy
+  - Implement fraud prevention for ScrollGold economy
   - _Requirements: 8.2, 10.2, 9.5_
 
 - [x] 21. Performance Optimization and Scaling

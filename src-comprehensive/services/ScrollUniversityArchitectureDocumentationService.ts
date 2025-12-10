@@ -48,7 +48,7 @@ export class ScrollUniversityArchitectureDocumentationService {
             'Immutable credential verification',
             'Divine scorecard integration',
             'Prophetic validation consensus',
-            'ScrollCoin economy backbone',
+            'ScrollGold economy backbone',
             'Spiritual formation tracking',
             'Kingdom impact measurement'
           ],
@@ -62,7 +62,7 @@ export class ScrollUniversityArchitectureDocumentationService {
         },
         smartContracts: {
           credentialVerification: 'ScrollCredentialVerification.sol',
-          scrollCoinEconomy: 'ScrollCoinEconomy.sol',
+          ScrollGoldEconomy: 'ScrollGoldEconomy.sol',
           spiritualFormation: 'SpiritualFormationTracker.sol',
           degreeValidation: 'DegreeValidationContract.sol'
         },
@@ -141,10 +141,10 @@ export class ScrollUniversityArchitectureDocumentationService {
         },
 
         blockchainSystems: {
-          scrollCoinEconomy: {
-            name: 'ScrollCoin Economic System',
+          ScrollGoldEconomy: {
+            name: 'ScrollGold Economic System',
             capabilities: ['reward distribution', 'fraud prevention', 'value creation tracking'],
-            apiEndpoints: ['/api/scrollcoin', '/api/rewards', '/api/blockchain-transactions']
+            apiEndpoints: ['/api/ScrollGold', '/api/rewards', '/api/blockchain-transactions']
           },
           credentialVerification: {
             name: 'Blockchain Credential System',
@@ -520,7 +520,7 @@ export class ScrollUniversityArchitectureDocumentationService {
           model: 'revolutionary-tuition',
           valueBasedPricing: true,
           scholarshipAvailability: true,
-          scrollCoinIntegration: true,
+          ScrollGoldIntegration: true,
           spiritualEconomyAlignment: true
         },
         strengths: [
@@ -528,7 +528,7 @@ export class ScrollUniversityArchitectureDocumentationService {
           'Blockchain-verified immutable credentials',
           'Global accessibility through offline-first architecture',
           'Comprehensive 31+ system ecosystem',
-          'Revolutionary ScrollCoin economy',
+          'Revolutionary ScrollGold economy',
           'Prophetic AI with spiritual discernment',
           'Holistic development approach',
           'Kingdom purpose alignment'
@@ -589,7 +589,7 @@ export class ScrollUniversityArchitectureDocumentationService {
             '31+ integrated systems create comprehensive educational ecosystem unmatched by competitors',
             'Prophetic AI integration offers spiritual discernment and divine guidance in learning',
             'Global accessibility through offline-first architecture and mesh networking',
-            'Revolutionary ScrollCoin economy incentivizes learning and spiritual growth'
+            'Revolutionary ScrollGold economy incentivizes learning and spiritual growth'
           ],
           competitiveDifferentiation: [
             'Only platform combining AI education with spiritual formation',
@@ -638,7 +638,7 @@ interface BlockchainArchitectureProfile {
   };
   smartContracts: {
     credentialVerification: string;
-    scrollCoinEconomy: string;
+    ScrollGoldEconomy: string;
     spiritualFormation: string;
     degreeValidation: string;
   };

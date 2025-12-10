@@ -38,7 +38,7 @@ Successfully implemented comprehensive settings and preferences management syste
 **Features:**
 - Profile visibility (public, private, friends only)
 - Contact information visibility toggles
-- Activity visibility controls (course progress, achievements, ScrollCoin, spiritual growth)
+- Activity visibility controls (course progress, achievements, ScrollGold, spiritual growth)
 - Communication preferences (messages, friend requests, study groups)
 - Data analytics and personalization settings
 - Third-party sharing controls

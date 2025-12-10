@@ -176,7 +176,7 @@ I have successfully implemented a comprehensive accessibility compliance and acc
 - **Student Profile System**: Seamless integration with student records
 - **Assessment Engine**: Compatibility with testing and evaluation systems
 - **Prayer Integration**: Spiritual support for accessibility challenges
-- **ScrollCoin System**: Rewards for accessibility achievements
+- **ScrollGold System**: Rewards for accessibility achievements
 
 ### External Services
 - **Assistive Technology Vendors**: Direct integration with AT providers

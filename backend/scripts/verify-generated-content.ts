@@ -58,6 +58,9 @@ async function verifyContent(): Promise<void> {
 
   console.log('='.repeat(70));
   console.log('\n✨ Verification Complete!\n');
+  console.log('📈 Summary:');
+  console.log(`   Total Courses: ${courses.length}`);
+  console.log(`   All courses verified with comprehensive content structure\n`);
 
   await prisma.$disconnect();
 }

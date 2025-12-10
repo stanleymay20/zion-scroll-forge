@@ -61,7 +61,7 @@ graph TB
     subgraph "Integration Layer"
         SCROLLU[ScrollUniversity Platform]
         SEAL[ScrollSeal Certification]
-        COIN[ScrollCoin Economy]
+        COIN[ScrollGold Economy]
         STORE[ScrollStore Marketplace]
     end
     
@@ -134,7 +134,7 @@ interface PlayerProfile {
   currentStreak: number;
   longestStreak: number;
   globalRank: number;
-  scrollCoins: number;
+  ScrollGolds: number;
   badges: ScrollBadge[];
   unlockedWorlds: LearningWorld[];
   currentQuests: ActiveQuest[];
@@ -442,14 +442,14 @@ interface GlobalScrollWar {
 ```typescript
 interface ScrollRewardsEngine {
   calculateReward(achievement: Achievement): Promise<RewardBundle>;
-  awardScrollCoins(playerId: string, amount: number, reason: string): Promise<CoinTransaction>;
+  awardScrollGolds(playerId: string, amount: number, reason: string): Promise<CoinTransaction>;
   issueBadge(playerId: string, badgeType: BadgeType): Promise<BadgeIssuance>;
   generateScrollKey(playerId: string, puzzle: SolvedPuzzle): Promise<ScrollKey>;
   revealSecretScroll(playerId: string, keyId: string): Promise<SecretScroll>;
 }
 
 interface RewardBundle {
-  scrollCoins: number;
+  ScrollGolds: number;
   scrollXP: number;
   badges: ScrollBadge[];
   scrollKeys: ScrollKey[];

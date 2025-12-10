@@ -178,11 +178,11 @@ export class TranscriptService {
         `Course Completion: ${enrollment.course.title}`
       );
 
-      // Award ScrollCoin
-      const scrollCoinReward = this.calculateScrollCoinReward(finalScore);
-      await this.awardScrollCoin(
+      // Award ScrollGold
+      const ScrollGoldReward = this.calculateScrollGoldReward(finalScore);
+      await this.awardScrollGold(
         enrollment.userId,
-        scrollCoinReward,
+        ScrollGoldReward,
         `Course Completion: ${enrollment.course.title}`
       );
 
@@ -191,7 +191,7 @@ export class TranscriptService {
         courseId: enrollment.courseId,
         finalScore,
         xpAwarded: completionXP,
-        scrollCoinAwarded: scrollCoinReward
+        ScrollGoldAwarded: ScrollGoldReward
       });
 
     } catch (error: any) {
@@ -357,9 +357,9 @@ export class TranscriptService {
   }
 
   /**
-   * Calculate ScrollCoin reward for course completion
+   * Calculate ScrollGold reward for course completion
    */
-  private calculateScrollCoinReward(finalScore: number): number {
+  private calculateScrollGoldReward(finalScore: number): number {
     let baseReward = 10;
     
     if (finalScore >= 95) {
@@ -386,15 +386,15 @@ export class TranscriptService {
   }
 
   /**
-   * Award ScrollCoin to user
+   * Award ScrollGold to user
    */
-  private async awardScrollCoin(
+  private async awardScrollGold(
     userId: string,
     amount: number,
     description: string
   ): Promise<void> {
     try {
-      await prisma.scrollCoinTransaction.create({
+      await prisma.ScrollGoldTransaction.create({
         data: {
           userId,
           amount,
@@ -408,16 +408,16 @@ export class TranscriptService {
       await prisma.user.update({
         where: { id: userId },
         data: {
-          scrollCoinBalance: {
+          ScrollGoldBalance: {
             increment: amount
           }
         }
       });
 
-      logger.info('ScrollCoin awarded', { userId, amount, description });
+      logger.info('ScrollGold awarded', { userId, amount, description });
 
     } catch (error: any) {
-      logger.error('Award ScrollCoin error', { error: error.message });
+      logger.error('Award ScrollGold error', { error: error.message });
     }
   }
 

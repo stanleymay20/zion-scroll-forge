@@ -3,7 +3,7 @@
 ## Problem Summary
 
 The Prisma schema has duplicate models and enums that prevent database operations:
-- Lines 334 & 2451: `ScrollCoinTransaction` model (duplicate)
+- Lines 334 & 2451: `ScrollGoldTransaction` model (duplicate)
 - Lines 2303 & 2643: `LectureType` enum (duplicate)
 - Lines 973 & 2655: `Scholarship` model (duplicate)
 - Lines 997 & 2700: `ScholarshipApplication` model (duplicate)
@@ -20,8 +20,8 @@ Since automated removal broke the schema, manual cleanup is required:
 
 The duplicate section starts at line 2451 with:
 ```prisma
-// ScrollCoin Blockchain Integration Models
-model ScrollCoinTransaction {
+// ScrollGold Blockchain Integration Models
+model ScrollGoldTransaction {
 ```
 
 And ends at line 3017 (just before the Course Content Creation section).

@@ -12,7 +12,7 @@ ScrollUniversity is a revolutionary Christian educational platform that combines
 4. [Learning Experience](#learning-experience)
 5. [AI Tutor](#ai-tutor)
 6. [Community Features](#community-features)
-7. [ScrollCoin Economy](#scrollcoin-economy)
+7. [ScrollGold Economy](#ScrollGold-economy)
 8. [ScrollBadge Credentials](#scrollbadge-credentials)
 9. [Spiritual Formation](#spiritual-formation)
 10. [Mobile App](#mobile-app)
@@ -112,7 +112,7 @@ ScrollUniversity is a revolutionary Christian educational platform that combines
 
 1. **Select Payment Method**
    - Credit/Debit card (via Stripe)
-   - ScrollCoin (blockchain currency)
+   - ScrollGold (blockchain currency)
    - Scholarship application
 
 2. **Complete Enrollment**
@@ -320,13 +320,13 @@ ScrollUniversity is a revolutionary Christian educational platform that combines
 
 ---
 
-## ScrollCoin Economy
+## ScrollGold Economy
 
-### Understanding ScrollCoin
+### Understanding ScrollGold
 
-ScrollCoin is our blockchain-based cryptocurrency that rewards learning achievements and enables a divine economy within the platform.
+ScrollGold is our blockchain-based cryptocurrency that rewards learning achievements and enables a divine economy within the platform.
 
-**Earning ScrollCoin:**
+**Earning ScrollGold:**
 - Complete courses (+100-500 SC)
 - Achieve high grades (+10-50 SC)
 - Help other students (+5-20 SC)
@@ -334,7 +334,7 @@ ScrollCoin is our blockchain-based cryptocurrency that rewards learning achievem
 - Complete daily devotions (+5 SC)
 - Maintain learning streaks (+5-25 SC)
 
-**Spending ScrollCoin:**
+**Spending ScrollGold:**
 - Enroll in courses
 - Purchase study materials
 - Access premium features
@@ -350,7 +350,7 @@ ScrollCoin is our blockchain-based cryptocurrency that rewards learning achievem
 - Spending options
 - Security settings
 
-**Sending ScrollCoin:**
+**Sending ScrollGold:**
 1. Click "Send" in wallet
 2. Enter recipient's email or ID
 3. Specify amount
@@ -358,7 +358,7 @@ ScrollCoin is our blockchain-based cryptocurrency that rewards learning achievem
 5. Confirm transaction
 6. Receive blockchain confirmation
 
-**Receiving ScrollCoin:**
+**Receiving ScrollGold:**
 - Share your wallet address
 - Generate QR code
 - Receive notifications
@@ -530,7 +530,7 @@ ScrollBadges are NFT-based digital credentials that verify your course completio
 - New messages
 - Course updates
 - Daily devotions
-- ScrollCoin earnings
+- ScrollGold earnings
 
 ---
 
@@ -609,7 +609,7 @@ ScrollBadges are NFT-based digital credentials that verify your course completio
    - Take breaks
    - Connect with community
 
-### Maximizing ScrollCoin Earnings
+### Maximizing ScrollGold Earnings
 
 - Complete courses with high grades
 - Maintain daily devotion streaks

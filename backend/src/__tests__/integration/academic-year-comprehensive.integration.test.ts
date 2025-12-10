@@ -201,7 +201,7 @@ describe('Academic Year Automation - Comprehensive Integration Tests', () => {
           role: 'STUDENT',
           enrollmentStatus: 'ACTIVE',
           academicLevel: 'SCROLL_OPEN',
-          scrollCoinBalance: 100.0,
+          scrollGoldBalance: 100.0,
           scrollAlignment: 0.5
         }
       });

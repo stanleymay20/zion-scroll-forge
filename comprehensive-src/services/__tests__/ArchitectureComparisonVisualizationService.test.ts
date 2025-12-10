@@ -304,7 +304,7 @@ function createMockAnalysis(): CompetitiveAnalysis {
       {
         name: 'Comprehensive API Ecosystem',
         apiCount: 31,
-        systemIntegrations: ['HeavenLedger', 'ScrollCoin', 'Prophetic AI'],
+        systemIntegrations: ['HeavenLedger', 'ScrollGold', 'Prophetic AI'],
         partnerEcosystem: true,
         blockchainIntegration: true
       }
@@ -400,7 +400,7 @@ function createMockAnalysis(): CompetitiveAnalysis {
       model: 'revolutionary-tuition',
       valueBasedPricing: true,
       scholarshipAvailability: true,
-      scrollCoinIntegration: true,
+      ScrollGoldIntegration: true,
       spiritualEconomyAlignment: true
     },
     strengths: ['Blockchain integration', 'Spiritual formation', 'Global accessibility'],
@@ -424,7 +424,7 @@ function createMockAnalysis(): CompetitiveAnalysis {
       model: 'subscription',
       valueBasedPricing: false,
       scholarshipAvailability: false,
-      scrollCoinIntegration: false,
+      ScrollGoldIntegration: false,
       spiritualEconomyAlignment: false
     },
     strengths: ['Established platform', 'AI features'],

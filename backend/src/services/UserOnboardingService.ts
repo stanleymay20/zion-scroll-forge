@@ -144,9 +144,9 @@ export class UserOnboardingService {
           completed: false
         },
         {
-          id: 'step-scrollcoin-wallet',
+          id: 'step-ScrollGold-wallet',
           order: 7,
-          title: 'Set Up ScrollCoin Wallet',
+          title: 'Set Up ScrollGold Wallet',
           description: 'Create your digital wallet for earning rewards',
           type: 'tutorial',
           required: false,
@@ -347,7 +347,7 @@ Your account has been created successfully. Here's what you can do next:
 2. **Explore Courses**: Browse our comprehensive course catalog
 3. **Meet Your AI Tutor**: Get personalized learning assistance 24/7
 4. **Join the Community**: Connect with fellow students and faculty
-5. **Set Up Your ScrollCoin Wallet**: Start earning rewards for your achievements
+5. **Set Up Your ScrollGold Wallet**: Start earning rewards for your achievements
 
 Getting Started:
 - Login: ${process.env.FRONTEND_URL}/login

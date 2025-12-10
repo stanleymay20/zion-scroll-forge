@@ -211,10 +211,10 @@ export class KnowledgeBaseService {
             {
                 title: 'Financial Aid and Scholarships',
                 content: `ScrollUniversity offers various financial aid options including scholarships,
-                work-trade programs, and ScrollCoin payment. Students must maintain satisfactory
+                work-trade programs, and ScrollGold payment. Students must maintain satisfactory
                 academic progress to remain eligible for aid. FAFSA required for federal aid.`,
                 category: 'Financial',
-                tags: ['financial aid', 'scholarships', 'payment', 'scrollcoin']
+                tags: ['financial aid', 'scholarships', 'payment', 'ScrollGold']
             },
             {
                 title: 'Technical Requirements',
@@ -260,19 +260,19 @@ export class KnowledgeBaseService {
             {
                 title: 'How do I enroll in a course?',
                 content: `To enroll in a course: 1) Browse course catalog, 2) Check prerequisites,
-                3) Click "Enroll" button, 4) Complete payment or use ScrollCoin, 5) Access course materials immediately.
+                3) Click "Enroll" button, 4) Complete payment or use ScrollGold, 5) Access course materials immediately.
                 You can enroll anytime as courses are self-paced.`,
                 category: 'Courses',
                 tags: ['enrollment', 'courses', 'registration']
             },
             {
-                title: 'What is ScrollCoin?',
-                content: `ScrollCoin is our blockchain-based reward currency. Earn ScrollCoin by:
+                title: 'What is ScrollGold?',
+                content: `ScrollGold is our blockchain-based reward currency. Earn ScrollGold by:
                 completing courses, participating in discussions, helping peers, contributing content.
-                Use ScrollCoin to: pay tuition, purchase resources, unlock premium features.
-                1 ScrollCoin = $1 USD equivalent.`,
-                category: 'ScrollCoin',
-                tags: ['scrollcoin', 'cryptocurrency', 'rewards', 'payment']
+                Use ScrollGold to: pay tuition, purchase resources, unlock premium features.
+                1 ScrollGold = $1 USD equivalent.`,
+                category: 'ScrollGold',
+                tags: ['ScrollGold', 'cryptocurrency', 'rewards', 'payment']
             },
             {
                 title: 'How do I contact support?',

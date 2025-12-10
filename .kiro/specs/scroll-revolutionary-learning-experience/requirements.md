@@ -43,7 +43,7 @@ This specification defines the revolutionary learning experience that will posit
 3. WHEN a student needs mentorship THEN the system SHALL connect them with qualified mentors within 24 hours
 4. IF a student is struggling THEN peer tutors SHALL be automatically notified and incentivized to help
 5. WHEN collaborative projects are assigned THEN the system SHALL form optimal teams based on complementary skills
-6. WHEN students collaborate THEN all interactions SHALL be tracked for ScrollCoin rewards
+6. WHEN students collaborate THEN all interactions SHALL be tracked for ScrollGold rewards
 
 ### Requirement 4: Comprehensive Skill Assessment and Certification
 
@@ -58,18 +58,18 @@ This specification defines the revolutionary learning experience that will posit
 5. WHEN employers verify credentials THEN they SHALL access detailed competency breakdowns
 6. WHEN certifications are issued THEN they SHALL integrate with LinkedIn, industry databases, and academic institutions
 
-### Requirement 5: Gamified Learning with ScrollCoin Economy
+### Requirement 5: Gamified Learning with ScrollGold Economy
 
 **User Story:** As a student, I want to earn tangible rewards for my learning achievements, so that I stay motivated and can benefit financially from my educational progress.
 
 #### Acceptance Criteria
 
-1. WHEN students complete learning activities THEN they SHALL earn ScrollCoins based on difficulty and quality
-2. WHEN students help peers THEN they SHALL receive bonus ScrollCoin rewards
-3. WHEN ScrollCoins are earned THEN they SHALL have real monetary value and exchange options
+1. WHEN students complete learning activities THEN they SHALL earn ScrollGolds based on difficulty and quality
+2. WHEN students help peers THEN they SHALL receive bonus ScrollGold rewards
+3. WHEN ScrollGolds are earned THEN they SHALL have real monetary value and exchange options
 4. IF students maintain learning streaks THEN they SHALL receive multiplier bonuses
 5. WHEN students achieve major milestones THEN they SHALL unlock exclusive content and opportunities
-6. WHEN students graduate THEN they SHALL receive substantial ScrollCoin bonuses for job placement success
+6. WHEN students graduate THEN they SHALL receive substantial ScrollGold bonuses for job placement success
 
 ### Requirement 6: Spiritual Formation Integration
 
@@ -132,7 +132,7 @@ This specification defines the revolutionary learning experience that will posit
 1. WHEN developers create projects THEN they SHALL have access to cloud-based IDEs with AI pair programming
 2. WHEN code is committed THEN it SHALL be automatically reviewed for quality, security, and spiritual alignment
 3. WHEN projects are shared THEN they SHALL be discoverable through intelligent search and recommendation systems
-4. IF developers collaborate THEN they SHALL earn ScrollCoins for meaningful contributions and code reviews
+4. IF developers collaborate THEN they SHALL earn ScrollGolds for meaningful contributions and code reviews
 5. WHEN projects demonstrate excellence THEN they SHALL be featured and monetized through the platform
 6. WHEN developers mentor others THEN they SHALL receive recognition and economic rewards
 
@@ -146,7 +146,7 @@ This specification defines the revolutionary learning experience that will posit
 2. WHEN participants submit solutions THEN they SHALL be evaluated using advanced AI and peer review systems
 3. WHEN datasets are provided THEN they SHALL include spiritual and ethical context for responsible analysis
 4. IF solutions show promise THEN they SHALL be fast-tracked for real-world implementation and funding
-5. WHEN competitions conclude THEN winners SHALL receive substantial ScrollCoin rewards and career opportunities
+5. WHEN competitions conclude THEN winners SHALL receive substantial ScrollGold rewards and career opportunities
 6. WHEN research is published THEN it SHALL be integrated into the platform's learning curriculum
 
 ### Requirement 12: Integrated Development and Learning Ecosystem
@@ -169,7 +169,7 @@ This specification defines the revolutionary learning experience that will posit
 #### Acceptance Criteria
 
 1. WHEN kingdom-focused projects are created THEN they SHALL be prioritized and resourced by the platform
-2. WHEN developers contribute to ministry projects THEN they SHALL receive enhanced ScrollCoin rewards
+2. WHEN developers contribute to ministry projects THEN they SHALL receive enhanced ScrollGold rewards
 3. WHEN projects serve underserved communities THEN they SHALL receive additional platform promotion and support
 4. IF projects demonstrate significant impact THEN they SHALL be featured in case studies and testimonials
 5. WHEN projects need funding THEN they SHALL be connected with Christian investors and grant opportunities

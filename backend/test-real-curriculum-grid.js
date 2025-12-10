@@ -40,7 +40,7 @@ async function testRealCurriculumGrid() {
         difficulty: 'INTERMEDIATE',
         duration: 40,
         scrollXPReward: 100,
-        scrollCoinCost: 50.0,
+        scrollGoldCost: 50.0,
         prerequisites: [],
         facultyId: testFaculty.id,
         isActive: true,

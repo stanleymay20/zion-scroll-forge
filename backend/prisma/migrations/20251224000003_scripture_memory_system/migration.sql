@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS "MemorizationChallenge" (
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "participantCount" INTEGER NOT NULL DEFAULT 0,
-    "scrollCoinReward" INTEGER NOT NULL DEFAULT 0,
+    "scrollGoldReward" INTEGER NOT NULL DEFAULT 0,
     "badgeReward" TEXT,
     "isActive" BOOLEAN NOT NULL DEFAULT true,
     "createdBy" TEXT NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS "ChallengeParticipation" (
     "totalVerses" INTEGER NOT NULL,
     "rank" INTEGER,
     "completedAt" TIMESTAMP(3),
-    "scrollCoinEarned" INTEGER NOT NULL DEFAULT 0,
+    "scrollGoldEarned" INTEGER NOT NULL DEFAULT 0,
     "joinedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "ChallengeParticipation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT "ChallengeParticipation_challengeId_fkey" FOREIGN KEY ("challengeId") REFERENCES "MemorizationChallenge"("id") ON DELETE CASCADE ON UPDATE CASCADE

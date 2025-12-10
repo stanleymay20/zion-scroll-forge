@@ -10,12 +10,12 @@ import {
   Coins, TrendingUp, ArrowUpRight, ArrowDownRight, 
   Loader2, Clock 
 } from "lucide-react";
-import { useWallet, useEarnScrollCoin, useSpendScrollCoin } from "@/hooks/useScrollCoin";
+import { useWallet, useEarnScrollGold, useSpendScrollGold } from "@/hooks/useScrollGold";
 
 export default function Wallet() {
   const { data: walletData, isLoading } = useWallet();
-  const earnMutation = useEarnScrollCoin();
-  const spendMutation = useSpendScrollCoin();
+  const earnMutation = useEarnScrollGold();
+  const spendMutation = useSpendScrollGold();
 
   const [earnAmount, setEarnAmount] = useState("");
   const [earnDescription, setEarnDescription] = useState("");
@@ -50,7 +50,7 @@ export default function Wallet() {
 
   if (isLoading || !walletData) {
     return (
-      <PageTemplate title="ScrollCoin Wallet" description="Loading...">
+      <PageTemplate title="ScrollGold Wallet" description="Loading...">
         <div className="text-center py-12">
           <Loader2 className="h-12 w-12 animate-spin mx-auto text-primary" />
         </div>
@@ -63,8 +63,8 @@ export default function Wallet() {
 
   return (
     <PageTemplate
-      title="ScrollCoin Wallet"
-      description="Manage your ScrollCoin balance and transactions"
+      title="ScrollGold Wallet"
+      description="Manage your ScrollGold balance and transactions"
     >
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Balance Card */}
@@ -80,7 +80,7 @@ export default function Wallet() {
               <div className="text-5xl font-bold text-primary mb-2">
                 {Math.round(balance)}
               </div>
-              <Badge variant="secondary">ScrollCoins</Badge>
+              <Badge variant="secondary">ScrollGolds</Badge>
             </CardContent>
           </Card>
 
@@ -132,7 +132,7 @@ export default function Wallet() {
                       ) : (
                         <>
                           <TrendingUp className="h-4 w-4 mr-2" />
-                          Earn ScrollCoins
+                          Earn ScrollGolds
                         </>
                       )}
                     </Button>
@@ -175,7 +175,7 @@ export default function Wallet() {
                       ) : (
                         <>
                           <Coins className="h-4 w-4 mr-2" />
-                          Spend ScrollCoins
+                          Spend ScrollGolds
                         </>
                       )}
                     </Button>
@@ -191,7 +191,7 @@ export default function Wallet() {
           <Card>
             <CardHeader>
               <CardTitle>Transaction History</CardTitle>
-              <CardDescription>Your recent ScrollCoin activity</CardDescription>
+              <CardDescription>Your recent ScrollGold activity</CardDescription>
             </CardHeader>
             <CardContent>
               {transactions.length > 0 ? (

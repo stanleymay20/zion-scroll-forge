@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>0/16</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>0/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -154,7 +154,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -186,7 +186,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -194,7 +194,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -202,7 +202,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -210,23 +210,23 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -238,7 +238,7 @@
 &nbsp;
 import { IntegrityConfig } from '../types/integrity.types';
 &nbsp;
-export const integrityConfig: IntegrityConfig = {
+export const <span class="cstat-no" title="statement not covered" >integrityConfig: IntegrityConfig = {</span>
   plagiarism: {
     turnitinEnabled: process.env.TURNITIN_ENABLED === 'true',
     turnitinApiKey: process.env.TURNITIN_API_KEY,
@@ -270,7 +270,7 @@ export const integrityConfig: IntegrityConfig = {
 };
 &nbsp;
 // Thresholds for risk level determination
-export const RISK_THRESHOLDS = {
+export const <span class="cstat-no" title="statement not covered" >RISK_THRESHOLDS = {</span>
   low: 0.3,
   medium: 0.6,
   high: 0.85,
@@ -278,7 +278,7 @@ export const RISK_THRESHOLDS = {
 };
 &nbsp;
 // Scoring weights for overall integrity score
-export const INTEGRITY_SCORE_WEIGHTS = {
+export const <span class="cstat-no" title="statement not covered" >INTEGRITY_SCORE_WEIGHTS = {</span>
   plagiarism: 0.35,
   aiContent: 0.25,
   styleDeviation: 0.15,
@@ -286,7 +286,7 @@ export const INTEGRITY_SCORE_WEIGHTS = {
 };
 &nbsp;
 // Proctoring flag severity scores
-export const PROCTORING_FLAG_SCORES = {
+export const <span class="cstat-no" title="statement not covered" >PROCTORING_FLAG_SCORES = {</span>
   low: 1,
   medium: 3,
   high: 5,
@@ -294,23 +294,23 @@ export const PROCTORING_FLAG_SCORES = {
 };
 &nbsp;
 // Maximum allowed flags before requiring review
-export const MAX_PROCTORING_FLAGS = 5;
+export const <span class="cstat-no" title="statement not covered" >MAX_PROCTORING_FLAGS = 5;</span>
 &nbsp;
 // Time window for collusion detection (in minutes)
-export const COLLUSION_TIME_WINDOW = 60;
+export const <span class="cstat-no" title="statement not covered" >COLLUSION_TIME_WINDOW = 60;</span>
 &nbsp;
 // Minimum similarity for collusion flag
-export const MIN_COLLUSION_SIMILARITY = 0.75;
+export const <span class="cstat-no" title="statement not covered" >MIN_COLLUSION_SIMILARITY = 0.75;</span>
 &nbsp;
 // AI content probability thresholds
-export const AI_CONTENT_THRESHOLDS = {
+export const <span class="cstat-no" title="statement not covered" >AI_CONTENT_THRESHOLDS = {</span>
   clear: 0.3,
   review: 0.5,
   flag: 0.7,
 };
 &nbsp;
 // Style deviation thresholds (standard deviations)
-export const STYLE_DEVIATION_THRESHOLDS = {
+export const <span class="cstat-no" title="statement not covered" >STYLE_DEVIATION_THRESHOLDS = {</span>
   normal: 1.5,
   suspicious: 2.0,
   flagged: 2.5,
@@ -322,7 +322,7 @@ export const STYLE_DEVIATION_THRESHOLDS = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:09.019Z
+                at 2025-12-02T16:54:11.658Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

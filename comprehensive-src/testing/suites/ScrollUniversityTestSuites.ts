@@ -533,22 +533,22 @@ export class ScrollUniversityTestSuites {
       category: TestCategory.INTEGRATION,
       tests: [
         {
-          id: 'ai_dean_scrollcoin_integration',
-          name: 'AI Dean and ScrollCoin Integration',
-          description: 'Test integration between AI Dean interactions and ScrollCoin rewards',
+          id: 'ai_dean_ScrollGold_integration',
+          name: 'AI Dean and ScrollGold Integration',
+          description: 'Test integration between AI Dean interactions and ScrollGold rewards',
           execute: async (): Promise<TestResult> => {
             const studentId = 'test_student_123';
-            const initialBalance = await getScrollCoinBalance(studentId);
+            const initialBalance = await getScrollGoldBalance(studentId);
             
             // Simulate AI Dean interaction
             const response = await simulateAIDeanCall('theology', 'What is faith?');
             
-            // Check if ScrollCoin was awarded
-            const newBalance = await getScrollCoinBalance(studentId);
+            // Check if ScrollGold was awarded
+            const newBalance = await getScrollGoldBalance(studentId);
             const coinAwarded = newBalance > initialBalance;
             
             return {
-              testId: 'ai_dean_scrollcoin_integration',
+              testId: 'ai_dean_ScrollGold_integration',
               passed: response.length > 50 && coinAwarded,
               duration: 1500,
               metadata: {
@@ -684,7 +684,7 @@ async function simulateRegionalAccess(region: string): Promise<{success: boolean
   };
 }
 
-async function getScrollCoinBalance(studentId: string): Promise<number> {
+async function getScrollGoldBalance(studentId: string): Promise<number> {
   // Simulate database call
   await new Promise(resolve => setTimeout(resolve, 100));
   return Math.floor(Math.random() * 1000) + 100;

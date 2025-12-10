@@ -270,7 +270,7 @@ export const CacheTags = {
   ASSIGNMENTS: 'assignments',
   GRADES: 'grades',
   COMMUNITY: 'community',
-  SCROLLCOIN: 'scrollcoin',
+  scrollgold: 'scrollgold',
   BADGES: 'badges',
   ANALYTICS: 'analytics',
   SPIRITUAL: 'spiritual',

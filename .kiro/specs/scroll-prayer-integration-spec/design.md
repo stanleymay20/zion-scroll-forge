@@ -48,7 +48,7 @@ graph LR
     A --> G[Governance Protection]
     A --> H[Audit Trail System]
     A --> I[University Portal]
-    A --> J[ScrollCoin Meter]
+    A --> J[ScrollGold Meter]
 ```
 
 ## Components and Interfaces

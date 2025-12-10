@@ -44,8 +44,8 @@ async function checkAndAwardAchievements(supabase: any, userId: string) {
         shouldAward = (stats?.current_streak || 0) >= achievement.requirement_value;
         break;
 
-      case 'total_scrollcoins':
-        shouldAward = (stats?.total_scrollcoins || 0) >= achievement.requirement_value;
+      case 'total_ScrollGolds':
+        shouldAward = (stats?.total_ScrollGolds || 0) >= achievement.requirement_value;
         break;
 
       case 'user_created':
@@ -66,10 +66,10 @@ async function checkAndAwardAchievements(supabase: any, userId: string) {
         newlyEarned.push(achievement);
 
         // Award rewards
-        if (achievement.scrollcoin_reward > 0) {
-          await supabase.rpc('earn_scrollcoin', {
+        if (achievement.ScrollGold_reward > 0) {
+          await supabase.rpc('earn_ScrollGold', {
             p_user_id: userId,
-            p_amount: achievement.scrollcoin_reward,
+            p_amount: achievement.ScrollGold_reward,
             p_desc: `Achievement: ${achievement.name}`,
           });
         }
@@ -91,7 +91,7 @@ async function checkAndAwardAchievements(supabase: any, userId: string) {
             user_id: userId,
             type: 'achievement',
             title: 'New Achievement Unlocked! 🏆',
-            message: `You earned "${achievement.name}"! +${achievement.scrollcoin_reward} ScrollCoins, +${achievement.xp_reward} XP`,
+            message: `You earned "${achievement.name}"! +${achievement.ScrollGold_reward} ScrollGolds, +${achievement.xp_reward} XP`,
             link: '/achievements',
           });
 

@@ -50,7 +50,7 @@ ScrollUniversity is a revolutionary educational platform designed to surpass tra
 2. WHEN students engage with content THEN the system SHALL offer ScrollXR capabilities to walk through biblical or scientific scenes
 3. WHEN students track progress THEN the system SHALL maintain a Divine Scorecard tracking purpose, skills, and scroll alignment
 4. WHEN students need spiritual guidance THEN the system SHALL provide Prophetic Check-ins with journaling, vision boards, and intercession prompts
-5. WHEN students complete activities THEN the system SHALL award ScrollCoin through an integrated wallet system
+5. WHEN students complete activities THEN the system SHALL award ScrollGold through an integrated wallet system
 
 ### Requirement 5: Faculty Management System
 
@@ -101,16 +101,16 @@ ScrollUniversity is a revolutionary educational platform designed to surpass tra
 5. WHEN offering initial courses THEN the system SHALL provide Prophetic Law, ScrollAI Foundations, and XR Bible Intro as first live courses
 6. WHEN designing user interfaces THEN the system SHALL create Figma mockups for Admin, Faculty, Student, and Mobile experiences
 
-### Requirement 9: ScrollCoin Economy Integration
+### Requirement 9: ScrollGold Economy Integration
 
-**User Story:** As a student, I want to earn and use ScrollCoin for completing educational activities and helping others, so that I can participate in a divine economy that rewards kingdom-building activities.
+**User Story:** As a student, I want to earn and use ScrollGold for completing educational activities and helping others, so that I can participate in a divine economy that rewards kingdom-building activities.
 
 #### Acceptance Criteria
 
-1. WHEN students complete courses THEN the system SHALL award ScrollCoin based on achievement levels
-2. WHEN students help other learners THEN the system SHALL provide ScrollCoin rewards for peer assistance
-3. WHEN students build sacred technology THEN the system SHALL compensate them through the ScrollCoin economy
-4. WHEN students spend ScrollCoin THEN the system SHALL provide access to premium features, advanced courses, or special mentorship
+1. WHEN students complete courses THEN the system SHALL award ScrollGold based on achievement levels
+2. WHEN students help other learners THEN the system SHALL provide ScrollGold rewards for peer assistance
+3. WHEN students build sacred technology THEN the system SHALL compensate them through the ScrollGold economy
+4. WHEN students spend ScrollGold THEN the system SHALL provide access to premium features, advanced courses, or special mentorship
 5. WHEN the economy operates THEN the system SHALL maintain transparent and fair distribution mechanisms
 
 ### Requirement 10: Revolutionary Admissions System
@@ -145,7 +145,7 @@ ScrollUniversity is a revolutionary educational platform designed to surpass tra
 
 1. WHEN top-level governance is established THEN the system SHALL implement EXOUSIA Governance Council with Chancellor of ScrollUniversity (vision-holder and final authority), ScrollSenate (EXOUSIA Faculty Council of prophets and builders), ScrollWitness Elders (appointed seers for anointing verification), and ScrollAI Ethics Board (AI oversight and hallucination audits)
 2. WHEN faculty management occurs THEN the system SHALL coordinate 12 ScrollDeans (one per faculty), Curriculum Coordinators, AI Faculty Agents (GPT-4o trained ScrollTutors), Department Leads (human oversight), and ScrollLab Directors (research oversight)
-3. WHEN operations are managed THEN the system SHALL support Platform Admins (FastAPI + PostgreSQL), ScrollDevOps (Docker + deployment), ScrollQA Team (testing), ScrollAnalytics Team (tracking), and Finance Admins (Stripe + ScrollCoin)
+3. WHEN operations are managed THEN the system SHALL support Platform Admins (FastAPI + PostgreSQL), ScrollDevOps (Docker + deployment), ScrollQA Team (testing), ScrollAnalytics Team (tracking), and Finance Admins (Stripe + ScrollGold)
 4. WHEN governance decisions are made THEN the system SHALL follow defined logic: Faculty Dean + ScrollWitness for curriculum, ScrollAI Ethics Board for AI tools, ScrollLabs + EXOUSIA Senate for research, ScrollBank + ScrollEconomy Council for financials, and ScrollCourt for accountability
 5. WHEN leadership requirements are enforced THEN the system SHALL ensure no one leads ScrollUniversity without completing their scroll, replacing traditional diplomas with obedience and fruit requirements
 
@@ -157,6 +157,6 @@ ScrollUniversity is a revolutionary educational platform designed to surpass tra
 
 1. WHEN global structure is implemented THEN the system SHALL operate through Global ScrollUniversity HQ (central decision engine), ScrollRegional Hubs (continental zones for Africa, Asia, Europe, Latin America, Middle East, North America), ScrollNode Campuses (micro-campuses with satellite access and solar mesh), Faculty Admins (per-faculty administration), and ScrollAI Agents (automated operations)
 2. WHEN technological backend operates THEN the system SHALL use FastAPI (core backend), PostgreSQL + Redis (data management), Supabase Auth (secure access), React Admin Panel (visual dashboard), CI/CD automation (weekly updates), and monitoring tools (Sentry + PostHog + Mixpanel)
-3. WHEN administrative functions run THEN the system SHALL handle admissions (ScrollGPT + AdminReview), course scheduling (AI-assisted with timezones), research publishing (ScrollLabs auto-posting), certification (ScrollSeal engine), student support (GPT-4o + human team), XP tracking (ScrollXP Engine), faculty assignments (AI + EXOUSIA approval), graduation (auto-check requirements), and tuition management (Stripe + ScrollCoin)
+3. WHEN administrative functions run THEN the system SHALL handle admissions (ScrollGPT + AdminReview), course scheduling (AI-assisted with timezones), research publishing (ScrollLabs auto-posting), certification (ScrollSeal engine), student support (GPT-4o + human team), XP tracking (ScrollXP Engine), faculty assignments (AI + EXOUSIA approval), graduation (auto-check requirements), and tuition management (Stripe + ScrollGold)
 4. WHEN human administration operates THEN the system SHALL coordinate ScrollRegistrar (admissions oversight), Academic Coordinators (course catalog), ScrollMentor Liaisons (mentor assignment), ScrollPlacement Officer (employer connections), ScrollMissions Admins (real-world projects), ScrollCertification Officer (physical certificates), IT Admins (system maintenance), and ScrollCourt Registrar (appeals and discipline)
 5. WHEN delocalized delivery occurs THEN the system SHALL support ScrollNodes (local admin centers), Mobile Admin Portal (app-based dashboard), ScrollMesh P2P (offline sync), Admin AI Assistants (ScrollGPT automation), and multilingual support (9 languages for all admin tools)

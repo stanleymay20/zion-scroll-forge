@@ -66,7 +66,7 @@ const mockPrismaClient = {
   payment: {
     findMany: jest.fn().mockResolvedValue([]),
   },
-  scrollCoinTransaction: {
+  scrollGoldTransaction: {
     findMany: jest.fn().mockResolvedValue([]),
   },
   scholarship: {
@@ -354,7 +354,7 @@ describe('DataAggregationService', () => {
     payment: {
       findMany: jest.fn().mockResolvedValue([]),
     },
-    scrollCoinTransaction: {
+    scrollGoldTransaction: {
       findMany: jest.fn().mockResolvedValue([]),
     },
     scholarship: {

@@ -64,7 +64,7 @@ export default function Transcript() {
         enrollments: enrollments || [],
         certificates: certificates || [],
         stats: stats || { total_xp: 0, courses_completed: 0 },
-        scrollcoins: wallet?.balance || 0,
+        ScrollGolds: wallet?.balance || 0,
       };
     },
     enabled: !!user?.id,
@@ -145,13 +145,13 @@ export default function Transcript() {
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              ScrollCoins Balance
+              ScrollGolds Balance
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-center space-x-2">
               <Coins className="h-5 w-5 text-primary" />
-              <span className="text-2xl font-bold">{transcript?.scrollcoins || 0}</span>
+              <span className="text-2xl font-bold">{transcript?.ScrollGolds || 0}</span>
             </div>
           </CardContent>
         </Card>

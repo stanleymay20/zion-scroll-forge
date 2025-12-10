@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.82% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>12/136</span>
+                <span class='fraction'>0/136</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">24.13% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/29</span>
+                <span class='fraction'>0/29</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/30</span>
+                <span class='fraction'>0/30</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">10.25% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>12/117</span>
+                <span class='fraction'>0/117</span>
             </div>
         
             
@@ -557,8 +557,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -568,15 +568,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -617,9 +617,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -691,8 +691,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -700,7 +700,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1040,14 +1040,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Quality Metrics Service
  * Tracks and analyzes quality metrics for AI services
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
-import {
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
+<span class="cstat-no" title="statement not covered" >import {</span>
   QualityMetrics,
   TestResult,
   AIServiceType,
@@ -1057,15 +1057,15 @@ import {
   ContinuousImprovement,
   Improvement,
 } from '../types/qa.types';
-import { logger } from '../utils/logger';
+<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
-export class QualityMetricsService {
+<span class="cstat-no" title="statement not covered" >export class Q</span>ualityMetricsService {
   private thresholds: QualityThresholds;
 &nbsp;
-  constructor(thresholds?: Partial&lt;QualityThresholds&gt;) {
-    this.thresholds = { ...DEFAULT_QUALITY_THRESHOLDS, ...thresholds };
+<span class="fstat-no" title="function not covered" >  constructor(t</span>hresholds?: Partial&lt;QualityThresholds&gt;) {
+<span class="cstat-no" title="statement not covered" >    this.thresholds = { ...DEFAULT_QUALITY_THRESHOLDS, ...thresholds };</span>
   }
 &nbsp;
   /**
@@ -1101,14 +1101,14 @@ export class QualityMetricsService {
   /**
    * Calculate quality metrics for a service
    */
-  async calculateMetrics(
+<span class="fstat-no" title="function not covered" >  async </span>calculateMetrics(
     serviceType: AIServiceType,
     startDate: Date,
     endDate: Date
   ): Promise&lt;QualityMetrics&gt; {
-    try {
+<span class="cstat-no" title="statement not covered" >    try {</span>
       // Get all test results for the service in the period
-      const testCases = await prisma.aITestCase.findMany({
+      const testCases = <span class="cstat-no" title="statement not covered" >await prisma.aITestCase.findMany({</span>
         where: { serviceType },
         include: {
           results: {
@@ -1180,16 +1180,16 @@ export class QualityMetricsService {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return metrics;</span>
     } catch (error) {
-      logger.error('Error calculating quality metrics', { error, serviceType });
-      throw error;
+<span class="cstat-no" title="statement not covered" >      logger.error('Error calculating quality metrics', { error, serviceType });</span>
+<span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
   /**
    * Check if metrics meet quality thresholds
    */
-  meetsThresholds(metrics: QualityMetrics): boolean {
-    return (
+<span class="fstat-no" title="function not covered" >  meetsThresholds(</span>metrics: QualityMetrics): boolean {
+<span class="cstat-no" title="statement not covered" >    return (</span>
       metrics.accuracy &gt;= this.thresholds.minAccuracy &amp;&amp;
       metrics.confidence &gt;= this.thresholds.minConfidence &amp;&amp;
       metrics.humanAgreement &gt;= this.thresholds.minHumanAgreement &amp;&amp;
@@ -1529,7 +1529,7 @@ export class QualityMetricsService {
   }
 }
 &nbsp;
-export default QualityMetricsService;
+<span class="cstat-no" title="statement not covered" >export default QualityMetricsService;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1537,7 +1537,7 @@ export default QualityMetricsService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:03.756Z
+                at 2025-12-02T16:54:09.620Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

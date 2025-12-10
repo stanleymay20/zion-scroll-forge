@@ -253,14 +253,14 @@ export class PhilosophyComparisonReportingService {
         'Ministry preparation and calling discernment',
         'Prophetic check-ins and intercession prayer integration',
         'Spiritual gift identification and development',
-        'Kingdom economics and ScrollCoin reward system',
+        'Kingdom economics and ScrollGold reward system',
         'Angelic tutors and XR spiritual experiences'
       ],
       kingdomDifferentiators: [
         'Training scroll sons to govern nations righteously',
         'Global transformation focus with kingdom impact measurement',
         'Righteous systems building and prophetic leadership development',
-        'Kingdom economics integration with ScrollCoin economy',
+        'Kingdom economics integration with ScrollGold economy',
         'Prophetic validation of all learning and development',
         'Community-based accountability with spiritual oversight',
         'Cultural adaptation with prophetic sensitivity',

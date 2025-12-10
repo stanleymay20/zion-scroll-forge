@@ -22,7 +22,7 @@ docker exec scrolluniversity-test-db pg_isready -U scrolluser -d scrolluniversit
 ```
 
 3. **Fix schema duplicates** (needs manual cleanup):
-   - Remove duplicate `ScrollCoinTransaction` model
+   - Remove duplicate `ScrollGoldTransaction` model
    - Remove duplicate `LectureType` enum
    - Remove duplicate `Scholarship` model
    - Remove duplicate `ScholarshipApplication` model

@@ -176,7 +176,7 @@ export const ScrollUserSchema = z.object({
   lastName: z.string().min(1).max(100),
   
   // Portal-specific fields
-  scrollCoinWallet: z.string().optional(),
+  ScrollGoldWallet: z.string().optional(),
   preferredLanguage: z.string().length(2).default('en'),
   timeZone: z.string().default('UTC'),
   scrollNodeId: z.string().optional(),
@@ -194,8 +194,8 @@ export const ScrollUserSchema = z.object({
   enrollmentStatus: EnrollmentStatusSchema.default('active'),
   academicLevel: AcademicLevelSchema.default('scroll_open'),
   
-  // ScrollCoin Integration
-  scrollCoinBalance: z.number().min(0).default(0),
+  // ScrollGold Integration
+  ScrollGoldBalance: z.number().min(0).default(0),
   workTradeCredits: z.number().min(0).default(0),
   
   // Profile and Preferences
@@ -257,7 +257,7 @@ export const PortalCourseSchema = z.object({
   level: CourseLevelSchema.default('Introductory'),
   durationWeeks: z.number().int().min(1).max(52).default(4),
   xpReward: z.number().int().min(0).default(100),
-  scrollCoinCost: z.number().min(0).default(0),
+  ScrollGoldCost: z.number().min(0).default(0),
   prerequisites: z.array(z.string()).default([]),
   featured: z.boolean().default(false),
   enrollmentOpen: z.boolean().default(true),
@@ -275,7 +275,7 @@ export const PortalEnrollmentSchema = z.object({
   completionDate: z.string().datetime().optional(),
   progressPercentage: z.number().min(0).max(100).default(0),
   xpEarned: z.number().int().min(0).default(0),
-  scrollCoinsEarned: z.number().min(0).default(0),
+  ScrollGoldsEarned: z.number().min(0).default(0),
   currentLessonId: z.string().optional(),
   status: EnrollmentStatusSchema.default('active'),
   createdAt: z.string().datetime(),
@@ -461,7 +461,7 @@ export const ScholarshipSchema = z.object({
   name: z.string().min(1).max(255),
   description: z.string().max(2000).optional(),
   amount: z.number().min(0).optional(),
-  currency: z.string().default('ScrollCoin'),
+  currency: z.string().default('ScrollGold'),
   scholarshipType: ScholarshipTypeSchema.default('merit'),
   eligibilityCriteria: EligibilityCriteriaSchema,
   applicationDeadline: z.string().datetime().optional(),

@@ -201,7 +201,7 @@ export interface SystemConfiguration {
   };
   features: {
     aiTutor: boolean;
-    scrollCoin: boolean;
+    scrollGold: boolean;
     scrollBadge: boolean;
     spiritualFormation: boolean;
     communityFeed: boolean;

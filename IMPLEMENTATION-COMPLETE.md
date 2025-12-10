@@ -18,7 +18,7 @@ The ScrollUniversity v3.0 Content Generation System has been fully implemented w
 **Status**: COMPLETE
 
 - **Course Prompts**: Faculty-specific, includes mission, Scripture anchor, and Christ-centered requirements
-- **Module Prompts**: Structured format with Scroll Invocation, main content (900-1100 words), Scripture integration, key takeaways, reflection questions, and ScrollCoin markers
+- **Module Prompts**: Structured format with Scroll Invocation, main content (900-1100 words), Scripture integration, key takeaways, reflection questions, and ScrollGold markers
 - **Quiz Prompts**: Comprehensive assessment generation with biblical alignment
 - **Tutor Prompts**: Detailed system prompts with teaching philosophy, Scripture foundation, and spiritual integration
 
@@ -151,21 +151,21 @@ function generatePDF(title: string, content: string, scripture: string): string
 - Faculty-specific personality prompt
 - Stored in `ai_tutors` table
 
-### 8. Reward Logic (ScrollCoin) ✓
+### 8. Reward Logic (ScrollGold) ✓
 **Status**: COMPLETE
 
 **Assignment**:
-- 10-50 ScrollCoins per module (random within range)
-- Included in module content: "📜 **Earn [amount] ScrollCoins for completing this module**"
+- 10-50 ScrollGolds per module (random within range)
+- Included in module content: "📜 **Earn [amount] ScrollGolds for completing this module**"
 - Stored in `course_modules.rewards_amount`
 
 **Tracking**:
-- `totalScrollCoins`: Sum of all rewards initialized
-- Displayed in final report: "🪙 Total ScrollCoins Initialized: [sum]"
+- `totalScrollGolds`: Sum of all rewards initialized
+- Displayed in final report: "🪙 Total ScrollGolds Initialized: [sum]"
 
 **Future Integration**:
 - Ready for `reward_ledger` table when user completion tracking is implemented
-- RPC function `earn_scrollcoin(p_user_id, p_amount, p_desc)` available
+- RPC function `earn_ScrollGold(p_user_id, p_amount, p_desc)` available
 
 ### 9. Content Validation & Governance Audit ✓
 **Status**: COMPLETE
@@ -190,7 +190,7 @@ function generatePDF(title: string, content: string, scripture: string): string
   "errorsEncountered": 0,
   "antiDriftValidations": 19-43,
   "antiDriftRegenerations": 0-5,
-  "totalScrollCoins": 1920-21600,
+  "totalScrollGolds": 1920-21600,
   "duration": "40-50 minutes"
 }
 ```
@@ -267,7 +267,7 @@ function generatePDF(title: string, content: string, scripture: string): string
 - ✅ 2 academic terms created
 - ✅ All courses linked to terms
 - ✅ Anti-drift validation performed every 10 modules
-- ✅ ScrollCoin rewards assigned and tracked
+- ✅ ScrollGold rewards assigned and tracked
 - ✅ Generation report saved
 
 ---
@@ -279,7 +279,7 @@ Upon successful completion, the system displays:
 ```
 ✝️ ScrollUniversity v3.0 Complete Implementation Successful
 All 12 faculties generated, validated, and governed under Christ's Lordship.
-ScrollCoin rewards active, materials uploaded, AI tutors established, and PDFs published.
+ScrollGold rewards active, materials uploaded, AI tutors established, and PDFs published.
 
 ✅ ScrollUniversity v3.0 Requirements successfully updated — All 12 Faculties seeded under Christ's governance
 ```
@@ -318,7 +318,7 @@ curl -X POST https://[project-id].supabase.co/functions/v1/generate-content \
 2. **AI Tutor Chat**: Tutors ready for live Q&A sessions
 3. **Assessment System**: Quizzes ready for student testing
 4. **Progress Tracking**: Ready to track module completion
-5. **Reward Distribution**: ScrollCoin system ready for user rewards
+5. **Reward Distribution**: ScrollGold system ready for user rewards
 6. **Material Downloads**: PDFs ready for student download
 
 ### Potential Enhancements:

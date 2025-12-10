@@ -57,7 +57,7 @@ Each faculty includes:
   - **Scripture Grounding**: Biblical foundation
   - **Main Content**: Detailed teaching material
   - **Practical Application**: Real-world implementation
-  - **ScrollCoin Rewards**: 10-50 coins per module
+  - **ScrollGold Rewards**: 10-50 coins per module
 - ~240+ total modules
 
 #### 4. **Learning Materials** (2-3 per module)
@@ -176,7 +176,7 @@ Spiritual checkpoints every 50 modules affirm theological alignment.
   "errorsEncountered": 0,
   "antiDriftValidations": 24,
   "antiDriftRegenerations": 0,
-  "totalScrollCoins": 7200,
+  "totalScrollGolds": 7200,
   "duration": "22m 15s"
 }
 ```
@@ -243,7 +243,7 @@ Logs all retry attempts for monitoring.
 - `ai_tutors`: Tutor profiles and personalities
 - `academic_terms`: Term schedule
 - `course_offerings`: Course-term associations
-- `reward_ledger`: ScrollCoin transactions
+- `reward_ledger`: ScrollGold transactions
 
 ### Storage Structure
 ```
@@ -317,7 +317,7 @@ Check real-time logs in Lovable Cloud → Functions → `generate-content`
 ✅ **Requirement 4**: Quizzes with 7 questions
 ✅ **Requirement 5**: Visual infographics via AI
 ✅ **Requirement 6**: Academic terms and course offerings
-✅ **Requirement 7**: ScrollCoin reward integration
+✅ **Requirement 7**: ScrollGold reward integration
 ✅ **Requirement 8**: Christ-centered governance with anti-drift
 ✅ **Requirement 9**: Reliable AI API integration
 ✅ **Requirement 10**: AI tutor avatars with DALL-E and ElevenLabs

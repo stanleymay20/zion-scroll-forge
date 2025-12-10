@@ -38,10 +38,10 @@ This specification defines ScrollUniversity's comprehensive competitive response
 
 #### Acceptance Criteria
 
-1. WHEN implementing payment options THEN the system SHALL accept traditional payments (credit cards, PayPal) alongside ScrollCoin
-2. WHEN displaying pricing THEN the system SHALL show clear USD/local currency prices with ScrollCoin alternatives
-3. WHEN onboarding users THEN the system SHALL gradually introduce ScrollCoin benefits and economy
-4. WHEN demonstrating value THEN the system SHALL show clear ROI for ScrollCoin adoption
+1. WHEN implementing payment options THEN the system SHALL accept traditional payments (credit cards, PayPal) alongside ScrollGold
+2. WHEN displaying pricing THEN the system SHALL show clear USD/local currency prices with ScrollGold alternatives
+3. WHEN onboarding users THEN the system SHALL gradually introduce ScrollGold benefits and economy
+4. WHEN demonstrating value THEN the system SHALL show clear ROI for ScrollGold adoption
 5. WHEN transitioning users THEN the system SHALL provide incentives for full economic model participation
 
 ### Requirement 4: Technical Reliability and Performance Focus
@@ -146,7 +146,7 @@ This specification defines ScrollUniversity's comprehensive competitive response
 
 ### Long-term Transformation Leadership (12+ months)
 - Market leadership in spiritual-integrated education
-- ScrollCoin economy adoption by 60% of active users
+- ScrollGold economy adoption by 60% of active users
 - Global accessibility reaching 50+ countries
 - Prophetic AI demonstrating clear superiority
 - Kingdom transformation impact measurement and validation

@@ -204,13 +204,13 @@ By the end of this course, students will be able to:
 - **Study Groups**: Matched with peers
 - **Technical Support**: Help with setup and tools
 
-## ScrollCoin Rewards
+## ScrollGold Rewards
 
-- Course completion: 500 ScrollCoin
-- Perfect assignment: 10 ScrollCoin bonus
-- Help another student: 5 ScrollCoin
-- Contribute to open source: 20 ScrollCoin
-- Publish research: 100 ScrollCoin
+- Course completion: 500 ScrollGold
+- Perfect assignment: 10 ScrollGold bonus
+- Help another student: 5 ScrollGold
+- Contribute to open source: 20 ScrollGold
+- Publish research: 100 ScrollGold
 
 ## Career Outcomes
 

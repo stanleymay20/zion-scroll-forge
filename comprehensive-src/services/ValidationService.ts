@@ -283,13 +283,13 @@ export class ValidationService {
       }
     }
 
-    // Rule: ScrollCoin earned cannot exceed maximum based on project scope
-    const maxScrollCoin = this.calculateMaxScrollCoin(project.scroll_field);
-    if (project.scrollcoin_earned > maxScrollCoin) {
+    // Rule: ScrollGold earned cannot exceed maximum based on project scope
+    const maxScrollGold = this.calculateMaxScrollGold(project.scroll_field);
+    if (project.ScrollGold_earned > maxScrollGold) {
       errors.push({
-        field: 'scrollcoin_earned',
-        message: `ScrollCoin earned (${project.scrollcoin_earned}) exceeds maximum for ${project.scroll_field} (${maxScrollCoin})`,
-        error_code: 'SCROLLCOIN_LIMIT_EXCEEDED',
+        field: 'ScrollGold_earned',
+        message: `ScrollGold earned (${project.ScrollGold_earned}) exceeds maximum for ${project.scroll_field} (${maxScrollGold})`,
+        error_code: 'ScrollGold_LIMIT_EXCEEDED',
         severity: 'major'
       });
     }
@@ -507,7 +507,7 @@ export class ValidationService {
     return warnings;
   }
 
-  private calculateMaxScrollCoin(scrollField: ScrollField): number {
+  private calculateMaxScrollGold(scrollField: ScrollField): number {
     const maxValues: Record<ScrollField, number> = {
       [ScrollField.SCROLL_MEDICINE]: 10000,
       [ScrollField.SCROLL_AI]: 8000,

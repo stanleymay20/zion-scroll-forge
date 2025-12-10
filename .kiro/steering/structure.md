@@ -34,7 +34,7 @@ backend/
 │   │   ├── auth.ts                 # Authentication endpoints
 │   │   ├── courses.ts              # Course management
 │   │   ├── users.ts                # User management
-│   │   ├── scrollcoin.ts           # ScrollCoin economy
+│   │   ├── ScrollGold.ts           # ScrollGold economy
 │   │   ├── admissions/             # Admissions system routes
 │   │   └── [feature].ts            # Feature-specific routes
 │   ├── services/                   # Business logic services
@@ -247,7 +247,7 @@ import { validateInput } from './validation';
 ### Service Integration
 - `SpiritualGrowthService` for spiritual formation tracking
 - `PropheticIntelligenceService` for divine guidance integration
-- `ScrollCoinService` for kingdom economy rewards
+- `ScrollGoldService` for kingdom economy rewards
 - All AI content validated through `AIResponseValidator`
 
 ## Environment-Specific Structure

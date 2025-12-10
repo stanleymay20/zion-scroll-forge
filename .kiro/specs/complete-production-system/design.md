@@ -1,4 +1,4 @@
-# Complete Production System Design Document
+  # Complete Production System Design Document
 
 ## Overview
 
@@ -30,7 +30,7 @@ graph TB
         AUTH[Authentication Service<br/>Supabase Auth]
         COURSE[Course Service<br/>Content Management]
         AI[AI Tutor Service<br/>GPT-4o+ Integration]
-        PAYMENT[Payment Service<br/>Stripe + ScrollCoin]
+        PAYMENT[Payment Service<br/>Stripe + ScrollGold]
         SPIRITUAL[Spiritual Formation<br/>Growth Tracking]
         COMMUNITY[Community Service<br/>Real-time Chat]
         ANALYTICS[Analytics Service<br/>Metrics + Reporting]
@@ -45,7 +45,7 @@ graph TB
     subgraph "External Services"
         OPENAI[OpenAI API<br/>GPT-4o+]
         STRIPE[Stripe API<br/>Payments]
-        BLOCKCHAIN[Ethereum<br/>ScrollCoin + NFTs]
+        BLOCKCHAIN[Ethereum<br/>ScrollGold + NFTs]
         VIDEO[Video Service<br/>AI Avatar Generation]
     end
     
@@ -155,7 +155,7 @@ const routes = {
   courses: '/api/courses/*',
   aiTutors: '/api/ai-tutors/*',
   community: '/api/community/*',
-  scrollcoin: '/api/scrollcoin/*',
+  scrollgold: '/api/scrollgold/*',
   spiritual: '/api/spiritual-formation/*',
   analytics: '/api/analytics/*',
   admissions: '/api/admissions/*',
@@ -296,7 +296,7 @@ interface CompleteCourse {
   subtitles: string[];
   
   // Pricing
-  scrollCoinCost: number;
+  scrollGoldCost: number;
   usdPrice: number;
   scholarshipEligible: boolean;
 }
@@ -444,10 +444,10 @@ interface PaymentIntent {
 }
 ```
 
-#### ScrollCoin Integration
+#### ScrollGold Integration
 
 ```typescript
-interface ScrollCoinService {
+interface ScrollGoldService {
   mintTokens(userId: string, amount: number, reason: string): Promise<Transaction>;
   transferTokens(fromId: string, toId: string, amount: number): Promise<Transaction>;
   burnTokens(userId: string, amount: number, reason: string): Promise<Transaction>;
@@ -546,15 +546,15 @@ interface MemoryVerse {
 }
 ```
 
-### 8. ScrollCoin Economy and Blockchain
+### 8. ScrollGold Economy and Blockchain
 
 #### Blockchain Integration
 
 ```typescript
 interface BlockchainService {
-  // ScrollCoin Operations
-  mintScrollCoin(address: string, amount: number): Promise<TransactionReceipt>;
-  transferScrollCoin(from: string, to: string, amount: number): Promise<TransactionReceipt>;
+  // ScrollGold Operations
+  mintScrollGold(address: string, amount: number): Promise<TransactionReceipt>;
+  transferScrollGold(from: string, to: string, amount: number): Promise<TransactionReceipt>;
   
   // NFT Operations
   mintScrollBadge(metadata: BadgeMetadata): Promise<NFT>;
@@ -677,7 +677,7 @@ The system uses the existing Prisma schema with the following key models:
 - **Enrollment**: Student course registrations and progress
 - **Assignment**: Assessments and submissions
 - **Payment**: Transaction history
-- **ScrollCoinTransaction**: Blockchain economy records
+- **ScrollGoldTransaction**: Blockchain economy records
 - **ScrollBadge**: NFT credentials
 - **Application**: Admissions applications
 - **Message**: Community chat messages

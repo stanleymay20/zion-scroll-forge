@@ -13,7 +13,7 @@ The ScrollMarketSpec creates a revolutionary marketplace where ScrollUniversity 
 #### Acceptance Criteria
 
 1. WHEN projects are listed THEN the system SHALL allow students to showcase completed projects with descriptions, demonstrations, and pricing information
-2. WHEN products are sold THEN the system SHALL facilitate secure transactions using ScrollCoins and traditional payment methods
+2. WHEN products are sold THEN the system SHALL facilitate secure transactions using ScrollGolds and traditional payment methods
 3. WHEN project validation occurs THEN the system SHALL verify project authenticity, quality, and scroll alignment before marketplace listing
 4. WHEN buyer protection is provided THEN the system SHALL offer guarantees, refund policies, and dispute resolution for project purchases
 5. WHEN seller support is offered THEN the system SHALL provide marketing tools, analytics, and optimization suggestions for project sales
@@ -42,7 +42,7 @@ The ScrollMarketSpec creates a revolutionary marketplace where ScrollUniversity 
 2. WHEN tutor matching occurs THEN the system SHALL connect students with appropriate tutors based on subject expertise, learning style, and availability
 3. WHEN tutoring sessions are conducted THEN the system SHALL provide virtual meeting spaces, resource sharing, and session recording capabilities
 4. WHEN tutor quality is assured THEN the system SHALL verify tutor competency through assessment scores, mentor recommendations, and student feedback
-5. WHEN tutoring payments are processed THEN the system SHALL handle ScrollCoin transactions and ensure fair compensation for tutoring services
+5. WHEN tutoring payments are processed THEN the system SHALL handle ScrollGold transactions and ensure fair compensation for tutoring services
 6. WHEN tutoring outcomes are tracked THEN the system SHALL measure student improvement and tutor effectiveness for continuous quality enhancement
 
 ### Requirement 4: Collaborative Project and Partnership Marketplace
@@ -71,15 +71,15 @@ The ScrollMarketSpec creates a revolutionary marketplace where ScrollUniversity 
 5. WHEN client satisfaction is ensured THEN the system SHALL implement feedback systems, quality guarantees, and dispute resolution processes
 6. WHEN business relationships are maintained THEN the system SHALL foster long-term partnerships between clients and ScrollUniversity talent
 
-### Requirement 6: ScrollCoin Integration and Economic Incentive System
+### Requirement 6: ScrollGold Integration and Economic Incentive System
 
-**User Story:** As a marketplace participant, I want seamless ScrollCoin integration for all transactions, so that I can participate in the scroll-aligned economy while earning and spending coins based on value creation and kingdom contribution.
+**User Story:** As a marketplace participant, I want seamless ScrollGold integration for all transactions, so that I can participate in the scroll-aligned economy while earning and spending coins based on value creation and kingdom contribution.
 
 #### Acceptance Criteria
 
-1. WHEN transactions occur THEN the system SHALL process payments using ScrollCoins with automatic conversion options for traditional currencies
+1. WHEN transactions occur THEN the system SHALL process payments using ScrollGolds with automatic conversion options for traditional currencies
 2. WHEN economic incentives are provided THEN the system SHALL reward high-quality service providers, satisfied customers, and successful collaborations
-3. WHEN coin earning is facilitated THEN the system SHALL enable users to earn ScrollCoins through marketplace participation, referrals, and community building
+3. WHEN coin earning is facilitated THEN the system SHALL enable users to earn ScrollGolds through marketplace participation, referrals, and community building
 4. WHEN economic analytics are provided THEN the system SHALL track earning patterns, spending behaviors, and economic impact for individual users and the community
 5. WHEN economic stability is maintained THEN the system SHALL implement anti-fraud measures, fair pricing guidelines, and sustainable economic policies
 6. WHEN economic growth is promoted THEN the system SHALL incentivize value creation, innovation, and kingdom-aligned business practices
@@ -130,7 +130,7 @@ The ScrollMarketSpec creates a revolutionary marketplace where ScrollUniversity 
 #### Acceptance Criteria
 
 1. WHEN system integration occurs THEN the marketplace SHALL connect with student-profile-spec, transcript-generator, and seal-certification for verified talent showcasing
-2. WHEN data synchronization happens THEN the system SHALL maintain consistency with scrollcoin-meter, projects-spec, and assessment-engine systems
+2. WHEN data synchronization happens THEN the system SHALL maintain consistency with ScrollGold-meter, projects-spec, and assessment-engine systems
 3. WHEN analytics are generated THEN the system SHALL provide insights on economic activity, user success, and marketplace health metrics
 4. WHEN success measurement occurs THEN the system SHALL track graduate economic outcomes, business impact, and kingdom transformation through marketplace participation
 5. WHEN continuous improvement happens THEN the system SHALL use marketplace data to enhance features, policies, and user experience

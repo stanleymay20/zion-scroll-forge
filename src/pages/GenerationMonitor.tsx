@@ -186,7 +186,7 @@ export default function GenerationMonitor() {
                 <li>✓ Scripture integration in every module</li>
                 <li>✓ 8 quiz questions per module</li>
                 <li>✓ 4 learning materials per module (PDF, slides, infographic, video)</li>
-                <li>✓ ScrollCoin rewards and Christ-Lordship statements</li>
+                <li>✓ ScrollGold rewards and Christ-Lordship statements</li>
               </ul>
             </div>
 

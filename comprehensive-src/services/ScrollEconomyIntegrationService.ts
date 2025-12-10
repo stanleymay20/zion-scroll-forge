@@ -106,9 +106,9 @@ export class ScrollEconomyIntegrationService {
       requiredCourses: number;
       electiveCourses: number;
     }>;
-    scrollCoinIntegration: {
-      coursesWithScrollCoin: number;
-      totalScrollCoinRewards: number;
+    ScrollGoldIntegration: {
+      coursesWithScrollGold: number;
+      totalScrollGoldRewards: number;
       averageCost: number;
     };
   }> {
@@ -117,14 +117,14 @@ export class ScrollEconomyIntegrationService {
       SupremeScrollFaculty.SCROLL_ECONOMY_FINANCE
     );
 
-    // Calculate ScrollCoin statistics
-    const coursesWithScrollCoin = courses.filter(c => 
-      c.scrollCoinCost !== undefined || c.xpReward > 0
+    // Calculate ScrollGold statistics
+    const coursesWithScrollGold = courses.filter(c => 
+      c.ScrollGoldCost !== undefined || c.xpReward > 0
     ).length;
     
-    const totalScrollCoinRewards = courses.reduce((sum, c) => sum + (c.xpReward || 0), 0);
-    const totalScrollCoinCosts = courses.reduce((sum, c) => sum + (c.scrollCoinCost || 0), 0);
-    const averageCost = courses.length > 0 ? totalScrollCoinCosts / courses.length : 0;
+    const totalScrollGoldRewards = courses.reduce((sum, c) => sum + (c.xpReward || 0), 0);
+    const totalScrollGoldCosts = courses.reduce((sum, c) => sum + (c.ScrollGoldCost || 0), 0);
+    const averageCost = courses.length > 0 ? totalScrollGoldCosts / courses.length : 0;
 
     return {
       facultyName: config.faculty,
@@ -141,9 +141,9 @@ export class ScrollEconomyIntegrationService {
         requiredCourses: spec.requiredCourses.length,
         electiveCourses: spec.electiveCourses.length
       })),
-      scrollCoinIntegration: {
-        coursesWithScrollCoin,
-        totalScrollCoinRewards,
+      ScrollGoldIntegration: {
+        coursesWithScrollGold,
+        totalScrollGoldRewards,
         averageCost: Math.round(averageCost)
       }
     };
@@ -170,20 +170,20 @@ export class ScrollEconomyIntegrationService {
         outcomes: [
           'Understand biblical economic principles',
           'Recognize covenant vs Babylonian economics',
-          'Set up ScrollCoin wallet',
+          'Set up ScrollGold wallet',
           'Practice basic kingdom stewardship'
         ]
       },
       {
         phase: 'Digital Currency Phase',
-        description: 'Master ScrollCoin and digital currency principles',
+        description: 'Master ScrollGold and digital currency principles',
         courses: ['SEC205', 'SEC305'],
         estimatedDuration: '6-10 weeks',
         prerequisites: ['SEC101'],
         outcomes: [
-          'Compare digital currencies with ScrollCoin',
+          'Compare digital currencies with ScrollGold',
           'Understand blockchain technology',
-          'Execute ScrollCoin transactions',
+          'Execute ScrollGold transactions',
           'Apply divine currency principles'
         ]
       },
@@ -319,23 +319,23 @@ export class ScrollEconomyIntegrationService {
       });
     }
 
-    // Check 5: ScrollCoin integration
+    // Check 5: ScrollGold integration
     try {
       const foundationalCourses = await this.scrollEconomyService.createFoundationalCourses();
-      const hasScrollCoinIntegration = foundationalCourses.every(c => 
-        c.scrollCoinIntegration && c.scrollCoinIntegration.hasScrollCoinComponent
+      const hasScrollGoldIntegration = foundationalCourses.every(c => 
+        c.ScrollGoldIntegration && c.ScrollGoldIntegration.hasScrollGoldComponent
       );
       validationResults.push({
-        check: 'ScrollCoin Integration',
-        passed: hasScrollCoinIntegration,
-        details: hasScrollCoinIntegration ? 'All courses have ScrollCoin integration' : 'Missing ScrollCoin integration'
+        check: 'ScrollGold Integration',
+        passed: hasScrollGoldIntegration,
+        details: hasScrollGoldIntegration ? 'All courses have ScrollGold integration' : 'Missing ScrollGold integration'
       });
-      if (hasScrollCoinIntegration) passedChecks++;
+      if (hasScrollGoldIntegration) passedChecks++;
     } catch (error) {
       validationResults.push({
-        check: 'ScrollCoin Integration',
+        check: 'ScrollGold Integration',
         passed: false,
-        details: `Failed to validate ScrollCoin integration: ${error}`
+        details: `Failed to validate ScrollGold integration: ${error}`
       });
     }
 
@@ -364,7 +364,7 @@ export class ScrollEconomyIntegrationService {
       const config = this.scrollEconomyService.getFacultyConfiguration();
       const hasRequiredDepartments = config.departments.length >= 5 &&
         config.departments.some(d => d.name.includes('Kingdom Economics')) &&
-        config.departments.some(d => d.name.includes('ScrollCoin'));
+        config.departments.some(d => d.name.includes('ScrollGold'));
       validationResults.push({
         check: 'Department Structure',
         passed: hasRequiredDepartments,
@@ -384,7 +384,7 @@ export class ScrollEconomyIntegrationService {
       const config = this.scrollEconomyService.getFacultyConfiguration();
       const hasSpecializations = config.specializations.length >= 3 &&
         config.specializations.some(s => s.name.includes('Kingdom Economics')) &&
-        config.specializations.some(s => s.name.includes('ScrollCoin'));
+        config.specializations.some(s => s.name.includes('ScrollGold'));
       validationResults.push({
         check: 'Specializations',
         passed: hasSpecializations,
@@ -432,7 +432,7 @@ export class ScrollEconomyIntegrationService {
       practicalLabs: number;
       total: number;
     };
-    scrollCoinMetrics: {
+    ScrollGoldMetrics: {
       totalRewards: number;
       averageCost: number;
       integrationRate: number;
@@ -467,8 +467,8 @@ export class ScrollEconomyIntegrationService {
     if (stats.progress < 10) {
       recommendations.push('Accelerate course development to meet 800+ course target');
     }
-    if (stats.scrollCoinIntegration.averageCost === 0) {
-      recommendations.push('Implement ScrollCoin pricing strategy for sustainability');
+    if (stats.ScrollGoldIntegration.averageCost === 0) {
+      recommendations.push('Implement ScrollGold pricing strategy for sustainability');
     }
     if (averageImpactScore < 85) {
       recommendations.push('Enhance kingdom impact focus in course design');
@@ -497,10 +497,10 @@ export class ScrollEconomyIntegrationService {
         practicalLabs: practicalLabs.length,
         total: allCourses.length
       },
-      scrollCoinMetrics: {
-        totalRewards: stats.scrollCoinIntegration.totalScrollCoinRewards,
-        averageCost: stats.scrollCoinIntegration.averageCost,
-        integrationRate: Math.round((stats.scrollCoinIntegration.coursesWithScrollCoin / stats.totalCourses) * 100)
+      ScrollGoldMetrics: {
+        totalRewards: stats.ScrollGoldIntegration.totalScrollGoldRewards,
+        averageCost: stats.ScrollGoldIntegration.averageCost,
+        integrationRate: Math.round((stats.ScrollGoldIntegration.coursesWithScrollGold / stats.totalCourses) * 100)
       },
       kingdomImpact: {
         averageImpactScore: Math.round(averageImpactScore),

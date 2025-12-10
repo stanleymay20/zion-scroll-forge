@@ -229,7 +229,7 @@ All components use:
 The profile system integrates with:
 - Authentication system
 - Course management
-- ScrollCoin economy
+- ScrollGold economy
 - ScrollBadge NFTs
 - Spiritual formation
 - Analytics dashboard

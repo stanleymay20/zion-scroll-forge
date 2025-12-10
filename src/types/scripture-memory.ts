@@ -39,7 +39,7 @@ export interface MemoryStatistics {
   longestStreak: number;
   totalReviews: number;
   averageAccuracy: number;
-  scrollCoinEarned: number;
+  scrollGoldEarned: number;
   challengesCompleted: number;
   rank?: number;
 }
@@ -52,7 +52,7 @@ export interface MemorizationChallenge {
   startDate: Date;
   endDate: Date;
   participantCount: number;
-  scrollCoinReward: number;
+  scrollGoldReward: number;
   badgeReward?: string;
   isActive: boolean;
   createdBy: string;

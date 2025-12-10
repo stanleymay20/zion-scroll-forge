@@ -34,7 +34,7 @@ Desktop sidebar navigation with role-based menu items.
 - Quick action buttons
 
 **Role-Based Navigation:**
-- **Students**: Learning, Spiritual Formation, Community, ScrollCoin Economy, Academic Progress
+- **Students**: Learning, Spiritual Formation, Community, ScrollGold Economy, Academic Progress
 - **Faculty**: All student sections + Faculty Tools (Course Management, Gradebook, Analytics)
 - **Admin**: All sections + Administration (Admin Dashboard, Admissions, System Status)
 
@@ -54,7 +54,7 @@ User profile dropdown menu with account actions.
 **Features:**
 - User avatar and name display
 - Current role badge
-- ScrollCoin balance
+- ScrollGold balance
 - Quick links to profile, transcript, wallet, achievements
 - Settings and admin access (role-based)
 - Sign out action

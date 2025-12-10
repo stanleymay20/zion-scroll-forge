@@ -51,7 +51,7 @@ export interface ScrollProjectSpec {
   status: ProjectStatus;
   milestones: MilestoneSpec[];
   gpt_summary: string;
-  scrollcoin_earned: number;
+  scrollgold_earned: number;
   published: boolean;
   created_at: Date;
   updated_at: Date;
@@ -191,10 +191,10 @@ export interface MilestoneProgressResponse {
 }
 
 export interface RewardCalculation {
-  base_scrollcoin: number;
+  base_scrollgold: number;
   impact_bonus: number;
   mentor_bonus: number;
-  total_scrollcoin: number;
+  total_scrollgold: number;
   xp_awarded: number;
   calculation_details: RewardBreakdown[];
 }
@@ -293,7 +293,7 @@ export interface ScrollProjectsConfig {
     scroll_alignment_threshold: number;
   };
   rewards: {
-    base_scrollcoin_per_project: number;
+    base_scrollgold_per_project: number;
     milestone_completion_bonus: number;
     marketplace_listing_bonus: number;
     real_world_impact_multiplier: number;

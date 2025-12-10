@@ -32,7 +32,7 @@ export interface AcademicAssessment {
     aiGradingConfig: AIGradingConfiguration;
     timeLimit?: number;
     attempts: number;
-    scrollCoinReward: number;
+    scrollGoldReward: number;
 }
 
 export enum AcademicAssessmentType {
@@ -427,7 +427,7 @@ export interface AssessmentResult {
     ai_feedback: AIFeedback;
     human_feedback: HumanFeedback;
     overall_grade: string;
-    scroll_coin_earned: number;
+    scroll_gold_earned: number;
     badge_earned?: string;
     areas_for_growth: string[];
     strengths_identified: string[];

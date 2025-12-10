@@ -56,7 +56,7 @@ interface InnovationChallenge {
     successCriteria: string[];
     resources: Resource[];
     deadline: Date;
-    scrollCoinReward: number;
+    ScrollGoldReward: number;
     kingdomImpactTarget: string;
 }
 
@@ -288,7 +288,7 @@ class ScrollCriticalThinkingEngine {
                 ],
                 resources: await this.gatherChallengeResources(scrollPrompt),
                 deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 1 week
-                scrollCoinReward: 100,
+                ScrollGoldReward: 100,
                 kingdomImpactTarget
             };
 
@@ -317,27 +317,27 @@ class ScrollCriticalThinkingEngine {
     ): Promise<void> {
         try {
             // Create ScrollXP transaction
-            await this.prisma.scrollCoinTransaction.create({
+            await this.prisma.ScrollGoldTransaction.create({
                 data: {
                     userId,
-                    amount: amount / 10, // Convert XP to ScrollCoin (10 XP = 1 ScrollCoin)
+                    amount: amount / 10, // Convert XP to ScrollGold (10 XP = 1 ScrollGold)
                     type: 'EARNED',
                     description: `ScrollXP: ${description}`,
                     activityType: activity
                 }
             });
 
-            // Update user's ScrollCoin balance
+            // Update user's ScrollGold balance
             await this.prisma.user.update({
                 where: { id: userId },
                 data: {
-                    scrollCoinBalance: {
+                    ScrollGoldBalance: {
                         increment: amount / 10
                     }
                 }
             });
 
-            logger.scrollCoinTransaction(userId, amount / 10, 'EARNED');
+            logger.ScrollGoldTransaction(userId, amount / 10, 'EARNED');
 
         } catch (error) {
             logger.error('Error awarding ScrollXP:', error);

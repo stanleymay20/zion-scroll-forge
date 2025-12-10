@@ -94,7 +94,7 @@ export class CompetitiveDataCollectionService implements DataCollectionInterface
           apiCount: 31,
           systemIntegrations: [
             'HeavenLedger Blockchain',
-            'ScrollCoin Economy',
+            'ScrollGold Economy',
             'Prophetic Intelligence System',
             'Global Accessibility Network',
             'XR Learning Environment',
@@ -145,8 +145,8 @@ export class CompetitiveDataCollectionService implements DataCollectionInterface
         kingdomPurpose: true
       },
       {
-        id: 'scrollcoin-economy',
-        name: 'ScrollCoin Economic System',
+        id: 'ScrollGold-economy',
+        name: 'ScrollGold Economic System',
         category: 'economic-model',
         description: 'Revolutionary blockchain-based educational economy',
         availability: 'available',
@@ -198,7 +198,7 @@ export class CompetitiveDataCollectionService implements DataCollectionInterface
         model: 'revolutionary-tuition',
         valueBasedPricing: true,
         scholarshipAvailability: true,
-        scrollCoinIntegration: true,
+        ScrollGoldIntegration: true,
         spiritualEconomyAlignment: true
       },
       strengths: [
@@ -207,7 +207,7 @@ export class CompetitiveDataCollectionService implements DataCollectionInterface
         'Global offline accessibility with mesh networking',
         'Comprehensive 31+ system integration',
         'Prophetic AI with spiritual discernment',
-        'ScrollCoin economic innovation',
+        'ScrollGold economic innovation',
         'Holistic spiritual formation integration'
       ],
       weaknesses: [
@@ -347,7 +347,7 @@ export class CompetitiveDataCollectionService implements DataCollectionInterface
         basePrice: 29.99,
         valueBasedPricing: false,
         scholarshipAvailability: false,
-        scrollCoinIntegration: false,
+        ScrollGoldIntegration: false,
         spiritualEconomyAlignment: false
       },
       strengths: [

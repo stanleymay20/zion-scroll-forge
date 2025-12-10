@@ -53,7 +53,7 @@ describe('ScrollEconomyFacultyService', () => {
       const departmentNames = config.departments.map(dept => dept.name);
       
       expect(departmentNames).toContain('Kingdom Economics Foundations');
-      expect(departmentNames).toContain('ScrollCoin & Digital Currency');
+      expect(departmentNames).toContain('ScrollGold & Digital Currency');
       expect(departmentNames).toContain('Global Trade & Commerce');
       expect(departmentNames).toContain('AI Trading & Financial Technology');
       expect(departmentNames).toContain('Banking & Financial Infrastructure');
@@ -88,16 +88,16 @@ describe('ScrollEconomyFacultyService', () => {
       expect(sec101).toBeDefined();
       expect(sec101!.title).toBe('ScrollEconomy Foundations');
       expect(sec101!.level).toBe(CourseLevel.UNDERGRADUATE);
-      expect(sec101!.scrollCoinCost).toBe(0); // Free foundational course
+      expect(sec101!.ScrollGoldCost).toBe(0); // Free foundational course
       expect(sec101!.economicModel.modelType).toBe('covenant_economics');
-      expect(sec101!.scrollCoinIntegration.hasScrollCoinComponent).toBe(true);
+      expect(sec101!.ScrollGoldIntegration.hasScrollGoldComponent).toBe(true);
     });
 
-    test('should create SEC205 - Digital Currencies vs ScrollCoin', async () => {
+    test('should create SEC205 - Digital Currencies vs ScrollGold', async () => {
       mockPrismaClient.faculty.upsert.mockResolvedValue({ id: 'faculty-1', name: 'ScrollEconomy' });
       mockPrismaClient.course.create.mockResolvedValue({
         id: 'course-2',
-        title: 'Digital Currencies vs ScrollCoin',
+        title: 'Digital Currencies vs ScrollGold',
         faculty: { name: SupremeScrollFaculty.SCROLL_ECONOMY_FINANCE }
       });
 
@@ -105,10 +105,10 @@ describe('ScrollEconomyFacultyService', () => {
       
       const sec205 = courses.find(c => c.courseCode === 'SEC205');
       expect(sec205).toBeDefined();
-      expect(sec205!.title).toBe('Digital Currencies vs ScrollCoin');
-      expect(sec205!.scrollCoinCost).toBe(50);
-      expect(sec205!.scrollCoinIntegration.blockchainTechnology).toBe(true);
-      expect(sec205!.scrollCoinIntegration.smartContractUsage).toBe(true);
+      expect(sec205!.title).toBe('Digital Currencies vs ScrollGold');
+      expect(sec205!.ScrollGoldCost).toBe(50);
+      expect(sec205!.ScrollGoldIntegration.blockchainTechnology).toBe(true);
+      expect(sec205!.ScrollGoldIntegration.smartContractUsage).toBe(true);
     });
 
     test('should include comprehensive learning objectives', async () => {
@@ -183,7 +183,7 @@ describe('ScrollEconomyFacultyService', () => {
       courses.forEach(course => {
         expect(course.prerequisites).toHaveLength.greaterThan(0);
         expect(course.xpReward).toBeGreaterThan(200); // Advanced courses have higher XP
-        expect(course.scrollCoinCost).toBeGreaterThan(50); // Advanced courses cost more
+        expect(course.ScrollGoldCost).toBeGreaterThan(50); // Advanced courses cost more
       });
     });
   });
@@ -242,7 +242,7 @@ describe('ScrollEconomyFacultyService', () => {
           expect(lab.practicalSkills).toHaveLength.greaterThan(0);
           expect(lab.tools).toHaveLength.greaterThan(0);
           expect(lab.outcomes).toHaveLength.greaterThan(0);
-          expect(lab.scrollCoinReward).toBeGreaterThan(0);
+          expect(lab.ScrollGoldReward).toBeGreaterThan(0);
         });
       });
     });
@@ -255,7 +255,7 @@ describe('ScrollEconomyFacultyService', () => {
       expect(modules).toHaveLength(4);
       expect(modules[0].title).toBe('Biblical Foundations of Economics');
       expect(modules[1].title).toBe('Covenant vs Babylonian Economics');
-      expect(modules[2].title).toBe('ScrollCoin Introduction and Divine Currency');
+      expect(modules[2].title).toBe('ScrollGold Introduction and Divine Currency');
       expect(modules[3].title).toBe('Kingdom Wealth Creation and Stewardship');
     });
 
@@ -307,8 +307,8 @@ describe('ScrollEconomyFacultyService', () => {
     });
   });
 
-  describe('ScrollCoin Integration', () => {
-    test('should properly integrate ScrollCoin in all courses', async () => {
+  describe('ScrollGold Integration', () => {
+    test('should properly integrate ScrollGold in all courses', async () => {
       mockPrismaClient.faculty.upsert.mockResolvedValue({ id: 'faculty-1', name: 'ScrollEconomy' });
       mockPrismaClient.course.create.mockResolvedValue({
         id: 'course-1',
@@ -322,14 +322,14 @@ describe('ScrollEconomyFacultyService', () => {
       const allCourses = [...foundational, ...advanced, ...labs];
       
       allCourses.forEach(course => {
-        expect(course.scrollCoinIntegration.hasScrollCoinComponent).toBe(true);
-        expect(course.scrollCoinIntegration.scrollCoinApplications).toHaveLength.greaterThan(0);
-        expect(course.scrollCoinIntegration.divineFinancePrinciples).toHaveLength.greaterThan(0);
+        expect(course.ScrollGoldIntegration.hasScrollGoldComponent).toBe(true);
+        expect(course.ScrollGoldIntegration.ScrollGoldApplications).toHaveLength.greaterThan(0);
+        expect(course.ScrollGoldIntegration.divineFinancePrinciples).toHaveLength.greaterThan(0);
         expect(course.xpReward).toBeGreaterThan(0);
       });
     });
 
-    test('should have appropriate ScrollCoin costs', async () => {
+    test('should have appropriate ScrollGold costs', async () => {
       mockPrismaClient.faculty.upsert.mockResolvedValue({ id: 'faculty-1', name: 'ScrollEconomy' });
       mockPrismaClient.course.create.mockResolvedValue({
         id: 'course-1',
@@ -342,17 +342,17 @@ describe('ScrollEconomyFacultyService', () => {
       
       // Foundational courses should be free or low cost
       foundational.forEach(course => {
-        expect(course.scrollCoinCost).toBeLessThanOrEqual(50);
+        expect(course.ScrollGoldCost).toBeLessThanOrEqual(50);
       });
       
       // Advanced courses should cost more
       advanced.forEach(course => {
-        expect(course.scrollCoinCost).toBeGreaterThan(50);
+        expect(course.ScrollGoldCost).toBeGreaterThan(50);
       });
       
       // Labs should have moderate costs
       labs.forEach(course => {
-        expect(course.scrollCoinCost).toBeGreaterThan(0);
+        expect(course.ScrollGoldCost).toBeGreaterThan(0);
       });
     });
   });

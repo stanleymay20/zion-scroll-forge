@@ -90,7 +90,7 @@ STRIPE_PUBLISHABLE_KEY=pk_live_[your-key]
 # Blockchain
 ETHEREUM_RPC_URL=https://eth-mainnet.g.alchemy.com/v2/[your-key]
 PRIVATE_KEY=[your-wallet-private-key]
-SCROLLCOIN_CONTRACT_ADDRESS=[deployed-contract-address]
+ScrollGold_CONTRACT_ADDRESS=[deployed-contract-address]
 SCROLLBADGE_CONTRACT_ADDRESS=[deployed-contract-address]
 
 # CORS
@@ -120,7 +120,7 @@ VITE_ENVIRONMENT=production
 
 ## Step 3: Smart Contract Deployment
 
-### 3.1 Deploy ScrollCoin Token
+### 3.1 Deploy ScrollGold Token
 ```bash
 cd backend/contracts
 
@@ -131,7 +131,7 @@ npm install
 npx hardhat compile
 
 # Deploy to mainnet (or testnet first)
-npx hardhat run scripts/deploy-scrollcoin.js --network mainnet
+npx hardhat run scripts/deploy-ScrollGold.js --network mainnet
 
 # Save contract address to .env
 ```

@@ -125,9 +125,9 @@ SMTP_PORT="587"
 SMTP_USER="your-email@gmail.com"
 SMTP_PASS="your-app-password"
 
-# ScrollCoin Configuration
-SCROLLCOIN_NETWORK="ethereum"
-SCROLLCOIN_CONTRACT_ADDRESS="your-scrollcoin-contract-address"
+# ScrollGold Configuration
+ScrollGold_NETWORK="ethereum"
+ScrollGold_CONTRACT_ADDRESS="your-ScrollGold-contract-address"
 
 # API Keys
 OPENAI_API_KEY="your-openai-api-key-here"

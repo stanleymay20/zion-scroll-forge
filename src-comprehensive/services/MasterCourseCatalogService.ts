@@ -77,7 +77,7 @@ export class MasterCourseCatalogService {
           targetCourseCount: 800,
           departments: [
             'Kingdom Economics Foundations',
-            'ScrollCoin & Digital Currency',
+            'ScrollGold & Digital Currency',
             'Global Trade & Commerce',
             'AI Trading & Financial Technology',
             'Banking & Financial Infrastructure'
@@ -137,7 +137,7 @@ export class MasterCourseCatalogService {
           targetCourseCount: 600,
           departments: [
             'Marketplace Prophets & Kingdom Business',
-            'ScrollCoin Startups & Blockchain Business',
+            'ScrollGold Startups & Blockchain Business',
             'Sacred Productivity & Time Management',
             'Innovation Labs & ScrollForge Studio'
           ]
@@ -844,7 +844,7 @@ export class MasterCourseCatalogService {
       difficulty: this.mapCourseLevelToDifficulty(courseData.level!),
       duration: courseData.estimatedHours || 40,
       scrollXPReward: courseData.xpReward || 100,
-      scrollCoinCost: courseData.scrollCoinCost || 0,
+      ScrollGoldCost: courseData.ScrollGoldCost || 0,
       prerequisites: courseData.prerequisites || [],
       facultyId,
       isActive: true,
@@ -869,7 +869,7 @@ export class MasterCourseCatalogService {
       prerequisites: course.prerequisites,
       estimatedHours: course.duration,
       xpReward: course.scrollXPReward,
-      scrollCoinCost: course.scrollCoinCost,
+      ScrollGoldCost: course.ScrollGoldCost,
       
       deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR],
       assessmentMethods: this.generateAssessmentMethods(course.assignments),
@@ -1175,7 +1175,7 @@ export class MasterCourseCatalogService {
     if (updateData.description) prismaUpdateData.description = updateData.description;
     if (updateData.estimatedHours) prismaUpdateData.duration = updateData.estimatedHours;
     if (updateData.xpReward) prismaUpdateData.scrollXPReward = updateData.xpReward;
-    if (updateData.scrollCoinCost) prismaUpdateData.scrollCoinCost = updateData.scrollCoinCost;
+    if (updateData.ScrollGoldCost) prismaUpdateData.ScrollGoldCost = updateData.ScrollGoldCost;
     if (updateData.prerequisites) prismaUpdateData.prerequisites = updateData.prerequisites;
     if (updateData.level) prismaUpdateData.difficulty = this.mapCourseLevelToDifficulty(updateData.level);
     

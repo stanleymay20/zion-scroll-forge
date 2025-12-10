@@ -182,19 +182,19 @@
   - Build payment history and receipt management
   - _Requirements: 6.1, 6.2, 6.4_
 
-- [x] 13. ScrollCoin Blockchain Integration
+- [x] 13. ScrollGold Blockchain Integration
 
 
 
 
 
 
-  - Set up Ethereum smart contracts for ScrollCoin token
+  - Set up Ethereum smart contracts for ScrollGold token
   - Implement token minting for course completion rewards
   - Create token transfer system for peer-to-peer transactions
   - Build wallet management with secure key storage
   - Implement transaction history with blockchain verification
-  - Create ScrollCoin pricing and exchange rate system
+  - Create ScrollGold pricing and exchange rate system
   - Build fraud prevention and transaction monitoring
   - _Requirements: 6.3, 8.1, 8.2, 8.3, 8.4, 8.5_
 
@@ -507,7 +507,7 @@
   - Build refund request interface
   - _Requirements: 6.1, 6.2, 6.4_
 
-- [x] 35. Frontend: ScrollCoin Wallet
+- [x] 35. Frontend: ScrollGold Wallet
 
 
 
@@ -515,7 +515,7 @@
 
   - Build wallet dashboard with balance display
   - Create transaction history with filtering
-  - Implement send/receive ScrollCoin interface
+  - Implement send/receive ScrollGold interface
   - Build earning opportunities showcase
   - Create spending options marketplace
   - Implement wallet security settings

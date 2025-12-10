@@ -23,7 +23,7 @@ export default function LearningGoals() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const [newGoal, setNewGoal] = useState({
-    goal_type: 'course_completion' as 'course_completion' | 'mastery_level' | 'scrollcoin_earning' | 'study_time',
+    goal_type: 'course_completion' as 'course_completion' | 'mastery_level' | 'ScrollGold_earning' | 'study_time',
     target_value: 1,
     deadline: '',
   });
@@ -58,7 +58,7 @@ export default function LearningGoals() {
         onSuccess: () => {
           toast({
             title: '🎉 Goal Achieved!',
-            description: 'You have been awarded 50 bonus ScrollCoins! "Well done, good and faithful servant." - Matthew 25:21',
+            description: 'You have been awarded 50 bonus ScrollGolds! "Well done, good and faithful servant." - Matthew 25:21',
           });
         },
       });
@@ -69,7 +69,7 @@ export default function LearningGoals() {
     const labels = {
       course_completion: 'Complete Courses',
       mastery_level: 'Achieve Mastery Level',
-      scrollcoin_earning: 'Earn ScrollCoins',
+      ScrollGold_earning: 'Earn ScrollGolds',
       study_time: 'Study Time (hours)',
     };
     return labels[type as keyof typeof labels] || type;
@@ -125,7 +125,7 @@ export default function LearningGoals() {
                         <SelectContent>
                           <SelectItem value="course_completion">Complete Courses</SelectItem>
                           <SelectItem value="mastery_level">Achieve Mastery Level</SelectItem>
-                          <SelectItem value="scrollcoin_earning">Earn ScrollCoins</SelectItem>
+                          <SelectItem value="ScrollGold_earning">Earn ScrollGolds</SelectItem>
                           <SelectItem value="study_time">Study Time (hours)</SelectItem>
                         </SelectContent>
                       </Select>

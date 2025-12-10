@@ -14,7 +14,7 @@ export interface BlockchainArchitectureProfile {
     spirituallyValidated: boolean;
   };
   smartContracts: {
-    scrollCoinEconomy: {
+    scrollGoldEconomy: {
       enabled: boolean;
       rewardMechanisms: string[];
       fraudPrevention: boolean;

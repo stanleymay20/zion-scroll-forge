@@ -9,7 +9,7 @@ ScrollUniversity is Zion's Academic Government on Earth - a comprehensive learni
 - 🤖 AI-powered tutoring with live video avatars
 - 📚 Sacred curriculum with prophetic wisdom
 - 🌍 Global accessibility for 200+ nations
-- ⛓️ Blockchain credentials (ScrollCoin & ScrollBadge NFTs)
+- ⛓️ Blockchain credentials (ScrollGold & ScrollBadge NFTs)
 - 🙏 Spiritual formation integrated throughout
 - 🎓 Degree programs from B.A. to Doctorate
 
@@ -125,8 +125,8 @@ ScrollUniversity/
 - Prophetic check-ins
 - Spiritual growth tracking
 
-### 5. ScrollCoin Economy
-- Earn ScrollCoin for learning activities
+### 5. ScrollGold Economy
+- Earn ScrollGold for learning activities
 - Blockchain-verified transactions
 - Spend on courses and resources
 - Transparent reward system
@@ -356,7 +356,7 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 - [ ] Course content delivery
 
 ### Phase 3: Advanced Features (Q3 2025)
-- [ ] ScrollCoin blockchain
+- [ ] ScrollGold blockchain
 - [ ] ScrollBadge NFT system
 - [ ] XR classrooms
 - [ ] Mobile app

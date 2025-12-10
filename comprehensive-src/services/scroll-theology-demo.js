@@ -71,7 +71,7 @@ async function demonstrateScrollTheologyFaculty() {
       console.log(`   Department: ${course.department}`);
       console.log(`   Hours: ${course.estimatedHours}`);
       console.log(`   XP Reward: ${course.xpReward}`);
-      console.log(`   ScrollCoin Cost: ${course.scrollCoinCost}`);
+      console.log(`   ScrollGold Cost: ${course.ScrollGoldCost}`);
       console.log(`   Prerequisites: ${course.prerequisites.join(', ') || 'None'}`);
       console.log(`   Delivery Modes: ${course.deliveryModes.join(', ')}`);
       

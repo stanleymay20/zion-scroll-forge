@@ -9,15 +9,15 @@ import {
   Priority,
   ProjectRole
 } from '../types/community';
-import { ScrollCoinService } from './ScrollCoinService';
+import { ScrollGoldService } from './ScrollGoldService';
 import { PropheticIntelligenceService } from './PropheticIntelligenceService';
 
 export class CollaborativeProjectService {
-  private scrollCoinService: ScrollCoinService;
+  private ScrollGoldService: ScrollGoldService;
   private propheticService: PropheticIntelligenceService;
 
   constructor() {
-    this.scrollCoinService = new ScrollCoinService();
+    this.ScrollGoldService = new ScrollGoldService();
     this.propheticService = new PropheticIntelligenceService();
   }
 
@@ -50,7 +50,7 @@ export class CollaborativeProjectService {
         role: ProjectRole.LEADER,
         joinedAt: new Date(),
         contributions: [],
-        scrollCoinEarned: 0
+        ScrollGoldEarned: 0
       }],
       status: ProjectStatus.PLANNING,
       deadline: projectData.deadline,
@@ -64,13 +64,13 @@ export class CollaborativeProjectService {
 
     await this.storeProject(project);
     
-    // Award ScrollCoin for creating project
+    // Award ScrollGold for creating project
     let reward = 50;
     if (spiritualValidation?.isAligned) {
       reward += 25; // Bonus for spiritually aligned projects
     }
     
-    await this.scrollCoinService.awardCoins(projectData.createdBy, reward, 'Created collaborative project');
+    await this.ScrollGoldService.awardCoins(projectData.createdBy, reward, 'Created collaborative project');
 
     return project;
   }
@@ -90,13 +90,13 @@ export class CollaborativeProjectService {
       role,
       joinedAt: new Date(),
       contributions: [],
-      scrollCoinEarned: 0
+      ScrollGoldEarned: 0
     };
 
     await this.addProjectMember(projectId, newMember);
     
-    // Award ScrollCoin for joining project
-    await this.scrollCoinService.awardCoins(userId, 20, 'Joined collaborative project');
+    // Award ScrollGold for joining project
+    await this.ScrollGoldService.awardCoins(userId, 20, 'Joined collaborative project');
     
     // Notify team members
     await this.notifyTeamMembers(projectId, `${userId} joined the project team`);
@@ -125,7 +125,7 @@ export class CollaborativeProjectService {
     priority: Priority;
     dueDate?: Date;
     dependencies?: string[];
-    scrollCoinReward?: number;
+    ScrollGoldReward?: number;
   }): Promise<ProjectTask> {
     const task: ProjectTask = {
       id: this.generateId(),
@@ -139,7 +139,7 @@ export class CollaborativeProjectService {
       createdAt: new Date(),
       updatedAt: new Date(),
       dependencies: taskData.dependencies || [],
-      scrollCoinReward: taskData.scrollCoinReward || this.calculateTaskReward(taskData.priority)
+      ScrollGoldReward: taskData.ScrollGoldReward || this.calculateTaskReward(taskData.priority)
     };
 
     await this.storeTask(task);
@@ -156,8 +156,8 @@ export class CollaborativeProjectService {
     await this.updateTaskAssignment(taskId, userId);
     await this.notifyTaskAssignment(userId, await this.getTaskById(taskId));
     
-    // Award ScrollCoin to assigner for task management
-    await this.scrollCoinService.awardCoins(assignedBy, 5, 'Assigned project task');
+    // Award ScrollGold to assigner for task management
+    await this.ScrollGoldService.awardCoins(assignedBy, 5, 'Assigned project task');
   }
 
   async updateTaskStatus(taskId: string, status: TaskStatus, userId: string): Promise<void> {
@@ -166,9 +166,9 @@ export class CollaborativeProjectService {
     if (status === TaskStatus.COMPLETED) {
       const task = await this.getTaskById(taskId);
       if (task && task.assignedTo) {
-        // Award ScrollCoin for task completion
-        const reward = task.scrollCoinReward || this.calculateTaskReward(task.priority);
-        await this.scrollCoinService.awardCoins(task.assignedTo, reward, 'Completed project task');
+        // Award ScrollGold for task completion
+        const reward = task.ScrollGoldReward || this.calculateTaskReward(task.priority);
+        await this.ScrollGoldService.awardCoins(task.assignedTo, reward, 'Completed project task');
         
         // Update member contributions
         await this.addMemberContribution(task.projectId, task.assignedTo, `Completed task: ${task.title}`);
@@ -198,8 +198,8 @@ export class CollaborativeProjectService {
 
     await this.storeProjectResource(projectId, resource);
     
-    // Award ScrollCoin for sharing resources
-    await this.scrollCoinService.awardCoins(resourceData.uploadedBy, 15, 'Shared project resource');
+    // Award ScrollGold for sharing resources
+    await this.ScrollGoldService.awardCoins(resourceData.uploadedBy, 15, 'Shared project resource');
     
     // Update member contributions
     await this.addMemberContribution(projectId, resourceData.uploadedBy, `Shared resource: ${resource.title}`);
@@ -260,8 +260,8 @@ export class CollaborativeProjectService {
     await this.updateMemberRole(projectId, currentLeader, ProjectRole.MEMBER);
     await this.updateMemberRole(projectId, newLeader, ProjectRole.LEADER);
     
-    // Award ScrollCoin for leadership transition
-    await this.scrollCoinService.awardCoins(newLeader, 30, 'Became project leader');
+    // Award ScrollGold for leadership transition
+    await this.ScrollGoldService.awardCoins(newLeader, 30, 'Became project leader');
     
     await this.notifyTeamMembers(projectId, `Leadership transferred to ${newLeader}`);
   }
@@ -308,7 +308,7 @@ export class CollaborativeProjectService {
         bonus += 75;
       }
       
-      await this.scrollCoinService.awardCoins(member.userId, bonus, 'Project completion bonus');
+      await this.ScrollGoldService.awardCoins(member.userId, bonus, 'Project completion bonus');
     }
 
     // Generate completion certificates

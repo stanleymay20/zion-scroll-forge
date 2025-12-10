@@ -56,7 +56,7 @@ interface ScrollProjectSpec {
   status: ProjectStatus;
   milestones: MilestoneSpec[];
   gpt_summary: string;
-  scrollcoin_earned: number;
+  ScrollGold_earned: number;
   published: boolean;
   created_at: Date;
   updated_at: Date;
@@ -119,14 +119,14 @@ class MilestoneService {
 ```
 
 #### RewardService
-Calculates and distributes ScrollCoin and XP rewards:
+Calculates and distributes ScrollGold and XP rewards:
 
 ```typescript
 class RewardService {
   async calculateProjectRewards(project: ScrollProjectSpec): Promise<RewardCalculation>
   async distributeRewards(studentId: string, rewards: RewardCalculation): Promise<void>
   async trackUsageMetrics(projectId: string): Promise<UsageMetrics>
-  async updateScrollCoinEarnings(projectId: string, earnings: number): Promise<void>
+  async updateScrollGoldEarnings(projectId: string, earnings: number): Promise<void>
 }
 ```
 

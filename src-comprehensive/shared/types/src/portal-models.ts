@@ -22,7 +22,7 @@ export interface ScrollUser {
   lastName: string;
   
   // Portal-specific fields
-  scrollCoinWallet?: string;
+  ScrollGoldWallet?: string;
   preferredLanguage: string;
   timeZone: string;
   scrollNodeId?: string;
@@ -40,8 +40,8 @@ export interface ScrollUser {
   enrollmentStatus: EnrollmentStatus;
   academicLevel: AcademicLevel;
   
-  // ScrollCoin Integration
-  scrollCoinBalance: number;
+  // ScrollGold Integration
+  ScrollGoldBalance: number;
   workTradeCredits: number;
   
   // Profile and Preferences
@@ -163,7 +163,7 @@ export interface PortalCourse {
   level: CourseLevel;
   durationWeeks: number;
   xpReward: number;
-  scrollCoinCost: number;
+  ScrollGoldCost: number;
   prerequisites: string[];
   featured: boolean;
   enrollmentOpen: boolean;
@@ -191,7 +191,7 @@ export interface PortalEnrollment {
   completionDate?: string;
   progressPercentage: number;
   xpEarned: number;
-  scrollCoinsEarned: number;
+  ScrollGoldsEarned: number;
   currentLessonId?: string;
   status: EnrollmentStatus;
   
@@ -395,7 +395,7 @@ export interface NodeConfiguration {
 // ============================================================================
 
 /**
- * Scholarship - Financial aid and ScrollCoin missions
+ * Scholarship - Financial aid and ScrollGold missions
  */
 export interface Scholarship {
   scholarshipId: string;
@@ -676,8 +676,8 @@ export enum ErrorCodes {
   COURSE_PREREQUISITES_NOT_MET = 'COURSE_003',
   
   // Payment Errors
-  SCROLLCOIN_INSUFFICIENT_BALANCE = 'PAY_001',
-  SCROLLCOIN_TRANSACTION_FAILED = 'PAY_002',
+  ScrollGold_INSUFFICIENT_BALANCE = 'PAY_001',
+  ScrollGold_TRANSACTION_FAILED = 'PAY_002',
   
   // Integration Errors
   AI_TUTOR_UNAVAILABLE = 'INT_001',

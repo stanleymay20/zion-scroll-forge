@@ -45,7 +45,7 @@ export class APIVersioningService {
           'Initial API release',
           'Basic user management',
           'Course enrollment system',
-          'ScrollCoin integration'
+          'ScrollGold integration'
         ],
         breakingChanges: []
       },

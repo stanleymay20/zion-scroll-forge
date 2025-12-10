@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Auto Error Checker & Fixer",
+  "description": "Automatically checks for and fixes all errors including TypeScript errors, linting issues, runtime errors, and code quality problems whenever files are edited",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.js",
+      "**/*.jsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Analyze the edited file for all types of errors including:\n1. TypeScript compilation errors and type issues\n2. ESLint violations and code quality problems\n3. Runtime errors and logical bugs\n4. Import/export issues and missing dependencies\n5. Security vulnerabilities and best practice violations\n6. Accessibility issues\n7. Performance problems\n\nThen automatically fix ALL identified errors while:\n- Maintaining strict TypeScript mode (no 'any' types)\n- Following the zero hardcoding policy\n- Preserving all features and functionality\n- Ensuring spiritual alignment and course content standards\n- Keeping comprehensive error handling\n- Maintaining service layer architecture patterns\n\nProvide detailed error reports and fixes. NEVER simplify or strip features - halt and report if unable to fix while maintaining full functionality."
+  }
+}

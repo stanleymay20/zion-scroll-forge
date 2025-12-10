@@ -70,10 +70,10 @@ backend/src/middleware/ # Express middleware functions
 - Maintain cultural sensitivity in content and interactions
 - Include spiritual growth tracking in user journeys
 
-### ScrollCoin Economy System
-- Follow specifications in `docs/SCROLLCOIN_ECONOMY.md`
+### ScrollGold Economy System
+- Follow specifications in `docs/ScrollGold_ECONOMY.md`
 - Use `backend/src/services/BlockchainService.ts` for blockchain operations
-- Implement fraud prevention via `ScrollCoinFraudPreventionService`
+- Implement fraud prevention via `ScrollGoldFraudPreventionService`
 - Tie all rewards directly to measurable educational outcomes
 - Maintain transparent reward calculation logic
 

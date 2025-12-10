@@ -47,10 +47,10 @@ Collapsible sections with expandable/collapsible behavior:
 - Fellowship Rooms - Group discussions
 - Testimonies - Share testimonies
 
-**5. ScrollCoin Economy** (Always visible)
-- My Wallet - ScrollCoin balance
-- Earn ScrollCoin - Earning opportunities
-- Redemption Store - Spend ScrollCoins
+**5. ScrollGold Economy** (Always visible)
+- My Wallet - ScrollGold balance
+- Earn ScrollGold - Earning opportunities
+- Redemption Store - Spend ScrollGolds
 - Leaderboard - Top earners
 
 **6. Academic Progress** (Always visible)
@@ -108,12 +108,12 @@ Accessible from the avatar in the navigation header.
 - Full name
 - Email address
 - Role badge (Student/Faculty/Admin)
-- ScrollCoin balance
+- ScrollGold balance
 
 **Quick Links**
 - Profile - View/edit profile
 - Transcript - Academic record
-- ScrollCoin Wallet - Manage coins
+- ScrollGold Wallet - Manage coins
 - Achievements - View badges
 - Spiritual Formation - Growth tracking
 

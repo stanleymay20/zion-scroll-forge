@@ -2,7 +2,7 @@
 
 ## Overview
 
-The ScrollUniversity Tuition System is designed as a revolutionary educational payment and access platform that breaks from traditional university models of exclusion and debt creation. The system implements a covenant-based approach where tuition funds mission rather than profit, integrating ScrollCoin cryptocurrency, work-trade programs, and global equity pricing to ensure universal access while maintaining sustainable operations.
+The ScrollUniversity Tuition System is designed as a revolutionary educational payment and access platform that breaks from traditional university models of exclusion and debt creation. The system implements a covenant-based approach where tuition funds mission rather than profit, integrating ScrollGold cryptocurrency, work-trade programs, and global equity pricing to ensure universal access while maintaining sustainable operations.
 
 The architecture follows a microservices approach with clear separation between payment processing, access control, value delivery, and integration with the broader ScrollUniversity ecosystem. The system prioritizes transparency, accessibility, and kingdom impact over traditional profit metrics.
 
@@ -29,7 +29,7 @@ graph TB
     subgraph "Payment Integrations"
         Stripe[Stripe Integration]
         Flutter[Flutterwave Integration]
-        ScrollCoin[ScrollCoin Wallet]
+        ScrollGold[ScrollGold Wallet]
         Crypto[Crypto Wallet Integration]
         WorkTrade[Work-Trade System]
     end
@@ -58,7 +58,7 @@ graph TB
     
     Payment --> Stripe
     Payment --> Flutter
-    Payment --> ScrollCoin
+    Payment --> ScrollGold
     Payment --> Crypto
     Payment --> WorkTrade
     
@@ -87,7 +87,7 @@ The system follows Domain-Driven Design (DDD) principles with clear bounded cont
 ### 1. Payment Processing Service
 
 **Responsibilities:**
-- Process payments across multiple methods (fiat, crypto, ScrollCoin)
+- Process payments across multiple methods (fiat, crypto, ScrollGold)
 - Handle currency conversion and exchange rate management
 - Manage payment verification and confirmation
 - Track payment history and generate receipts
@@ -112,7 +112,7 @@ interface PaymentRequest {
 
 enum PaymentMethod {
   CREDIT_CARD = 'credit_card',
-  SCROLL_COIN = 'scroll_coin',
+  scroll_gold = 'scroll_gold',
   CRYPTOCURRENCY = 'cryptocurrency',
   WORK_TRADE = 'work_trade',
   SCHOLARSHIP = 'scholarship'
@@ -123,7 +123,7 @@ enum PaymentMethod {
 
 **Responsibilities:**
 - Calculate location-based pricing adjustments
-- Apply ScrollCoin discounts and work-trade credits
+- Apply ScrollGold discounts and work-trade credits
 - Manage scholarship eligibility and application
 - Handle tier-based pricing logic
 
@@ -140,7 +140,7 @@ interface PricingRequest {
   userId: string
   programTier: ProgramTier
   userLocation: string
-  scrollCoinBalance: number
+  ScrollGoldBalance: number
   workTradeCredits: number
   scholarshipCodes: string[]
 }
@@ -179,24 +179,24 @@ interface AccessLevel {
 }
 ```
 
-### 4. ScrollCoin Integration Service
+### 4. ScrollGold Integration Service
 
 **Responsibilities:**
-- Interface with ScrollCoin blockchain
-- Track ScrollCoin earnings and spending
+- Interface with ScrollGold blockchain
+- Track ScrollGold earnings and spending
 - Manage work-trade credit calculations
-- Handle ScrollCoin-to-fiat conversions
+- Handle ScrollGold-to-fiat conversions
 
 **Key Interfaces:**
 ```typescript
-interface ScrollCoinService {
+interface ScrollGoldService {
   getBalance(userId: string): Promise<number>
-  transferScrollCoin(fromUser: string, toUser: string, amount: number): Promise<TransactionResult>
-  awardScrollCoin(userId: string, activity: ScrollCoinActivity, amount: number): Promise<void>
-  convertToFiat(scrollCoinAmount: number, targetCurrency: string): Promise<number>
+  transferScrollGold(fromUser: string, toUser: string, amount: number): Promise<TransactionResult>
+  awardScrollGold(userId: string, activity: ScrollGoldActivity, amount: number): Promise<void>
+  convertToFiat(ScrollGoldAmount: number, targetCurrency: string): Promise<number>
 }
 
-enum ScrollCoinActivity {
+enum ScrollGoldActivity {
   DAILY_XP_STREAK = 'daily_xp_streak',
   COURSE_COMPLETION = 'course_completion',
   RESEARCH_PUBLICATION = 'research_publication',
@@ -246,7 +246,7 @@ interface User {
   email: string
   location: string
   scholarshipStatus: ScholarshipStatus
-  scrollCoinBalance: number
+  ScrollGoldBalance: number
   workTradeCredits: number
   paymentHistory: PaymentRecord[]
   accessLevels: AccessLevel[]
@@ -259,7 +259,7 @@ interface Program {
   name: string
   tier: ProgramTier
   basePriceUSD: number
-  scrollCoinPrice: number
+  ScrollGoldPrice: number
   description: string
   features: ProgramFeature[]
   prerequisites: string[]
@@ -314,7 +314,7 @@ The system uses a hybrid approach with PostgreSQL for transactional data and Mon
 **MongoDB Collections:**
 - `user_profiles` - Extended user information and preferences
 - `work_trade_submissions` - Work-trade project submissions and evaluations
-- `scroll_coin_transactions` - ScrollCoin transaction history
+- `scroll_gold_transactions` - ScrollGold transaction history
 - `pricing_adjustments` - Location-based pricing modifications
 
 ## Error Handling
@@ -328,7 +328,7 @@ enum PaymentErrorType {
   INSUFFICIENT_FUNDS = 'insufficient_funds',
   INVALID_PAYMENT_METHOD = 'invalid_payment_method',
   CURRENCY_CONVERSION_FAILED = 'currency_conversion_failed',
-  SCROLL_COIN_NETWORK_ERROR = 'scroll_coin_network_error',
+  scroll_gold_NETWORK_ERROR = 'scroll_gold_network_error',
   EXTERNAL_GATEWAY_ERROR = 'external_gateway_error',
   FRAUD_DETECTION = 'fraud_detection'
 }
@@ -346,14 +346,14 @@ interface PaymentError {
 
 1. **Payment Failures**: Automatic retry with exponential backoff for transient errors
 2. **Access Revocation**: Grace period before access removal for payment issues
-3. **ScrollCoin Network Issues**: Fallback to cached exchange rates and manual verification
+3. **ScrollGold Network Issues**: Fallback to cached exchange rates and manual verification
 4. **External Service Outages**: Queue transactions for processing when services recover
 
 ### User-Friendly Error Messages
 
 All errors are translated into actionable guidance:
-- Payment declined → Suggest alternative payment methods or ScrollCoin
-- Insufficient ScrollCoin → Display earning opportunities and current balance
+- Payment declined → Suggest alternative payment methods or ScrollGold
+- Insufficient ScrollGold → Display earning opportunities and current balance
 - Geographic restrictions → Explain global equity pricing and alternatives
 - Scholarship rejection → Provide feedback and reapplication guidance
 
@@ -365,7 +365,7 @@ Each service component has comprehensive unit tests covering:
 - Payment processing logic with mock payment gateways
 - Pricing calculations with various discount scenarios
 - Access control validation with different user types
-- ScrollCoin integration with simulated blockchain responses
+- ScrollGold integration with simulated blockchain responses
 
 ### Integration Testing
 
@@ -379,7 +379,7 @@ End-to-end testing scenarios include:
 
 Performance testing focuses on:
 - Concurrent payment processing during enrollment periods
-- ScrollCoin transaction throughput during high-activity periods
+- ScrollGold transaction throughput during high-activity periods
 - Database performance with large user bases
 - API response times under various load conditions
 
@@ -387,7 +387,7 @@ Performance testing focuses on:
 
 Security validation includes:
 - Payment data encryption and PCI compliance
-- ScrollCoin wallet security and transaction validation
+- ScrollGold wallet security and transaction validation
 - User authentication and authorization flows
 - Protection against common payment fraud patterns
 
@@ -408,9 +408,9 @@ Testing with real users covers:
 - **Tokenization**: Payment method tokenization to avoid storing sensitive data
 - **Fraud Detection**: Real-time fraud monitoring and risk assessment
 
-### ScrollCoin Security
+### ScrollGold Security
 
-- **Wallet Integration**: Secure connection to ScrollCoin blockchain
+- **Wallet Integration**: Secure connection to ScrollGold blockchain
 - **Transaction Verification**: Multi-signature validation for large transactions
 - **Private Key Management**: Hardware security module (HSM) for key storage
 - **Audit Trail**: Immutable transaction logging on HeavenLedger

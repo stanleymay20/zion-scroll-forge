@@ -297,7 +297,7 @@ interface ValueAssessment {
 }
 ```
 
-### 6. ScrollCoin Governance DAO (SGDAO)
+### 6. ScrollGold Governance DAO (SGDAO)
 
 **Purpose**: Decentralized governance with token-based voting
 

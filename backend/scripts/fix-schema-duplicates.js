@@ -2,7 +2,7 @@
  * Script to remove duplicate models and enums from Prisma schema
  * 
  * This script removes the duplicate section from lines 2451-3017
- * which contains duplicate ScrollCoinTransaction, Scholarship, and other models
+ * which contains duplicate ScrollGoldTransaction, Scholarship, and other models
  */
 
 const fs = require('fs');
@@ -17,7 +17,7 @@ const lines = schemaContent.split('\n');
 console.log(`Total lines in schema: ${lines.length}`);
 
 // Remove lines 2450-3016 (0-indexed: 2449-3015)
-// This removes the duplicate section starting with "// ScrollCoin Blockchain Integration Models"
+// This removes the duplicate section starting with "// ScrollGold Blockchain Integration Models"
 // and ending just before the Course Content Creation models
 const startRemove = 2449; // Line 2450 (0-indexed)
 const endRemove = 3016;    // Line 3017 (0-indexed, exclusive)

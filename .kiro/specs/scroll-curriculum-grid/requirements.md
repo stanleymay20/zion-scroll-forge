@@ -13,7 +13,7 @@ The ScrollCurriculum Grid represents the most comprehensive and prophetically-gu
 #### Acceptance Criteria
 
 1. WHEN faculties are established THEN the system SHALL support Faculty of ScrollAI, Intelligence & Robotics with 1000+ courses including ScrollGPT Mastery, ProphetGPT Agents, AI with Integrity: Scroll Training in Sacred Intelligence (SC-AI201), AI in Africa, and Quantum Computing for Scroll Warfare
-2. WHEN economic education is provided THEN the system SHALL enable Faculty of ScrollEconomy & Financial Reformation with 800+ courses including ScrollCoin vs Babylonian Currencies, AI Trading, and Digital Banking Infrastructure for the Poor
+2. WHEN economic education is provided THEN the system SHALL enable Faculty of ScrollEconomy & Financial Reformation with 800+ courses including ScrollGold vs Babylonian Currencies, AI Trading, and Digital Banking Infrastructure for the Poor
 3. WHEN governance education occurs THEN the system SHALL support Faculty of Prophetic Law & Global Governance with 700+ courses including Covenant Law vs Western Law, Divine Constitution Writing, and Rebuilding African Nations with ScrollLaw
 4. WHEN theological education is delivered THEN the system SHALL provide Faculty of ScrollTheology & Bible Intelligence with 1000+ courses including ScrollVersion Translation Training, Prophetic Timeline Construction, and XR Walkthrough of Revelation Judgments
 5. WHEN scientific education is conducted THEN the system SHALL enable Faculty of Edenic Science & ScrollBiotech with 500+ courses including Dimensional Physics, Resurrection Science, and Healing with Light
@@ -25,7 +25,7 @@ The ScrollCurriculum Grid represents the most comprehensive and prophetically-gu
 #### Acceptance Criteria
 
 1. WHEN prophetic intelligence education is needed THEN the system SHALL support Faculty of GeoProphetic Intelligence & Earth Mapping with 500+ courses including Peleg's Earth Division, Mapping Babylonian Strongholds, and Nations in Revelation AI Risk Analysis
-2. WHEN entrepreneurship education occurs THEN the system SHALL enable Faculty of Sacred Labor, Innovation & Kingdom Entrepreneurship with 600+ courses including Marketplace Prophets Training, ScrollCoin-based Startups, and ScrollForge Studio
+2. WHEN entrepreneurship education occurs THEN the system SHALL enable Faculty of Sacred Labor, Innovation & Kingdom Entrepreneurship with 600+ courses including Marketplace Prophets Training, ScrollGold-based Startups, and ScrollForge Studio
 3. WHEN missions education is provided THEN the system SHALL support Faculty of Global Missions, Scroll Evangelism & Discipleship with 500+ courses including XR Bible Storytelling, GPT Evangelism Bots, and VR Altar Calls
 4. WHEN psychological education is delivered THEN the system SHALL enable Faculty of Divine Psychology & Soul Restoration with 400+ courses including ScrollTrauma Healing, Babylon Brain Detoxification, and Deliverance from Demonic Intelligences
 5. WHEN creative education occurs THEN the system SHALL support Faculty of ScrollArts, Music & XR Storytelling with 600+ courses including Prophetic Music Composition, XR Cinema ScrollFilms, and AI Dance Generation for Worship
@@ -38,7 +38,7 @@ The ScrollCurriculum Grid represents the most comprehensive and prophetically-gu
 
 1. WHEN health education is provided THEN the system SHALL support Faculty of ScrollMedicine & Prophetic Healing with 800+ courses including ScrollAnatomy & Biodesign, Prophetic Pathology, ScrollPharmacy, AI & BioData in Healing, Healing and Deliverance Science, ScrollNursing & Community Health, ScrollGlobal Medicine, ScrollLab Research, ScrollGut Biome Studies, 40-Day Fast Physiology, and XR Simulation of Christ's Healing Timeline
 2. WHEN educational development occurs THEN the system SHALL enable Faculty of Education, Language, & ScrollCurriculum Building with 700+ courses including AI Tutor Development, Bible Language Immersion, and ScrollLiteracy with XR for the Illiterate
-3. WHEN foundational education is needed THEN the system SHALL provide Faculty-Wide Core Courses required for all students including ScrollIdentity, AI + Prophecy Foundations, XR Bible Experience, ScrollCoin Financial Literacy, and ScrollGovernance
+3. WHEN foundational education is needed THEN the system SHALL provide Faculty-Wide Core Courses required for all students including ScrollIdentity, AI + Prophecy Foundations, XR Bible Experience, ScrollGold Financial Literacy, and ScrollGovernance
 4. WHEN specialized tracks are pursued THEN the system SHALL support XR Labs & Certifications with 400+ specialized courses
 5. WHEN ongoing research integration occurs THEN the system SHALL provide Weekly Research Courses that continuously update based on latest findings
 
@@ -146,7 +146,7 @@ The ScrollCurriculum Grid represents the most comprehensive and prophetically-gu
 
 1. WHEN international access is needed THEN the system SHALL provide courses in 50+ full language tracks including Twi, Yoruba, Arabic, Hebrew, Chinese, and Spanish
 2. WHEN cultural adaptation is required THEN the system SHALL localize content for different cultural contexts while maintaining core spiritual principles
-3. WHEN economic barriers exist THEN the system SHALL provide free or low-cost access options and ScrollCoin-based payment alternatives
+3. WHEN economic barriers exist THEN the system SHALL provide free or low-cost access options and ScrollGold-based payment alternatives
 4. WHEN connectivity is limited THEN the system SHALL support offline learning capabilities and progressive content loading
 5. WHEN regional relevance is needed THEN the system SHALL adapt course examples and applications to local contexts and challenges
 

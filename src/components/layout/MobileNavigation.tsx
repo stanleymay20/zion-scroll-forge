@@ -34,7 +34,7 @@ const getFullMenuItems = (userRole: string) => {
     { label: "Study Groups", href: "/study-groups", icon: Users },
     { label: "Spiritual Formation", href: "/spiritual-formation", icon: Heart },
     { label: "Community Feed", href: "/community-feed", icon: MessageSquare },
-    { label: "ScrollCoin Wallet", href: "/scrollcoin-wallet", icon: Coins },
+    { label: "ScrollGold Wallet", href: "/ScrollGold-wallet", icon: Coins },
     { label: "Achievements", href: "/achievements", icon: Trophy },
     { label: "Transcript", href: "/transcript", icon: GraduationCap },
     { label: "Settings", href: "/settings", icon: Settings },

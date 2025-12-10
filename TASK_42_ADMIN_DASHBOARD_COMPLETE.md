@@ -84,7 +84,7 @@ Successfully implemented a comprehensive admin dashboard with all required featu
   
   **Feature Toggles:**
   - AI Tutor
-  - ScrollCoin Economy
+  - ScrollGold Economy
   - ScrollBadge NFTs
   - Spiritual Formation
   - Community Feed

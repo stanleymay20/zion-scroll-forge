@@ -74,7 +74,7 @@ export class CompetitiveAnalysisMatrixService {
         advantage: 'scrolluniversity',
         keyDifferentiators: [
           'HeavenLedger blockchain foundation',
-          'ScrollCoin economy',
+          'ScrollGold economy',
           'Immutable credential verification',
           'Smart contract automation'
         ]
@@ -146,7 +146,7 @@ export class CompetitiveAnalysisMatrixService {
         advantage: 'scrolluniversity',
         keyDifferentiators: [
           'Revolutionary tuition system',
-          'ScrollCoin rewards',
+          'ScrollGold rewards',
           'Value-based pricing',
           'Kingdom economy integration'
         ]
@@ -334,7 +334,7 @@ export class CompetitiveAnalysisMatrixService {
         strategicImportance: 'high'
       },
       {
-        featureName: 'ScrollCoin Economic System',
+        featureName: 'ScrollGold Economic System',
         category: 'economic-model',
         scrollUniversity: {
           available: true,
@@ -342,7 +342,7 @@ export class CompetitiveAnalysisMatrixService {
           uniqueAspects: [
             'Revolutionary tuition system',
             'Value-based pricing model',
-            'ScrollCoin rewards for achievement',
+            'ScrollGold rewards for achievement',
             'Kingdom economy integration',
             'Scholarship automation'
           ],
@@ -364,7 +364,7 @@ export class CompetitiveAnalysisMatrixService {
         competitiveAdvantage: {
           platform: 'scrolluniversity',
           magnitude: 'significant',
-          reasoning: 'ScrollUniversity\'s ScrollCoin economic system revolutionizes education financing through value-based pricing, achievement rewards, and kingdom economy integration. This makes quality education accessible globally while incentivizing excellence, compared to LearnTube.ai\'s traditional subscription barriers.',
+          reasoning: 'ScrollUniversity\'s ScrollGold economic system revolutionizes education financing through value-based pricing, achievement rewards, and kingdom economy integration. This makes quality education accessible globally while incentivizing excellence, compared to LearnTube.ai\'s traditional subscription barriers.',
           spiritualDimension: true,
           kingdomImpact: true
         },
@@ -617,7 +617,7 @@ export class CompetitiveAnalysisMatrixService {
       'Emphasize blockchain credentialing system in marketing materials',
       'Expand global accessibility features to underserved markets',
       'Develop partnerships to enhance XR learning capabilities',
-      'Create case studies showcasing ScrollCoin economic model success',
+      'Create case studies showcasing ScrollGold economic model success',
       'Build community around kingdom-focused collaborative projects'
     ];
 

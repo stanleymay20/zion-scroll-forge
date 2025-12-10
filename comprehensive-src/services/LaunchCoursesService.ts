@@ -6,7 +6,7 @@ export interface LaunchCourse {
   description: string;
   level: 'Beginner' | 'Intermediate' | 'Advanced' | 'Foundational';
   duration: string;
-  scrollCoins: number;
+  scrollGolds: number;
   modules: CourseModule[];
   aiTutorConfig: AITutorConfig;
   xrExperiences: XRExperience[];
@@ -118,7 +118,7 @@ export class LaunchCoursesService {
       description: 'Foundational course integrating biblical principles with legal frameworks for kingdom governance and justice systems.',
       level: 'Foundational',
       duration: '8 weeks',
-      scrollCoins: 500,
+      scrollGolds: 500,
       modules: [
         {
           id: 'pl-mod-1',
@@ -258,7 +258,7 @@ export class LaunchCoursesService {
       description: 'Introduction to AI development with spiritual alignment, covering GPT integration and prophetic intelligence systems.',
       level: 'Intermediate',
       duration: '10 weeks',
-      scrollCoins: 750,
+      scrollGolds: 750,
       modules: [
         {
           id: 'sai-mod-1',
@@ -393,7 +393,7 @@ export class LaunchCoursesService {
       description: 'Immersive biblical experiences using extended reality technology to walk through scripture and sacred history.',
       level: 'Beginner',
       duration: '6 weeks',
-      scrollCoins: 400,
+      scrollGolds: 400,
       modules: [
         {
           id: 'xr-mod-1',
@@ -594,7 +594,7 @@ export class LaunchCoursesService {
           completedModules: [],
           currentModule: 'mod-1',
           overallProgress: 0,
-          scrollCoinsEarned: 0,
+          scrollGoldsEarned: 0,
           assessmentScores: [],
           spiritualGrowthMetrics: {
             scriptureEngagement: 0,
@@ -614,7 +614,7 @@ export interface CourseProgress {
   completedModules: string[];
   currentModule: string;
   overallProgress: number;
-  scrollCoinsEarned: number;
+  scrollGoldsEarned: number;
   assessmentScores: AssessmentScore[];
   spiritualGrowthMetrics: SpiritualGrowthMetrics;
 }

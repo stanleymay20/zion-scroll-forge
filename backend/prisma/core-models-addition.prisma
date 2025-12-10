@@ -20,8 +20,8 @@ model User {
   enrollmentStatus    String   @default("PENDING") @map("enrollment_status")
   academicLevel       String   @default("SCROLL_OPEN") @map("academic_level")
   
-  // ScrollCoin Economy
-  scrollCoinBalance   Float    @default(0) @map("scroll_coin_balance")
+  // ScrollGold Economy
+  ScrollGoldBalance   Float    @default(0) @map("scroll_gold_balance")
   
   // Contact & Location
   location            String?

@@ -65,7 +65,7 @@ export class CourseService {
           difficulty: input.difficulty,
           duration: input.duration,
           scrollXPReward: input.scrollXPReward || 10,
-          scrollCoinCost: input.scrollCoinCost || 0.0,
+          ScrollGoldCost: input.ScrollGoldCost || 0.0,
           facultyId: input.facultyId,
           prerequisites: input.prerequisites || [],
           videoUrl: input.videoUrl,
@@ -188,7 +188,7 @@ export class CourseService {
         difficulty,
         minDuration,
         maxDuration,
-        maxScrollCoinCost,
+        maxScrollGoldCost,
         isActive = true,
         page = 1,
         limit = 20,
@@ -222,8 +222,8 @@ export class CourseService {
         where.duration = { ...where.duration, lte: maxDuration };
       }
 
-      if (maxScrollCoinCost !== undefined) {
-        where.scrollCoinCost = { lte: maxScrollCoinCost };
+      if (maxScrollGoldCost !== undefined) {
+        where.ScrollGoldCost = { lte: maxScrollGoldCost };
       }
 
       // Get total count
@@ -358,28 +358,28 @@ export class CourseService {
       }
 
       // Handle payment if required
-      if (course.scrollCoinCost > 0 && request.paymentMethod === 'SCROLL_COIN') {
+      if (course.ScrollGoldCost > 0 && request.paymentMethod === 'SCROLL_COIN') {
         const user = await prisma.user.findUnique({
           where: { id: userId }
         });
 
-        if (!user || user.scrollCoinBalance < course.scrollCoinCost) {
-          throw new Error('Insufficient ScrollCoin balance');
+        if (!user || user.ScrollGoldBalance < course.ScrollGoldCost) {
+          throw new Error('Insufficient ScrollGold balance');
         }
 
-        // Deduct ScrollCoin
+        // Deduct ScrollGold
         await prisma.user.update({
           where: { id: userId },
           data: {
-            scrollCoinBalance: user.scrollCoinBalance - course.scrollCoinCost
+            ScrollGoldBalance: user.ScrollGoldBalance - course.ScrollGoldCost
           }
         });
 
         // Record transaction
-        await prisma.scrollCoinTransaction.create({
+        await prisma.ScrollGoldTransaction.create({
           data: {
             userId,
-            amount: -course.scrollCoinCost,
+            amount: -course.ScrollGoldCost,
             type: 'SPENT',
             description: `Enrolled in course: ${course.title}`,
             activityType: 'COURSE_COMPLETION',
@@ -547,7 +547,7 @@ export class CourseService {
         averageProgress: enrollments.length > 0 ? totalProgress / enrollments.length : 0,
         averageRating: 0, // TODO: Implement rating system
         totalScrollXPAwarded: totalScrollXP,
-        totalScrollCoinEarned: 0, // TODO: Calculate from transactions
+        totalScrollGoldEarned: 0, // TODO: Calculate from transactions
         popularModules: [],
         engagementMetrics: {
           averageTimeSpent: 0,
@@ -592,7 +592,7 @@ export class CourseService {
       difficulty: course.difficulty,
       duration: course.duration,
       scrollXPReward: course.scrollXPReward,
-      scrollCoinCost: course.scrollCoinCost,
+      ScrollGoldCost: course.ScrollGoldCost,
       facultyId: course.facultyId,
       faculty: course.faculty ? {
         id: course.faculty.id,

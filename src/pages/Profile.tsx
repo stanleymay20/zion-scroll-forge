@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useProfile } from '@/hooks/useProfile';
-import { useScrollCoinBalance } from '@/hooks/useScrollCoinTransactions';
+import { useScrollGoldBalance } from '@/hooks/useScrollGoldTransactions';
 import { usePrayerStreak } from '@/hooks/usePrayerJournal';
 import { useCommunityPosts } from '@/hooks/useCommunity';
 import { Loader2, GraduationCap, BookOpen, Coins, Heart, Users } from 'lucide-react';
@@ -13,7 +13,7 @@ console.info('✝️ Profile loaded—Christ is Lord over identity');
 
 export default function ProfilePage() {
   const { data: profile, isLoading: profileLoading } = useProfile();
-  const { data: scrollCoinBalance } = useScrollCoinBalance();
+  const { data: ScrollGoldBalance } = useScrollGoldBalance();
   const { data: prayerStreak } = usePrayerStreak();
   const { data: communityPosts } = useCommunityPosts();
 
@@ -60,12 +60,12 @@ export default function ProfilePage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Coins className="h-5 w-5 text-[hsl(var(--scroll-gold))]" />
-                ScrollCoins
+                ScrollGolds
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-4xl font-bold text-[hsl(var(--scroll-gold))]">
-                {scrollCoinBalance ?? profile?.scrollcoins ?? 0} SC
+                {ScrollGoldBalance ?? profile?.ScrollGolds ?? 0} SC
               </p>
             </CardContent>
           </Card>

@@ -102,7 +102,7 @@ export interface APIEndpoints {
   courses: CourseEndpoints;
   ai_tutors: AITutorEndpoints;
   xr: XREndpoints;
-  scrollcoin: ScrollCoinEndpoints;
+  ScrollGold: ScrollGoldEndpoints;
   scholarships: ScholarshipEndpoints;
   admin: AdminEndpoints;
 }
@@ -148,7 +148,7 @@ export interface XREndpoints {
   virtual_labs: string;
 }
 
-export interface ScrollCoinEndpoints {
+export interface ScrollGoldEndpoints {
   wallet: string;
   transactions: string;
   transfer: string;

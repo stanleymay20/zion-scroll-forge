@@ -97,7 +97,7 @@ This system implements an immutable governance framework based on EXOUSIA (divin
 3. WHEN Year 3 is reached THEN the system SHALL perform GPT Agents Re-Training and Verification to maintain scroll alignment
 4. WHEN Year 4 begins THEN the system SHALL implement ScrollDefense Prophet Simulation Year with intensive spiritual testing
 5. WHEN Year 5 starts THEN the system SHALL conduct Student ScrollCompetence Reviews to assess formation outcomes
-6. WHEN Year 6 occurs THEN the system SHALL perform Financial and Ethical Audit Year including ScrollCoin system verification
+6. WHEN Year 6 occurs THEN the system SHALL perform Financial and Ethical Audit Year including ScrollGold system verification
 7. WHEN Year 7 arrives THEN the system SHALL host Jubilee of Rededication and Global ScrollAssembly with worldwide prophetic gathering
 
 ### Requirement 8: Blockchain-Sealed Covenant and Smart Contract Protection
@@ -120,7 +120,7 @@ This system implements an immutable governance framework based on EXOUSIA (divin
 #### Acceptance Criteria
 
 1. WHEN Babylonian accreditation pressure occurs THEN the system SHALL maintain ScrollAccreditation Authority (SAA) as the only recognized validation
-2. WHEN external funding compromise is attempted THEN the system SHALL rely on ScrollCoin economy and self-sustaining financial model
+2. WHEN external funding compromise is attempted THEN the system SHALL rely on ScrollGold economy and self-sustaining financial model
 3. WHEN boardroom takeover is threatened THEN the system SHALL maintain EXOUSIA prophetic governance structure immune to donor control
 4. WHEN curriculum drift is detected THEN the system SHALL enforce annual ScrollSeal Review requirements for all courses
 5. WHEN cultural pressure is applied THEN the system SHALL maintain prophetic council authority over all institutional decisions

@@ -69,7 +69,7 @@ All critical TypeScript errors in `CourseWorkflowService.ts` have been fixed:
 
 ### Economics Faculty (4 Courses)
 1. **ECON101** - Kingdom Economics Foundations (3 credits)
-2. **ECON201** - ScrollCoin & Digital Currency Systems (4 credits)
+2. **ECON201** - ScrollGold & Digital Currency Systems (4 credits)
 3. **ECON301** - Global Trade & Kingdom Commerce (4 credits)
 4. **ECON401** - AI Trading & Financial Technology (4 credits)
 

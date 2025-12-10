@@ -2,7 +2,7 @@
  * Blockchain Integration Service
  * "Every righteous transaction is recorded in the heavenly ledger"
  * 
- * Service for integrating ScrollCoin transactions with blockchain storage
+ * Service for integrating ScrollGold transactions with blockchain storage
  * for immutable transaction history and verification.
  */
 
@@ -36,7 +36,7 @@ export class BlockchainService {
     this.config = {
       networkName: process.env.BLOCKCHAIN_NETWORK || 'ScrollChain',
       rpcUrl: process.env.BLOCKCHAIN_RPC_URL || 'https://scroll-testnet.rpc.url',
-      contractAddress: process.env.SCROLLCOIN_CONTRACT_ADDRESS || '0x0000000000000000000000000000000000000000',
+      contractAddress: process.env.ScrollGold_CONTRACT_ADDRESS || '0x0000000000000000000000000000000000000000',
       gasLimit: parseInt(process.env.BLOCKCHAIN_GAS_LIMIT || '100000'),
       gasPrice: process.env.BLOCKCHAIN_GAS_PRICE || '20000000000'
     };
@@ -52,7 +52,7 @@ export class BlockchainService {
   }
 
   /**
-   * Record a ScrollCoin transaction on the blockchain
+   * Record a ScrollGold transaction on the blockchain
    */
   async recordTransaction(
     fromAddress: string,

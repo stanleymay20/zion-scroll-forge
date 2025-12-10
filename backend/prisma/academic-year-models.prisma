@@ -1,0 +1,11 @@
+// Academic Year Automation System Models
+// "For everything there is a season" - Ecclesiastes 3:1
+
+// Workflow Engine Models
+model Workflow {
+  id         String              @id @default(uuid())
+  name       String
+  description String
+  type       String
+  definition Json
+  isActive   Boolean 

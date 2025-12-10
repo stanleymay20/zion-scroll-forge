@@ -54,7 +54,7 @@ The platform fundamentally rejects Babylon's educational model of passive learni
 #### Acceptance Criteria
 
 1. WHEN projects are completed THEN the system SHALL automatically list them in ScrollMarket™ digital marketplace
-2. WHEN marketplace categories are organized THEN the system SHALL include sacred startups, ScrollGPT tools, climate dashboards, justice engines, XR experiences, and ScrollCoin-integrated platforms
+2. WHEN marketplace categories are organized THEN the system SHALL include sacred startups, ScrollGPT tools, climate dashboards, justice engines, XR experiences, and ScrollGold-integrated platforms
 3. WHEN monetization occurs THEN the system SHALL enable project sales, licensing, and investment opportunities
 4. WHEN quality assurance happens THEN the system SHALL verify scroll alignment and impact before marketplace listing
 5. WHEN global access is provided THEN the system SHALL make the marketplace accessible to international buyers and investors

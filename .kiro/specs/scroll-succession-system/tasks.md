@@ -136,7 +136,7 @@
 - [ ] 7. Global ScrollTemple Construction and Management System
   - [ ] 7.1 Create centennial temple planning and construction
     - Implement Global ScrollTemple planning with 100-year construction cycles
-    - Create temple site selection and funding coordination through ScrollCoin economy
+    - Create temple site selection and funding coordination through ScrollGold economy
     - Build construction management integrating AI systems, theological centers, healing facilities, and governance chambers
     - Implement temple network coordination and global integration
     - Write unit tests for temple planning, construction, and network coordination

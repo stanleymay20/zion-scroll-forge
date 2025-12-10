@@ -248,7 +248,7 @@ Structured work experience with partner organizations:
 
 **Benefits**:
 - Paid positions (when possible)
-- ScrollCoin stipends
+- ScrollGold stipends
 - Course credit
 - Professional references
 - Job offer potential
@@ -266,7 +266,7 @@ Support students launching their own ventures:
 - Co-working space access (virtual/physical)
 
 **Funding Options**:
-- ScrollCoin grants
+- ScrollGold grants
 - Angel investors
 - Crowdfunding campaigns
 - Microloans

@@ -17,7 +17,7 @@ ScrollUniversity is a revolutionary Christian educational platform that combines
 - **Calling Discernment**: AI-assisted spiritual guidance and ministry preparation
 
 ### Innovation Systems
-- **ScrollCoin Economy**: Blockchain-based reward system for learning achievements
+- **ScrollGold Economy**: Blockchain-based reward system for learning achievements
 - **ScrollBadge NFTs**: Verifiable digital credentials and skill certifications
 - **Research Engine**: AI-powered research publication and peer review system
 - **Admissions System**: Comprehensive application processing with spiritual evaluation
@@ -40,7 +40,7 @@ ScrollUniversity is a revolutionary Christian educational platform that combines
 - **Community-Driven**: Peer mentoring, collaborative projects, and global networking
 
 ## Business Model
-- **Tuition**: Flexible payment options including ScrollCoin and work-trade
+- **Tuition**: Flexible payment options including ScrollGold and work-trade
 - **Scholarships**: Merit-based and need-based financial aid
 - **Partnerships**: Corporate and NGO collaborations for career pathways
 - **Research**: Publication and consulting revenue streams

@@ -130,7 +130,7 @@ The ScrollAssessmentEngine is a comprehensive evaluation system that goes beyond
 #### Acceptance Criteria
 
 1. WHEN system integration occurs THEN the assessment engine SHALL connect with course-spec, student-profile-spec, and degree-engine for comprehensive evaluation
-2. WHEN data synchronization happens THEN the system SHALL maintain consistency across gamified-learning, scrollcoin-meter, and transcript-generator systems
+2. WHEN data synchronization happens THEN the system SHALL maintain consistency across gamified-learning, scrollgold-meter, and transcript-generator systems
 3. WHEN analytics are generated THEN the system SHALL provide insights on assessment effectiveness, student performance trends, and learning outcome achievement
 4. WHEN quality assurance is performed THEN the system SHALL validate assessment accuracy, fairness, and alignment with learning objectives
 5. WHEN continuous improvement occurs THEN the system SHALL use assessment data and outcomes to enhance evaluation methods and learning experiences

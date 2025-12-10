@@ -2,16 +2,16 @@
  * Exchange Rate Service
  * "By the Spirit of Wisdom, we establish fair exchange in the kingdom economy"
  * 
- * Service for managing ScrollCoin exchange rates, conversions, and pricing.
+ * Service for managing ScrollGold exchange rates, conversions, and pricing.
  */
 
 import { PrismaClient } from '@prisma/client';
 import { logger } from '../utils/logger';
-import scrollCoinConfig from '../config/scrollcoin.config';
+import ScrollGoldConfig from '../config/ScrollGold.config';
 import {
   ExchangeRateData,
   ExchangeRateConversion
-} from '../types/scrollcoin.types';
+} from '../types/ScrollGold.types';
 
 const prisma = new PrismaClient();
 
@@ -35,7 +35,7 @@ export class ExchangeRateService {
       const now = new Date();
 
       // Try to get active rate from database
-      const rate = await prisma.scrollCoinExchangeRate.findFirst({
+      const rate = await prisma.ScrollGoldExchangeRate.findFirst({
         where: {
           isActive: true,
           effectiveFrom: { lte: now },
@@ -53,8 +53,8 @@ export class ExchangeRateService {
 
       // If no rate found, create default rate
       return await this.createRate({
-        rateToUSD: scrollCoinConfig.defaultExchangeRate,
-        rateFromUSD: 1 / scrollCoinConfig.defaultExchangeRate,
+        rateToUSD: ScrollGoldConfig.defaultExchangeRate,
+        rateFromUSD: 1 / ScrollGoldConfig.defaultExchangeRate,
         source: 'DEFAULT',
         isActive: true,
         effectiveFrom: now
@@ -81,7 +81,7 @@ export class ExchangeRateService {
 
       // If setting as active, deactivate previous rates
       if (data.isActive) {
-        await prisma.scrollCoinExchangeRate.updateMany({
+        await prisma.ScrollGoldExchangeRate.updateMany({
           where: { isActive: true },
           data: { 
             isActive: false,
@@ -90,7 +90,7 @@ export class ExchangeRateService {
         });
       }
 
-      const rate = await prisma.scrollCoinExchangeRate.create({
+      const rate = await prisma.ScrollGoldExchangeRate.create({
         data: {
           rateToUSD: data.rateToUSD,
           rateFromUSD: data.rateFromUSD,
@@ -131,7 +131,7 @@ export class ExchangeRateService {
 
       // If activating this rate, deactivate others
       if (updates.isActive) {
-        await prisma.scrollCoinExchangeRate.updateMany({
+        await prisma.ScrollGoldExchangeRate.updateMany({
           where: { 
             isActive: true,
             id: { not: rateId }
@@ -140,7 +140,7 @@ export class ExchangeRateService {
         });
       }
 
-      const rate = await prisma.scrollCoinExchangeRate.update({
+      const rate = await prisma.ScrollGoldExchangeRate.update({
         where: { id: rateId },
         data: updates
       });
@@ -155,43 +155,43 @@ export class ExchangeRateService {
   }
 
   /**
-   * Convert ScrollCoin to USD
+   * Convert ScrollGold to USD
    */
-  async convertToUSD(scrollCoinAmount: number): Promise<ExchangeRateConversion> {
+  async convertToUSD(ScrollGoldAmount: number): Promise<ExchangeRateConversion> {
     try {
       const rate = await this.getCurrentRate();
 
-      const usdAmount = scrollCoinAmount * rate.rateToUSD;
+      const usdAmount = ScrollGoldAmount * rate.rateToUSD;
 
       return {
-        scrollCoinAmount,
+        ScrollGoldAmount,
         usdAmount,
         rate: rate.rateToUSD,
         timestamp: new Date()
       };
     } catch (error) {
-      logger.error('Error converting ScrollCoin to USD:', error);
+      logger.error('Error converting ScrollGold to USD:', error);
       throw error;
     }
   }
 
   /**
-   * Convert USD to ScrollCoin
+   * Convert USD to ScrollGold
    */
   async convertFromUSD(usdAmount: number): Promise<ExchangeRateConversion> {
     try {
       const rate = await this.getCurrentRate();
 
-      const scrollCoinAmount = usdAmount * rate.rateFromUSD;
+      const ScrollGoldAmount = usdAmount * rate.rateFromUSD;
 
       return {
-        scrollCoinAmount,
+        ScrollGoldAmount,
         usdAmount,
         rate: rate.rateFromUSD,
         timestamp: new Date()
       };
     } catch (error) {
-      logger.error('Error converting USD to ScrollCoin:', error);
+      logger.error('Error converting USD to ScrollGold:', error);
       throw error;
     }
   }
@@ -213,7 +213,7 @@ export class ExchangeRateService {
         if (endDate) where.effectiveFrom.lte = endDate;
       }
 
-      const rates = await prisma.scrollCoinExchangeRate.findMany({
+      const rates = await prisma.ScrollGoldExchangeRate.findMany({
         where,
         orderBy: { effectiveFrom: 'desc' },
         take: limit
@@ -231,7 +231,7 @@ export class ExchangeRateService {
    */
   async getRateAtDate(date: Date): Promise<ExchangeRateData> {
     try {
-      const rate = await prisma.scrollCoinExchangeRate.findFirst({
+      const rate = await prisma.ScrollGoldExchangeRate.findFirst({
         where: {
           effectiveFrom: { lte: date },
           OR: [
@@ -256,9 +256,9 @@ export class ExchangeRateService {
   /**
    * Calculate price in both currencies
    */
-  async calculatePrice(baseAmount: number, baseCurrency: 'USD' | 'SCROLLCOIN'): Promise<{
+  async calculatePrice(baseAmount: number, baseCurrency: 'USD' | 'ScrollGold'): Promise<{
     usd: number;
-    scrollCoin: number;
+    ScrollGold: number;
     rate: number;
   }> {
     try {
@@ -267,13 +267,13 @@ export class ExchangeRateService {
       if (baseCurrency === 'USD') {
         return {
           usd: baseAmount,
-          scrollCoin: baseAmount * rate.rateFromUSD,
+          ScrollGold: baseAmount * rate.rateFromUSD,
           rate: rate.rateFromUSD
         };
       } else {
         return {
           usd: baseAmount * rate.rateToUSD,
-          scrollCoin: baseAmount,
+          ScrollGold: baseAmount,
           rate: rate.rateToUSD
         };
       }
@@ -302,7 +302,7 @@ export class ExchangeRateService {
         if (endDate) where.effectiveFrom.lte = endDate;
       }
 
-      const rates = await prisma.scrollCoinExchangeRate.findMany({
+      const rates = await prisma.ScrollGoldExchangeRate.findMany({
         where,
         orderBy: { effectiveFrom: 'asc' }
       });
@@ -341,7 +341,7 @@ export class ExchangeRateService {
    */
   async deactivateRate(rateId: string): Promise<void> {
     try {
-      await prisma.scrollCoinExchangeRate.update({
+      await prisma.ScrollGoldExchangeRate.update({
         where: { id: rateId },
         data: {
           isActive: false,

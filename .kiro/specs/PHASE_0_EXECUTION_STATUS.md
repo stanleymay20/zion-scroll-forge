@@ -70,7 +70,7 @@ The sacred decree has been established and sealed:
 - **Components**: 12 Supreme Faculties, course builder, syllabi loader
 - **Target**: 10,000+ courses across all faculties
 
-#### 🔄 **ScrollTuition + ScrollCoin**
+#### 🔄 **ScrollTuition + ScrollGold**
 - **Status**: SPEC COMPLETE
 - **Components**: Fiat & scroll economy, billing flow, work-trade system
 - **Progress**: Revolutionary payment system designed

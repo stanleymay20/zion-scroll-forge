@@ -146,7 +146,7 @@ Complete TypeScript interfaces for:
 
 ### Enrollment Management
 - Prerequisite checking
-- ScrollCoin payment integration
+- ScrollGold payment integration
 - Scholarship support
 - Enrollment validation
 
@@ -154,7 +154,7 @@ Complete TypeScript interfaces for:
 - Enrollment tracking
 - Completion rates
 - Progress monitoring
-- ScrollXP and ScrollCoin metrics
+- ScrollXP and ScrollGold metrics
 
 ## Security
 
@@ -183,7 +183,7 @@ Complete TypeScript interfaces for:
 - Faculty model
 - Enrollment model
 - User model
-- ScrollCoinTransaction model
+- ScrollGoldTransaction model
 
 ### External Services
 - Supabase Storage for file storage
@@ -231,7 +231,7 @@ All course content aligns with ScrollUniversity's mission:
 - Kingdom-focused learning objectives
 - Scripture integration
 - Spiritual formation tracking
-- ScrollCoin rewards for completion
+- ScrollGold rewards for completion
 - Prayer and reflection prompts
 
 ## API Documentation

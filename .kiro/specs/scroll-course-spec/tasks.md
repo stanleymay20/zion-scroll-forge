@@ -31,6 +31,12 @@
 
 
 - [ ] 3. Build student enrollment and progress tracking system
+
+
+
+
+
+
   - Implement EnrollmentService for student course registration
   - Create progress calculation algorithms for percentage completion
   - Build progress update mechanisms for lecture and assessment completion
@@ -94,7 +100,7 @@
   - Add comprehensive integration tests for all external spec communications
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 11. Implement ScrollCoin billing and reward system
+- [ ] 11. Implement ScrollGold billing and reward system
   - Create CoinService for course access fees and tutoring costs
   - Build reward distribution logic for completions and milestones
   - Implement coin transaction logging and audit trails

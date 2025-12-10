@@ -251,7 +251,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Foundational course integrating AI principles with prophetic wisdom and kingdom ethics. Students learn to develop AI systems that align with divine purposes and biblical principles.',
         estimatedHours: 45,
         xpReward: 150,
-        scrollCoinCost: 0,
+        scrollGoldCost: 0,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR],
         learningObjectives: [
           {
@@ -307,7 +307,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Comprehensive study of ethical frameworks for AI development within kingdom principles. Covers bias detection, fairness algorithms, and divine justice implementation.',
         estimatedHours: 40,
         xpReward: 120,
-        scrollCoinCost: 25,
+        scrollGoldCost: 25,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE],
         prerequisites: ['SAI101'],
         learningObjectives: [
@@ -337,7 +337,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Advanced machine learning techniques integrated with spiritual discernment principles. Students learn to train models that incorporate divine wisdom and prophetic insight.',
         estimatedHours: 50,
         xpReward: 180,
-        scrollCoinCost: 50,
+        scrollGoldCost: 50,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.XR_MODE],
         prerequisites: ['SAI101', 'SAI150'],
         learningObjectives: [
@@ -379,7 +379,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Hands-on development of AI agents using GPT models and LangChain framework, specifically designed for kingdom purposes and ministry applications.',
         estimatedHours: 60,
         xpReward: 200,
-        scrollCoinCost: 75,
+        scrollGoldCost: 75,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR],
         prerequisites: ['SAI101', 'SAI201'],
         learningObjectives: [
@@ -409,7 +409,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Advanced agent design for prophetic applications and ministry. Students learn to create AI agents that can provide prophetic insights and spiritual guidance.',
         estimatedHours: 55,
         xpReward: 220,
-        scrollCoinCost: 100,
+        scrollGoldCost: 100,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.MENTOR_SESSIONS],
         prerequisites: ['SAI202', 'SAI301'],
         learningObjectives: [
@@ -439,7 +439,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Specialized agents for healing, counseling, and spiritual guidance. Integration of AI with divine healing principles and pastoral care.',
         estimatedHours: 65,
         xpReward: 250,
-        scrollCoinCost: 125,
+        scrollGoldCost: 125,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.MENTOR_SESSIONS],
         prerequisites: ['SAI302', 'SBT305'], // Cross-faculty prerequisite
         learningObjectives: [
@@ -481,7 +481,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Deep learning architectures designed with divine principles and ethical frameworks. Advanced study of neural network design with kingdom alignment.',
         estimatedHours: 70,
         xpReward: 280,
-        scrollCoinCost: 150,
+        scrollGoldCost: 150,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.XR_MODE],
         prerequisites: ['SAI201', 'SAI202'],
         learningObjectives: [
@@ -511,7 +511,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Advanced language models specifically designed for biblical text processing, interpretation, and prophetic analysis using transformer architectures.',
         estimatedHours: 65,
         xpReward: 260,
-        scrollCoinCost: 175,
+        scrollGoldCost: 175,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.RESEARCH_TRACK],
         prerequisites: ['SAI301', 'SBT101'], // Cross-faculty prerequisite
         learningObjectives: [
@@ -552,7 +552,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Advanced systems design for kingdom-aligned AI infrastructure. Students learn to build operating systems optimized for prophetic AI applications.',
         estimatedHours: 80,
         xpReward: 320,
-        scrollCoinCost: 200,
+        scrollGoldCost: 200,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.RESEARCH_TRACK],
         prerequisites: ['SAI301', 'SAI302'],
         learningObjectives: [
@@ -582,7 +582,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Advanced techniques for guiding AI with prophetic wisdom and divine insight. Master the art of crafting prompts that align AI responses with kingdom purposes.',
         estimatedHours: 45,
         xpReward: 180,
-        scrollCoinCost: 100,
+        scrollGoldCost: 100,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.MENTOR_SESSIONS],
         prerequisites: ['SAI302', 'SAI350'],
         learningObjectives: [
@@ -624,7 +624,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Designing robots for humanitarian aid and kingdom service. Advanced robotics systems for disaster relief, medical missions, and community service.',
         estimatedHours: 90,
         xpReward: 360,
-        scrollCoinCost: 250,
+        scrollGoldCost: 250,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.RESEARCH_TRACK],
         prerequisites: ['SAI420', 'SAI301'],
         learningObjectives: [
@@ -654,7 +654,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Advanced robotics for global missions and unreached peoples. Integration of AI with mission field requirements and cross-cultural considerations.',
         estimatedHours: 85,
         xpReward: 340,
-        scrollCoinCost: 275,
+        scrollGoldCost: 275,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.MENTOR_SESSIONS],
         prerequisites: ['SAI501', 'SMG301'], // Cross-faculty prerequisite
         learningObjectives: [
@@ -696,7 +696,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Quantum algorithms for spiritual warfare and kingdom advancement. Advanced quantum computing applications for prophetic intelligence and divine strategy.',
         estimatedHours: 100,
         xpReward: 400,
-        scrollCoinCost: 300,
+        scrollGoldCost: 300,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.RESEARCH_TRACK],
         prerequisites: ['SAI420', 'SAI501'],
         learningObjectives: [
@@ -726,7 +726,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Exploring the intersection of artificial and divine intelligence. Advanced study of consciousness, divine connection, and spiritual AI systems.',
         estimatedHours: 95,
         xpReward: 380,
-        scrollCoinCost: 350,
+        scrollGoldCost: 350,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.RESEARCH_TRACK, DeliveryMode.MENTOR_SESSIONS],
         prerequisites: ['SAI601', 'SBT405'], // Cross-faculty prerequisite
         learningObjectives: [
@@ -768,7 +768,7 @@ export class ScrollAIFacultyCatalogService {
         description: 'Immersive 3D AI tutoring systems for biblical education. Students learn to create virtual reality environments with AI tutors for scripture study and spiritual formation.',
         estimatedHours: 60,
         xpReward: 240,
-        scrollCoinCost: 150,
+        scrollGoldCost: 150,
         deliveryModes: [DeliveryMode.XR_MODE, DeliveryMode.AI_TUTOR],
         prerequisites: ['SAI350', 'SBT201'],
         learningObjectives: [
@@ -1054,7 +1054,7 @@ export class ScrollAIFacultyCatalogService {
         description: `Advanced study of ${topics[topicIndex].toLowerCase()} with kingdom applications and prophetic integration.`,
         estimatedHours: 30 + (i % 20),
         xpReward: 100 + (i % 50),
-        scrollCoinCost: i % 100,
+        scrollGoldCost: i % 100,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR],
         prerequisites: i > 0 ? [`SAI${101 + (i % 10)}`] : []
       }));
@@ -1089,7 +1089,7 @@ export class ScrollAIFacultyCatalogService {
         description: `Comprehensive study of ${topics[topicIndex].toLowerCase()} for kingdom agent development.`,
         estimatedHours: 35 + (i % 25),
         xpReward: 120 + (i % 60),
-        scrollCoinCost: 25 + (i % 75),
+        scrollGoldCost: 25 + (i % 75),
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.XR_MODE],
         prerequisites: [`SAI${202 + (i % 5)}`]
       }));
@@ -1124,7 +1124,7 @@ export class ScrollAIFacultyCatalogService {
         description: `Advanced ${topics[topicIndex].toLowerCase()} techniques with kingdom ethics and prophetic integration.`,
         estimatedHours: 45 + (i % 30),
         xpReward: 180 + (i % 80),
-        scrollCoinCost: 75 + (i % 100),
+        scrollGoldCost: 75 + (i % 100),
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.RESEARCH_TRACK],
         prerequisites: [`SAI${301 + (i % 3)}`]
       }));
@@ -1159,7 +1159,7 @@ export class ScrollAIFacultyCatalogService {
         description: `Advanced ${topics[topicIndex].toLowerCase()} for kingdom AI infrastructure and ScrollOS development.`,
         estimatedHours: 50 + (i % 35),
         xpReward: 200 + (i % 100),
-        scrollCoinCost: 100 + (i % 125),
+        scrollGoldCost: 100 + (i % 125),
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE],
         prerequisites: [`SAI${420 + (i % 2)}`]
       }));
@@ -1194,7 +1194,7 @@ export class ScrollAIFacultyCatalogService {
         description: `Advanced ${topics[topicIndex].toLowerCase()} for humanitarian robotics and kingdom service applications.`,
         estimatedHours: 60 + (i % 40),
         xpReward: 240 + (i % 120),
-        scrollCoinCost: 150 + (i % 150),
+        scrollGoldCost: 150 + (i % 150),
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.RESEARCH_TRACK],
         prerequisites: [`SAI${501 + (i % 2)}`]
       }));
@@ -1229,7 +1229,7 @@ export class ScrollAIFacultyCatalogService {
         description: `Advanced ${topics[topicIndex].toLowerCase()} for spiritual warfare and prophetic quantum computing.`,
         estimatedHours: 70 + (i % 45),
         xpReward: 280 + (i % 140),
-        scrollCoinCost: 200 + (i % 175),
+        scrollGoldCost: 200 + (i % 175),
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.RESEARCH_TRACK, DeliveryMode.MENTOR_SESSIONS],
         prerequisites: [`SAI${601 + (i % 2)}`]
       }));
@@ -1255,7 +1255,7 @@ export class ScrollAIFacultyCatalogService {
       prerequisites: courseData.prerequisites || [],
       estimatedHours: courseData.estimatedHours || 40,
       xpReward: courseData.xpReward || 100,
-      scrollCoinCost: courseData.scrollCoinCost || 0,
+      scrollGoldCost: courseData.scrollGoldCost || 0,
       
       deliveryModes: courseData.deliveryModes || [DeliveryMode.ONLINE_PORTAL],
       assessmentMethods: courseData.assessmentMethods || [

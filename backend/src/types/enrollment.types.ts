@@ -4,7 +4,7 @@
 export interface EnrollmentRequest {
   userId: string;
   courseId: string;
-  paymentMethod?: 'credit_card' | 'scroll_coin' | 'scholarship' | 'work_trade';
+  paymentMethod?: 'credit_card' | 'scroll_gold' | 'scholarship' | 'work_trade';
   scholarshipId?: string;
   notes?: string;
 }
@@ -35,7 +35,7 @@ export interface StudentProfile {
   // Academic Information
   academicLevel: string;
   enrollmentStatus: string;
-  scrollCoinBalance: number;
+  ScrollGoldBalance: number;
   workTradeCredits: number;
   
   // Spiritual Formation
@@ -121,7 +121,7 @@ export interface CourseRecommendation {
   description: string;
   difficulty: string;
   duration: number;
-  scrollCoinCost: number;
+  ScrollGoldCost: number;
   scrollXPReward: number;
   
   // Recommendation Reasoning
@@ -143,7 +143,7 @@ export interface RecommendationCriteria {
   completedCourses?: string[];
   currentEnrollments?: string[];
   availableTime?: number; // hours per week
-  budget?: number; // ScrollCoin
+  budget?: number; // ScrollGold
 }
 
 export interface AdvisorAssignment {
@@ -223,10 +223,10 @@ export interface StudentSuccessMetrics {
   studyGroupParticipation: number;
   peerInteractions: number;
   
-  // ScrollCoin Economy
-  scrollCoinsEarned: number;
-  scrollCoinsSpent: number;
-  scrollCoinBalance: number;
+  // ScrollGold Economy
+  ScrollGoldsEarned: number;
+  ScrollGoldsSpent: number;
+  ScrollGoldBalance: number;
   
   // Risk Indicators
   atRiskScore: number; // 0-100, higher = more at risk

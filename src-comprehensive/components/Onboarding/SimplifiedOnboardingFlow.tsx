@@ -69,7 +69,7 @@ const SimplifiedOnboardingFlow: React.FC<SimplifiedOnboardingFlowProps> = ({
         'Prophetic AI tutoring',
         'Divine scorecard tracking',
         'Kingdom transformation focus',
-        'Full ScrollCoin economy access'
+        'Full ScrollGold economy access'
       ]
     }
   ];

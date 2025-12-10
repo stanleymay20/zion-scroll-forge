@@ -42,7 +42,7 @@ inclusion: always
 - Run comprehensive tests via `ScrollUniversityTestRunner` before declaring fixes
 - Validate spiritual alignment through `SpiritualAlignmentValidator` after error resolution
 - Ensure cultural sensitivity via `CulturalAdaptationService` remains intact
-- Verify ScrollCoin economy integrity through `ScrollCoinService` validation
+- Verify ScrollGold economy integrity through `ScrollGoldService` validation
 
 ## Error Prevention Strategies
 - Use TypeScript strict mode to catch errors at compile time

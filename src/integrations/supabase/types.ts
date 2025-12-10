@@ -51,7 +51,7 @@ export type Database = {
           name: string
           requirement_type: string
           requirement_value: number
-          scrollcoin_reward: number | null
+          scrollgold_reward: number | null
           xp_reward: number | null
         }
         Insert: {
@@ -63,7 +63,7 @@ export type Database = {
           name: string
           requirement_type: string
           requirement_value: number
-          scrollcoin_reward?: number | null
+          scrollgold_reward?: number | null
           xp_reward?: number | null
         }
         Update: {
@@ -75,7 +75,7 @@ export type Database = {
           name?: string
           requirement_type?: string
           requirement_value?: number
-          scrollcoin_reward?: number | null
+          scrollgold_reward?: number | null
           xp_reward?: number | null
         }
         Relationships: []
@@ -2290,8 +2290,8 @@ export type Database = {
           email: string | null
           id: string
           role: string | null
-          scrollcoin_balance: number | null
-          scrollcoins: number | null
+          scrollgold_balance: number | null
+          scrollgolds: number | null
           spiritual_profile: Json | null
           updated_at: string | null
         }
@@ -2302,8 +2302,8 @@ export type Database = {
           email?: string | null
           id: string
           role?: string | null
-          scrollcoin_balance?: number | null
-          scrollcoins?: number | null
+          scrollgold_balance?: number | null
+          scrollgolds?: number | null
           spiritual_profile?: Json | null
           updated_at?: string | null
         }
@@ -2314,8 +2314,8 @@ export type Database = {
           email?: string | null
           id?: string
           role?: string | null
-          scrollcoin_balance?: number | null
-          scrollcoins?: number | null
+          scrollgold_balance?: number | null
+          scrollgolds?: number | null
           spiritual_profile?: Json | null
           updated_at?: string | null
         }
@@ -2697,7 +2697,7 @@ export type Database = {
         }
         Relationships: []
       }
-      scrollcoin_analytics_daily: {
+      scrollgold_analytics_daily: {
         Row: {
           active_users: number | null
           created_at: string | null
@@ -2730,7 +2730,7 @@ export type Database = {
         }
         Relationships: []
       }
-      scrollcoin_bridge_log: {
+      scrollgold_bridge_log: {
         Row: {
           amount: number | null
           created_at: string | null
@@ -3704,7 +3704,7 @@ export type Database = {
           current_streak: number | null
           last_activity_date: string | null
           longest_streak: number | null
-          total_scrollcoins: number | null
+          total_scrollgolds: number | null
           total_xp: number | null
           updated_at: string | null
           user_id: string
@@ -3714,7 +3714,7 @@ export type Database = {
           current_streak?: number | null
           last_activity_date?: string | null
           longest_streak?: number | null
-          total_scrollcoins?: number | null
+          total_scrollgolds?: number | null
           total_xp?: number | null
           updated_at?: string | null
           user_id: string
@@ -3724,7 +3724,7 @@ export type Database = {
           current_streak?: number | null
           last_activity_date?: string | null
           longest_streak?: number | null
-          total_scrollcoins?: number | null
+          total_scrollgolds?: number | null
           total_xp?: number | null
           updated_at?: string | null
           user_id?: string
@@ -3868,7 +3868,7 @@ export type Database = {
           current_streak: number | null
           email: string | null
           longest_streak: number | null
-          total_scrollcoins: number | null
+          total_scrollgolds: number | null
           total_xp: number | null
           user_id: string | null
         }
@@ -3886,8 +3886,8 @@ export type Database = {
           total_enrollments: number | null
           total_events: number | null
           total_prayers: number | null
-          total_scrollcoin_earned: number | null
-          total_scrollcoin_spent: number | null
+          total_scrollgold_earned: number | null
+          total_scrollgold_spent: number | null
           total_transactions: number | null
           total_users: number | null
           verified_modules: number | null
@@ -4033,7 +4033,7 @@ export type Database = {
         }
         Returns: undefined
       }
-      award_scrollcoins: {
+      award_scrollgolds: {
         Args: {
           p_amount: number
           p_event: string
@@ -4054,7 +4054,7 @@ export type Database = {
         }
         Returns: string
       }
-      earn_scrollcoin: {
+      earn_scrollgold: {
         Args: { p_amount: number; p_desc: string; p_user_id: string }
         Returns: undefined
       }
@@ -4065,7 +4065,7 @@ export type Database = {
         }
         Returns: boolean
       }
-      spend_scrollcoin: {
+      spend_scrollgold: {
         Args: { p_amount: number; p_desc: string; p_user_id: string }
         Returns: undefined
       }

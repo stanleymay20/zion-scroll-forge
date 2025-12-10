@@ -111,7 +111,7 @@
 │  │  [Icon] Study Groups           │     │
 │  │  [Icon] Spiritual Formation    │     │
 │  │  [Icon] Community Feed         │     │
-│  │  [Icon] ScrollCoin Wallet      │     │
+│  │  [Icon] ScrollGold Wallet      │     │
 │  │  [Icon] Achievements           │     │
 │  │  [Icon] Transcript             │     │
 │  │  [Icon] Settings               │     │
@@ -135,7 +135,7 @@
 ├─────────────────────────────────┤
 │  [Icon] Profile                 │
 │  [Icon] Transcript              │
-│  [Icon] ScrollCoin Wallet       │
+│  [Icon] ScrollGold Wallet       │
 │  [Icon] Achievements            │
 │  [Icon] Spiritual Formation     │
 ├─────────────────────────────────┤
@@ -158,8 +158,8 @@
 │  Experience enhanced video...   │
 │  2 hours ago              [•]   │
 ├─────────────────────────────────┤
-│  [Update] ScrollCoin Rewards    │
-│  Earn 50% more ScrollCoins...   │
+│  [Update] ScrollGold Rewards    │
+│  Earn 50% more ScrollGolds...   │
 │  1 day ago                      │
 ├─────────────────────────────────┤
 │  Course Progress Update         │
@@ -193,7 +193,7 @@
 │  └───────────────────────────────────────────────────────────┘ │
 ├─────────────────────────────────────────────────────────────────┤
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐         │
-│  │ Courses  │ │ScrollCoin│ │ Prayers  │ │ Progress │         │
+│  │ Courses  │ │ScrollGold│ │ Prayers  │ │ Progress │         │
 │  │    3     │ │   650    │ │    12    │ │   75%    │         │
 │  │ 3 active │ │Live bal. │ │5 answered│ │All cours.│         │
 │  └──────────┘ └──────────┘ └──────────┘ └──────────┘         │
@@ -217,14 +217,14 @@
 │  │ Recent Activity             │  │ Learning Goals         │  │
 │  │ • Progress in Sacred AI...  │  │ Complete 3 courses     │  │
 │  │ • Completed Module 3        │  │ ████░░ 33%             │  │
-│  │ • Earned 50 ScrollCoins     │  │                        │  │
-│  │ • Joined Study Group        │  │ Earn 1000 ScrollCoins  │  │
+│  │ • Earned 50 ScrollGolds     │  │                        │  │
+│  │ • Joined Study Group        │  │ Earn 1000 ScrollGolds  │  │
 │  │ • Prayer Request Answered   │  │ ████████░░ 65%         │  │
 │  └─────────────────────────────┘  └────────────────────────┘  │
 │  ┌─────────────────────────────┐                              │
 │  │ 📢 Announcements            │                              │
 │  │ [New] New AI Tutor Features │                              │
-│  │ [Update] ScrollCoin Rewards │                              │
+│  │ [Update] ScrollGold Rewards │                              │
 │  └─────────────────────────────┘                              │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -255,9 +255,9 @@ ScrollUniversity
 │   ├── Messaging
 │   ├── Fellowship Rooms
 │   └── Testimonies
-├── ScrollCoin Economy
+├── ScrollGold Economy
 │   ├── My Wallet
-│   ├── Earn ScrollCoin
+│   ├── Earn ScrollGold
 │   ├── Redemption Store
 │   └── Leaderboard
 ├── Academic Progress
@@ -293,7 +293,7 @@ App
     │   │   ├── Learning
     │   │   ├── Spiritual Formation
     │   │   ├── Community
-    │   │   ├── ScrollCoin Economy
+    │   │   ├── ScrollGold Economy
     │   │   ├── Academic Progress
     │   │   ├── Faculty Tools (conditional)
     │   │   └── Administration (conditional)

@@ -169,7 +169,7 @@ The ScrollBadge NFT System has been successfully implemented, providing tamper-p
 
 ### 🏪 Marketplace (Optional)
 - List badges for sale
-- Purchase badges with ETH or ScrollCoin
+- Purchase badges with ETH or ScrollGold
 - Platform fee system
 - Marketplace statistics
 - Trading history
@@ -367,7 +367,7 @@ The ScrollBadge NFT System provides a comprehensive, production-ready solution f
 - ✅ Optional marketplace functionality
 
 **Requirements Validated:**
-- ✅ 8.1: ScrollCoin and badge rewards for achievements
+- ✅ 8.1: ScrollGold and badge rewards for achievements
 - ✅ 8.2: Blockchain credentials and verification
 
 The system is ready for integration with the course completion workflow and can be deployed to production with proper configuration of blockchain and IPFS services.

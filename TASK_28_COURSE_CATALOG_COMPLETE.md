@@ -50,14 +50,14 @@ Successfully implemented comprehensive course catalog and detail pages with all 
 **Features:**
 - Multi-step enrollment dialog
 - Payment method selection:
-  - ScrollCoin payment
+  - ScrollGold payment
   - Credit card payment (Stripe integration ready)
   - Scholarship application
 - Course summary with pricing
 - Processing states with loading indicators
 - Success/error handling
 - Integration with Supabase enrollments
-- ScrollCoin transaction recording
+- ScrollGold transaction recording
 - Automatic query invalidation on success
 
 ## Enhanced Pages
@@ -117,7 +117,7 @@ Successfully implemented comprehensive course catalog and detail pages with all 
 
 3. **Implement course enrollment flow with payment**
    - ✅ Multi-step enrollment dialog
-   - ✅ ScrollCoin payment option
+   - ✅ ScrollGold payment option
    - ✅ Credit card payment option (Stripe ready)
    - ✅ Scholarship option
    - ✅ Price display in multiple formats
@@ -172,7 +172,7 @@ Successfully implemented comprehensive course catalog and detail pages with all 
 ### Integration Points:
 - Supabase courses table
 - Supabase enrollments table
-- ScrollCoin transactions
+- ScrollGold transactions
 - Course modules and materials
 - User authentication context
 - Institution context
@@ -217,7 +217,7 @@ src/
 ### Integration Testing:
 - [ ] Verify Supabase queries
 - [ ] Test enrollment creation
-- [ ] Verify ScrollCoin transactions
+- [ ] Verify ScrollGold transactions
 - [ ] Test query invalidation
 - [ ] Verify navigation flows
 

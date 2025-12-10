@@ -26,7 +26,7 @@ export interface ScrollAICourseMetadata {
   deliveryModes: DeliveryMode[];
   estimatedHours: number;
   xpReward: number;
-  scrollCoinCost: number;
+  scrollGoldCost: number;
   propheticAlignment: number;
   kingdomImpact: number;
   department: string;
@@ -59,7 +59,7 @@ export class ScrollAICourseCatalogIntegration {
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR],
         estimatedHours: 45,
         xpReward: 150,
-        scrollCoinCost: 0,
+        scrollGoldCost: 0,
         propheticAlignment: 95,
         kingdomImpact: 90,
         department: 'Prophetic AI Foundations',
@@ -74,7 +74,7 @@ export class ScrollAICourseCatalogIntegration {
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR],
         estimatedHours: 60,
         xpReward: 200,
-        scrollCoinCost: 75,
+        scrollGoldCost: 75,
         propheticAlignment: 88,
         kingdomImpact: 85,
         department: 'ScrollAgent Development',
@@ -89,7 +89,7 @@ export class ScrollAICourseCatalogIntegration {
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.XR_MODE],
         estimatedHours: 70,
         xpReward: 280,
-        scrollCoinCost: 150,
+        scrollGoldCost: 150,
         propheticAlignment: 90,
         kingdomImpact: 88,
         department: 'Neural Networks & Kingdom Ethics',
@@ -104,7 +104,7 @@ export class ScrollAICourseCatalogIntegration {
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.RESEARCH_TRACK],
         estimatedHours: 80,
         xpReward: 320,
-        scrollCoinCost: 200,
+        scrollGoldCost: 200,
         propheticAlignment: 92,
         kingdomImpact: 95,
         department: 'ScrollOS & AI Infrastructure',
@@ -119,7 +119,7 @@ export class ScrollAICourseCatalogIntegration {
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.MENTOR_SESSIONS],
         estimatedHours: 45,
         xpReward: 180,
-        scrollCoinCost: 100,
+        scrollGoldCost: 100,
         propheticAlignment: 98,
         kingdomImpact: 92,
         department: 'ScrollOS & AI Infrastructure',
@@ -134,7 +134,7 @@ export class ScrollAICourseCatalogIntegration {
         deliveryModes: [DeliveryMode.XR_MODE, DeliveryMode.AI_TUTOR],
         estimatedHours: 60,
         xpReward: 240,
-        scrollCoinCost: 150,
+        scrollGoldCost: 150,
         propheticAlignment: 92,
         kingdomImpact: 88,
         department: 'XR Specializations',

@@ -59,9 +59,9 @@ const quickActions: QuickAction[] = [
   },
   {
     label: "View Wallet",
-    href: "/scrollcoin-wallet",
+    href: "/ScrollGold-wallet",
     icon: Coins,
-    description: "Check ScrollCoin balance",
+    description: "Check ScrollGold balance",
     variant: "secondary"
   },
   {

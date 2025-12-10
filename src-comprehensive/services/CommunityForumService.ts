@@ -5,15 +5,15 @@ import {
   ForumCategory,
   SpiritualAlignment 
 } from '../types/community';
-import { ScrollCoinService } from './ScrollCoinService';
+import { ScrollGoldService } from './ScrollGoldService';
 import { PropheticIntelligenceService } from './PropheticIntelligenceService';
 
 export class CommunityForumService {
-  private scrollCoinService: ScrollCoinService;
+  private ScrollGoldService: ScrollGoldService;
   private propheticService: PropheticIntelligenceService;
 
   constructor() {
-    this.scrollCoinService = new ScrollCoinService();
+    this.ScrollGoldService = new ScrollGoldService();
     this.propheticService = new PropheticIntelligenceService();
   }
 
@@ -40,9 +40,9 @@ export class CommunityForumService {
     // Store in database (simulated)
     await this.storeForum(forum);
     
-    // Award ScrollCoin for creating spiritually aligned forum
+    // Award ScrollGold for creating spiritually aligned forum
     if (spiritualAlignment.biblicalFoundation && spiritualAlignment.christCentered) {
-      await this.scrollCoinService.awardCoins(forum.createdBy, 50, 'Created spiritually aligned forum');
+      await this.ScrollGoldService.awardCoins(forum.createdBy, 50, 'Created spiritually aligned forum');
     }
 
     return forum;
@@ -75,16 +75,16 @@ export class CommunityForumService {
       isPinned: false,
       isLocked: false,
       spiritualInsight: spiritualInsight.insight,
-      scrollCoinReward: 0
+      ScrollGoldReward: 0
     };
 
     await this.storePost(post);
     
-    // Award ScrollCoin for quality posts with spiritual insight
+    // Award ScrollGold for quality posts with spiritual insight
     if (spiritualInsight.quality > 0.7) {
       const reward = Math.floor(spiritualInsight.quality * 30);
-      await this.scrollCoinService.awardCoins(post.authorId, reward, 'Quality forum post with spiritual insight');
-      post.scrollCoinReward = reward;
+      await this.ScrollGoldService.awardCoins(post.authorId, reward, 'Quality forum post with spiritual insight');
+      post.ScrollGoldReward = reward;
     }
 
     // Update forum post count
@@ -104,17 +104,17 @@ export class CommunityForumService {
       likes: 0,
       parentReplyId: replyData.parentReplyId,
       isHelpful: false,
-      scrollCoinReward: 0
+      ScrollGoldReward: 0
     };
 
     await this.storeReply(reply);
     
-    // Award ScrollCoin for helpful replies
+    // Award ScrollGold for helpful replies
     const helpfulness = await this.assessHelpfulness(reply.content);
     if (helpfulness > 0.6) {
       const reward = Math.floor(helpfulness * 20);
-      await this.scrollCoinService.awardCoins(reply.authorId, reward, 'Helpful forum reply');
-      reply.scrollCoinReward = reward;
+      await this.ScrollGoldService.awardCoins(reply.authorId, reward, 'Helpful forum reply');
+      reply.ScrollGoldReward = reward;
       reply.isHelpful = true;
     }
 
@@ -124,20 +124,20 @@ export class CommunityForumService {
   async likePost(postId: string, userId: string): Promise<void> {
     await this.incrementPostLikes(postId);
     
-    // Award ScrollCoin to post author for receiving likes
+    // Award ScrollGold to post author for receiving likes
     const post = await this.getPostById(postId);
     if (post) {
-      await this.scrollCoinService.awardCoins(post.authorId, 2, 'Post liked by peer');
+      await this.ScrollGoldService.awardCoins(post.authorId, 2, 'Post liked by peer');
     }
   }
 
   async likeReply(replyId: string, userId: string): Promise<void> {
     await this.incrementReplyLikes(replyId);
     
-    // Award ScrollCoin to reply author for receiving likes
+    // Award ScrollGold to reply author for receiving likes
     const reply = await this.getReplyById(replyId);
     if (reply) {
-      await this.scrollCoinService.awardCoins(reply.authorId, 1, 'Reply liked by peer');
+      await this.ScrollGoldService.awardCoins(reply.authorId, 1, 'Reply liked by peer');
     }
   }
 

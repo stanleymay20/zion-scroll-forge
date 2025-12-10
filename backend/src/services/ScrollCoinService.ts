@@ -1,17 +1,17 @@
 /**
- * ScrollCoin Service
+ * ScrollGold Service
  * "By the Spirit of Wisdom, we establish a kingdom economy on Earth"
  * 
- * Main service for ScrollCoin blockchain integration, handling token minting,
+ * Main service for ScrollGold blockchain integration, handling token minting,
  * transfers, burning, and wallet management with fraud prevention.
  */
 
 import { PrismaClient } from '@prisma/client';
 import { logger } from '../utils/logger';
-import scrollCoinConfig from '../config/scrollcoin.config';
+import ScrollGoldConfig from '../config/ScrollGold.config';
 import {
-  ScrollCoinTransactionData,
-  ScrollCoinTransactionType,
+  ScrollGoldTransactionData,
+  ScrollGoldTransactionType,
   TransactionStatus,
   MintRewardRequest,
   TransferRequest,
@@ -20,28 +20,28 @@ import {
   TransactionHistoryQuery,
   TransactionHistoryResponse,
   BlockchainTransactionReceipt
-} from '../types/scrollcoin.types';
+} from '../types/ScrollGold.types';
 
 const prisma = new PrismaClient();
 
-export class ScrollCoinService {
-  private static instance: ScrollCoinService;
+export class ScrollGoldService {
+  private static instance: ScrollGoldService;
 
   private constructor() {}
 
-  public static getInstance(): ScrollCoinService {
-    if (!ScrollCoinService.instance) {
-      ScrollCoinService.instance = new ScrollCoinService();
+  public static getInstance(): ScrollGoldService {
+    if (!ScrollGoldService.instance) {
+      ScrollGoldService.instance = new ScrollGoldService();
     }
-    return ScrollCoinService.instance;
+    return ScrollGoldService.instance;
   }
 
   /**
-   * Mint ScrollCoin tokens as rewards for educational achievements
+   * Mint ScrollGold tokens as rewards for educational achievements
    */
-  async mintReward(request: MintRewardRequest): Promise<ScrollCoinTransactionData> {
+  async mintReward(request: MintRewardRequest): Promise<ScrollGoldTransactionData> {
     try {
-      logger.info('Minting ScrollCoin reward', { request });
+      logger.info('Minting ScrollGold reward', { request });
 
       // Validate request
       if (request.amount <= 0) {
@@ -49,7 +49,7 @@ export class ScrollCoinService {
       }
 
       // Check for duplicate reward
-      const existingReward = await prisma.scrollCoinTransaction.findUnique({
+      const existingReward = await prisma.ScrollGoldTransaction.findUnique({
         where: { rewardId: request.rewardId }
       });
 
@@ -65,11 +65,11 @@ export class ScrollCoinService {
       }
 
       // Create transaction record
-      const transaction = await prisma.scrollCoinTransaction.create({
+      const transaction = await prisma.ScrollGoldTransaction.create({
         data: {
           userId: request.userId,
           amount: request.amount,
-          type: ScrollCoinTransactionType.MINT,
+          type: ScrollGoldTransactionType.MINT,
           status: TransactionStatus.PENDING,
           reason: request.reason,
           referenceId: request.referenceId,
@@ -79,7 +79,7 @@ export class ScrollCoinService {
       });
 
       // If blockchain is enabled, mint on-chain
-      if (scrollCoinConfig.blockchainEnabled) {
+      if (ScrollGoldConfig.blockchainEnabled) {
         try {
           const receipt = await this.mintOnBlockchain(
             wallet.address,
@@ -89,7 +89,7 @@ export class ScrollCoinService {
           );
 
           // Update transaction with blockchain details
-          const updatedTransaction = await prisma.scrollCoinTransaction.update({
+          const updatedTransaction = await prisma.ScrollGoldTransaction.update({
             where: { id: transaction.id },
             data: {
               status: TransactionStatus.CONFIRMED,
@@ -101,7 +101,7 @@ export class ScrollCoinService {
           });
 
           // Update wallet balance
-          await prisma.scrollCoinWallet.update({
+          await prisma.ScrollGoldWallet.update({
             where: { id: wallet.id },
             data: {
               balance: { increment: request.amount },
@@ -110,15 +110,15 @@ export class ScrollCoinService {
             }
           });
 
-          logger.info('ScrollCoin reward minted successfully', {
+          logger.info('ScrollGold reward minted successfully', {
             transactionId: updatedTransaction.id,
             txHash: receipt.txHash
           });
 
-          return updatedTransaction as ScrollCoinTransactionData;
+          return updatedTransaction as ScrollGoldTransactionData;
         } catch (blockchainError) {
           // Mark transaction as failed
-          await prisma.scrollCoinTransaction.update({
+          await prisma.ScrollGoldTransaction.update({
             where: { id: transaction.id },
             data: { status: TransactionStatus.FAILED }
           });
@@ -127,7 +127,7 @@ export class ScrollCoinService {
         }
       } else {
         // Mock blockchain transaction for development
-        const updatedTransaction = await prisma.scrollCoinTransaction.update({
+        const updatedTransaction = await prisma.ScrollGoldTransaction.update({
           where: { id: transaction.id },
           data: {
             status: TransactionStatus.CONFIRMED,
@@ -139,7 +139,7 @@ export class ScrollCoinService {
         });
 
         // Update wallet balance
-        await prisma.scrollCoinWallet.update({
+        await prisma.ScrollGoldWallet.update({
           where: { id: wallet.id },
           data: {
             balance: { increment: request.amount },
@@ -148,24 +148,24 @@ export class ScrollCoinService {
           }
         });
 
-        logger.info('ScrollCoin reward minted (mock mode)', {
+        logger.info('ScrollGold reward minted (mock mode)', {
           transactionId: updatedTransaction.id
         });
 
-        return updatedTransaction as ScrollCoinTransactionData;
+        return updatedTransaction as ScrollGoldTransactionData;
       }
     } catch (error) {
-      logger.error('Error minting ScrollCoin reward:', error);
+      logger.error('Error minting ScrollGold reward:', error);
       throw error;
     }
   }
 
   /**
-   * Transfer ScrollCoin tokens between users
+   * Transfer ScrollGold tokens between users
    */
-  async transferTokens(request: TransferRequest): Promise<ScrollCoinTransactionData> {
+  async transferTokens(request: TransferRequest): Promise<ScrollGoldTransactionData> {
     try {
-      logger.info('Transferring ScrollCoin tokens', { request });
+      logger.info('Transferring ScrollGold tokens', { request });
 
       // Validate request
       if (request.amount <= 0) {
@@ -204,11 +204,11 @@ export class ScrollCoinService {
       }
 
       // Create transaction record
-      const transaction = await prisma.scrollCoinTransaction.create({
+      const transaction = await prisma.ScrollGoldTransaction.create({
         data: {
           userId: request.fromUserId,
           amount: request.amount,
-          type: ScrollCoinTransactionType.TRANSFER,
+          type: ScrollGoldTransactionType.TRANSFER,
           status: TransactionStatus.PENDING,
           reason: request.reason || 'Peer-to-peer transfer',
           fromAddress: fromWallet.address,
@@ -217,7 +217,7 @@ export class ScrollCoinService {
       });
 
       // If blockchain is enabled, transfer on-chain
-      if (scrollCoinConfig.blockchainEnabled) {
+      if (ScrollGoldConfig.blockchainEnabled) {
         try {
           const receipt = await this.transferOnBlockchain(
             fromWallet.address,
@@ -226,7 +226,7 @@ export class ScrollCoinService {
           );
 
           // Update transaction with blockchain details
-          const updatedTransaction = await prisma.scrollCoinTransaction.update({
+          const updatedTransaction = await prisma.ScrollGoldTransaction.update({
             where: { id: transaction.id },
             data: {
               status: TransactionStatus.CONFIRMED,
@@ -239,14 +239,14 @@ export class ScrollCoinService {
 
           // Update wallet balances
           await prisma.$transaction([
-            prisma.scrollCoinWallet.update({
+            prisma.ScrollGoldWallet.update({
               where: { id: fromWallet.id },
               data: {
                 balance: { decrement: request.amount },
                 lastSyncedAt: new Date()
               }
             }),
-            prisma.scrollCoinWallet.update({
+            prisma.ScrollGoldWallet.update({
               where: { id: toWallet.id },
               data: {
                 balance: { increment: request.amount },
@@ -255,15 +255,15 @@ export class ScrollCoinService {
             })
           ]);
 
-          logger.info('ScrollCoin transfer completed successfully', {
+          logger.info('ScrollGold transfer completed successfully', {
             transactionId: updatedTransaction.id,
             txHash: receipt.txHash
           });
 
-          return updatedTransaction as ScrollCoinTransactionData;
+          return updatedTransaction as ScrollGoldTransactionData;
         } catch (blockchainError) {
           // Mark transaction as failed
-          await prisma.scrollCoinTransaction.update({
+          await prisma.ScrollGoldTransaction.update({
             where: { id: transaction.id },
             data: { status: TransactionStatus.FAILED }
           });
@@ -272,7 +272,7 @@ export class ScrollCoinService {
         }
       } else {
         // Mock blockchain transaction for development
-        const updatedTransaction = await prisma.scrollCoinTransaction.update({
+        const updatedTransaction = await prisma.ScrollGoldTransaction.update({
           where: { id: transaction.id },
           data: {
             status: TransactionStatus.CONFIRMED,
@@ -285,14 +285,14 @@ export class ScrollCoinService {
 
         // Update wallet balances
         await prisma.$transaction([
-          prisma.scrollCoinWallet.update({
+          prisma.ScrollGoldWallet.update({
             where: { id: fromWallet.id },
             data: {
               balance: { decrement: request.amount },
               lastSyncedAt: new Date()
             }
           }),
-          prisma.scrollCoinWallet.update({
+          prisma.ScrollGoldWallet.update({
             where: { id: toWallet.id },
             data: {
               balance: { increment: request.amount },
@@ -301,24 +301,24 @@ export class ScrollCoinService {
           })
         ]);
 
-        logger.info('ScrollCoin transfer completed (mock mode)', {
+        logger.info('ScrollGold transfer completed (mock mode)', {
           transactionId: updatedTransaction.id
         });
 
-        return updatedTransaction as ScrollCoinTransactionData;
+        return updatedTransaction as ScrollGoldTransactionData;
       }
     } catch (error) {
-      logger.error('Error transferring ScrollCoin tokens:', error);
+      logger.error('Error transferring ScrollGold tokens:', error);
       throw error;
     }
   }
 
   /**
-   * Burn ScrollCoin tokens when spending on courses or resources
+   * Burn ScrollGold tokens when spending on courses or resources
    */
-  async burnTokens(request: BurnRequest): Promise<ScrollCoinTransactionData> {
+  async burnTokens(request: BurnRequest): Promise<ScrollGoldTransactionData> {
     try {
-      logger.info('Burning ScrollCoin tokens', { request });
+      logger.info('Burning ScrollGold tokens', { request });
 
       // Validate request
       if (request.amount <= 0) {
@@ -338,11 +338,11 @@ export class ScrollCoinService {
       }
 
       // Create transaction record
-      const transaction = await prisma.scrollCoinTransaction.create({
+      const transaction = await prisma.ScrollGoldTransaction.create({
         data: {
           userId: request.userId,
           amount: request.amount,
-          type: ScrollCoinTransactionType.BURN,
+          type: ScrollGoldTransactionType.BURN,
           status: TransactionStatus.PENDING,
           reason: request.reason,
           referenceId: request.referenceId,
@@ -351,7 +351,7 @@ export class ScrollCoinService {
       });
 
       // If blockchain is enabled, burn on-chain
-      if (scrollCoinConfig.blockchainEnabled) {
+      if (ScrollGoldConfig.blockchainEnabled) {
         try {
           const receipt = await this.burnOnBlockchain(
             wallet.address,
@@ -360,7 +360,7 @@ export class ScrollCoinService {
           );
 
           // Update transaction with blockchain details
-          const updatedTransaction = await prisma.scrollCoinTransaction.update({
+          const updatedTransaction = await prisma.ScrollGoldTransaction.update({
             where: { id: transaction.id },
             data: {
               status: TransactionStatus.CONFIRMED,
@@ -372,7 +372,7 @@ export class ScrollCoinService {
           });
 
           // Update wallet balance
-          await prisma.scrollCoinWallet.update({
+          await prisma.ScrollGoldWallet.update({
             where: { id: wallet.id },
             data: {
               balance: { decrement: request.amount },
@@ -381,15 +381,15 @@ export class ScrollCoinService {
             }
           });
 
-          logger.info('ScrollCoin tokens burned successfully', {
+          logger.info('ScrollGold tokens burned successfully', {
             transactionId: updatedTransaction.id,
             txHash: receipt.txHash
           });
 
-          return updatedTransaction as ScrollCoinTransactionData;
+          return updatedTransaction as ScrollGoldTransactionData;
         } catch (blockchainError) {
           // Mark transaction as failed
-          await prisma.scrollCoinTransaction.update({
+          await prisma.ScrollGoldTransaction.update({
             where: { id: transaction.id },
             data: { status: TransactionStatus.FAILED }
           });
@@ -398,7 +398,7 @@ export class ScrollCoinService {
         }
       } else {
         // Mock blockchain transaction for development
-        const updatedTransaction = await prisma.scrollCoinTransaction.update({
+        const updatedTransaction = await prisma.ScrollGoldTransaction.update({
           where: { id: transaction.id },
           data: {
             status: TransactionStatus.CONFIRMED,
@@ -410,7 +410,7 @@ export class ScrollCoinService {
         });
 
         // Update wallet balance
-        await prisma.scrollCoinWallet.update({
+        await prisma.ScrollGoldWallet.update({
           where: { id: wallet.id },
           data: {
             balance: { decrement: request.amount },
@@ -419,14 +419,14 @@ export class ScrollCoinService {
           }
         });
 
-        logger.info('ScrollCoin tokens burned (mock mode)', {
+        logger.info('ScrollGold tokens burned (mock mode)', {
           transactionId: updatedTransaction.id
         });
 
-        return updatedTransaction as ScrollCoinTransactionData;
+        return updatedTransaction as ScrollGoldTransactionData;
       }
     } catch (error) {
-      logger.error('Error burning ScrollCoin tokens:', error);
+      logger.error('Error burning ScrollGold tokens:', error);
       throw error;
     }
   }
@@ -472,17 +472,17 @@ export class ScrollCoinService {
       }
 
       const [transactions, total] = await Promise.all([
-        prisma.scrollCoinTransaction.findMany({
+        prisma.ScrollGoldTransaction.findMany({
           where,
           orderBy: { createdAt: 'desc' },
           take: limit,
           skip: offset
         }),
-        prisma.scrollCoinTransaction.count({ where })
+        prisma.ScrollGoldTransaction.count({ where })
       ]);
 
       return {
-        transactions: transactions as ScrollCoinTransactionData[],
+        transactions: transactions as ScrollGoldTransactionData[],
         total,
         page: Math.floor(offset / limit) + 1,
         pageSize: limit
@@ -497,7 +497,7 @@ export class ScrollCoinService {
    * Get or create wallet for user
    */
   private async getOrCreateWallet(userId: string): Promise<any> {
-    let wallet = await prisma.scrollCoinWallet.findUnique({
+    let wallet = await prisma.ScrollGoldWallet.findUnique({
       where: { userId }
     });
 
@@ -505,7 +505,7 @@ export class ScrollCoinService {
       // Generate wallet address and keys
       const { address, publicKey, privateKeyHash } = this.generateWalletKeys();
 
-      wallet = await prisma.scrollCoinWallet.create({
+      wallet = await prisma.ScrollGoldWallet.create({
         data: {
           userId,
           address,
@@ -514,7 +514,7 @@ export class ScrollCoinService {
         }
       });
 
-      logger.info('Created new ScrollCoin wallet', { userId, address });
+      logger.info('Created new ScrollGold wallet', { userId, address });
     }
 
     return wallet;
@@ -555,10 +555,10 @@ export class ScrollCoinService {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const result = await prisma.scrollCoinTransaction.aggregate({
+    const result = await prisma.ScrollGoldTransaction.aggregate({
       where: {
         userId,
-        type: ScrollCoinTransactionType.TRANSFER,
+        type: ScrollGoldTransactionType.TRANSFER,
         status: TransactionStatus.CONFIRMED,
         createdAt: { gte: today }
       },
@@ -625,4 +625,4 @@ export class ScrollCoinService {
   }
 }
 
-export default ScrollCoinService.getInstance();
+export default ScrollGoldService.getInstance();

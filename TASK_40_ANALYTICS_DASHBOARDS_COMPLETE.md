@@ -69,7 +69,7 @@ Successfully implemented comprehensive analytics dashboards for the ScrollUniver
 - **Features**:
   - Revenue tracking and trends
   - Revenue breakdown by source (pie chart)
-  - ScrollCoin economy metrics
+  - ScrollGold economy metrics
   - Scholarship program tracking
   - Enrollment revenue breakdown
   - AI-powered revenue forecasting
@@ -232,7 +232,7 @@ All components integrate with backend analytics endpoints:
 ### ✅ Financial Analytics
 - Revenue tracking and trends
 - Revenue source breakdown
-- ScrollCoin economy metrics
+- ScrollGold economy metrics
 - Scholarship program tracking
 - Revenue forecasting
 - Financial projections
@@ -280,7 +280,7 @@ All components integrate with backend analytics endpoints:
 ### Requirement 11.4: Financial Analytics ✅
 - Revenue tracking
 - Financial projections
-- ScrollCoin metrics
+- ScrollGold metrics
 - Scholarship tracking
 
 ### Requirement 11.5: Custom Reports & Export ✅
@@ -314,7 +314,7 @@ All components integrate with backend analytics endpoints:
 
 ### Financial Dashboard
 1. Track revenue metrics
-2. Monitor ScrollCoin economy
+2. Monitor ScrollGold economy
 3. Manage scholarship budget
 4. View revenue forecasts
 5. Analyze revenue sources

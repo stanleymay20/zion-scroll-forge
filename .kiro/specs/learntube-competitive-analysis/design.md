@@ -125,7 +125,7 @@ graph LR
 
 | Feature | ScrollUniversity | LearnTube.ai | Advantage |
 |---------|------------------|--------------|-----------|
-| **ScrollCoin Economy** | Revolutionary economic model | Traditional payment system | ScrollUniversity |
+| **ScrollGold Economy** | Revolutionary economic model | Traditional payment system | ScrollUniversity |
 | **Spiritual Formation** | Comprehensive spiritual growth tracking | None | ScrollUniversity |
 | **Prophetic Check-ins** | Divine guidance integration | None | ScrollUniversity |
 | **Global Accessibility** | Offline mesh networks | Internet-dependent | ScrollUniversity |
@@ -275,7 +275,7 @@ interface ResearchData {
 1. **Spiritual Integration**: First and only platform combining AI education with spiritual formation
 2. **Global Accessibility**: Revolutionary offline-first architecture with mesh networking
 3. **Comprehensive Ecosystem**: 31+ integrated systems vs. standalone platforms
-4. **Economic Innovation**: ScrollCoin economy vs. traditional payment models
+4. **Economic Innovation**: ScrollGold economy vs. traditional payment models
 5. **Prophetic AI**: Spiritual discernment integrated into AI systems
 6. **Kingdom Purpose**: Training leaders for global transformation vs. career advancement
 

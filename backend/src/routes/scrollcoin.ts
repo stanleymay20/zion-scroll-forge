@@ -1,14 +1,14 @@
 /**
- * ScrollCoin API Routes
+ * ScrollGold API Routes
  * "By the Spirit of Wisdom, we establish kingdom economy endpoints"
  * 
- * Routes for ScrollCoin blockchain integration, wallet management,
+ * Routes for ScrollGold blockchain integration, wallet management,
  * transactions, and fraud prevention.
  */
 
 import express, { Request, Response } from 'express';
 import { authenticate as authenticateToken, requireRole } from '../middleware/auth';
-import ScrollCoinService from '../services/ScrollCoinService';
+import ScrollGoldService from '../services/ScrollGoldService';
 import WalletManagementService from '../services/WalletManagementService';
 import FraudPreventionService from '../services/FraudPreventionService';
 import ExchangeRateService from '../services/ExchangeRateService';
@@ -22,14 +22,14 @@ const router = express.Router();
 // ============================================================================
 
 /**
- * GET /api/scrollcoin/wallet
+ * GET /api/ScrollGold/wallet
  * Get user's wallet balance and information
  */
 router.get('/wallet', authenticateToken, async (req: Request, res: Response) => {
   try {
     const userId = (req as any).user.userId;
 
-    const balance = await ScrollCoinService.getWalletBalance(userId);
+    const balance = await ScrollGoldService.getWalletBalance(userId);
     const statistics = await WalletManagementService.getWalletStatistics(userId);
 
     res.json({
@@ -49,7 +49,7 @@ router.get('/wallet', authenticateToken, async (req: Request, res: Response) => 
 });
 
 /**
- * POST /api/scrollcoin/wallet/create
+ * POST /api/ScrollGold/wallet/create
  * Create a new wallet for user
  */
 router.post('/wallet/create', authenticateToken, async (req: Request, res: Response) => {
@@ -72,7 +72,7 @@ router.post('/wallet/create', authenticateToken, async (req: Request, res: Respo
 });
 
 /**
- * POST /api/scrollcoin/wallet/sync
+ * POST /api/ScrollGold/wallet/sync
  * Sync wallet balance with blockchain
  */
 router.post('/wallet/sync', authenticateToken, async (req: Request, res: Response) => {
@@ -99,8 +99,8 @@ router.post('/wallet/sync', authenticateToken, async (req: Request, res: Respons
 // ============================================================================
 
 /**
- * POST /api/scrollcoin/mint
- * Mint ScrollCoin rewards (admin only)
+ * POST /api/ScrollGold/mint
+ * Mint ScrollGold rewards (admin only)
  */
 router.post('/mint', authenticateToken, requireRole(['ADMIN', 'SCROLL_ELDER']), async (req: Request, res: Response) => {
   try {
@@ -113,7 +113,7 @@ router.post('/mint', authenticateToken, requireRole(['ADMIN', 'SCROLL_ELDER']), 
       });
     }
 
-    const transaction = await ScrollCoinService.mintReward({
+    const transaction = await ScrollGoldService.mintReward({
       userId,
       amount,
       reason,
@@ -126,17 +126,17 @@ router.post('/mint', authenticateToken, requireRole(['ADMIN', 'SCROLL_ELDER']), 
       data: transaction
     });
   } catch (error) {
-    logger.error('Error minting ScrollCoin:', error);
+    logger.error('Error minting ScrollGold:', error);
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to mint ScrollCoin'
+      error: error instanceof Error ? error.message : 'Failed to mint ScrollGold'
     });
   }
 });
 
 /**
- * POST /api/scrollcoin/transfer
- * Transfer ScrollCoin between users
+ * POST /api/ScrollGold/transfer
+ * Transfer ScrollGold between users
  */
 router.post('/transfer', authenticateToken, async (req: Request, res: Response) => {
   try {
@@ -150,7 +150,7 @@ router.post('/transfer', authenticateToken, async (req: Request, res: Response) 
       });
     }
 
-    const transaction = await ScrollCoinService.transferTokens({
+    const transaction = await ScrollGoldService.transferTokens({
       fromUserId,
       toUserId,
       amount,
@@ -162,17 +162,17 @@ router.post('/transfer', authenticateToken, async (req: Request, res: Response) 
       data: transaction
     });
   } catch (error) {
-    logger.error('Error transferring ScrollCoin:', error);
+    logger.error('Error transferring ScrollGold:', error);
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to transfer ScrollCoin'
+      error: error instanceof Error ? error.message : 'Failed to transfer ScrollGold'
     });
   }
 });
 
 /**
- * POST /api/scrollcoin/burn
- * Burn ScrollCoin for purchases
+ * POST /api/ScrollGold/burn
+ * Burn ScrollGold for purchases
  */
 router.post('/burn', authenticateToken, async (req: Request, res: Response) => {
   try {
@@ -186,7 +186,7 @@ router.post('/burn', authenticateToken, async (req: Request, res: Response) => {
       });
     }
 
-    const transaction = await ScrollCoinService.burnTokens({
+    const transaction = await ScrollGoldService.burnTokens({
       userId,
       amount,
       reason,
@@ -198,16 +198,16 @@ router.post('/burn', authenticateToken, async (req: Request, res: Response) => {
       data: transaction
     });
   } catch (error) {
-    logger.error('Error burning ScrollCoin:', error);
+    logger.error('Error burning ScrollGold:', error);
     res.status(500).json({
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to burn ScrollCoin'
+      error: error instanceof Error ? error.message : 'Failed to burn ScrollGold'
     });
   }
 });
 
 /**
- * GET /api/scrollcoin/transactions
+ * GET /api/ScrollGold/transactions
  * Get transaction history
  */
 router.get('/transactions', authenticateToken, async (req: Request, res: Response) => {
@@ -215,7 +215,7 @@ router.get('/transactions', authenticateToken, async (req: Request, res: Respons
     const userId = (req as any).user.userId;
     const { type, status, startDate, endDate, limit, offset } = req.query;
 
-    const history = await ScrollCoinService.getTransactionHistory({
+    const history = await ScrollGoldService.getTransactionHistory({
       userId,
       type: type as any,
       status: status as any,
@@ -243,7 +243,7 @@ router.get('/transactions', authenticateToken, async (req: Request, res: Respons
 // ============================================================================
 
 /**
- * GET /api/scrollcoin/exchange-rate
+ * GET /api/ScrollGold/exchange-rate
  * Get current exchange rate
  */
 router.get('/exchange-rate', async (req: Request, res: Response) => {
@@ -264,8 +264,8 @@ router.get('/exchange-rate', async (req: Request, res: Response) => {
 });
 
 /**
- * POST /api/scrollcoin/exchange-rate/convert
- * Convert between ScrollCoin and USD
+ * POST /api/ScrollGold/exchange-rate/convert
+ * Convert between ScrollGold and USD
  */
 router.post('/exchange-rate/convert', async (req: Request, res: Response) => {
   try {
@@ -279,14 +279,14 @@ router.post('/exchange-rate/convert', async (req: Request, res: Response) => {
     }
 
     let conversion;
-    if (from === 'SCROLLCOIN') {
+    if (from === 'ScrollGold') {
       conversion = await ExchangeRateService.convertToUSD(amount);
     } else if (from === 'USD') {
       conversion = await ExchangeRateService.convertFromUSD(amount);
     } else {
       return res.status(400).json({
         success: false,
-        error: 'Invalid currency. Use SCROLLCOIN or USD'
+        error: 'Invalid currency. Use ScrollGold or USD'
       });
     }
 
@@ -304,7 +304,7 @@ router.post('/exchange-rate/convert', async (req: Request, res: Response) => {
 });
 
 /**
- * POST /api/scrollcoin/exchange-rate/create
+ * POST /api/ScrollGold/exchange-rate/create
  * Create new exchange rate (admin only)
  */
 router.post('/exchange-rate/create', authenticateToken, requireRole(['ADMIN']), async (req: Request, res: Response) => {
@@ -345,7 +345,7 @@ router.post('/exchange-rate/create', authenticateToken, requireRole(['ADMIN']), 
 // ============================================================================
 
 /**
- * GET /api/scrollcoin/fraud/alerts
+ * GET /api/ScrollGold/fraud/alerts
  * Get fraud alerts (admin only)
  */
 router.get('/fraud/alerts', authenticateToken, requireRole(['ADMIN', 'FRAUD_MONITOR_ROLE']), async (req: Request, res: Response) => {
@@ -370,7 +370,7 @@ router.get('/fraud/alerts', authenticateToken, requireRole(['ADMIN', 'FRAUD_MONI
 });
 
 /**
- * POST /api/scrollcoin/fraud/alerts/:alertId/review
+ * POST /api/ScrollGold/fraud/alerts/:alertId/review
  * Review and resolve fraud alert (admin only)
  */
 router.post('/fraud/alerts/:alertId/review', authenticateToken, requireRole(['ADMIN', 'FRAUD_MONITOR_ROLE']), async (req: Request, res: Response) => {
@@ -407,7 +407,7 @@ router.post('/fraud/alerts/:alertId/review', authenticateToken, requireRole(['AD
 });
 
 /**
- * GET /api/scrollcoin/fraud/statistics
+ * GET /api/ScrollGold/fraud/statistics
  * Get fraud statistics (admin only)
  */
 router.get('/fraud/statistics', authenticateToken, requireRole(['ADMIN']), async (req: Request, res: Response) => {
@@ -437,7 +437,7 @@ router.get('/fraud/statistics', authenticateToken, requireRole(['ADMIN']), async
 // ============================================================================
 
 /**
- * GET /api/scrollcoin/blockchain/status
+ * GET /api/ScrollGold/blockchain/status
  * Get blockchain network status
  */
 router.get('/blockchain/status', async (req: Request, res: Response) => {
@@ -458,7 +458,7 @@ router.get('/blockchain/status', async (req: Request, res: Response) => {
 });
 
 /**
- * POST /api/scrollcoin/blockchain/verify
+ * POST /api/ScrollGold/blockchain/verify
  * Verify transaction on blockchain
  */
 router.post('/blockchain/verify', authenticateToken, async (req: Request, res: Response) => {
@@ -491,7 +491,7 @@ router.post('/blockchain/verify', authenticateToken, async (req: Request, res: R
 });
 
 /**
- * GET /api/scrollcoin/blockchain/balance/:address
+ * GET /api/ScrollGold/blockchain/balance/:address
  * Get balance from blockchain
  */
 router.get('/blockchain/balance/:address', authenticateToken, async (req: Request, res: Response) => {
@@ -518,7 +518,7 @@ router.get('/blockchain/balance/:address', authenticateToken, async (req: Reques
 // ============================================================================
 
 /**
- * POST /api/scrollcoin/admin/wallet/blacklist
+ * POST /api/ScrollGold/admin/wallet/blacklist
  * Blacklist a wallet (admin only)
  */
 router.post('/admin/wallet/blacklist', authenticateToken, requireRole(['ADMIN', 'FRAUD_MONITOR_ROLE']), async (req: Request, res: Response) => {
@@ -548,7 +548,7 @@ router.post('/admin/wallet/blacklist', authenticateToken, requireRole(['ADMIN', 
 });
 
 /**
- * POST /api/scrollcoin/admin/wallet/whitelist
+ * POST /api/ScrollGold/admin/wallet/whitelist
  * Whitelist a wallet (admin only)
  */
 router.post('/admin/wallet/whitelist', authenticateToken, requireRole(['ADMIN']), async (req: Request, res: Response) => {

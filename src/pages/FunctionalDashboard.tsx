@@ -10,7 +10,7 @@ import {
   ChevronRight, Star, Play
 } from "lucide-react";
 import { useMyEnrollments } from "@/hooks/useCourses";
-import { useScrollCoinBalance, useScrollCoinTransactions } from "@/hooks/useScrollCoin";
+import { useScrollGoldBalance, useScrollGoldTransactions } from "@/hooks/useScrollGold";
 import { useSpiritualMilestones } from "@/hooks/useSpiritualFormation";
 import { useCommunityPosts } from "@/hooks/useCommunity";
 import { useInstitution } from "@/contexts/InstitutionContext";
@@ -22,8 +22,8 @@ const FunctionalDashboard = () => {
   const { user } = useAuth();
   const { activeInstitution } = useInstitution();
   const { data: enrollments = [], isLoading: enrollmentsLoading } = useMyEnrollments();
-  const { data: scrollCoinBalance = 0 } = useScrollCoinBalance();
-  const { data: recentTransactions = [] } = useScrollCoinTransactions(5);
+  const { data: ScrollGoldBalance = 0 } = useScrollGoldBalance();
+  const { data: recentTransactions = [] } = useScrollGoldTransactions(5);
   const { data: spiritualData } = useSpiritualMilestones();
   const { data: communityPosts = [] } = useCommunityPosts(activeInstitution?.id);
 
@@ -82,11 +82,11 @@ const FunctionalDashboard = () => {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">ScrollCoin Balance</CardTitle>
+            <CardTitle className="text-sm font-medium">ScrollGold Balance</CardTitle>
             <Coins className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{scrollCoinBalance.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{ScrollGoldBalance.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground">
               {recentTransactions.length > 0 
                 ? `Last earned: ${recentTransactions[0]?.amount || 0} coins`
@@ -193,10 +193,10 @@ const FunctionalDashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Recent ScrollCoin Activity */}
+            {/* Recent ScrollGold Activity */}
             <Card>
               <CardHeader>
-                <CardTitle>Recent ScrollCoin Activity</CardTitle>
+                <CardTitle>Recent ScrollGold Activity</CardTitle>
                 <CardDescription>Your latest earnings and spending</CardDescription>
               </CardHeader>
               <CardContent>
@@ -218,7 +218,7 @@ const FunctionalDashboard = () => {
                       </div>
                     ))}
                     <Button variant="ghost" className="w-full" asChild>
-                      <Link to="/scrollcoin">
+                      <Link to="/ScrollGold">
                         View Full History
                         <ChevronRight className="h-4 w-4 ml-2" />
                       </Link>
@@ -229,7 +229,7 @@ const FunctionalDashboard = () => {
                     <Coins className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                     <h3 className="text-lg font-medium mb-2">No Recent Activity</h3>
                     <p className="text-muted-foreground mb-4">
-                      Complete courses and activities to earn ScrollCoins
+                      Complete courses and activities to earn ScrollGolds
                     </p>
                   </div>
                 )}
@@ -356,7 +356,7 @@ const FunctionalDashboard = () => {
                         <p className="text-sm text-muted-foreground">{milestone.description}</p>
                       </div>
                       <Badge variant="outline">
-                        +{milestone.reward_scrollcoins} coins
+                        +{milestone.reward_ScrollGolds} coins
                       </Badge>
                     </div>
                   ))}

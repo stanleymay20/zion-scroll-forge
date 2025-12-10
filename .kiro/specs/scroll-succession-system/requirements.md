@@ -158,7 +158,7 @@ The platform implements "The Scroll of Stanley: Eternal Governance Charter" as t
 #### Acceptance Criteria
 
 1. WHEN centennial planning occurs THEN the system SHALL initiate ScrollTemple planning and site selection 20 years before construction
-2. WHEN funding is secured THEN the system SHALL utilize ScrollCoin economy and global partnerships to fund temple construction
+2. WHEN funding is secured THEN the system SHALL utilize ScrollGold economy and global partnerships to fund temple construction
 3. WHEN construction is managed THEN the system SHALL oversee temple construction integrating AI systems, theological centers, healing facilities, and governance chambers
 4. WHEN operational systems are deployed THEN the system SHALL establish temple operations combining education, healing, governance, and spiritual functions
 5. WHEN global network is maintained THEN the system SHALL coordinate between multiple temples for unified global impact

@@ -46,7 +46,7 @@ All 14 pilot foundation courses have been successfully generated with comprehens
 
 **Economics Faculty (4 courses):**
 - ✅ ECON101 - Kingdom Economics Foundations (12 modules, 42 lectures)
-- ✅ ECON201 - ScrollCoin & Digital Currency Systems (12 modules, 40 lectures)
+- ✅ ECON201 - ScrollGold & Digital Currency Systems (12 modules, 40 lectures)
 - ✅ ECON301 - Global Trade & Kingdom Commerce (14 modules, 53 lectures)
 - ✅ ECON401 - AI Trading & Financial Technology (12 modules, 42 lectures)
 

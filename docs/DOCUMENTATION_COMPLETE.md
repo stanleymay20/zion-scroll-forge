@@ -23,7 +23,7 @@ This document summarizes the comprehensive documentation created for the ScrollU
 - Authentication (register, login, refresh)
 - Courses (list, detail, enroll)
 - AI Tutor (sessions, messages)
-- ScrollCoin (balance, transactions, transfer)
+- ScrollGold (balance, transactions, transfer)
 - Spiritual Formation (devotions, prayer journal)
 - Community, Analytics, Payments, and more
 
@@ -43,7 +43,7 @@ This document summarizes the comprehensive documentation created for the ScrollU
 - Learning experience walkthrough
 - AI Tutor usage guide
 - Community features
-- ScrollCoin economy
+- ScrollGold economy
 - ScrollBadge credentials
 - Spiritual formation tools
 - Mobile app usage
@@ -146,7 +146,7 @@ This document summarizes the comprehensive documentation created for the ScrollU
 - Getting started tutorial (5 min)
 - Course enrollment tutorial (4 min)
 - AI Tutor tutorial (6 min)
-- ScrollCoin wallet tutorial (5 min)
+- ScrollGold wallet tutorial (5 min)
 - Spiritual formation tutorial (planned)
 - Study groups tutorial (planned)
 - Mobile app tutorial (planned)

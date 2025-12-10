@@ -66,8 +66,8 @@ export const CommunityDashboard: React.FC<CommunityDashboardProps> = ({ userId }
               </div>
             </div>
             <div className="ml-4">
-              <p className="text-sm font-medium text-gray-500">ScrollCoin Balance</p>
-              <p className="text-2xl font-bold text-gray-900">{dashboardData.scrollCoinBalance}</p>
+              <p className="text-sm font-medium text-gray-500">ScrollGold Balance</p>
+              <p className="text-2xl font-bold text-gray-900">{dashboardData.ScrollGoldBalance}</p>
             </div>
           </div>
         </div>

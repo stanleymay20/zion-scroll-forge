@@ -124,7 +124,7 @@ export const integrationTestUtils = {
         difficulty: 'BEGINNER',
         duration: 60,
         scrollXPReward: 100,
-        scrollCoinCost: 0,
+        scrollGoldCost: 0,
         facultyId: faculty.id
       }
     });

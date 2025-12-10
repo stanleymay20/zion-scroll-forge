@@ -111,7 +111,7 @@ class EdenicScienceScrollBiotechFacultyService {
         description: 'Advanced exploration of multi-dimensional physics integrated with spiritual realm understanding, examining quantum mechanics through the lens of divine reality',
         level: 'undergraduate',
         xpReward: 1500,
-        scrollCoinCost: 75
+        ScrollGoldCost: 75
       },
       {
         courseCode: 'ESB201',
@@ -119,7 +119,7 @@ class EdenicScienceScrollBiotechFacultyService {
         description: 'Scientific study of divine life restoration and resurrection principles, exploring cellular regeneration and divine healing biology',
         level: 'undergraduate',
         xpReward: 1200,
-        scrollCoinCost: 60
+        ScrollGoldCost: 60
       },
       {
         courseCode: 'ESB180',
@@ -127,7 +127,7 @@ class EdenicScienceScrollBiotechFacultyService {
         description: 'Sustainable agriculture based on Edenic principles and divine design, recovering pre-flood agricultural methods',
         level: 'undergraduate',
         xpReward: 1000,
-        scrollCoinCost: 50
+        ScrollGoldCost: 50
       },
       {
         courseCode: 'ESB250',
@@ -135,7 +135,7 @@ class EdenicScienceScrollBiotechFacultyService {
         description: 'Photonic and frequency therapy for divine healing applications, understanding light-based cellular regeneration',
         level: 'undergraduate',
         xpReward: 1300,
-        scrollCoinCost: 65
+        ScrollGoldCost: 65
       },
       {
         courseCode: 'ESB220',
@@ -143,7 +143,7 @@ class EdenicScienceScrollBiotechFacultyService {
         description: 'Understanding divine biological design and hormone sanctification for optimal human function according to divine design',
         level: 'undergraduate',
         xpReward: 1100,
-        scrollCoinCost: 55
+        ScrollGoldCost: 55
       },
       {
         courseCode: 'ESBLAB01',
@@ -151,7 +151,7 @@ class EdenicScienceScrollBiotechFacultyService {
         description: 'Hands-on research into quantum mechanics of spiritual anointing and divine flow phenomena',
         level: 'research_track',
         xpReward: 2000,
-        scrollCoinCost: 100
+        ScrollGoldCost: 100
       },
       {
         courseCode: 'ESBLAB02',
@@ -159,7 +159,7 @@ class EdenicScienceScrollBiotechFacultyService {
         description: 'Practical research into divine genetic patterns and genomic restoration techniques',
         level: 'research_track',
         xpReward: 2000,
-        scrollCoinCost: 100
+        ScrollGoldCost: 100
       }
     ];
   }
@@ -241,7 +241,7 @@ async function demonstrateEdenicScienceFaculty() {
       console.log(`  Level: ${course.level}`);
       console.log(`  Description: ${course.description.substring(0, 100)}...`);
       console.log(`  XP Reward: ${course.xpReward}`);
-      console.log(`  ScrollCoin Cost: ${course.scrollCoinCost}`);
+      console.log(`  ScrollGold Cost: ${course.ScrollGoldCost}`);
       console.log('');
     });
 

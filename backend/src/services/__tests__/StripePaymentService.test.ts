@@ -82,7 +82,7 @@ describe('StripePaymentService', () => {
         email: 'test@example.com',
         firstName: 'John',
         lastName: 'Doe',
-        scrollCoinWallet: 'cus_123',
+        scrollGoldWallet: 'cus_123',
       };
 
       const mockPaymentIntent = {
@@ -117,7 +117,7 @@ describe('StripePaymentService', () => {
         email: 'test@example.com',
         firstName: 'John',
         lastName: 'Doe',
-        scrollCoinWallet: null,
+        scrollGoldWallet: null,
       };
 
       const mockCustomer = {
@@ -182,7 +182,7 @@ describe('StripePaymentService', () => {
         email: 'test@example.com',
         firstName: 'John',
         lastName: 'Doe',
-        scrollCoinWallet: 'cus_123',
+        scrollGoldWallet: 'cus_123',
       };
 
       const mockSubscription = {
@@ -365,7 +365,7 @@ describe('StripePaymentService', () => {
     it('should retrieve payment history', async () => {
       const mockUser = {
         id: 'user123',
-        scrollCoinWallet: 'cus_123',
+        scrollGoldWallet: 'cus_123',
       };
 
       const mockPaymentIntents = {
@@ -402,7 +402,7 @@ describe('StripePaymentService', () => {
     it('should return empty array if user has no customer ID', async () => {
       const mockUser = {
         id: 'user123',
-        scrollCoinWallet: null,
+        scrollGoldWallet: null,
       };
 
       mockPrisma.user.findUnique.mockResolvedValue(mockUser);

@@ -338,7 +338,7 @@ Successfully implemented a comprehensive ScrollBadge Gallery system for displayi
 
 ## Requirements Validation
 
-### Requirement 8.1: ScrollCoin Economy and Blockchain Integration ✅
+### Requirement 8.1: ScrollGold Economy and Blockchain Integration ✅
 - Badge minting and blockchain verification
 - NFT-based credentials
 - IPFS storage integration

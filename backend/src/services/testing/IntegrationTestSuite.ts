@@ -419,15 +419,15 @@ export class IntegrationTestSuite extends EventEmitter {
         expectedOutcome: 'Portal account created and application data synchronized'
       },
       {
-        name: 'scrollcoin-integration',
-        description: 'Test integration with ScrollCoin system',
-        systems: ['scrollcoin'],
+        name: 'ScrollGold-integration',
+        description: 'Test integration with ScrollGold system',
+        systems: ['ScrollGold'],
         steps: [
           {
             name: 'create-wallet',
-            system: 'scrollcoin',
+            system: 'ScrollGold',
             action: 'create',
-            endpoint: '/api/scrollcoin/wallets',
+            endpoint: '/api/ScrollGold/wallets',
             method: 'POST',
             payload: {
               userId: 'USER-TEST-001',
@@ -438,9 +438,9 @@ export class IntegrationTestSuite extends EventEmitter {
           },
           {
             name: 'award-application-coins',
-            system: 'scrollcoin',
+            system: 'ScrollGold',
             action: 'update',
-            endpoint: '/api/scrollcoin/transactions',
+            endpoint: '/api/ScrollGold/transactions',
             method: 'POST',
             payload: {
               walletId: '{walletId}',
@@ -453,7 +453,7 @@ export class IntegrationTestSuite extends EventEmitter {
             validation: (response) => response.transactionId && response.newBalance === 50
           }
         ],
-        expectedOutcome: 'ScrollCoin wallet created and application reward awarded'
+        expectedOutcome: 'ScrollGold wallet created and application reward awarded'
       },
       {
         name: 'prayer-integration',
@@ -589,7 +589,7 @@ export class IntegrationTestSuite extends EventEmitter {
       'student-profile': '/student-profile',
       'assessment-engine': '/assessment',
       'university-portal': '/portal',
-      'scrollcoin': '/scrollcoin',
+      'ScrollGold': '/ScrollGold',
       'prayer': '/prayer',
       'audit-trail': '/audit'
     };

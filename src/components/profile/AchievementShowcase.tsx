@@ -121,7 +121,7 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
       service: <Star className="h-6 w-6" />,
       research: <Award className="h-6 w-6" />,
       scrollbadge: <Trophy className="h-6 w-6" />,
-      scrollcoin: <Trophy className="h-6 w-6" />,
+      ScrollGold: <Trophy className="h-6 w-6" />,
     };
     return icons[type] || <Award className="h-6 w-6" />;
   };
@@ -134,7 +134,7 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
       service: 'from-yellow-500 to-yellow-600',
       research: 'from-red-500 to-red-600',
       scrollbadge: 'from-indigo-500 to-indigo-600',
-      scrollcoin: 'from-amber-500 to-amber-600',
+      ScrollGold: 'from-amber-500 to-amber-600',
     };
     return colors[type] || 'from-gray-500 to-gray-600';
   };
@@ -215,7 +215,7 @@ const AchievementShowcase: React.FC<AchievementShowcaseProps> = ({
               <SelectItem value="service">Service</SelectItem>
               <SelectItem value="research">Research</SelectItem>
               <SelectItem value="scrollbadge">ScrollBadge</SelectItem>
-              <SelectItem value="scrollcoin">ScrollCoin</SelectItem>
+              <SelectItem value="ScrollGold">ScrollGold</SelectItem>
             </SelectContent>
           </Select>
         </div>

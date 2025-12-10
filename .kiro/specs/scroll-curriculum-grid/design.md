@@ -316,7 +316,7 @@ const scrollAICourses = [
 interface ScrollEconomyFaculty extends SupremeScrollFaculty {
   economicModels: EconomicModel[];
   financialSimulations: FinancialSimulation[];
-  scrollCoinIntegration: ScrollCoinIntegration;
+  ScrollGoldIntegration: ScrollGoldIntegration;
   kingdomEconomics: KingdomEconomics;
   globalFinanceReform: GlobalFinanceReform;
 }
@@ -504,7 +504,7 @@ const scrollAISpecializations = [
 interface ScrollEconomyFaculty extends SupremeScrollFaculty {
   economicDepartments: EconomicDepartment[];
   financialLabs: FinancialLab[];
-  scrollCoinIntegration: ScrollCoinIntegration;
+  ScrollGoldIntegration: ScrollGoldIntegration;
   kingdomEconomics: KingdomEconomics;
   globalFinanceReform: GlobalFinanceReform;
   tradingSystems: TradingSystem[];
@@ -537,12 +537,12 @@ const scrollEconomyDepartments = [
     ]
   },
   {
-    name: "ScrollCoin & Digital Currency",
+    name: "ScrollGold & Digital Currency",
     focus: "Cryptocurrency and blockchain for kingdom economics",
     courses: [
       {
         courseCode: "SEC205",
-        title: "ScrollCoin vs Babylonian Currencies",
+        title: "ScrollGold vs Babylonian Currencies",
         level: CourseLevel.UNDERGRADUATE,
         description: "Understanding divine currency versus fiat money systems"
       },
@@ -1388,8 +1388,8 @@ const sacredLaborDepartments = [
     ]
   },
   {
-    name: "ScrollCoin Startups & Blockchain Business",
-    focus: "Building businesses using ScrollCoin and blockchain technology",
+    name: "ScrollGold Startups & Blockchain Business",
+    focus: "Building businesses using ScrollGold and blockchain technology",
     courses: [
       {
         courseCode: "SLI210",
@@ -1399,7 +1399,7 @@ const sacredLaborDepartments = [
       },
       {
         courseCode: "SLI310",
-        title: "ScrollCoin-based Business Models",
+        title: "ScrollGold-based Business Models",
         level: CourseLevel.GRADUATE,
         description: "Creating sustainable businesses using divine currency"
       },

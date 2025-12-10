@@ -2,12 +2,12 @@
  * Reward Mechanism Service
  * "Where righteousness abounds, divine rewards flow"
  * 
- * Automated service for distributing ScrollCoin rewards based on user activities,
+ * Automated service for distributing ScrollGold rewards based on user activities,
  * course completions, peer assistance, and spiritual growth milestones.
  */
 
 import { PrismaClient } from '@prisma/client';
-import ScrollCoinService from './ScrollCoinService';
+import ScrollGoldService from './ScrollGoldService';
 import { logger } from '../utils/logger';
 
 const prisma = new PrismaClient();
@@ -53,11 +53,11 @@ export interface RewardRule {
 
 export class RewardMechanismService {
   private static instance: RewardMechanismService;
-  private scrollCoinService: ScrollCoinService;
+  private ScrollGoldService: ScrollGoldService;
   private rewardRules: Map<RewardEventType, RewardRule>;
 
   private constructor() {
-    this.scrollCoinService = ScrollCoinService.getInstance();
+    this.ScrollGoldService = ScrollGoldService.getInstance();
     this.initializeRewardRules();
   }
 
@@ -173,7 +173,7 @@ export class RewardMechanismService {
   }
 
   /**
-   * Process a reward event and distribute ScrollCoin
+   * Process a reward event and distribute ScrollGold
    */
   async processRewardEvent(event: RewardEvent): Promise<{
     awarded: boolean;
@@ -205,10 +205,10 @@ export class RewardMechanismService {
       // Calculate reward amount
       const amount = await this.calculateRewardAmount(event, rule);
       
-      // Award the ScrollCoin
-      const transaction = await this.awardScrollCoin(event, amount);
+      // Award the ScrollGold
+      const transaction = await this.awardScrollGold(event, amount);
 
-      logger.info(`Reward awarded: ${amount} ScrollCoin to user ${event.userId} for ${event.eventType}`);
+      logger.info(`Reward awarded: ${amount} ScrollGold to user ${event.userId} for ${event.eventType}`);
 
       return {
         awarded: true,
@@ -309,12 +309,12 @@ export class RewardMechanismService {
   }
 
   /**
-   * Award ScrollCoin to user
+   * Award ScrollGold to user
    */
-  private async awardScrollCoin(event: RewardEvent, amount: number) {
+  private async awardScrollGold(event: RewardEvent, amount: number) {
     const description = this.generateRewardDescription(event);
     
-    return await this.scrollCoinService.mintScrollCoin(
+    return await this.ScrollGoldService.mintScrollGold(
       event.userId,
       this.mapEventTypeToActivity(event.eventType),
       description,
@@ -345,9 +345,9 @@ export class RewardMechanismService {
   }
 
   /**
-   * Map event type to ScrollCoin activity type
+   * Map event type to ScrollGold activity type
    */
-  private mapEventTypeToActivity(eventType: RewardEventType): keyof import('./ScrollCoinService').RewardConfiguration {
+  private mapEventTypeToActivity(eventType: RewardEventType): keyof import('./ScrollGoldService').RewardConfiguration {
     const mapping = {
       [RewardEventType.COURSE_COMPLETION]: 'courseCompletion' as const,
       [RewardEventType.PEER_ASSISTANCE]: 'peerAssistance' as const,
@@ -373,7 +373,7 @@ export class RewardMechanismService {
   ): Promise<boolean> {
     const cutoffTime = new Date(Date.now() - timeWindowHours * 60 * 60 * 1000);
     
-    const recentTransaction = await prisma.scrollCoinTransaction.findFirst({
+    const recentTransaction = await prisma.ScrollGoldTransaction.findFirst({
       where: {
         userId,
         activityType: eventType,
@@ -492,7 +492,7 @@ export class RewardMechanismService {
     recentRewards: any[];
   }> {
     try {
-      const transactions = await prisma.scrollCoinTransaction.findMany({
+      const transactions = await prisma.ScrollGoldTransaction.findMany({
         where: {
           userId,
           type: { in: ['EARNED', 'BONUS'] }

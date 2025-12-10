@@ -29,13 +29,13 @@
   - [ ] 2.1 Integrate traditional payment methods
     - Implement credit card processing (Stripe/PayPal)
     - Add local payment methods for global markets
-    - Create clear USD pricing display alongside ScrollCoin
+    - Create clear USD pricing display alongside ScrollGold
     - _Requirements: 3.1, 3.2_
 
-  - [ ] 2.2 Develop ScrollCoin transition system
+  - [ ] 2.2 Develop ScrollGold transition system
     - Build value demonstration calculators
     - Create transition incentive programs
-    - Implement gradual ScrollCoin introduction
+    - Implement gradual ScrollGold introduction
     - _Requirements: 3.3, 3.4, 3.5_
 
   - [ ] 2.3 Create pricing transparency system
@@ -262,7 +262,7 @@
 
 ### Ongoing Success Metrics
 - User retention rate maintained at 85%+
-- ScrollCoin adoption rate reaching 60% of active users
+- ScrollGold adoption rate reaching 60% of active users
 - Brand awareness increased by 500% in target markets
 - Platform recognized as #1 spiritual-integrated education platform
 

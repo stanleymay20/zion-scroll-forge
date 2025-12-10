@@ -64,8 +64,8 @@ const OverviewCards: React.FC<OverviewCardsProps> = ({ overview }) => {
       changeType: 'positive' as const
     },
     {
-      title: 'ScrollCoin Circulation',
-      value: overview.scrollCoinCirculation.toLocaleString(),
+      title: 'ScrollGold Circulation',
+      value: overview.ScrollGoldCirculation.toLocaleString(),
       icon: '🪙',
       color: 'bg-orange-500',
       change: '+18%',

@@ -529,6 +529,7 @@ GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO authenticated;
 -- COMPLETION FLAG
 -- ============================================================================
 
-INSERT INTO public.development_flags (name, flag_key, is_enabled, created_at)
-VALUES ('Academic Integrity System', 'Jesus-Christ-is-Lord-Academic-Integrity', true, NOW())
-ON CONFLICT (flag_key) DO UPDATE SET is_enabled = true, created_at = NOW();
+-- Note: development_flags table not created yet, skipping completion flag
+-- INSERT INTO public.development_flags (name, flag_key, is_enabled, created_at)
+-- VALUES ('Academic Integrity System', 'Jesus-Christ-is-Lord-Academic-Integrity', true, NOW())
+-- ON CONFLICT (flag_key) DO UPDATE SET is_enabled = true, created_at = NOW();

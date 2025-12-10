@@ -268,7 +268,7 @@ describe('PropheticLawGovernanceFacultyService', () => {
           difficulty: 'intermediate',
           duration: 40,
           scrollXPReward: 100,
-          scrollCoinCost: 25,
+          scrollGoldCost: 25,
           prerequisites: [],
           isActive: true,
           publishedAt: new Date(),

@@ -78,7 +78,7 @@ System settings and configuration management.
 
 **Features:**
 - General settings (site name, URL, maintenance mode)
-- Feature toggles (AI tutor, ScrollCoin, etc.)
+- Feature toggles (AI tutor, ScrollGold, etc.)
 - System limits configuration
 - Security settings
 - AI provider configuration

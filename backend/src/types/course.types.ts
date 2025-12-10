@@ -29,7 +29,7 @@ export interface CourseCreateInput {
   difficulty: Difficulty;
   duration: number; // in hours
   scrollXPReward?: number;
-  scrollCoinCost?: number;
+  ScrollGoldCost?: number;
   facultyId: string;
   prerequisites?: string[];
   videoUrl?: string;
@@ -44,7 +44,7 @@ export interface CourseUpdateInput {
   difficulty?: Difficulty;
   duration?: number;
   scrollXPReward?: number;
-  scrollCoinCost?: number;
+  ScrollGoldCost?: number;
   facultyId?: string;
   prerequisites?: string[];
   videoUrl?: string;
@@ -60,7 +60,7 @@ export interface CourseResponse {
   difficulty: Difficulty;
   duration: number;
   scrollXPReward: number;
-  scrollCoinCost: number;
+  ScrollGoldCost: number;
   facultyId: string;
   faculty?: {
     id: string;
@@ -338,7 +338,7 @@ export interface CourseSearchParams {
   difficulty?: Difficulty;
   minDuration?: number;
   maxDuration?: number;
-  maxScrollCoinCost?: number;
+  maxScrollGoldCost?: number;
   isActive?: boolean;
   page?: number;
   limit?: number;
@@ -366,7 +366,7 @@ export interface CourseAnalytics {
   averageProgress: number;
   averageRating: number;
   totalScrollXPAwarded: number;
-  totalScrollCoinEarned: number;
+  totalScrollGoldEarned: number;
   popularModules: {
     moduleId: string;
     title: string;

@@ -197,8 +197,8 @@ serve(async (request) => {
               created_by_uuid: userId
             })
 
-            // Award ScrollCoins for payment
-            await supabaseClient.rpc('earn_scrollcoin', {
+            // Award ScrollGolds for payment
+            await supabaseClient.rpc('earn_ScrollGold', {
               user_uuid: userId,
               amount: Math.floor(paymentIntent.amount / 1000), // 1 coin per dollar
               reason: 'Payment: ' + (paymentIntent.description || 'Tuition'),
@@ -321,8 +321,8 @@ async function processEnrollmentAfterPayment(supabaseClient: any, userId: string
       return
     }
 
-    // Award ScrollCoins for enrollment
-    await supabaseClient.rpc('earn_scrollcoin', {
+    // Award ScrollGolds for enrollment
+    await supabaseClient.rpc('earn_ScrollGold', {
       user_uuid: userId,
       amount: 100, // 100 coins for course enrollment
       reason: `Enrolled in: ${course.title}`,

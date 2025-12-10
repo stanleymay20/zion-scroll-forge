@@ -30,19 +30,19 @@
 ## ⚠️ Remaining Issues
 
 ### Issue 1: Missing Hook File
-**File**: `src/hooks/useScrollCoin.ts`
+**File**: `src/hooks/useScrollGold.ts`
 **Impact**: Frontend build fails
 **Error**: Module not found
 
 **Solution Required**:
 ```typescript
-// Create src/hooks/useScrollCoin.ts
-export function useScrollCoin() {
+// Create src/hooks/useScrollGold.ts
+export function useScrollGold() {
   // Implementation needed
   return {
     balance: 0,
     transactions: [],
-    // ... other ScrollCoin functionality
+    // ... other ScrollGold functionality
   };
 }
 ```
@@ -70,7 +70,7 @@ export function useScrollCoin() {
 - ⚠️ Seed files have type errors (non-blocking)
 
 ### Frontend
-- ⚠️ Build fails due to missing `useScrollCoin` hook
+- ⚠️ Build fails due to missing `useScrollGold` hook
 - ✅ All merge conflicts resolved
 - ✅ All dependencies installed
 - ✅ Syntax errors fixed
@@ -82,7 +82,7 @@ export function useScrollCoin() {
 1. **Create missing hook**:
 ```bash
 # Create the file
-touch src/hooks/useScrollCoin.ts
+touch src/hooks/useScrollGold.ts
 ```
 
 2. **Implement basic hook** (or copy from backup if available):
@@ -90,14 +90,14 @@ touch src/hooks/useScrollCoin.ts
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
-export function useScrollCoin() {
+export function useScrollGold() {
   const { user } = useAuth();
   const [balance, setBalance] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
-      // Fetch ScrollCoin balance
+      // Fetch ScrollGold balance
       // Implementation here
       setLoading(false);
     }
@@ -106,7 +106,7 @@ export function useScrollCoin() {
   return {
     balance,
     loading,
-    // Add other ScrollCoin methods
+    // Add other ScrollGold methods
   };
 }
 ```
@@ -143,8 +143,8 @@ npm run build
 ## 🎯 Next Steps
 
 ### Immediate (Required for Build)
-1. Create `src/hooks/useScrollCoin.ts` hook
-2. Implement basic ScrollCoin functionality
+1. Create `src/hooks/useScrollGold.ts` hook
+2. Implement basic ScrollGold functionality
 3. Run `npm run build` to verify
 
 ### Short Term (Optional)

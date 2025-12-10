@@ -45,8 +45,8 @@ export default function ScriptureMemory() {
 
       if (error) throw error;
 
-      // Award ScrollCoins
-      await supabase.rpc("earn_scrollcoin", {
+      // Award ScrollGolds
+      await supabase.rpc("earn_ScrollGold", {
         p_user_id: user!.id,
         p_amount: 15,
         p_desc: "Scripture memorized",
@@ -55,7 +55,7 @@ export default function ScriptureMemory() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["scripture-memory"] });
       setNewVerse({ reference: "", text: "" });
-      toast({ title: "✅ Verse added! +15 ScrollCoins" });
+      toast({ title: "✅ Verse added! +15 ScrollGolds" });
     },
   });
 

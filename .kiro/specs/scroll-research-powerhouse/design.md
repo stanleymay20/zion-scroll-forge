@@ -237,7 +237,7 @@ interface ScrollEconomyObservatory extends ResearchCenter {
   inflationDashboards: EconomicDashboard[];
   povertyAnalysis: PovertyStudy[];
   jobMarketTracking: JobMarketData[];
-  scrollCoinEconomics: ScrollCoinAnalysis[];
+  ScrollGoldEconomics: ScrollGoldAnalysis[];
   divineFinanceModels: FinanceModel[];
 }
 ```

@@ -244,7 +244,7 @@ describe('LearnTubeAIArchitectureAnalysisService', () => {
 
       // Verify pricing model
       expect(result.pricingModel.model).toBe('subscription');
-      expect(result.pricingModel.scrollCoinIntegration).toBe(false);
+      expect(result.pricingModel.scrollGoldIntegration).toBe(false);
       expect(result.pricingModel.spiritualEconomyAlignment).toBe(false);
 
       // Verify weaknesses include key limitations

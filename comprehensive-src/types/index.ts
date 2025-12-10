@@ -105,7 +105,7 @@ export interface XPAward {
   lesson_id: string; // UUID
   course_id: string; // UUID
   xp_amount: number;
-  scroll_coins: number;
+  scroll_golds: number;
   awarded_at: string; // ISO timestamp
   award_type: XPAwardType;
 }

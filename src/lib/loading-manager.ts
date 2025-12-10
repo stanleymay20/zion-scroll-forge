@@ -183,7 +183,7 @@ export const LoadingKeys = {
   
   // Payments
   PAYMENT_PROCESS: 'payment:process',
-  SCROLLCOIN_TRANSFER: 'scrollcoin:transfer',
+  scrollgold_TRANSFER: 'scrollgold:transfer',
   
   // Community
   POST_CREATE: 'post:create',

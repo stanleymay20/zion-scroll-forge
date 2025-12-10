@@ -123,7 +123,7 @@ export default function QuizPage() {
         onSuccess: () => {
           toast({
             title: percentage >= 70 ? '✅ Quiz Passed!' : '❌ Quiz Not Passed',
-            description: `You scored ${percentage}%. ${percentage >= 70 ? 'ScrollCoins have been added!' : 'Keep studying and try again.'}`,
+            description: `You scored ${percentage}%. ${percentage >= 70 ? 'ScrollGolds have been added!' : 'Keep studying and try again.'}`,
           });
         },
       }

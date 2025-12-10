@@ -322,25 +322,25 @@ graph TB
 ## Billing/Coin Logic
 
 ### Guidance Services
-- **Basic Guidance:** 10 ScrollCoins for general technical advice and recommendations
-- **Code Generation:** 25 ScrollCoins for custom code generation with documentation
-- **Architecture Review:** 50 ScrollCoins for comprehensive system architecture analysis
-- **Innovation Session:** 75 ScrollCoins for creative problem-solving and breakthrough solutions
+- **Basic Guidance:** 10 ScrollGolds for general technical advice and recommendations
+- **Code Generation:** 25 ScrollGolds for custom code generation with documentation
+- **Architecture Review:** 50 ScrollGolds for comprehensive system architecture analysis
+- **Innovation Session:** 75 ScrollGolds for creative problem-solving and breakthrough solutions
 
 ### Learning Integration
-- **Skill Assessment:** 15 ScrollCoins for personalized skill evaluation and learning path
-- **Resource Curation:** 20 ScrollCoins for customized learning resource recommendations
-- **Progress Tracking:** 10 ScrollCoins for detailed skill progression monitoring
-- **Mentorship Matching:** 30 ScrollCoins for connecting with appropriate technical mentors
+- **Skill Assessment:** 15 ScrollGolds for personalized skill evaluation and learning path
+- **Resource Curation:** 20 ScrollGolds for customized learning resource recommendations
+- **Progress Tracking:** 10 ScrollGolds for detailed skill progression monitoring
+- **Mentorship Matching:** 30 ScrollGolds for connecting with appropriate technical mentors
 
 ### Premium Features
-- **Real-time Collaboration:** 40 ScrollCoins for live coding sessions and pair programming
-- **Project Optimization:** 60 ScrollCoins for comprehensive project performance optimization
-- **Security Audit:** 80 ScrollCoins for thorough security analysis and vulnerability assessment
-- **Deployment Guidance:** 45 ScrollCoins for production deployment strategy and support
+- **Real-time Collaboration:** 40 ScrollGolds for live coding sessions and pair programming
+- **Project Optimization:** 60 ScrollGolds for comprehensive project performance optimization
+- **Security Audit:** 80 ScrollGolds for thorough security analysis and vulnerability assessment
+- **Deployment Guidance:** 45 ScrollGolds for production deployment strategy and support
 
 ### Value Creation Rewards
-- **Code Quality Excellence:** Students earn 20 ScrollCoins for generating high-quality, well-documented code
-- **Innovation Recognition:** 50 ScrollCoins for developing novel solutions with kingdom impact
-- **Knowledge Sharing:** 15 ScrollCoins for helping other students and contributing to community learning
-- **Project Success:** 100 ScrollCoins for completing projects that demonstrate significant technical achievement and kingdom alignment
+- **Code Quality Excellence:** Students earn 20 ScrollGolds for generating high-quality, well-documented code
+- **Innovation Recognition:** 50 ScrollGolds for developing novel solutions with kingdom impact
+- **Knowledge Sharing:** 15 ScrollGolds for helping other students and contributing to community learning
+- **Project Success:** 100 ScrollGolds for completing projects that demonstrate significant technical achievement and kingdom alignment

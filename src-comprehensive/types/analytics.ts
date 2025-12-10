@@ -55,7 +55,7 @@ export interface GlobalImpactMetrics {
   totalStudents: number;
   globalReach: GeographicDistribution;
   careerPathwayDistribution: CareerPathwayDistribution;
-  scrollCoinEconomy: ScrollCoinMetrics;
+  ScrollGoldEconomy: ScrollGoldMetrics;
   kingdomImpact: KingdomImpactMetrics;
   partnershipMetrics: PartnershipMetrics;
   accessibilityMetrics: AccessibilityMetrics;
@@ -91,7 +91,7 @@ export interface OverviewMetrics {
   graduationRate: number;
   globalReachCountries: number;
   averageSpiritualGrowth: number;
-  scrollCoinCirculation: number;
+  ScrollGoldCirculation: number;
 }
 
 export interface TrendAnalysis {
@@ -188,7 +188,7 @@ export interface CareerPathwayDistribution {
   };
 }
 
-export interface ScrollCoinMetrics {
+export interface ScrollGoldMetrics {
   totalCirculation: number;
   dailyTransactions: number;
   rewardDistribution: RewardDistribution;

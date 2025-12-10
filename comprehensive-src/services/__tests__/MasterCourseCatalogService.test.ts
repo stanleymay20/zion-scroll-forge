@@ -138,7 +138,7 @@ describe('MasterCourseCatalogService', () => {
       const courses = [
         createSampleCourse('ai-course-1', 'Introduction to Prophetic AI', SupremeScrollFaculty.SCROLL_AI_INTELLIGENCE),
         createSampleCourse('ai-course-2', 'Advanced ScrollAgent Development', SupremeScrollFaculty.SCROLL_AI_INTELLIGENCE),
-        createSampleCourse('econ-course-1', 'ScrollCoin Economics', SupremeScrollFaculty.SCROLL_ECONOMY_FINANCE),
+        createSampleCourse('econ-course-1', 'ScrollGold Economics', SupremeScrollFaculty.SCROLL_ECONOMY_FINANCE),
         createSampleCourse('theo-course-1', 'Biblical Hermeneutics', SupremeScrollFaculty.SCROLL_THEOLOGY_BIBLE)
       ];
 
@@ -199,7 +199,7 @@ describe('MasterCourseCatalogService', () => {
       // Add sample courses
       const courses = [
         createSampleCourse('ai-course-1', 'Introduction to Prophetic AI', SupremeScrollFaculty.SCROLL_AI_INTELLIGENCE),
-        createSampleCourse('econ-course-1', 'ScrollCoin Economics', SupremeScrollFaculty.SCROLL_ECONOMY_FINANCE)
+        createSampleCourse('econ-course-1', 'ScrollGold Economics', SupremeScrollFaculty.SCROLL_ECONOMY_FINANCE)
       ];
 
       for (const course of courses) {
@@ -396,7 +396,7 @@ describe('MasterCourseCatalogService', () => {
       prerequisites: [],
       estimatedHours: 40,
       xpReward: 100,
-      scrollCoinCost: 50,
+      ScrollGoldCost: 50,
       deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR],
       assessmentMethods: [
         {
@@ -583,7 +583,7 @@ describe('CourseSearchEngine', () => {
       prerequisites: [],
       estimatedHours: 40,
       xpReward: 100,
-      scrollCoinCost: 50,
+      ScrollGoldCost: 50,
       deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR],
       assessmentMethods: [
         {

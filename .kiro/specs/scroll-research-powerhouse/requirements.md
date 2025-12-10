@@ -13,7 +13,7 @@ ScrollUniversity Research Powerhouse represents the Kingdom's most advanced prop
 #### Acceptance Criteria
 
 1. WHEN faculties are established THEN the system SHALL support ScrollAI & Engineering Faculty with GPT-5/6 research, Sacred Robotics, ScrollAgent design, XR development, and Edge AI
-2. WHEN economic research is conducted THEN the system SHALL enable Faculty of ScrollEconomy & Divine Finance with R&D on sacred economics, alternative currencies, sovereign budgets, and circular ScrollCoin economies
+2. WHEN economic research is conducted THEN the system SHALL enable Faculty of ScrollEconomy & Divine Finance with R&D on sacred economics, alternative currencies, sovereign budgets, and circular ScrollGold economies
 3. WHEN governance research occurs THEN the system SHALL provide Faculty of Sacred Governance & International Law with geopolitics, UN/SDG diplomacy, prophetic statecraft, and treaty analysis
 4. WHEN theological research is performed THEN the system SHALL support Faculty of ScrollBible & Theology with Hebrew-Greek exegesis, scroll harmonics, kingdom history, and Christology XR
 5. WHEN prophetic intelligence is gathered THEN the system SHALL enable Faculty of GeoProphetic Intelligence with portal mapping, war analysis, geography, climate prophecy, and end-time seismic studies

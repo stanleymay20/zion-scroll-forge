@@ -80,11 +80,11 @@ async function seedCompetitiveAnalysisSystem() {
                     source: 'internal',
                     platform: 'scrolluniversity',
                     dataType: 'technology',
-                    content: 'ScrollUniversity utilizes blockchain-integrated architecture with HeavenLedger for immutable credential verification and ScrollCoin economic system.',
+                    content: 'ScrollUniversity utilizes blockchain-integrated architecture with HeavenLedger for immutable credential verification and ScrollGold economic system.',
                     reliability: 0.95,
                     verificationStatus: 'verified',
                     spiritualAlignment: true,
-                    tags: JSON.stringify(['blockchain', 'heavenledger', 'scrollcoin', 'credentials'])
+                    tags: JSON.stringify(['blockchain', 'heavenledger', 'ScrollGold', 'credentials'])
                 }
             }),
             prisma.researchData.create({
@@ -125,7 +125,7 @@ async function seedCompetitiveAnalysisSystem() {
                     spiritualIntegration: true
                 }),
                 featuresData: JSON.stringify({
-                    coreFeatures: ['prophetic-ai-tutoring', 'scrollcoin-economy', 'spiritual-formation', 'global-accessibility'],
+                    coreFeatures: ['prophetic-ai-tutoring', 'ScrollGold-economy', 'spiritual-formation', 'global-accessibility'],
                     uniqueFeatures: ['prophetic-intelligence', 'divine-scorecard', 'kingdom-purpose-alignment'],
                     aiCapabilities: ['ScrollGPT', 'cultural-fluency', 'spiritual-discernment']
                 }),
@@ -141,7 +141,7 @@ async function seedCompetitiveAnalysisSystem() {
                     'Global offline accessibility with mesh networking',
                     'Comprehensive 31+ system integration',
                     'Prophetic AI with spiritual discernment',
-                    'ScrollCoin economic innovation'
+                    'ScrollGold economic innovation'
                 ]),
                 weaknesses: JSON.stringify([
                     'New platform requiring market education',
@@ -282,7 +282,7 @@ async function seedCompetitiveAnalysisSystem() {
             prisma.featureComparison.create({
                 data: {
                     analysisId: competitiveAnalysis.id,
-                    featureName: 'ScrollCoin Economy',
+                    featureName: 'ScrollGold Economy',
                     category: 'economic-model',
                     scrollUniversityAvailability: 'available-excellent',
                     learntubeAiAvailability: 'unavailable',

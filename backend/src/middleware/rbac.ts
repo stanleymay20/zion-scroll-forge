@@ -63,8 +63,8 @@ export enum Permission {
   PAYMENT_VIEW = 'payment:view',
   PAYMENT_PROCESS = 'payment:process',
   PAYMENT_REFUND = 'payment:refund',
-  SCROLLCOIN_MINT = 'scrollcoin:mint',
-  SCROLLCOIN_TRANSFER = 'scrollcoin:transfer',
+  scrollgold_MINT = 'scrollgold:mint',
+  scrollgold_TRANSFER = 'scrollgold:transfer',
   
   // Spiritual formation permissions
   SPIRITUAL_VIEW = 'spiritual:view',
@@ -84,7 +84,7 @@ const STUDENT_PERMISSIONS: Permission[] = [
   Permission.ASSESSMENT_SUBMIT,
   Permission.CONTENT_VIEW,
   Permission.SPIRITUAL_VIEW,
-  Permission.SCROLLCOIN_TRANSFER,
+  Permission.scrollgold_TRANSFER,
   Permission.USER_VIEW
 ];
 
@@ -114,7 +114,7 @@ const ADMIN_PERMISSIONS: Permission[] = [
   Permission.PAYMENT_VIEW,
   Permission.PAYMENT_PROCESS,
   Permission.PAYMENT_REFUND,
-  Permission.SCROLLCOIN_MINT,
+  Permission.scrollgold_MINT,
   Permission.SYSTEM_LOGS
 ];
 

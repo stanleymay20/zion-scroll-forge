@@ -233,7 +233,7 @@ graph TB
 ### Data Flow (Outgoing)
 - **scroll-degree-engine:** Assessment results for competency tracking and degree progress
 - **scroll-transcript-generator:** Assessment scores and achievements for transcript inclusion
-- **scroll-scrollcoin-meter:** Assessment completion rewards and performance bonuses
+- **scroll-ScrollGold-meter:** Assessment completion rewards and performance bonuses
 - **scroll-audit-trail-spec:** All assessment activities and integrity monitoring
 
 ## Guardrails
@@ -292,25 +292,25 @@ graph TB
 ## Billing/Coin Logic
 
 ### Assessment Rewards
-- **Basic Assessment Completion:** 10-25 ScrollCoins based on effort and accuracy
-- **Excellence Bonuses:** 50-100 ScrollCoins for exceptional performance and insight
-- **Improvement Recognition:** 15-30 ScrollCoins for significant progress and growth
-- **Peer Assessment Participation:** 5-15 ScrollCoins for quality peer evaluations
+- **Basic Assessment Completion:** 10-25 ScrollGolds based on effort and accuracy
+- **Excellence Bonuses:** 50-100 ScrollGolds for exceptional performance and insight
+- **Improvement Recognition:** 15-30 ScrollGolds for significant progress and growth
+- **Peer Assessment Participation:** 5-15 ScrollGolds for quality peer evaluations
 
 ### Premium Assessment Features
-- **Detailed Feedback Reports:** 25 ScrollCoins for comprehensive analysis and improvement plans
-- **Mentor Assessment Sessions:** 50 ScrollCoins for one-on-one evaluation and guidance
-- **Competency Certification:** 100 ScrollCoins for verified skill certification
-- **Portfolio Assessment:** 75 ScrollCoins for comprehensive portfolio evaluation
+- **Detailed Feedback Reports:** 25 ScrollGolds for comprehensive analysis and improvement plans
+- **Mentor Assessment Sessions:** 50 ScrollGolds for one-on-one evaluation and guidance
+- **Competency Certification:** 100 ScrollGolds for verified skill certification
+- **Portfolio Assessment:** 75 ScrollGolds for comprehensive portfolio evaluation
 
 ### Assessment Creation Costs
 - **Basic Assessment Creation:** Free for instructors (included in course development)
-- **AI-Enhanced Assessments:** 50 ScrollCoins for advanced AI evaluation features
-- **Multi-Dimensional Assessments:** 75 ScrollCoins for comprehensive holistic evaluation
-- **Custom Assessment Design:** 100 ScrollCoins for specialized assessment creation
+- **AI-Enhanced Assessments:** 50 ScrollGolds for advanced AI evaluation features
+- **Multi-Dimensional Assessments:** 75 ScrollGolds for comprehensive holistic evaluation
+- **Custom Assessment Design:** 100 ScrollGolds for specialized assessment creation
 
 ### Quality Incentives
-- **High Student Satisfaction:** Instructors earn 25 ScrollCoins for well-designed assessments
+- **High Student Satisfaction:** Instructors earn 25 ScrollGolds for well-designed assessments
 - **Accurate AI Evaluation:** System earns efficiency points for consistent AI performance
-- **Peer Assessment Quality:** Students earn 10 ScrollCoins for helpful peer evaluations
-- **Mentor Validation Accuracy:** Mentors earn 30 ScrollCoins for accurate spiritual assessments
+- **Peer Assessment Quality:** Students earn 10 ScrollGolds for helpful peer evaluations
+- **Mentor Validation Accuracy:** Mentors earn 30 ScrollGolds for accurate spiritual assessments

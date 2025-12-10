@@ -3,7 +3,7 @@ import { PeerMentoringService } from './PeerMentoringService';
 import { StudyGroupService } from './StudyGroupService';
 import { CollaborativeProjectService } from './CollaborativeProjectService';
 import { GlobalNetworkingService } from './GlobalNetworkingService';
-import { ScrollCoinService } from './ScrollCoinService';
+import { ScrollGoldService } from './ScrollGoldService';
 import { PropheticIntelligenceService } from './PropheticIntelligenceService';
 
 /**
@@ -16,7 +16,7 @@ export class CommunityCollaborationService {
   private studyGroupService: StudyGroupService;
   private projectService: CollaborativeProjectService;
   private networkingService: GlobalNetworkingService;
-  private scrollCoinService: ScrollCoinService;
+  private ScrollGoldService: ScrollGoldService;
   private propheticService: PropheticIntelligenceService;
 
   constructor() {
@@ -25,7 +25,7 @@ export class CommunityCollaborationService {
     this.studyGroupService = new StudyGroupService();
     this.projectService = new CollaborativeProjectService();
     this.networkingService = new GlobalNetworkingService();
-    this.scrollCoinService = new ScrollCoinService();
+    this.ScrollGoldService = new ScrollGoldService();
     this.propheticService = new PropheticIntelligenceService();
   }
 
@@ -61,7 +61,7 @@ export class CommunityCollaborationService {
     studyGroups: any[];
     projects: any[];
     connections: any[];
-    scrollCoinBalance: number;
+    ScrollGoldBalance: number;
     communityRank: string;
     spiritualImpact: any;
     recentActivity: any[];
@@ -72,7 +72,7 @@ export class CommunityCollaborationService {
       userStudyGroups,
       userProjects,
       userConnections,
-      scrollCoinBalance,
+      ScrollGoldBalance,
       communityRank,
       spiritualImpact,
       recentActivity
@@ -82,7 +82,7 @@ export class CommunityCollaborationService {
       this.studyGroupService.getStudyGroupsByUser(userId),
       this.projectService.getProjectsByUser(userId),
       this.networkingService.getConnectionsByUser(userId),
-      this.scrollCoinService.getBalance(userId),
+      this.ScrollGoldService.getBalance(userId),
       this.calculateCommunityRank(userId),
       this.assessSpiritualImpact(userId),
       this.getRecentCommunityActivity(userId)
@@ -94,7 +94,7 @@ export class CommunityCollaborationService {
       studyGroups: userStudyGroups,
       projects: userProjects,
       connections: userConnections,
-      scrollCoinBalance,
+      ScrollGoldBalance,
       communityRank,
       spiritualImpact,
       recentActivity
@@ -184,8 +184,8 @@ export class CommunityCollaborationService {
       rewardDescription += ' with spiritual impact';
     }
 
-    // Award ScrollCoin to helper
-    await this.scrollCoinService.awardCoins(
+    // Award ScrollGold to helper
+    await this.ScrollGoldService.awardCoins(
       assistanceData.helperId,
       finalReward,
       rewardDescription
@@ -259,7 +259,7 @@ export class CommunityCollaborationService {
     activeMentorships: number;
     activeStudyGroups: number;
     activeProjects: number;
-    scrollCoinsDistributed: number;
+    ScrollGoldsDistributed: number;
     spiritualImpactMetrics: any;
     globalReach: any;
     peerAssistanceStats: any;
@@ -270,7 +270,7 @@ export class CommunityCollaborationService {
       activeMentorships: await this.getActiveMentorshipsCount(),
       activeStudyGroups: await this.getActiveStudyGroupsCount(),
       activeProjects: await this.getActiveProjectsCount(),
-      scrollCoinsDistributed: await this.getTotalScrollCoinsDistributed(),
+      ScrollGoldsDistributed: await this.getTotalScrollGoldsDistributed(),
       spiritualImpactMetrics: await this.getSpiritualImpactMetrics(),
       globalReach: await this.getGlobalReachMetrics(),
       peerAssistanceStats: await this.getPeerAssistanceStats()
@@ -299,8 +299,8 @@ export class CommunityCollaborationService {
 
     const eventId = await this.storeSpiritualEvent(eventData);
     
-    // Award ScrollCoin for creating spiritual community event
-    await this.scrollCoinService.awardCoins(
+    // Award ScrollGold for creating spiritual community event
+    await this.ScrollGoldService.awardCoins(
       eventData.createdBy,
       50,
       'Created spiritual community event'
@@ -311,12 +311,12 @@ export class CommunityCollaborationService {
 
   // Helper methods
   private async calculateCommunityRank(userId: string): Promise<string> {
-    // Calculate user's community rank based on contributions and ScrollCoin earnings
+    // Calculate user's community rank based on contributions and ScrollGold earnings
     const contributions = await this.getUserCommunityContributions(userId);
     
-    if (contributions.totalScrollCoins >= 1000) return 'Community Leader';
-    if (contributions.totalScrollCoins >= 500) return 'Active Contributor';
-    if (contributions.totalScrollCoins >= 200) return 'Regular Member';
+    if (contributions.totalScrollGolds >= 1000) return 'Community Leader';
+    if (contributions.totalScrollGolds >= 500) return 'Active Contributor';
+    if (contributions.totalScrollGolds >= 200) return 'Regular Member';
     return 'New Member';
   }
 
@@ -344,7 +344,7 @@ export class CommunityCollaborationService {
   }
 
   private async getUserCommunityContributions(userId: string): Promise<any> {
-    return { totalScrollCoins: 0, forumPosts: 0, mentoringSessions: 0 };
+    return { totalScrollGolds: 0, forumPosts: 0, mentoringSessions: 0 };
   }
 
   // Analytics helper methods
@@ -353,7 +353,7 @@ export class CommunityCollaborationService {
   private async getActiveMentorshipsCount(): Promise<number> { return 0; }
   private async getActiveStudyGroupsCount(): Promise<number> { return 0; }
   private async getActiveProjectsCount(): Promise<number> { return 0; }
-  private async getTotalScrollCoinsDistributed(): Promise<number> { return 0; }
+  private async getTotalScrollGoldsDistributed(): Promise<number> { return 0; }
   private async getSpiritualImpactMetrics(): Promise<any> { return {}; }
   private async getGlobalReachMetrics(): Promise<any> { return {}; }
   private async getPeerAssistanceStats(): Promise<any> { return {}; }

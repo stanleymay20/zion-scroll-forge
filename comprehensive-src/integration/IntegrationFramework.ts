@@ -130,21 +130,21 @@ export class IntegrationFramework extends EventEmitter {
         },
         events: {
           publishes: ['course.created', 'course.updated', 'course.enrolled', 'course.progress', 'course.completed', 'lesson.completed'],
-          subscribes: ['user.created', 'payment.completed', 'scrollcoin.earned', 'assessment.passed', 'spiritual.milestone']
+          subscribes: ['user.created', 'payment.completed', 'scrollgold.earned', 'assessment.passed', 'spiritual.milestone']
         },
         dependencies: ['scroll-university-platform', 'scroll-student-profile-spec']
       },
-      'scroll-scrollcoin-meter': {
-        name: 'scroll-scrollcoin-meter',
+      'scroll-scrollgold-meter': {
+        name: 'scroll-scrollgold-meter',
         version: 'v1',
         endpoints: {
-          getBalance: { method: 'GET', path: '/api/scrollcoin/{userId}/balance', description: 'Get balance' },
-          transfer: { method: 'POST', path: '/api/scrollcoin/transfer', description: 'Transfer coins' },
-          earn: { method: 'POST', path: '/api/scrollcoin/earn', description: 'Award coins' },
-          getTransactions: { method: 'GET', path: '/api/scrollcoin/{userId}/transactions', description: 'Get transactions' }
+          getBalance: { method: 'GET', path: '/api/scrollgold/{userId}/balance', description: 'Get balance' },
+          transfer: { method: 'POST', path: '/api/scrollgold/transfer', description: 'Transfer coins' },
+          earn: { method: 'POST', path: '/api/scrollgold/earn', description: 'Award coins' },
+          getTransactions: { method: 'GET', path: '/api/scrollgold/{userId}/transactions', description: 'Get transactions' }
         },
         events: {
-          publishes: ['scrollcoin.earned', 'scrollcoin.spent', 'scrollcoin.transferred', 'wallet.created', 'transaction.completed', 'fraud.detected'],
+          publishes: ['scrollgold.earned', 'scrollgold.spent', 'scrollgold.transferred', 'wallet.created', 'transaction.completed', 'fraud.detected'],
           subscribes: ['course.completed', 'assessment.passed', 'project.submitted', 'mentorship.milestone', 'prayer.answered', 'ministry.impact']
         },
         dependencies: ['scroll-university-platform', 'scroll-audit-trail-spec']
@@ -189,7 +189,7 @@ export class IntegrationFramework extends EventEmitter {
         },
         events: {
           publishes: ['project.created', 'project.updated', 'project.milestone', 'project.completed', 'deliverable.submitted'],
-          subscribes: ['course.enrolled', 'mentor.assigned', 'assessment.passed', 'scrollcoin.earned']
+          subscribes: ['course.enrolled', 'mentor.assigned', 'assessment.passed', 'scrollgold.earned']
         },
         dependencies: ['scroll-university-platform', 'scroll-student-profile-spec']
       },
@@ -819,7 +819,7 @@ export class IntegrationFramework extends EventEmitter {
     // Test critical communication paths
     const criticalPaths = [
       { from: 'scroll-university-platform', to: 'scroll-student-profile-spec', event: 'user.created' },
-      { from: 'scroll-course-spec', to: 'scroll-scrollcoin-meter', event: 'course.completed' },
+      { from: 'scroll-course-spec', to: 'scroll-scrollgold-meter', event: 'course.completed' },
       { from: 'scroll-assessment-engine', to: 'scroll-seal-certification', event: 'assessment.passed' },
       { from: 'scroll-prayer-integration-spec', to: 'scroll-mentorship-network-spec', event: 'prayer.answered' }
     ];

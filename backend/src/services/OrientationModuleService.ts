@@ -45,7 +45,7 @@ export class OrientationModuleService {
           { id: 'ai_tutor', title: 'AI Tutor', description: 'Get personalized help 24/7' },
           { id: 'community', title: 'Community', description: 'Connect with fellow students' },
           { id: 'spiritual_formation', title: 'Spiritual Formation', description: 'Grow spiritually' },
-          { id: 'scrollcoin', title: 'ScrollCoin Wallet', description: 'Manage your rewards' }
+          { id: 'ScrollGold', title: 'ScrollGold Wallet', description: 'Manage your rewards' }
         ]
       },
       isRequired: true,
@@ -98,17 +98,17 @@ export class OrientationModuleService {
       }
     },
     {
-      moduleId: 'scrollcoin_economy',
-      title: 'Understanding ScrollCoin',
+      moduleId: 'ScrollGold_economy',
+      title: 'Understanding ScrollGold',
       description: 'Learn about our divine economy and reward system',
       order: 5,
       duration: 12,
       type: 'interactive',
       content: {
         topics: [
-          'What is ScrollCoin?',
-          'How to Earn ScrollCoin',
-          'Spending ScrollCoin',
+          'What is ScrollGold?',
+          'How to Earn ScrollGold',
+          'Spending ScrollGold',
           'Wallet Management',
           'Work-Trade Program'
         ]
@@ -211,7 +211,7 @@ export class OrientationModuleService {
       content: {
         certificate: true,
         reward: {
-          scrollCoins: 50,
+          ScrollGolds: 50,
           badge: 'orientation_complete'
         },
         nextSteps: [
@@ -446,8 +446,8 @@ export class OrientationModuleService {
    */
   private async issueOrientationCertificate(userId: string): Promise<void> {
     try {
-      // Award ScrollCoins
-      await prisma.scrollCoinTransaction.create({
+      // Award ScrollGolds
+      await prisma.ScrollGoldTransaction.create({
         data: {
           userId,
           amount: 50,
@@ -460,7 +460,7 @@ export class OrientationModuleService {
       await prisma.user.update({
         where: { id: userId },
         data: {
-          scrollCoinBalance: {
+          ScrollGoldBalance: {
             increment: 50
           }
         }

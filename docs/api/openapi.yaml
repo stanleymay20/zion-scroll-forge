@@ -50,7 +50,7 @@ tags:
     description: AI-powered tutoring system
   - name: Community
     description: Social features and community engagement
-  - name: ScrollCoin
+  - name: ScrollGold
     description: Blockchain-based reward system
   - name: ScrollBadge
     description: NFT-based digital credentials
@@ -129,7 +129,7 @@ components:
           type: string
         instructor:
           $ref: '#/components/schemas/User'
-        scrollCoinCost:
+        ScrollGoldCost:
           type: number
         usdPrice:
           type: number
@@ -178,7 +178,7 @@ components:
         transcript:
           type: string
           
-    ScrollCoinTransaction:
+    ScrollGoldTransaction:
       type: object
       properties:
         id:
@@ -420,7 +420,7 @@ paths:
               properties:
                 paymentMethod:
                   type: string
-                  enum: [scrollcoin, stripe, scholarship]
+                  enum: [ScrollGold, stripe, scholarship]
                 paymentDetails:
                   type: object
       responses:
@@ -535,13 +535,13 @@ paths:
                         items:
                           type: string
                           
-  # ScrollCoin Endpoints
-  /scrollcoin/balance:
+  # ScrollGold Endpoints
+  /ScrollGold/balance:
     get:
       tags:
-        - ScrollCoin
-      summary: Get ScrollCoin balance
-      description: Retrieve the authenticated user's ScrollCoin balance
+        - ScrollGold
+      summary: Get ScrollGold balance
+      description: Retrieve the authenticated user's ScrollGold balance
       security:
         - bearerAuth: []
       responses:
@@ -562,12 +562,12 @@ paths:
                       walletAddress:
                         type: string
                         
-  /scrollcoin/transactions:
+  /ScrollGold/transactions:
     get:
       tags:
-        - ScrollCoin
+        - ScrollGold
       summary: Get transaction history
-      description: Retrieve ScrollCoin transaction history
+      description: Retrieve ScrollGold transaction history
       security:
         - bearerAuth: []
       parameters:
@@ -597,14 +597,14 @@ paths:
                       transactions:
                         type: array
                         items:
-                          $ref: '#/components/schemas/ScrollCoinTransaction'
+                          $ref: '#/components/schemas/ScrollGoldTransaction'
                           
-  /scrollcoin/transfer:
+  /ScrollGold/transfer:
     post:
       tags:
-        - ScrollCoin
-      summary: Transfer ScrollCoin
-      description: Transfer ScrollCoin to another user
+        - ScrollGold
+      summary: Transfer ScrollGold
+      description: Transfer ScrollGold to another user
       security:
         - bearerAuth: []
       requestBody:
@@ -636,7 +636,7 @@ paths:
                   success:
                     type: boolean
                   data:
-                    $ref: '#/components/schemas/ScrollCoinTransaction'
+                    $ref: '#/components/schemas/ScrollGoldTransaction'
                     
   # Spiritual Formation Endpoints
   /spiritual-formation/devotions/today:

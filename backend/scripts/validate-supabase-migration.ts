@@ -47,7 +47,7 @@ async function validateTables() {
     'assignments',
     'submissions',
     'payments',
-    'scrollcoin_transactions',
+    'scrollgold_transactions',
     'research_papers',
     'certifications',
     'scrollbadges',

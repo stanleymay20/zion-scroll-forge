@@ -83,7 +83,7 @@
 
 - [ ] 3.4 Implement peer tutoring incentive system
   - Create PeerTutoringService with automatic notification system
-  - Build ScrollCoin reward mechanisms for peer assistance
+  - Build ScrollGold reward mechanisms for peer assistance
   - Implement peer tutor qualification and rating systems
   - Write tests for tutoring effectiveness and reward distribution
   - _Requirements: 3.4, 3.6_
@@ -122,14 +122,14 @@
   - Write tests for skill tracking accuracy and refresh effectiveness
   - _Requirements: 4.4_
 
-- [ ] 5. Implement ScrollCoin gamification economy
-  - Set up blockchain infrastructure for ScrollCoin transactions
+- [ ] 5. Implement ScrollGold gamification economy
+  - Set up blockchain infrastructure for ScrollGold transactions
   - Create reward calculation and distribution systems
   - Build economic balance and exchange mechanisms
   - _Requirements: 5.1, 5.2, 5.3_
 
 - [ ] 5.1 Build activity-based reward system
-  - Implement ScrollCoinRewardEngine with difficulty-based calculations
+  - Implement ScrollGoldRewardEngine with difficulty-based calculations
   - Create learning activity tracking and validation
   - Build quality-based reward multipliers and bonuses
   - Write tests for reward accuracy and fraud prevention
@@ -142,8 +142,8 @@
   - Write tests for peer reward fairness and effectiveness
   - _Requirements: 5.2_
 
-- [ ] 5.3 Implement ScrollCoin exchange and value system
-  - Create ScrollCoinExchangeService with real monetary value
+- [ ] 5.3 Implement ScrollGold exchange and value system
+  - Create ScrollGoldExchangeService with real monetary value
   - Build exchange rate management and market stability mechanisms
   - Implement withdrawal and conversion systems
   - Write tests for economic stability and transaction security
@@ -281,7 +281,7 @@
 - [ ] 9.3 Create scholarship and payment assistance systems
   - Implement ScholarshipService with need-based and merit-based awards
   - Build flexible payment plan and financial assistance systems
-  - Create ScrollCoin earning opportunities for course payment
+  - Create ScrollGold earning opportunities for course payment
   - Write tests for financial assistance fairness and accessibility
   - _Requirements: 9.3_
 
@@ -322,7 +322,7 @@
 - [ ] 10.4 Create collaborative development workspace
   - Implement CollaborativeDevelopmentService for team project management
   - Build real-time code sharing and pair programming capabilities
-  - Create ScrollCoin rewards for meaningful code contributions and reviews
+  - Create ScrollGold rewards for meaningful code contributions and reviews
   - Write tests for collaboration effectiveness and reward distribution
   - _Requirements: 10.6_
 
@@ -408,7 +408,7 @@
   - _Requirements: 13.1, 13.4_
 
 - [ ] 13.2 Create ministry contribution tracking and rewards
-  - Implement MinistryContributionService with enhanced ScrollCoin rewards
+  - Implement MinistryContributionService with enhanced ScrollGold rewards
   - Build contribution quality assessment and spiritual impact measurement
   - Create recognition systems for kingdom builders and technical leaders
   - Write tests for contribution tracking and reward distribution

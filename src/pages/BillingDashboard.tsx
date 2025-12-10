@@ -137,9 +137,9 @@ export default function BillingDashboard() {
                         <p className="text-lg font-bold">
                           {formatCurrency(tx.amount_cents, tx.currency)}
                         </p>
-                        {tx.scrollcoin_amount > 0 && (
+                        {tx.scrollgold_amount > 0 && (
                           <p className="text-sm text-[hsl(var(--scroll-gold))]">
-                            +{tx.scrollcoin_amount} SC
+                            +{tx.scrollgold_amount} SC
                           </p>
                         )}
                       </div>

@@ -1043,22 +1043,22 @@
  * Fraud Prevention Service
  * "By the Spirit of Discernment, we protect the kingdom economy"
  * 
- * Service for detecting and preventing fraudulent ScrollCoin transactions,
+ * Service for detecting and preventing fraudulent ScrollGold transactions,
  * monitoring suspicious patterns, and managing fraud alerts.
  */
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
 <span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
-<span class="cstat-no" title="statement not covered" >import scrollCoinConfig from '../config/scrollcoin.config';</span>
+<span class="cstat-no" title="statement not covered" >import ScrollGoldConfig from '../config/ScrollGold.config';</span>
 <span class="cstat-no" title="statement not covered" >import {</span>
   FraudCheckResult,
   FraudAlertData,
   FraudAlertType,
   FraudSeverity,
   AlertStatus,
-  ScrollCoinTransactionData,
-  ScrollCoinTransactionType
-} from '../types/scrollcoin.types';
+  ScrollGoldTransactionData,
+  ScrollGoldTransactionType
+} from '../types/ScrollGold.types';
 &nbsp;
 const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
@@ -1080,10 +1080,10 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="fstat-no" title="function not covered" >  async </span>checkTransaction(
     userId: string,
     amount: number,
-    type: ScrollCoinTransactionType
+    type: ScrollGoldTransactionType
   ): Promise&lt;FraudCheckResult&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!scrollCoinConfig.fraudDetectionEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!ScrollGoldConfig.fraudDetectionEnabled) {</span>
 <span class="cstat-no" title="statement not covered" >        return {</span>
           isValid: true,
           alerts: [],
@@ -1094,7 +1094,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
       const alerts: FraudAlertData[] = <span class="cstat-no" title="statement not covered" >[];</span>
 &nbsp;
       // Check if user is blacklisted
-      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinWallet.findUnique({</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldWallet.findUnique({</span>
         where: { userId }
       });
 &nbsp;
@@ -1117,12 +1117,12 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
       }
 &nbsp;
       // Check for suspicious amount
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (amount &gt; scrollCoinConfig.suspiciousAmountThreshold) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (amount &gt; ScrollGoldConfig.suspiciousAmountThreshold) {</span>
         const alert = <span class="cstat-no" title="statement not covered" >await this.createAlert({</span>
           userId,
           alertType: FraudAlertType.SUSPICIOUS_AMOUNT,
           severity: FraudSeverity.HIGH,
-          description: `Large transaction amount: ${amount} ScrollCoin`,
+          description: `Large transaction amount: ${amount} ScrollGold`,
           amount
         });
 <span class="cstat-no" title="statement not covered" >        alerts.push(alert);</span>
@@ -1156,9 +1156,9 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
       }
 &nbsp;
       // Check daily limit
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (type === ScrollCoinTransactionType.TRANSFER &amp;&amp; !wallet?.isWhitelisted) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (type === ScrollGoldTransactionType.TRANSFER &amp;&amp; !wallet?.isWhitelisted) {</span>
         const dailyTotal = <span class="cstat-no" title="statement not covered" >await this.getDailyTransferTotal(userId);</span>
-<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (dailyTotal + amount &gt; (wallet?.dailyTransferLimit || scrollCoinConfig.dailyTransferLimit)) {</span>
+<span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (dailyTotal + amount &gt; (wallet?.dailyTransferLimit || ScrollGoldConfig.dailyTransferLimit)) {</span>
           const alert = <span class="cstat-no" title="statement not covered" >await this.createAlert({</span>
             userId,
             alertType: FraudAlertType.DAILY_LIMIT_EXCEEDED,
@@ -1201,13 +1201,13 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
     reason?: string;
   }&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const { window, limit } = <span class="cstat-no" title="statement not covered" >scrollCoinConfig.rapidTransactionWindow </span>
-        ? { window: scrollCoinConfig.rapidTransactionWindow, limit: scrollCoinConfig.rapidTransactionLimit }
+      const { window, limit } = <span class="cstat-no" title="statement not covered" >ScrollGoldConfig.rapidTransactionWindow </span>
+        ? { window: ScrollGoldConfig.rapidTransactionWindow, limit: ScrollGoldConfig.rapidTransactionLimit }
         : { window: 300, limit: 10 }; // 5 minutes, 10 transactions
 &nbsp;
       const windowStart = <span class="cstat-no" title="statement not covered" >new Date(Date.now() - window * 1000);</span>
 &nbsp;
-      const recentTransactions = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinTransaction.count({</span>
+      const recentTransactions = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldTransaction.count({</span>
         where: {
           userId,
           createdAt: { gte: windowStart }
@@ -1234,7 +1234,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   private <span class="fstat-no" title="function not covered" >async </span>checkUnusualPatterns(
     userId: string,
     amount: number,
-    type: ScrollCoinTransactionType
+    type: ScrollGoldTransactionType
   ): Promise&lt;{
     isValid: boolean;
     reason?: string;
@@ -1242,7 +1242,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   }&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Get user's transaction history
-      const transactions = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinTransaction.findMany({</span>
+      const transactions = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldTransaction.findMany({</span>
         where: {
           userId,
           status: 'CONFIRMED'
@@ -1295,10 +1295,10 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
       const today = <span class="cstat-no" title="statement not covered" >new Date();</span>
 <span class="cstat-no" title="statement not covered" >      today.setHours(0, 0, 0, 0);</span>
 &nbsp;
-      const result = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinTransaction.aggregate({</span>
+      const result = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldTransaction.aggregate({</span>
         where: {
           userId,
-          type: ScrollCoinTransactionType.TRANSFER,
+          type: ScrollGoldTransactionType.TRANSFER,
           status: 'CONFIRMED',
           createdAt: { gte: today }
         },
@@ -1325,7 +1325,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
     suspiciousPattern?: string;
   }): Promise&lt;FraudAlertData&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const alert = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinFraudAlert.create({</span>
+      const alert = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldFraudAlert.create({</span>
         data: {
           userId: data.userId,
           alertType: data.alertType,
@@ -1358,7 +1358,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
    */
 <span class="fstat-no" title="function not covered" >  async </span>getPendingAlerts(limit: number = <span class="branch-0 cbranch-no" title="branch not covered" >50)</span>: Promise&lt;FraudAlertData[]&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const alerts = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinFraudAlert.findMany({</span>
+      const alerts = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldFraudAlert.findMany({</span>
         where: {
           status: AlertStatus.PENDING
         },
@@ -1386,7 +1386,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
     reviewNotes?: string
   ): Promise&lt;FraudAlertData&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const alert = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinFraudAlert.update({</span>
+      const alert = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldFraudAlert.update({</span>
         where: { id: alertId },
         data: {
           status,
@@ -1417,7 +1417,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
    */
 <span class="fstat-no" title="function not covered" >  async </span>getUserAlerts(userId: string, limit: number = <span class="branch-0 cbranch-no" title="branch not covered" >20)</span>: Promise&lt;FraudAlertData[]&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const alerts = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinFraudAlert.findMany({</span>
+      const alerts = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldFraudAlert.findMany({</span>
         where: { userId },
         orderBy: { detectedAt: 'desc' },
         take: limit
@@ -1448,7 +1448,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (endDate) <span class="cstat-no" title="statement not covered" >where.detectedAt.lte = endDate;</span></span>
       }
 &nbsp;
-      const alerts = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinFraudAlert.findMany({ where });</span>
+      const alerts = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldFraudAlert.findMany({ where });</span>
 &nbsp;
       const totalAlerts = <span class="cstat-no" title="statement not covered" >alerts.length;</span>
 &nbsp;
@@ -1496,7 +1496,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   /**
    * Monitor transaction for fraud after completion
    */
-<span class="fstat-no" title="function not covered" >  async </span>monitorTransaction(transaction: ScrollCoinTransactionData): Promise&lt;void&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>monitorTransaction(transaction: ScrollGoldTransactionData): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // This runs asynchronously after transaction completion
       const check = <span class="cstat-no" title="statement not covered" >await this.checkTransaction(</span>
@@ -1513,7 +1513,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 &nbsp;
         // Update alerts with transaction ID
 <span class="cstat-no" title="statement not covered" >        for (const alert of check.alerts) {</span>
-<span class="cstat-no" title="statement not covered" >          await prisma.scrollCoinFraudAlert.update({</span>
+<span class="cstat-no" title="statement not covered" >          await prisma.ScrollGoldFraudAlert.update({</span>
             where: { id: alert.id },
             data: { transactionId: transaction.id }
           });
@@ -1534,7 +1534,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:09.019Z
+                at 2025-12-02T16:54:11.658Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -162,7 +162,7 @@ export interface ScrollUniversityApp {
   scholarships: ScholarshipModule;
   
   // Integration
-  scrollCoin: ScrollCoinModule;
+  ScrollGold: ScrollGoldModule;
   credentials: CredentialModule;
 }
 
@@ -261,7 +261,7 @@ from services.course_service import CourseService
 from services.user_service import UserService
 from services.ai_tutor_service import AITutorService
 from services.xr_service import XRService
-from services.scroll_coin_service import ScrollCoinService
+from services.scroll_gold_service import ScrollGoldService
 
 # API Route Groups
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["authentication"])
@@ -279,7 +279,7 @@ app.include_router(admin_router, prefix="/api/v1/admin", tags=["administration"]
 CREATE TABLE users (
     user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
-    scroll_coin_wallet VARCHAR(255) UNIQUE,
+    scroll_gold_wallet VARCHAR(255) UNIQUE,
     preferred_language VARCHAR(5) DEFAULT 'en',
     role VARCHAR(50) DEFAULT 'student',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -314,7 +314,7 @@ CREATE TABLE enrollments (
     completion_date TIMESTAMP,
     progress_percentage DECIMAL(5,2) DEFAULT 0.00,
     xp_earned INTEGER DEFAULT 0,
-    scroll_coins_earned DECIMAL(10,2) DEFAULT 0.00
+    scroll_golds_earned DECIMAL(10,2) DEFAULT 0.00
 );
 
 -- AI Tutor Sessions
@@ -346,7 +346,7 @@ CREATE TABLE scholarships (
     name VARCHAR(255) NOT NULL,
     description TEXT,
     amount DECIMAL(10,2),
-    currency VARCHAR(10) DEFAULT 'ScrollCoin',
+    currency VARCHAR(10) DEFAULT 'ScrollGold',
     eligibility_criteria JSONB,
     application_deadline TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -399,7 +399,7 @@ class ScrollRedisCache:
 export interface ScrollUser {
   user_id: string;
   email: string;
-  scroll_coin_wallet: string;
+  scroll_gold_wallet: string;
   preferred_language: string;
   role: 'student' | 'faculty' | 'ai_dean' | 'admin' | 'global_ambassador';
   profile: UserProfile;
@@ -451,7 +451,7 @@ export interface PortalCourse {
   level: 'Introductory' | 'Intermediate' | 'Advanced';
   duration_weeks: number;
   xp_reward: number;
-  scroll_coin_cost: number;
+  scroll_gold_cost: number;
   prerequisites: string[];
   featured: boolean;
   enrollment_open: boolean;
@@ -469,7 +469,7 @@ export interface Enrollment {
   completion_date?: string;
   progress_percentage: number;
   xp_earned: number;
-  scroll_coins_earned: number;
+  scroll_golds_earned: number;
   current_lesson_id?: string;
   status: 'active' | 'completed' | 'paused' | 'dropped';
 }
@@ -561,8 +561,8 @@ export enum ErrorCodes {
   COURSE_PREREQUISITES_NOT_MET = 'COURSE_003',
   
   // Payment Errors
-  SCROLLCOIN_INSUFFICIENT_BALANCE = 'PAY_001',
-  SCROLLCOIN_TRANSACTION_FAILED = 'PAY_002',
+  ScrollGold_INSUFFICIENT_BALANCE = 'PAY_001',
+  ScrollGold_TRANSACTION_FAILED = 'PAY_002',
   
   // Integration Errors
   AI_TUTOR_UNAVAILABLE = 'INT_001',
@@ -603,8 +603,8 @@ export class ErrorRecoveryService {
 // Frontend Testing (React + Jest + Testing Library)
 describe('ScrollUniversityPortal', () => {
   describe('Authentication Flow', () => {
-    it('should authenticate with ScrollCoin wallet', async () => {
-      // Test ScrollCoin authentication
+    it('should authenticate with ScrollGold wallet', async () => {
+      // Test ScrollGold authentication
     });
     
     it('should handle multi-language authentication', async () => {
@@ -617,7 +617,7 @@ describe('ScrollUniversityPortal', () => {
       // Test prerequisite validation
     });
     
-    it('should process ScrollCoin payments', async () => {
+    it('should process ScrollGold payments', async () => {
       // Test payment processing
     });
   });
@@ -635,7 +635,7 @@ describe('ScrollUniversityPortal', () => {
 
 // Backend Testing (FastAPI + pytest)
 def test_course_enrollment_api():
-    """Test course enrollment with ScrollCoin payment"""
+    """Test course enrollment with ScrollGold payment"""
     # Test API endpoint functionality
 
 def test_ai_tutor_integration():

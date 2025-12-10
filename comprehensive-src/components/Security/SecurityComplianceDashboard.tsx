@@ -399,7 +399,7 @@ const SecurityComplianceDashboard: React.FC = () => {
       </div>
 
       <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">ScrollCoin Fraud Prevention</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-4">ScrollGold Fraud Prevention</h3>
         <div className="space-y-4">
           <div className="flex items-center justify-between p-4 bg-red-50 rounded-lg">
             <div className="flex items-center">

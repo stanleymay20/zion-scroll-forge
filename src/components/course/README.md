@@ -91,7 +91,7 @@ Handles the complete enrollment process including payment method selection.
 
 **Features:**
 - Multi-step enrollment dialog
-- Payment method selection (ScrollCoin, Credit Card, Scholarship)
+- Payment method selection (ScrollGold, Credit Card, Scholarship)
 - Price display in multiple formats
 - Processing states
 - Success/error handling
@@ -106,7 +106,7 @@ import { CourseEnrollmentFlow } from '@/components/course';
     id: "course-id",
     title: "Course Title",
     price_cents: 5000,
-    scrollCoinCost: 50,
+    ScrollGoldCost: 50,
     scholarshipEligible: true
   }}
   isOpen={showDialog}
@@ -147,7 +147,7 @@ This implementation satisfies Task 28 requirements:
 Components integrate with:
 - Supabase for data fetching
 - Course API endpoints
-- ScrollCoin service
+- ScrollGold service
 - Payment processing (Stripe)
 - Enrollment management
 

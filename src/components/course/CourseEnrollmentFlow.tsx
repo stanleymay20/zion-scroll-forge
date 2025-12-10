@@ -35,7 +35,7 @@ interface CourseEnrollmentFlowProps {
     id: string;
     title: string;
     price_cents?: number;
-    scrollCoinCost?: number;
+    ScrollGoldCost?: number;
     scholarshipEligible?: boolean;
   };
   isOpen: boolean;
@@ -43,7 +43,7 @@ interface CourseEnrollmentFlowProps {
   onSuccess?: () => void;
 }
 
-type PaymentMethod = 'credit_card' | 'scrollcoin' | 'scholarship';
+type PaymentMethod = 'credit_card' | 'ScrollGold' | 'scholarship';
 
 export function CourseEnrollmentFlow({ 
   course, 
@@ -53,10 +53,10 @@ export function CourseEnrollmentFlow({
 }: CourseEnrollmentFlowProps) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('scrollcoin');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('ScrollGold');
   const [enrollmentStep, setEnrollmentStep] = useState<'payment' | 'processing' | 'success' | 'error'>('payment');
 
-  const scrollCoinCost = course.scrollCoinCost || Math.round((course.price_cents || 0) / 100);
+  const ScrollGoldCost = course.ScrollGoldCost || Math.round((course.price_cents || 0) / 100);
   const usdPrice = ((course.price_cents || 0) / 100).toFixed(2);
 
   const enrollMutation = useMutation({
@@ -86,13 +86,13 @@ export function CourseEnrollmentFlow({
       if (enrollError) throw enrollError;
 
       // Handle payment based on method
-      if (paymentMethod === 'scrollcoin') {
-        // Deduct ScrollCoin (this would integrate with ScrollCoin service)
+      if (paymentMethod === 'ScrollGold') {
+        // Deduct ScrollGold (this would integrate with ScrollGold service)
         const { error: paymentError } = await supabase
-          .from('scrollcoin_transactions')
+          .from('ScrollGold_transactions')
           .insert({
             user_id: user!.id,
-            amount: -scrollCoinCost,
+            amount: -ScrollGoldCost,
             transaction_type: 'COURSE_ENROLLMENT',
             description: `Enrolled in ${course.title}`,
             reference_id: enrollment.id,
@@ -167,7 +167,7 @@ export function CourseEnrollmentFlow({
               <div className="flex items-center justify-between text-sm">
                 <span className="text-muted-foreground">Course Price</span>
                 <div className="flex items-center gap-2">
-                  <span className="font-bold text-primary">{scrollCoinCost} SC</span>
+                  <span className="font-bold text-primary">{ScrollGoldCost} SC</span>
                   <span className="text-muted-foreground">or ${usdPrice}</span>
                 </div>
               </div>
@@ -179,21 +179,21 @@ export function CourseEnrollmentFlow({
             <div className="space-y-4">
               <Label className="text-base font-medium">Select Payment Method</Label>
               <RadioGroup value={paymentMethod} onValueChange={(value) => setPaymentMethod(value as PaymentMethod)}>
-                {/* ScrollCoin Payment */}
+                {/* ScrollGold Payment */}
                 <div className="flex items-center space-x-3 border rounded-lg p-4 cursor-pointer hover:bg-muted/50 transition-colors">
-                  <RadioGroupItem value="scrollcoin" id="scrollcoin" />
-                  <Label htmlFor="scrollcoin" className="flex-1 cursor-pointer">
+                  <RadioGroupItem value="ScrollGold" id="ScrollGold" />
+                  <Label htmlFor="ScrollGold" className="flex-1 cursor-pointer">
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-primary/10 rounded-full">
                         <Coins className="h-5 w-5 text-primary" />
                       </div>
                       <div className="flex-1">
-                        <p className="font-medium">ScrollCoin</p>
+                        <p className="font-medium">ScrollGold</p>
                         <p className="text-sm text-muted-foreground">
-                          Pay with your ScrollCoin balance
+                          Pay with your ScrollGold balance
                         </p>
                       </div>
-                      <Badge variant="secondary">{scrollCoinCost} SC</Badge>
+                      <Badge variant="secondary">{ScrollGoldCost} SC</Badge>
                     </div>
                   </Label>
                 </div>

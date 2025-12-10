@@ -709,7 +709,7 @@ export interface SupremeDegreeAward {
   anointing_verification: AnointingVerification;
   thesis_defense: ThesisDefense;
   heaven_ledger_seal: HeavenLedgerSeal;
-  scroll_coin_value: number;
+  scroll_gold_value: number;
   certification_council: CertificationCouncil;
   public_impact_metrics: PublicImpactMetrics;
 }

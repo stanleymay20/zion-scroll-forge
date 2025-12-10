@@ -28,7 +28,7 @@ The ScrollCourseSpec is a foundational module that defines and manages individua
 2. WHEN a lesson is completed THEN the system SHALL award XP and update progress percentage
 3. WHEN a student falls behind schedule THEN the system SHALL trigger alerts to both student and assigned mentor
 4. IF a student is inactive for 7 days THEN the system SHALL send re-engagement notifications
-5. WHEN course progress reaches milestones (25%, 50%, 75%, 100%) THEN the system SHALL trigger celebration events and ScrollCoin rewards
+5. WHEN course progress reaches milestones (25%, 50%, 75%, 100%) THEN the system SHALL trigger celebration events and ScrollGold rewards
 
 ### Requirement 3: GPT-Powered Tutoring Integration
 

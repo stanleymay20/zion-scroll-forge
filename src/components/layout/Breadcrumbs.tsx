@@ -25,7 +25,7 @@ const pathLabels: Record<string, string> = {
   "study-groups": "Study Groups",
   mentorship: "Mentorship",
   projects: "Projects",
-  scrollcoin: "ScrollCoin",
+  ScrollGold: "ScrollGold",
   marketplace: "Marketplace",
   badges: "ScrollBadges",
   achievements: "Achievements",

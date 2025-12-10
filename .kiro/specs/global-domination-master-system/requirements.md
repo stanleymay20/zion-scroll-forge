@@ -11,7 +11,7 @@ The Global Domination Master System is ScrollUniversity's comprehensive strategy
 - **SAVC**: ScrollArk Virtual Campus
 - **MARE**: Multi-Agent Research Engine
 - **GPN**: Global Partnership Network
-- **SGDAO**: ScrollCoin Governance DAO
+- **SGDAO**: ScrollGold Governance DAO
 - **CEE**: Citation Excellence Engine
 - **SGRS**: Scroll Global Ranking System
 - **FRAIA**: Faculty Recruitment & AI Augmentation
@@ -84,7 +84,7 @@ The Global Domination Master System is ScrollUniversity's comprehensive strategy
 4. WHEN partnership value is calculated, THE System SHALL generate $10M or more annual value through collaborations
 5. WHEN collaboration opportunities are matched, THE System SHALL achieve 80% or higher successful partnership conversion rate
 
-### Requirement 6: ScrollCoin Governance DAO
+### Requirement 6: ScrollGold Governance DAO
 
 **User Story:** As a Community Member, I want token-based voting and transparent governance, so that I can influence ScrollU's direction democratically.
 

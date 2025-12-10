@@ -1020,22 +1020,22 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
- * ScrollUniversity Admissions - ScrollCoin Integration Service
+ * ScrollUniversity Admissions - ScrollGold Integration Service
  * "Give, and it will be given to you" - Luke 6:38
  * 
- * Integrates admissions system with ScrollCoin economy for application fees,
+ * Integrates admissions system with ScrollGold economy for application fees,
  * rewards, and financial incentives
  */
 &nbsp;
 import { PrismaClient, ApplicationStatus } from '@prisma/client';
-<span class="cstat-no" title="statement not covered" >import { ScrollCoinService } from '../ScrollCoinService';</span>
+<span class="cstat-no" title="statement not covered" >import { ScrollGoldService } from '../ScrollGoldService';</span>
 <span class="cstat-no" title="statement not covered" >import { logger } from '../../utils/logger';</span>
 &nbsp;
 export interface ApplicationFeeData {
   applicationId: string;
   userId: string;
   feeAmount: number;
-  paymentMethod: 'SCROLLCOIN' | 'TRADITIONAL' | 'WORK_TRADE';
+  paymentMethod: 'ScrollGold' | 'TRADITIONAL' | 'WORK_TRADE';
   discountApplied?: number;
   scholarshipCredit?: number;
 }
@@ -1059,7 +1059,7 @@ export interface WorkTradeCredit {
   verificationRequired: boolean;
 }
 &nbsp;
-export interface ScrollCoinAdmissionsConfig {
+export interface ScrollGoldAdmissionsConfig {
   applicationFee: number;
   assessmentFee: number;
   interviewFee: number;
@@ -1083,15 +1083,15 @@ export interface ScrollCoinAdmissionsConfig {
   };
 }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export class A</span>dmissionsScrollCoinIntegrationService {
-  private scrollCoinService: ScrollCoinService;
-  private config: ScrollCoinAdmissionsConfig;
+<span class="cstat-no" title="statement not covered" >export class A</span>dmissionsScrollGoldIntegrationService {
+  private ScrollGoldService: ScrollGoldService;
+  private config: ScrollGoldAdmissionsConfig;
 &nbsp;
 <span class="fstat-no" title="function not covered" >  constructor(</span>
     private <span class="cstat-no" title="statement not covered" >prisma: PrismaClient,</span>
-    config?: Partial&lt;ScrollCoinAdmissionsConfig&gt;
+    config?: Partial&lt;ScrollGoldAdmissionsConfig&gt;
   ) {
-<span class="cstat-no" title="statement not covered" >    this.scrollCoinService = ScrollCoinService.getInstance();</span>
+<span class="cstat-no" title="statement not covered" >    this.ScrollGoldService = ScrollGoldService.getInstance();</span>
 <span class="cstat-no" title="statement not covered" >    this.config = {</span>
       applicationFee: 50,
       assessmentFee: 25,
@@ -1104,7 +1104,7 @@ export interface ScrollCoinAdmissionsConfig {
         referralBonus: 75
       },
       workTradeRates: {
-        communityService: 15, // ScrollCoin per hour
+        communityService: 15, // ScrollGold per hour
         ministryWork: 20,
         academicAssistance: 18,
         technicalSupport: 22
@@ -1139,8 +1139,8 @@ export interface ScrollCoinAdmissionsConfig {
       let remainingBalance: number;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      switch (feeData.paymentMethod) {</span>
-        case 'SCROLLCOIN':
-          const result = <span class="cstat-no" title="statement not covered" >await this.processScrollCoinPayment(feeData.userId, finalAmount, feeData.applicationId);</span>
+        case 'ScrollGold':
+          const result = <span class="cstat-no" title="statement not covered" >await this.processScrollGoldPayment(feeData.userId, finalAmount, feeData.applicationId);</span>
 <span class="cstat-no" title="statement not covered" >          transactionId = result.transactionId;</span>
 <span class="cstat-no" title="statement not covered" >          remainingBalance = result.remainingBalance;</span>
 <span class="cstat-no" title="statement not covered" >          break;</span>
@@ -1200,7 +1200,7 @@ export interface ScrollCoinAdmissionsConfig {
   }
 &nbsp;
   /**
-   * Award ScrollCoin rewards for admissions milestones
+   * Award ScrollGold rewards for admissions milestones
    */
 <span class="fstat-no" title="function not covered" >  async </span>awardApplicationReward(rewardData: AdmissionsRewardData): Promise&lt;{
     transactionId: string;
@@ -1221,8 +1221,8 @@ export interface ScrollCoinAdmissionsConfig {
 <span class="cstat-no" title="statement not covered" >        throw new Error('Reward already awarded for this milestone');</span>
       }
 &nbsp;
-      // Award ScrollCoin
-      const transaction = <span class="cstat-no" title="statement not covered" >await this.scrollCoinService.mintScrollCoin(</span>
+      // Award ScrollGold
+      const transaction = <span class="cstat-no" title="statement not covered" >await this.ScrollGoldService.mintScrollGold(</span>
         rewardData.userId,
         'courseCompletion', // Using existing reward type
         rewardData.description,
@@ -1233,7 +1233,7 @@ export interface ScrollCoinAdmissionsConfig {
 <span class="cstat-no" title="statement not covered" >      await this.recordAdmissionsReward(rewardData, transaction.id);</span>
 &nbsp;
       // Get updated balance
-      const wallet = <span class="cstat-no" title="statement not covered" >await this.scrollCoinService.getWallet(rewardData.userId);</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await this.ScrollGoldService.getWallet(rewardData.userId);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      logger.info(`Admissions reward awarded successfully`, {</span>
         userId: rewardData.userId,
@@ -1378,12 +1378,12 @@ export interface ScrollCoinAdmissionsConfig {
   }
 &nbsp;
   /**
-   * Get ScrollCoin balance and payment options for user
+   * Get ScrollGold balance and payment options for user
    */
 <span class="fstat-no" title="function not covered" >  async </span>getPaymentOptions(userId: string): Promise&lt;{
-    scrollCoinBalance: number;
+    ScrollGoldBalance: number;
     workTradeCredits: number;
-    canPayWithScrollCoin: boolean;
+    canPayWithScrollGold: boolean;
     canPayWithWorkTrade: boolean;
     recommendedPaymentMethod: string;
     estimatedEarnings: number;
@@ -1392,7 +1392,7 @@ export interface ScrollCoinAdmissionsConfig {
       const user = <span class="cstat-no" title="statement not covered" >await this.prisma.user.findUnique({</span>
         where: { id: userId },
         select: {
-          scrollCoinBalance: true,
+          ScrollGoldBalance: true,
           workTradeCredits: true
         }
       });
@@ -1401,16 +1401,16 @@ export interface ScrollCoinAdmissionsConfig {
 <span class="cstat-no" title="statement not covered" >        throw new Error('User not found');</span>
       }
 &nbsp;
-      const scrollCoinBalance = <span class="cstat-no" title="statement not covered" >user.scrollCoinBalance || 0;</span>
+      const ScrollGoldBalance = <span class="cstat-no" title="statement not covered" >user.ScrollGoldBalance || 0;</span>
       const workTradeCredits = <span class="cstat-no" title="statement not covered" >user.workTradeCredits || 0;</span>
 &nbsp;
-      const canPayWithScrollCoin = <span class="cstat-no" title="statement not covered" >scrollCoinBalance &gt;= this.config.applicationFee;</span>
+      const canPayWithScrollGold = <span class="cstat-no" title="statement not covered" >ScrollGoldBalance &gt;= this.config.applicationFee;</span>
       const canPayWithWorkTrade = <span class="cstat-no" title="statement not covered" >workTradeCredits &gt;= this.config.applicationFee;</span>
 &nbsp;
       // Recommend payment method
       let recommendedPaymentMethod = <span class="cstat-no" title="statement not covered" >'TRADITIONAL';</span>
-<span class="cstat-no" title="statement not covered" >      if (canPayWithScrollCoin) {</span>
-<span class="cstat-no" title="statement not covered" >        recommendedPaymentMethod = 'SCROLLCOIN';</span>
+<span class="cstat-no" title="statement not covered" >      if (canPayWithScrollGold) {</span>
+<span class="cstat-no" title="statement not covered" >        recommendedPaymentMethod = 'ScrollGold';</span>
       } else <span class="cstat-no" title="statement not covered" ><span class="missing-if-branch" title="if path not taken" >I</span>if (canPayWithWorkTrade) {</span>
 <span class="cstat-no" title="statement not covered" >        recommendedPaymentMethod = 'WORK_TRADE';</span>
       }
@@ -1422,9 +1422,9 @@ export interface ScrollCoinAdmissionsConfig {
                                this.config.rewardRates.enrollmentConfirmed;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return {</span>
-        scrollCoinBalance,
+        ScrollGoldBalance,
         workTradeCredits,
-        canPayWithScrollCoin,
+        canPayWithScrollGold,
         canPayWithWorkTrade,
         recommendedPaymentMethod,
         estimatedEarnings
@@ -1437,21 +1437,21 @@ export interface ScrollCoinAdmissionsConfig {
   }
 &nbsp;
   /**
-   * Process ScrollCoin payment
+   * Process ScrollGold payment
    */
-  private <span class="fstat-no" title="function not covered" >async </span>processScrollCoinPayment(userId: string, amount: number, applicationId: string): Promise&lt;{
+  private <span class="fstat-no" title="function not covered" >async </span>processScrollGoldPayment(userId: string, amount: number, applicationId: string): Promise&lt;{
     transactionId: string;
     remainingBalance: number;
   }&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       // Check balance
-      const wallet = <span class="cstat-no" title="statement not covered" >await this.scrollCoinService.getWallet(userId);</span>
+      const wallet = <span class="cstat-no" title="statement not covered" >await this.ScrollGoldService.getWallet(userId);</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (wallet.balance &lt; amount) {</span>
-<span class="cstat-no" title="statement not covered" >        throw new Error('Insufficient ScrollCoin balance');</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('Insufficient ScrollGold balance');</span>
       }
 &nbsp;
       // Create debit transaction
-      const transaction = <span class="cstat-no" title="statement not covered" >await this.prisma.scrollCoinTransaction.create({</span>
+      const transaction = <span class="cstat-no" title="statement not covered" >await this.prisma.ScrollGoldTransaction.create({</span>
         data: {
           userId,
           amount: -amount,
@@ -1466,13 +1466,13 @@ export interface ScrollCoinAdmissionsConfig {
 <span class="cstat-no" title="statement not covered" >      await this.prisma.user.update({</span>
         where: { id: userId },
         data: {
-          scrollCoinBalance: {
+          ScrollGoldBalance: {
             decrement: amount
           }
         }
       });
 &nbsp;
-      const updatedWallet = <span class="cstat-no" title="statement not covered" >await this.scrollCoinService.getWallet(userId);</span>
+      const updatedWallet = <span class="cstat-no" title="statement not covered" >await this.ScrollGoldService.getWallet(userId);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return {</span>
         transactionId: transaction.id,
@@ -1480,7 +1480,7 @@ export interface ScrollCoinAdmissionsConfig {
       };
 &nbsp;
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error processing ScrollCoin payment:', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error processing ScrollGold payment:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -1504,7 +1504,7 @@ export interface ScrollCoinAdmissionsConfig {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:09.019Z
+                at 2025-12-02T16:54:11.658Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -460,7 +460,7 @@ describe('ScriptureMemoryService', () => {
         startDate: new Date(),
         endDate: new Date(Date.now() + 30 * 86400000),
         participantCount: 0,
-        scrollCoinReward: 1000,
+        scrollGoldReward: 1000,
         badgeReward: 'Scripture Master',
         isActive: true,
         createdBy: 'user-1',
@@ -475,7 +475,7 @@ describe('ScriptureMemoryService', () => {
         verseIds: ['verse-1', 'verse-2'],
         startDate: new Date(),
         endDate: new Date(Date.now() + 30 * 86400000),
-        scrollCoinReward: 1000,
+        scrollGoldReward: 1000,
         badgeReward: 'Scripture Master'
       });
 
@@ -502,7 +502,7 @@ describe('ScriptureMemoryService', () => {
         progress: 0,
         versesCompleted: 0,
         totalVerses: 2,
-        scrollCoinEarned: 0,
+        scrollGoldEarned: 0,
         joinedAt: new Date()
       };
 

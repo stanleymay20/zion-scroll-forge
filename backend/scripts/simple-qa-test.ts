@@ -72,7 +72,7 @@ const integrationScenarios = [
   'student-profile-integration',
   'assessment-engine-integration', 
   'university-portal-integration',
-  'scrollcoin-integration',
+  'scrollgold-integration',
   'prayer-integration'
 ];
 

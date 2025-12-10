@@ -64,7 +64,7 @@ export class AssessmentEvaluationService {
       aiGradingConfig: assessmentData.aiGradingConfig || this.createDefaultAIConfig(),
       timeLimit: assessmentData.timeLimit,
       attempts: assessmentData.attempts || 3,
-      scrollCoinReward: assessmentData.scrollCoinReward || 50
+      ScrollGoldReward: assessmentData.ScrollGoldReward || 50
     };
 
     const framework = this.assessmentFrameworks.get(frameworkId);
@@ -238,7 +238,7 @@ export class AssessmentEvaluationService {
         prayer_requests: []
       },
       overall_grade: this.calculateOverallGrade(academicScore, spiritualScore),
-      scroll_coin_earned: this.calculateScrollCoinReward(academicScore, spiritualScore),
+      scroll_gold_earned: this.calculateScrollGoldReward(academicScore, spiritualScore),
       areas_for_growth: aiFeedback.areas_for_improvement,
       strengths_identified: aiFeedback.strengths,
       next_steps: aiFeedback.next_learning_steps,
@@ -488,7 +488,7 @@ export class AssessmentEvaluationService {
     return 'F';
   }
 
-  private calculateScrollCoinReward(academicScore: number, spiritualScore: number): number {
+  private calculateScrollGoldReward(academicScore: number, spiritualScore: number): number {
     const baseReward = 50;
     const bonusMultiplier = ((academicScore + spiritualScore) / 200);
     return Math.floor(baseReward * bonusMultiplier);

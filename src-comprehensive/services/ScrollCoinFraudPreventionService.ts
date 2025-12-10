@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 
-export interface ScrollCoinTransaction {
+export interface ScrollGoldTransaction {
   id: string;
   fromUserId: string;
   toUserId: string;
@@ -94,11 +94,11 @@ export interface RuleCondition {
   timeWindow?: number; // minutes
 }
 
-export class ScrollCoinFraudPreventionService extends EventEmitter {
+export class ScrollGoldFraudPreventionService extends EventEmitter {
   private userRiskProfiles: Map<string, UserRiskProfile> = new Map();
   private fraudAlerts: Map<string, FraudAlert> = new Map();
   private fraudRules: Map<string, FraudRule> = new Map();
-  private transactionHistory: Map<string, ScrollCoinTransaction[]> = new Map();
+  private transactionHistory: Map<string, ScrollGoldTransaction[]> = new Map();
   private blockedUsers: Set<string> = new Set();
   private suspiciousIPs: Set<string> = new Set();
 
@@ -109,7 +109,7 @@ export class ScrollCoinFraudPreventionService extends EventEmitter {
   }
 
   // Transaction Validation
-  async validateTransaction(transaction: ScrollCoinTransaction): Promise<{
+  async validateTransaction(transaction: ScrollGoldTransaction): Promise<{
     allowed: boolean;
     riskScore: number;
     alerts: FraudAlert[];
@@ -217,7 +217,7 @@ export class ScrollCoinFraudPreventionService extends EventEmitter {
     return profile;
   }
 
-  private async updateUserRiskProfile(userId: string, transaction: ScrollCoinTransaction): Promise<void> {
+  private async updateUserRiskProfile(userId: string, transaction: ScrollGoldTransaction): Promise<void> {
     const profile = await this.getUserRiskProfile(userId);
     
     // Add transaction to history
@@ -245,7 +245,7 @@ export class ScrollCoinFraudPreventionService extends EventEmitter {
 
   // Fraud Detection Rules
   private async evaluateFraudRule(
-    transaction: ScrollCoinTransaction,
+    transaction: ScrollGoldTransaction,
     rule: FraudRule,
     userProfile: UserRiskProfile
   ): Promise<{
@@ -277,7 +277,7 @@ export class ScrollCoinFraudPreventionService extends EventEmitter {
 
   private async evaluateRuleCondition(
     condition: RuleCondition,
-    transaction: ScrollCoinTransaction,
+    transaction: ScrollGoldTransaction,
     userProfile: UserRiskProfile
   ): Promise<boolean> {
     let value: any;
@@ -499,7 +499,7 @@ export class ScrollCoinFraudPreventionService extends EventEmitter {
     return userTransactions.filter(tx => tx.timestamp > cutoffTime).length;
   }
 
-  private analyzeTransactionPattern(transactions: ScrollCoinTransaction[]): TransactionPattern {
+  private analyzeTransactionPattern(transactions: ScrollGoldTransaction[]): TransactionPattern {
     if (transactions.length === 0) {
       return {
         averageAmount: 0,
@@ -561,7 +561,7 @@ export class ScrollCoinFraudPreventionService extends EventEmitter {
     };
   }
 
-  private async calculateRiskFactors(userId: string, transactions: ScrollCoinTransaction[]): Promise<RiskFactor[]> {
+  private async calculateRiskFactors(userId: string, transactions: ScrollGoldTransaction[]): Promise<RiskFactor[]> {
     const factors: RiskFactor[] = [];
 
     // Transaction velocity factor
@@ -627,7 +627,7 @@ export class ScrollCoinFraudPreventionService extends EventEmitter {
 
   private calculateRuleRiskScore(
     rule: FraudRule,
-    transaction: ScrollCoinTransaction,
+    transaction: ScrollGoldTransaction,
     userProfile: UserRiskProfile
   ): number {
     let baseScore = 0;
@@ -700,7 +700,7 @@ export class ScrollCoinFraudPreventionService extends EventEmitter {
     profile.restrictions.push({
       type: 'transaction_limit',
       description: 'Daily transaction limit due to high risk',
-      value: 100, // Max 100 ScrollCoin per day
+      value: 100, // Max 100 ScrollGold per day
       reason: 'High risk score detected'
     });
 

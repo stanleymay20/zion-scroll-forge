@@ -65,7 +65,7 @@ const ALL_COURSES: CourseDefinition[] = [
   },
   {
     courseId: 'COURSE_ECON201',
-    courseName: 'ScrollCoin & Digital Currency Systems',
+    courseName: 'ScrollGold & Digital Currency Systems',
     description: 'Cryptocurrency, blockchain technology, and digital economics from a kingdom perspective',
     modules: 8,
     lecturesPerModule: 4,

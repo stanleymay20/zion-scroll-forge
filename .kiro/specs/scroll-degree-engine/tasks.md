@@ -74,12 +74,12 @@
   - Implement council decision documentation and divine authentication
   - _Requirements: 13.2, 13.5_
 
-- [ ] 32. ScrollCoin Valuation and Kingdom Economy Integration
-  - Create ScrollCoin valuation system for supreme degrees with appropriate token values
+- [ ] 32. ScrollGold Valuation and Kingdom Economy Integration
+  - Create ScrollGold valuation system for supreme degrees with appropriate token values
   - Implement non-fiat kingdom worth calculation and assignment
-  - Build ScrollCoin wallet integration for degree-based token distribution
+  - Build ScrollGold wallet integration for degree-based token distribution
   - Create token value tracking and appreciation system based on kingdom impact
-  - Implement economic integration with broader ScrollCoin ecosystem
+  - Implement economic integration with broader ScrollGold ecosystem
   - _Requirements: 13.3, 13.4_
 
 - [ ] 33. Public Impact Metrics and Recognition System

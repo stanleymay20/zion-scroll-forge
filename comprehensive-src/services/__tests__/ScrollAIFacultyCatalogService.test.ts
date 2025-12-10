@@ -101,7 +101,7 @@ describe('ScrollAIFacultyCatalogService', () => {
       expect(course?.faculty).toBe(SupremeScrollFaculty.SCROLL_AI_INTELLIGENCE);
       expect(course?.estimatedHours).toBe(45);
       expect(course?.xpReward).toBe(150);
-      expect(course?.scrollCoinCost).toBe(0);
+      expect(course?.scrollGoldCost).toBe(0);
       expect(course?.prerequisites).toHaveLength(0);
       expect(course?.deliveryModes).toContain(DeliveryMode.ONLINE_PORTAL);
       expect(course?.deliveryModes).toContain(DeliveryMode.AI_TUTOR);
@@ -114,7 +114,7 @@ describe('ScrollAIFacultyCatalogService', () => {
       expect(course?.level).toBe(CourseLevel.UNDERGRADUATE);
       expect(course?.estimatedHours).toBe(60);
       expect(course?.xpReward).toBe(200);
-      expect(course?.scrollCoinCost).toBe(75);
+      expect(course?.scrollGoldCost).toBe(75);
       expect(course?.prerequisites).toContain('SAI101');
       expect(course?.prerequisites).toContain('SAI201');
     });
@@ -126,7 +126,7 @@ describe('ScrollAIFacultyCatalogService', () => {
       expect(course?.level).toBe(CourseLevel.GRADUATE);
       expect(course?.estimatedHours).toBe(70);
       expect(course?.xpReward).toBe(280);
-      expect(course?.scrollCoinCost).toBe(150);
+      expect(course?.scrollGoldCost).toBe(150);
       expect(course?.prerequisites).toContain('SAI201');
       expect(course?.prerequisites).toContain('SAI202');
     });
@@ -138,7 +138,7 @@ describe('ScrollAIFacultyCatalogService', () => {
       expect(course?.level).toBe(CourseLevel.GRADUATE);
       expect(course?.estimatedHours).toBe(80);
       expect(course?.xpReward).toBe(320);
-      expect(course?.scrollCoinCost).toBe(200);
+      expect(course?.scrollGoldCost).toBe(200);
       expect(course?.prerequisites).toContain('SAI301');
       expect(course?.prerequisites).toContain('SAI302');
       expect(course?.deliveryModes).toContain(DeliveryMode.XR_MODE);
@@ -152,7 +152,7 @@ describe('ScrollAIFacultyCatalogService', () => {
       expect(course?.level).toBe(CourseLevel.GRADUATE);
       expect(course?.estimatedHours).toBe(45);
       expect(course?.xpReward).toBe(180);
-      expect(course?.scrollCoinCost).toBe(100);
+      expect(course?.scrollGoldCost).toBe(100);
       expect(course?.prerequisites).toContain('SAI302');
       expect(course?.prerequisites).toContain('SAI350');
       expect(course?.deliveryModes).toContain(DeliveryMode.MENTOR_SESSIONS);
@@ -166,7 +166,7 @@ describe('ScrollAIFacultyCatalogService', () => {
       expect(course?.level).toBe(CourseLevel.XR_SPECIALIZATION);
       expect(course?.estimatedHours).toBe(60);
       expect(course?.xpReward).toBe(240);
-      expect(course?.scrollCoinCost).toBe(150);
+      expect(course?.scrollGoldCost).toBe(150);
       expect(course?.prerequisites).toContain('SAI350');
       expect(course?.prerequisites).toContain('SBT201');
       expect(course?.deliveryModes).toContain(DeliveryMode.XR_MODE);

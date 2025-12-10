@@ -45,7 +45,7 @@ export enum DisbursementStatus {
 
 export enum DisbursementMethod {
   DIRECT_TUITION_CREDIT = 'DIRECT_TUITION_CREDIT',
-  SCROLLCOIN_TRANSFER = 'SCROLLCOIN_TRANSFER',
+  ScrollGold_TRANSFER = 'ScrollGold_TRANSFER',
   BANK_TRANSFER = 'BANK_TRANSFER',
   CHECK = 'CHECK'
 }
@@ -59,7 +59,7 @@ export interface EligibilityCriteria {
   requiredEnrollmentStatus?: string[];
   requiredLocation?: string[];
   requiredMinistryExperience?: boolean;
-  minScrollCoinBalance?: number;
+  minScrollGoldBalance?: number;
   requiredSpiritualGifts?: string[];
   requiredCourseCompletion?: string[];
   financialNeedRequired?: boolean;

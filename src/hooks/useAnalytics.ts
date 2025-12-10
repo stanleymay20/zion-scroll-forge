@@ -7,7 +7,7 @@ export const useAnalyticsOverview = () => {
     queryFn: async () => {
       const today = new Date().toISOString().split('T')[0];
       
-      const [systemData, spiritualData, scrollcoinData] = await Promise.all([
+      const [systemData, spiritualData, ScrollGoldData] = await Promise.all([
         (supabase as any)
           .from('system_analytics_daily')
           .select('*')
@@ -19,7 +19,7 @@ export const useAnalyticsOverview = () => {
           .order('date', { ascending: false })
           .limit(7),
         (supabase as any)
-          .from('scrollcoin_analytics_daily')
+          .from('ScrollGold_analytics_daily')
           .select('*')
           .order('date', { ascending: false })
           .limit(7),
@@ -27,12 +27,12 @@ export const useAnalyticsOverview = () => {
 
       if (systemData.error) throw systemData.error;
       if (spiritualData.error) throw spiritualData.error;
-      if (scrollcoinData.error) throw scrollcoinData.error;
+      if (ScrollGoldData.error) throw ScrollGoldData.error;
 
       return {
         system: systemData.data || [],
         spiritual: spiritualData.data || [],
-        scrollcoin: scrollcoinData.data || [],
+        ScrollGold: ScrollGoldData.data || [],
       };
     },
   });
@@ -56,12 +56,12 @@ export const useCourseAnalytics = (courseId: string) => {
   });
 };
 
-export const useScrollCoinAnalytics = () => {
+export const useScrollGoldAnalytics = () => {
   return useQuery({
-    queryKey: ['scrollcoin-analytics'],
+    queryKey: ['ScrollGold-analytics'],
     queryFn: async () => {
       const { data, error } = await (supabase as any)
-        .from('scrollcoin_analytics_daily')
+        .from('ScrollGold_analytics_daily')
         .select('*')
         .order('date', { ascending: false })
         .limit(30);

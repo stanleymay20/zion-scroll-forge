@@ -62,7 +62,7 @@ you have access to powerful tools for managing users, content, system configurat
 - Total users (students, faculty, admins)
 - Active enrollments
 - Course completions this month
-- Revenue (USD and ScrollCoin)
+- Revenue (USD and ScrollGold)
 - Support tickets pending
 
 **Quick Actions:**
@@ -89,7 +89,7 @@ you have access to powerful tools for managing users, content, system configurat
 **View User Profile:**
 - Click on any user to see detailed information
 - View enrollment history
-- Check ScrollCoin balance
+- Check ScrollGold balance
 - Review activity logs
 
 **Edit User:**
@@ -299,7 +299,7 @@ you have access to powerful tools for managing users, content, system configurat
 - Course enrollment trends
 - Completion rates
 - Revenue metrics
-- ScrollCoin circulation
+- ScrollGold circulation
 
 **Custom Reports:**
 1. Navigate to **Admin → Analytics → Reports**
@@ -337,20 +337,20 @@ you have access to powerful tools for managing users, content, system configurat
 
 **Payment Overview:**
 - Total revenue (USD)
-- ScrollCoin transactions
+- ScrollGold transactions
 - Scholarship disbursements
 - Refunds processed
 
 **Payment Methods:**
 - Credit card (Stripe)
-- ScrollCoin
+- ScrollGold
 - Scholarships
 - Institutional billing
 
-### ScrollCoin Management
+### ScrollGold Management
 
-**Minting ScrollCoin:**
-1. Navigate to **Admin → ScrollCoin → Mint**
+**Minting ScrollGold:**
+1. Navigate to **Admin → ScrollGold → Mint**
 2. Enter amount and reason
 3. Select recipient(s)
 4. Confirm transaction

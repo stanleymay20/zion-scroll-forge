@@ -135,14 +135,14 @@ export class EligibilityCheckService {
         }
       }
 
-      // Check ScrollCoin Balance
-      if (criteria.minScrollCoinBalance !== undefined) {
-        if (user.scrollCoinBalance >= criteria.minScrollCoinBalance) {
-          matchedCriteria.push(`ScrollCoin balance meets requirement (${criteria.minScrollCoinBalance})`);
+      // Check ScrollGold Balance
+      if (criteria.minScrollGoldBalance !== undefined) {
+        if (user.ScrollGoldBalance >= criteria.minScrollGoldBalance) {
+          matchedCriteria.push(`ScrollGold balance meets requirement (${criteria.minScrollGoldBalance})`);
           score += 10;
         } else {
-          failedCriteria.push(`ScrollCoin balance below requirement (${criteria.minScrollCoinBalance})`);
-          recommendations.push(`Earn more ScrollCoin to reach ${criteria.minScrollCoinBalance}`);
+          failedCriteria.push(`ScrollGold balance below requirement (${criteria.minScrollGoldBalance})`);
+          recommendations.push(`Earn more ScrollGold to reach ${criteria.minScrollGoldBalance}`);
         }
       }
 
@@ -203,7 +203,7 @@ export class EligibilityCheckService {
           userAge: user.dateOfBirth ? this.calculateAge(user.dateOfBirth) : null,
           academicLevel: user.academicLevel,
           enrollmentStatus: user.enrollmentStatus,
-          scrollCoinBalance: user.scrollCoinBalance,
+          ScrollGoldBalance: user.ScrollGoldBalance,
           completedCourses: user.enrollments.filter(e => e.status === 'COMPLETED').length
         }
       };
@@ -227,7 +227,7 @@ export class EligibilityCheckService {
     if (criteria.requiredEnrollmentStatus && criteria.requiredEnrollmentStatus.length > 0) maxScore += 10;
     if (criteria.requiredLocation && criteria.requiredLocation.length > 0) maxScore += 5;
     if (criteria.requiredMinistryExperience) maxScore += 15;
-    if (criteria.minScrollCoinBalance !== undefined) maxScore += 10;
+    if (criteria.minScrollGoldBalance !== undefined) maxScore += 10;
     if (criteria.requiredSpiritualGifts && criteria.requiredSpiritualGifts.length > 0) maxScore += 10;
     if (criteria.requiredCourseCompletion && criteria.requiredCourseCompletion.length > 0) maxScore += 15;
 

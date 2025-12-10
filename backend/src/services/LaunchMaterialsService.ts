@@ -190,7 +190,7 @@ export class LaunchMaterialsService {
       },
       {
         icon: '💰',
-        title: 'ScrollCoin Rewards',
+        title: 'ScrollGold Rewards',
         description: 'Earn cryptocurrency rewards for learning achievements and community contributions'
       },
       {
@@ -232,7 +232,7 @@ export class LaunchMaterialsService {
         name: 'Pastor Michael Chen',
         role: 'Ministry Leadership Graduate',
         avatar: '/images/testimonials/michael.jpg',
-        quote: 'The combination of rigorous academics and spiritual growth is unmatched. I earned my degree while serving in ministry, and the ScrollCoin rewards helped offset costs.',
+        quote: 'The combination of rigorous academics and spiritual growth is unmatched. I earned my degree while serving in ministry, and the ScrollGold rewards helped offset costs.',
         rating: 5
       },
       {
@@ -266,7 +266,7 @@ export class LaunchMaterialsService {
           'AI tutor assistance',
           'Course materials',
           'Certificate of completion',
-          'ScrollCoin rewards'
+          'ScrollGold rewards'
         ],
         highlighted: false
       },
@@ -293,7 +293,7 @@ export class LaunchMaterialsService {
           'Need-based financial aid',
           'Merit scholarships available',
           'Work-trade opportunities',
-          'ScrollCoin payment options',
+          'ScrollGold payment options',
           'Full platform access'
         ],
         highlighted: false
@@ -315,8 +315,8 @@ export class LaunchMaterialsService {
         answer: 'Our AI tutors use GPT-4o+ technology with live video avatars to provide personalized learning assistance 24/7. They can lecture, answer questions, generate quizzes, and create visual explanations.'
       },
       {
-        question: 'What is ScrollCoin?',
-        answer: 'ScrollCoin is our blockchain-based cryptocurrency that you earn for learning achievements. You can use it to pay for courses, access premium features, or exchange it.'
+        question: 'What is ScrollGold?',
+        answer: 'ScrollGold is our blockchain-based cryptocurrency that you earn for learning achievements. You can use it to pay for courses, access premium features, or exchange it.'
       },
       {
         question: 'Can I learn offline?',
@@ -328,7 +328,7 @@ export class LaunchMaterialsService {
       },
       {
         question: 'Are scholarships available?',
-        answer: 'Yes, we offer need-based and merit scholarships, work-trade opportunities, and ScrollCoin payment options to make education accessible to all.'
+        answer: 'Yes, we offer need-based and merit scholarships, work-trade opportunities, and ScrollGold payment options to make education accessible to all.'
       },
       {
         question: 'Can I transfer credits?',
@@ -357,21 +357,21 @@ AI-Powered Learning Meets Spiritual Formation in World's First Divine Economy Un
 The platform introduces several industry-first features:
 
 • AI Tutors with Live Video Avatars: Personalized learning assistance available 24/7
-• ScrollCoin Economy: Blockchain-based cryptocurrency rewards for learning achievements
+• ScrollGold Economy: Blockchain-based cryptocurrency rewards for learning achievements
 • ScrollBadge NFT Credentials: Tamper-proof, globally recognized digital credentials
 • Spiritual Formation Integration: Daily devotions, prayer journals, and prophetic check-ins
 • Global Accessibility: Multilingual support with offline capabilities for underserved communities
 
 "ScrollUniversity represents a paradigm shift in Christian education," said [Founder Name], Founder and President. "We're not just teaching subjects; we're forming kingdom leaders who will transform their communities and nations."
 
-The platform serves students in over [X] countries, offering degrees in theology, ministry leadership, business, technology, and more. With flexible pricing, scholarships, and ScrollCoin payment options, ScrollUniversity makes quality Christian education accessible to all.
+The platform serves students in over [X] countries, offering degrees in theology, ministry leadership, business, technology, and more. With flexible pricing, scholarships, and ScrollGold payment options, ScrollUniversity makes quality Christian education accessible to all.
 
 Key Statistics:
 • [X] courses available at launch
 • [X] faculty members from [X] countries
 • [X] students enrolled in beta program
 • 99.9% platform uptime
-• [X] ScrollCoin earned by students
+• [X] ScrollGold earned by students
 
 For more information, visit www.scrolluniversity.com or contact:
 [Contact Name]
@@ -419,7 +419,7 @@ Transform your future with:
 ✨ AI-powered tutoring with live video avatars
 🙏 Integrated spiritual formation
 🎓 Accredited degrees with blockchain credentials
-💰 ScrollCoin rewards for learning
+💰 ScrollGold rewards for learning
 🌍 Global accessibility with multilingual support
 
 Join thousands of students pursuing kingdom-focused education. Your journey starts today!
@@ -464,7 +464,7 @@ As the world's first kingdom-focused online university, we're revolutionizing Ch
 🔹 AI-Powered Learning: Live video avatar tutors providing 24/7 personalized assistance
 🔹 Blockchain Credentials: NFT-based degrees and certificates for global recognition
 🔹 Spiritual Integration: Faith and learning united at every level
-🔹 Divine Economy: ScrollCoin cryptocurrency rewards for achievements
+🔹 Divine Economy: ScrollGold cryptocurrency rewards for achievements
 🔹 Global Accessibility: Multilingual support with offline capabilities
 
 Our mission is to make quality Christian education accessible to believers worldwide, particularly in underserved communities.
@@ -503,7 +503,7 @@ Grow spiritually while you learn academically with daily devotions, prayer journ
 ✅ Blockchain Credentials
 Earn ScrollBadge NFTs and blockchain-verified degrees recognized globally.
 
-✅ ScrollCoin Rewards
+✅ ScrollGold Rewards
 Earn cryptocurrency for your learning achievements and use it to pay for courses or access premium features.
 
 ✅ Global Accessibility
@@ -513,7 +513,7 @@ Learn from anywhere with multilingual support, offline capabilities, and mobile-
 
 For a limited time, get:
 • 20% off your first course
-• 500 bonus ScrollCoins
+• 500 bonus ScrollGolds
 • Free access to premium AI tutor features for 30 days
 
 👉 [Start Your Journey Now]

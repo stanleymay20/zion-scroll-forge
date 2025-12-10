@@ -99,7 +99,7 @@ async function seedE2ETestData() {
           difficulty: 'BEGINNER',
           duration: 120,
           scrollXPReward: 200,
-          scrollCoinCost: 0,
+          scrollGoldCost: 0,
           facultyId: scrollTheologyFaculty.id
         },
         {
@@ -108,7 +108,7 @@ async function seedE2ETestData() {
           difficulty: 'INTERMEDIATE',
           duration: 180,
           scrollXPReward: 300,
-          scrollCoinCost: 50,
+          scrollGoldCost: 50,
           facultyId: propheticLawFaculty.id
         }
       ]

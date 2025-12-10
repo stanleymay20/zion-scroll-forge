@@ -113,7 +113,7 @@ export class PrivacySettingsService {
       showDateOfBirth?: boolean;
       showCourseProgress?: boolean;
       showAchievements?: boolean;
-      showScrollCoinBalance?: boolean;
+      showScrollGoldBalance?: boolean;
       showSpiritualGrowth?: boolean;
     }
   ): Promise<PrivacySettings> {
@@ -298,7 +298,7 @@ export class PrivacySettingsService {
       showDateOfBirth: false,
       showCourseProgress: true,
       showAchievements: true,
-      showScrollCoinBalance: false,
+      showScrollGoldBalance: false,
       showSpiritualGrowth: true,
       allowMessagesFrom: 'everyone',
       allowFriendRequests: true,

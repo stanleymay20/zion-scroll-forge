@@ -787,16 +787,16 @@
  * Exchange Rate Service
  * "By the Spirit of Wisdom, we establish fair exchange in the kingdom economy"
  * 
- * Service for managing ScrollCoin exchange rates, conversions, and pricing.
+ * Service for managing ScrollGold exchange rates, conversions, and pricing.
  */
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
 <span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
-<span class="cstat-no" title="statement not covered" >import scrollCoinConfig from '../config/scrollcoin.config';</span>
+<span class="cstat-no" title="statement not covered" >import ScrollGoldConfig from '../config/ScrollGold.config';</span>
 import {
   ExchangeRateData,
   ExchangeRateConversion
-} from '../types/scrollcoin.types';
+} from '../types/ScrollGold.types';
 &nbsp;
 const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
@@ -820,7 +820,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
       const now = <span class="cstat-no" title="statement not covered" >new Date();</span>
 &nbsp;
       // Try to get active rate from database
-      const rate = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinExchangeRate.findFirst({</span>
+      const rate = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldExchangeRate.findFirst({</span>
         where: {
           isActive: true,
           effectiveFrom: { lte: now },
@@ -838,8 +838,8 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 &nbsp;
       // If no rate found, create default rate
 <span class="cstat-no" title="statement not covered" >      return await this.createRate({</span>
-        rateToUSD: scrollCoinConfig.defaultExchangeRate,
-        rateFromUSD: 1 / scrollCoinConfig.defaultExchangeRate,
+        rateToUSD: ScrollGoldConfig.defaultExchangeRate,
+        rateFromUSD: 1 / ScrollGoldConfig.defaultExchangeRate,
         source: 'DEFAULT',
         isActive: true,
         effectiveFrom: now
@@ -866,7 +866,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 &nbsp;
       // If setting as active, deactivate previous rates
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (data.isActive) {</span>
-<span class="cstat-no" title="statement not covered" >        await prisma.scrollCoinExchangeRate.updateMany({</span>
+<span class="cstat-no" title="statement not covered" >        await prisma.ScrollGoldExchangeRate.updateMany({</span>
           where: { isActive: true },
           data: { 
             isActive: false,
@@ -875,7 +875,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
         });
       }
 &nbsp;
-      const rate = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinExchangeRate.create({</span>
+      const rate = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldExchangeRate.create({</span>
         data: {
           rateToUSD: data.rateToUSD,
           rateFromUSD: data.rateFromUSD,
@@ -916,7 +916,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 &nbsp;
       // If activating this rate, deactivate others
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (updates.isActive) {</span>
-<span class="cstat-no" title="statement not covered" >        await prisma.scrollCoinExchangeRate.updateMany({</span>
+<span class="cstat-no" title="statement not covered" >        await prisma.ScrollGoldExchangeRate.updateMany({</span>
           where: { 
             isActive: true,
             id: { not: rateId }
@@ -925,7 +925,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
         });
       }
 &nbsp;
-      const rate = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinExchangeRate.update({</span>
+      const rate = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldExchangeRate.update({</span>
         where: { id: rateId },
         data: updates
       });
@@ -940,43 +940,43 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   }
 &nbsp;
   /**
-   * Convert ScrollCoin to USD
+   * Convert ScrollGold to USD
    */
-<span class="fstat-no" title="function not covered" >  async </span>convertToUSD(scrollCoinAmount: number): Promise&lt;ExchangeRateConversion&gt; {
+<span class="fstat-no" title="function not covered" >  async </span>convertToUSD(ScrollGoldAmount: number): Promise&lt;ExchangeRateConversion&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const rate = <span class="cstat-no" title="statement not covered" >await this.getCurrentRate();</span>
 &nbsp;
-      const usdAmount = <span class="cstat-no" title="statement not covered" >scrollCoinAmount * rate.rateToUSD;</span>
+      const usdAmount = <span class="cstat-no" title="statement not covered" >ScrollGoldAmount * rate.rateToUSD;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return {</span>
-        scrollCoinAmount,
+        ScrollGoldAmount,
         usdAmount,
         rate: rate.rateToUSD,
         timestamp: new Date()
       };
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error converting ScrollCoin to USD:', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error converting ScrollGold to USD:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
   /**
-   * Convert USD to ScrollCoin
+   * Convert USD to ScrollGold
    */
 <span class="fstat-no" title="function not covered" >  async </span>convertFromUSD(usdAmount: number): Promise&lt;ExchangeRateConversion&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
       const rate = <span class="cstat-no" title="statement not covered" >await this.getCurrentRate();</span>
 &nbsp;
-      const scrollCoinAmount = <span class="cstat-no" title="statement not covered" >usdAmount * rate.rateFromUSD;</span>
+      const ScrollGoldAmount = <span class="cstat-no" title="statement not covered" >usdAmount * rate.rateFromUSD;</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return {</span>
-        scrollCoinAmount,
+        ScrollGoldAmount,
         usdAmount,
         rate: rate.rateFromUSD,
         timestamp: new Date()
       };
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Error converting USD to ScrollCoin:', error);</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Error converting USD to ScrollGold:', error);</span>
 <span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
@@ -998,7 +998,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (endDate) <span class="cstat-no" title="statement not covered" >where.effectiveFrom.lte = endDate;</span></span>
       }
 &nbsp;
-      const rates = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinExchangeRate.findMany({</span>
+      const rates = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldExchangeRate.findMany({</span>
         where,
         orderBy: { effectiveFrom: 'desc' },
         take: limit
@@ -1016,7 +1016,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
    */
 <span class="fstat-no" title="function not covered" >  async </span>getRateAtDate(date: Date): Promise&lt;ExchangeRateData&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-      const rate = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinExchangeRate.findFirst({</span>
+      const rate = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldExchangeRate.findFirst({</span>
         where: {
           effectiveFrom: { lte: date },
           OR: [
@@ -1041,9 +1041,9 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
   /**
    * Calculate price in both currencies
    */
-<span class="fstat-no" title="function not covered" >  async </span>calculatePrice(baseAmount: number, baseCurrency: 'USD' | 'SCROLLCOIN'): Promise&lt;{
+<span class="fstat-no" title="function not covered" >  async </span>calculatePrice(baseAmount: number, baseCurrency: 'USD' | 'ScrollGold'): Promise&lt;{
     usd: number;
-    scrollCoin: number;
+    ScrollGold: number;
     rate: number;
   }&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
@@ -1052,13 +1052,13 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >      if (baseCurrency === 'USD') {</span>
 <span class="cstat-no" title="statement not covered" >        return {</span>
           usd: baseAmount,
-          scrollCoin: baseAmount * rate.rateFromUSD,
+          ScrollGold: baseAmount * rate.rateFromUSD,
           rate: rate.rateFromUSD
         };
       } else {
 <span class="cstat-no" title="statement not covered" >        return {</span>
           usd: baseAmount * rate.rateToUSD,
-          scrollCoin: baseAmount,
+          ScrollGold: baseAmount,
           rate: rate.rateToUSD
         };
       }
@@ -1087,7 +1087,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
 <span class="cstat-no" title="statement not covered" >        <span class="missing-if-branch" title="if path not taken" >I</span>if (endDate) <span class="cstat-no" title="statement not covered" >where.effectiveFrom.lte = endDate;</span></span>
       }
 &nbsp;
-      const rates = <span class="cstat-no" title="statement not covered" >await prisma.scrollCoinExchangeRate.findMany({</span>
+      const rates = <span class="cstat-no" title="statement not covered" >await prisma.ScrollGoldExchangeRate.findMany({</span>
         where,
         orderBy: { effectiveFrom: 'asc' }
       });
@@ -1126,7 +1126,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
    */
 <span class="fstat-no" title="function not covered" >  async </span>deactivateRate(rateId: string): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      await prisma.scrollCoinExchangeRate.update({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.ScrollGoldExchangeRate.update({</span>
         where: { id: rateId },
         data: {
           isActive: false,
@@ -1150,7 +1150,7 @@ const prisma = <span class="cstat-no" title="statement not covered" >new PrismaC
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:03.756Z
+                at 2025-12-02T16:54:09.620Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

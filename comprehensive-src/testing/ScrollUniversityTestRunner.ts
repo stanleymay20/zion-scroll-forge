@@ -14,7 +14,7 @@ import { ScrollPriestScribeService } from '../services/ScrollPriestScribeService
 import { ScrollScholarService } from '../services/ScrollScholarService';
 import { AIGradingService } from '../services/AIGradingService';
 import { PropheticIntelligenceService } from '../services/PropheticIntelligenceService';
-import { ScrollCoinService } from '../services/ScrollCoinService';
+import { ScrollGoldService } from '../services/ScrollGoldService';
 import { GlobalAccessibilityService } from '../services/GlobalAccessibilityService';
 import { AIXRContentGenerator } from '../services/AIXRContentGenerator';
 

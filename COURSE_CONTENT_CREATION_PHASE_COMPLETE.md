@@ -90,7 +90,7 @@ Every lecture follows the 6-step model perfectly:
 ### Next Steps Available:
 1. Import courses into database
 2. Configure AI tutors
-3. Set up ScrollCoin rewards
+3. Set up ScrollGold rewards
 4. Enable student enrollment
 5. Launch pilot program
 
@@ -152,7 +152,7 @@ Based on the Launch Specs Master, the next priorities are:
 ### Option 1: Platform Integration (Recommended)
 - Import courses into database
 - Configure AI tutors for each course
-- Set up ScrollCoin reward system
+- Set up ScrollGold reward system
 - Enable enrollment workflows
 - Build admin course management tools
 

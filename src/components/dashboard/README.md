@@ -55,7 +55,7 @@ import { PersonalizedContent } from '@/components/dashboard';
 
 ### Integration
 - Uses React Query for data fetching
-- Integrates with ScrollCoin economy
+- Integrates with ScrollGold economy
 - Connects to spiritual formation tracking
 - Real-time updates via Supabase
 

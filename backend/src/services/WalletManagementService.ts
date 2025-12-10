@@ -2,19 +2,19 @@
  * Wallet Management Service
  * "By the Spirit of Wisdom, we secure the treasures of the kingdom"
  * 
- * Service for managing ScrollCoin wallets, including creation, security,
+ * Service for managing ScrollGold wallets, including creation, security,
  * and key management with encryption.
  */
 
 import { PrismaClient } from '@prisma/client';
 import crypto from 'crypto';
 import { logger } from '../utils/logger';
-import scrollCoinConfig from '../config/scrollcoin.config';
+import ScrollGoldConfig from '../config/ScrollGold.config';
 import {
-  ScrollCoinWalletData,
+  ScrollGoldWalletData,
   WalletCreationRequest,
   WalletSecuritySettings
-} from '../types/scrollcoin.types';
+} from '../types/ScrollGold.types';
 
 const prisma = new PrismaClient();
 
@@ -39,12 +39,12 @@ export class WalletManagementService {
   /**
    * Create a new wallet for a user
    */
-  async createWallet(request: WalletCreationRequest): Promise<ScrollCoinWalletData> {
+  async createWallet(request: WalletCreationRequest): Promise<ScrollGoldWalletData> {
     try {
-      logger.info('Creating new ScrollCoin wallet', { userId: request.userId });
+      logger.info('Creating new ScrollGold wallet', { userId: request.userId });
 
       // Check if wallet already exists
-      const existingWallet = await prisma.scrollCoinWallet.findUnique({
+      const existingWallet = await prisma.ScrollGoldWallet.findUnique({
         where: { userId: request.userId }
       });
 
@@ -59,7 +59,7 @@ export class WalletManagementService {
       const encryptedPrivateKey = this.encryptPrivateKey(privateKey);
 
       // Create wallet in database
-      const wallet = await prisma.scrollCoinWallet.create({
+      const wallet = await prisma.ScrollGoldWallet.create({
         data: {
           userId: request.userId,
           address,
@@ -71,17 +71,17 @@ export class WalletManagementService {
           isActive: true,
           isBlacklisted: false,
           isWhitelisted: false,
-          dailyTransferLimit: scrollCoinConfig.dailyTransferLimit,
-          maxTransactionAmount: scrollCoinConfig.maxTransactionAmount
+          dailyTransferLimit: ScrollGoldConfig.dailyTransferLimit,
+          maxTransactionAmount: ScrollGoldConfig.maxTransactionAmount
         }
       });
 
-      logger.info('ScrollCoin wallet created successfully', {
+      logger.info('ScrollGold wallet created successfully', {
         userId: request.userId,
         address: wallet.address
       });
 
-      return wallet as ScrollCoinWalletData;
+      return wallet as ScrollGoldWalletData;
     } catch (error) {
       logger.error('Error creating wallet:', error);
       throw error;
@@ -91,13 +91,13 @@ export class WalletManagementService {
   /**
    * Get wallet by user ID
    */
-  async getWalletByUserId(userId: string): Promise<ScrollCoinWalletData | null> {
+  async getWalletByUserId(userId: string): Promise<ScrollGoldWalletData | null> {
     try {
-      const wallet = await prisma.scrollCoinWallet.findUnique({
+      const wallet = await prisma.ScrollGoldWallet.findUnique({
         where: { userId }
       });
 
-      return wallet as ScrollCoinWalletData | null;
+      return wallet as ScrollGoldWalletData | null;
     } catch (error) {
       logger.error('Error getting wallet by user ID:', error);
       throw error;
@@ -107,13 +107,13 @@ export class WalletManagementService {
   /**
    * Get wallet by address
    */
-  async getWalletByAddress(address: string): Promise<ScrollCoinWalletData | null> {
+  async getWalletByAddress(address: string): Promise<ScrollGoldWalletData | null> {
     try {
-      const wallet = await prisma.scrollCoinWallet.findUnique({
+      const wallet = await prisma.ScrollGoldWallet.findUnique({
         where: { address }
       });
 
-      return wallet as ScrollCoinWalletData | null;
+      return wallet as ScrollGoldWalletData | null;
     } catch (error) {
       logger.error('Error getting wallet by address:', error);
       throw error;
@@ -126,11 +126,11 @@ export class WalletManagementService {
   async updateSecuritySettings(
     userId: string,
     settings: Partial<WalletSecuritySettings>
-  ): Promise<ScrollCoinWalletData> {
+  ): Promise<ScrollGoldWalletData> {
     try {
       logger.info('Updating wallet security settings', { userId, settings });
 
-      const wallet = await prisma.scrollCoinWallet.update({
+      const wallet = await prisma.ScrollGoldWallet.update({
         where: { userId },
         data: {
           dailyTransferLimit: settings.dailyTransferLimit,
@@ -142,7 +142,7 @@ export class WalletManagementService {
 
       logger.info('Wallet security settings updated', { userId });
 
-      return wallet as ScrollCoinWalletData;
+      return wallet as ScrollGoldWalletData;
     } catch (error) {
       logger.error('Error updating wallet security settings:', error);
       throw error;
@@ -156,7 +156,7 @@ export class WalletManagementService {
     try {
       logger.warn('Blacklisting wallet', { userId, reason });
 
-      await prisma.scrollCoinWallet.update({
+      await prisma.ScrollGoldWallet.update({
         where: { userId },
         data: { isBlacklisted: true, isActive: false }
       });
@@ -175,7 +175,7 @@ export class WalletManagementService {
     try {
       logger.info('Whitelisting wallet', { userId });
 
-      await prisma.scrollCoinWallet.update({
+      await prisma.ScrollGoldWallet.update({
         where: { userId },
         data: { isWhitelisted: true }
       });
@@ -194,7 +194,7 @@ export class WalletManagementService {
     try {
       logger.info('Deactivating wallet', { userId });
 
-      await prisma.scrollCoinWallet.update({
+      await prisma.ScrollGoldWallet.update({
         where: { userId },
         data: { isActive: false }
       });
@@ -213,7 +213,7 @@ export class WalletManagementService {
     try {
       logger.info('Reactivating wallet', { userId });
 
-      const wallet = await prisma.scrollCoinWallet.findUnique({
+      const wallet = await prisma.ScrollGoldWallet.findUnique({
         where: { userId }
       });
 
@@ -221,7 +221,7 @@ export class WalletManagementService {
         throw new Error('Cannot reactivate blacklisted wallet');
       }
 
-      await prisma.scrollCoinWallet.update({
+      await prisma.ScrollGoldWallet.update({
         where: { userId },
         data: { isActive: true }
       });
@@ -240,7 +240,7 @@ export class WalletManagementService {
     try {
       logger.info('Syncing wallet balance with blockchain', { userId });
 
-      const wallet = await prisma.scrollCoinWallet.findUnique({
+      const wallet = await prisma.ScrollGoldWallet.findUnique({
         where: { userId }
       });
 
@@ -252,7 +252,7 @@ export class WalletManagementService {
       // For now, return current balance
       const blockchainBalance = wallet.balance;
 
-      await prisma.scrollCoinWallet.update({
+      await prisma.ScrollGoldWallet.update({
         where: { userId },
         data: {
           balance: blockchainBalance,
@@ -280,7 +280,7 @@ export class WalletManagementService {
         throw new Error('Unauthorized access to private key');
       }
 
-      const wallet = await prisma.scrollCoinWallet.findUnique({
+      const wallet = await prisma.ScrollGoldWallet.findUnique({
         where: { userId }
       });
 
@@ -378,9 +378,9 @@ export class WalletManagementService {
   /**
    * Export wallet data (excluding private key)
    */
-  async exportWalletData(userId: string): Promise<Partial<ScrollCoinWalletData>> {
+  async exportWalletData(userId: string): Promise<Partial<ScrollGoldWalletData>> {
     try {
-      const wallet = await prisma.scrollCoinWallet.findUnique({
+      const wallet = await prisma.ScrollGoldWallet.findUnique({
         where: { userId }
       });
 
@@ -391,7 +391,7 @@ export class WalletManagementService {
       // Return wallet data without private key
       const { privateKeyHash, ...walletData } = wallet;
 
-      return walletData as Partial<ScrollCoinWalletData>;
+      return walletData as Partial<ScrollGoldWalletData>;
     } catch (error) {
       logger.error('Error exporting wallet data:', error);
       throw error;
@@ -411,7 +411,7 @@ export class WalletManagementService {
     lastTransactionDate?: Date;
   }> {
     try {
-      const wallet = await prisma.scrollCoinWallet.findUnique({
+      const wallet = await prisma.ScrollGoldWallet.findUnique({
         where: { userId }
       });
 
@@ -419,7 +419,7 @@ export class WalletManagementService {
         throw new Error('Wallet not found');
       }
 
-      const transactions = await prisma.scrollCoinTransaction.findMany({
+      const transactions = await prisma.ScrollGoldTransaction.findMany({
         where: { userId },
         orderBy: { createdAt: 'desc' }
       });

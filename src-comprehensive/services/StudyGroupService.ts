@@ -8,15 +8,15 @@ import {
   ResourceType,
   PrivacyLevel
 } from '../types/community';
-import { ScrollCoinService } from './ScrollCoinService';
+import { ScrollGoldService } from './ScrollGoldService';
 import { PropheticIntelligenceService } from './PropheticIntelligenceService';
 
 export class StudyGroupService {
-  private scrollCoinService: ScrollCoinService;
+  private ScrollGoldService: ScrollGoldService;
   private propheticService: PropheticIntelligenceService;
 
   constructor() {
-    this.scrollCoinService = new ScrollCoinService();
+    this.ScrollGoldService = new ScrollGoldService();
     this.propheticService = new PropheticIntelligenceService();
   }
 
@@ -43,7 +43,7 @@ export class StudyGroupService {
         joinedAt: new Date(),
         isActive: true,
         contributions: 0,
-        scrollCoinEarned: 0
+        ScrollGoldEarned: 0
       }],
       schedule: groupData.schedule || [],
       resources: [],
@@ -56,8 +56,8 @@ export class StudyGroupService {
 
     await this.storeStudyGroup(studyGroup);
     
-    // Award ScrollCoin for creating study group
-    await this.scrollCoinService.awardCoins(groupData.createdBy, 30, 'Created study group');
+    // Award ScrollGold for creating study group
+    await this.ScrollGoldService.awardCoins(groupData.createdBy, 30, 'Created study group');
 
     return studyGroup;
   }
@@ -82,13 +82,13 @@ export class StudyGroupService {
       joinedAt: new Date(),
       isActive: true,
       contributions: 0,
-      scrollCoinEarned: 0
+      ScrollGoldEarned: 0
     };
 
     await this.addGroupMember(groupId, newMember);
     
-    // Award ScrollCoin for joining study group
-    await this.scrollCoinService.awardCoins(userId, 10, 'Joined study group');
+    // Award ScrollGold for joining study group
+    await this.ScrollGoldService.awardCoins(userId, 10, 'Joined study group');
     
     // Notify group members
     await this.notifyGroupMembers(groupId, `${userId} joined the study group`);
@@ -118,8 +118,8 @@ export class StudyGroupService {
 
     await this.storeStudyResource(groupId, resource);
     
-    // Award ScrollCoin for sharing resources
-    await this.scrollCoinService.awardCoins(resourceData.uploadedBy, 15, 'Shared study resource');
+    // Award ScrollGold for sharing resources
+    await this.ScrollGoldService.awardCoins(resourceData.uploadedBy, 15, 'Shared study resource');
     
     // Update member contributions
     await this.incrementMemberContributions(groupId, resourceData.uploadedBy);
@@ -141,14 +141,14 @@ export class StudyGroupService {
     notes: string;
     conductedBy: string;
   }): Promise<void> {
-    // Award ScrollCoin to session conductor
+    // Award ScrollGold to session conductor
     const baseReward = Math.floor(sessionData.duration / 30) * 10; // 10 coins per 30 minutes
-    await this.scrollCoinService.awardCoins(sessionData.conductedBy, baseReward, 'Conducted study session');
+    await this.ScrollGoldService.awardCoins(sessionData.conductedBy, baseReward, 'Conducted study session');
 
-    // Award ScrollCoin to attendees
+    // Award ScrollGold to attendees
     for (const attendee of sessionData.attendees) {
       const attendanceReward = Math.floor(sessionData.duration / 30) * 5; // 5 coins per 30 minutes
-      await this.scrollCoinService.awardCoins(attendee, attendanceReward, 'Attended study session');
+      await this.ScrollGoldService.awardCoins(attendee, attendanceReward, 'Attended study session');
       
       // Update member contributions
       await this.incrementMemberContributions(groupId, attendee);
@@ -162,7 +162,7 @@ export class StudyGroupService {
     if (insights.spiritualDepth > 0.7) {
       // Bonus rewards for spiritually enriching sessions
       for (const attendee of sessionData.attendees) {
-        await this.scrollCoinService.awardCoins(attendee, 10, 'Participated in spiritually enriching study session');
+        await this.ScrollGoldService.awardCoins(attendee, 10, 'Participated in spiritually enriching study session');
       }
     }
   }
@@ -199,8 +199,8 @@ export class StudyGroupService {
 
     await this.updateMemberRole(groupId, userId, MemberRole.MODERATOR);
     
-    // Award ScrollCoin for promotion
-    await this.scrollCoinService.awardCoins(userId, 25, 'Promoted to study group moderator');
+    // Award ScrollGold for promotion
+    await this.ScrollGoldService.awardCoins(userId, 25, 'Promoted to study group moderator');
   }
 
   async createStudyPlan(groupId: string, planData: {
@@ -212,8 +212,8 @@ export class StudyGroupService {
   }): Promise<void> {
     await this.storeStudyPlan(groupId, planData);
     
-    // Award ScrollCoin for creating study plan
-    await this.scrollCoinService.awardCoins(planData.createdBy, 40, 'Created comprehensive study plan');
+    // Award ScrollGold for creating study plan
+    await this.ScrollGoldService.awardCoins(planData.createdBy, 40, 'Created comprehensive study plan');
     
     // Notify group members
     await this.notifyGroupMembers(groupId, 'New study plan created');
@@ -227,13 +227,13 @@ export class StudyGroupService {
   }): Promise<void> {
     await this.storeStudyProgress(groupId, userId, progressData);
     
-    // Award ScrollCoin based on progress
+    // Award ScrollGold based on progress
     const progressReward = progressData.topicsCompleted.length * 5 + Math.floor(progressData.hoursStudied) * 2;
-    await this.scrollCoinService.awardCoins(userId, progressReward, 'Study progress milestone');
+    await this.ScrollGoldService.awardCoins(userId, progressReward, 'Study progress milestone');
     
     // Bonus for spiritual insights
     if (progressData.spiritualInsights.length > 0) {
-      await this.scrollCoinService.awardCoins(userId, progressData.spiritualInsights.length * 10, 'Spiritual insights gained');
+      await this.ScrollGoldService.awardCoins(userId, progressData.spiritualInsights.length * 10, 'Spiritual insights gained');
     }
   }
 
@@ -259,10 +259,10 @@ export class StudyGroupService {
       throw new Error('Only group leader can disband the group');
     }
 
-    // Award final ScrollCoin to all active members
+    // Award final ScrollGold to all active members
     for (const member of group.members) {
       if (member.isActive) {
-        await this.scrollCoinService.awardCoins(member.userId, 20, 'Study group completion');
+        await this.ScrollGoldService.awardCoins(member.userId, 20, 'Study group completion');
       }
     }
 

@@ -22,8 +22,8 @@ Successfully implemented a comprehensive Supabase schema migration that synchron
 - ✅ `enrollments` - Student course enrollments with progress tracking
 - ✅ `assignments` - Course assignments and assessments
 - ✅ `submissions` - Assignment submissions with grading
-- ✅ `payments` - Payment transactions (Stripe, ScrollCoin, etc.)
-- ✅ `scrollcoin_transactions` - Blockchain economy transactions
+- ✅ `payments` - Payment transactions (Stripe, ScrollGold, etc.)
+- ✅ `ScrollGold_transactions` - Blockchain economy transactions
 - ✅ `research_papers` - Academic research publications
 - ✅ `certifications` - Academic certifications and degrees
 - ✅ `scrollbadges` - NFT-based achievement badges
@@ -44,7 +44,7 @@ Successfully implemented a comprehensive Supabase schema migration that synchron
 - ✅ `payment_method` - Payment types
 - ✅ `payment_status` - Payment states
 - ✅ `transaction_type` - Transaction categories
-- ✅ `scrollcoin_activity` - ScrollCoin earning activities
+- ✅ `ScrollGold_activity` - ScrollGold earning activities
 - ✅ `publication_status` - Research paper states
 - ✅ `certification_type` - Certification categories
 - ✅ `badge_type` - Badge categories
@@ -78,7 +78,7 @@ Successfully implemented a comprehensive Supabase schema migration that synchron
 - ✅ Users can view/create their own payments
 - ✅ Admins can view all payments
 
-#### ScrollCoin Transactions Policies
+#### ScrollGold Transactions Policies
 - ✅ Users can view their own transactions
 - ✅ System can create transactions
 
@@ -106,9 +106,9 @@ Successfully implemented a comprehensive Supabase schema migration that synchron
 
 #### `enroll_in_course(user_id, course_id)`
 - ✅ Checks course availability and cost
-- ✅ Verifies user has sufficient ScrollCoin balance
+- ✅ Verifies user has sufficient ScrollGold balance
 - ✅ Creates enrollment record
-- ✅ Deducts ScrollCoin and records transaction
+- ✅ Deducts ScrollGold and records transaction
 - ✅ Returns enrollment ID
 
 #### `grade_submission(submission_id, score, feedback, grader_id)`
@@ -120,13 +120,13 @@ Successfully implemented a comprehensive Supabase schema migration that synchron
 #### `complete_course(enrollment_id)`
 - ✅ Updates enrollment status to GRADUATED
 - ✅ Sets progress to 100%
-- ✅ Awards ScrollCoin based on XP earned
+- ✅ Awards ScrollGold based on XP earned
 - ✅ Records completion transaction
 - ✅ Returns success status
 
 #### `process_payment(user_id, amount, currency, method, description, external_id)`
 - ✅ Creates payment record
-- ✅ Deducts ScrollCoin if payment method is SCROLL_COIN
+- ✅ Deducts ScrollGold if payment method is SCROLL_COIN
 - ✅ Records transaction
 - ✅ Returns payment ID
 
@@ -147,14 +147,14 @@ Successfully implemented a comprehensive Supabase schema migration that synchron
 #### `get_leaderboard(limit, timeframe)`
 - ✅ Supports timeframes: week, month, year, all_time
 - ✅ Returns rank, XP, courses completed
-- ✅ Shows ScrollCoin balance
+- ✅ Shows ScrollGold balance
 - ✅ Counts badges earned
 - ✅ Orders by total XP
 
 #### `award_daily_streak_bonus(user_id)`
 - ✅ Checks last activity date
 - ✅ Calculates streak bonus
-- ✅ Awards ScrollCoin
+- ✅ Awards ScrollGold
 - ✅ Records transaction
 - ✅ Returns success status
 
@@ -178,7 +178,7 @@ Successfully implemented a comprehensive Supabase schema migration that synchron
 - ✅ `enrollments` - Log all changes
 - ✅ `submissions` - Log all changes
 - ✅ `payments` - Log all changes
-- ✅ `scrollcoin_transactions` - Log all changes
+- ✅ `ScrollGold_transactions` - Log all changes
 - ✅ `applications` - Log all changes
 
 ### 5. Storage Buckets Configuration (5 buckets)
@@ -226,7 +226,7 @@ Successfully implemented a comprehensive Supabase schema migration that synchron
 - ✅ Total XP
 - ✅ Total badges
 - ✅ Average score
-- ✅ ScrollCoin balance
+- ✅ ScrollGold balance
 
 #### `course_stats`
 - ✅ Total enrollments
@@ -250,7 +250,7 @@ Successfully implemented a comprehensive Supabase schema migration that synchron
 - ✅ `enrollments` - Course progress updates
 - ✅ `submissions` - Grading updates
 - ✅ `ai_tutor_sessions` - Live AI tutor sessions
-- ✅ `scrollcoin_transactions` - Balance updates
+- ✅ `ScrollGold_transactions` - Balance updates
 
 ### 8. Testing and Validation
 

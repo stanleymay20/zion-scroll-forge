@@ -58,7 +58,7 @@ graph TB
         SPIRITUAL[Spiritual Formation]
         COMMUNITY[Community Service]
         ANALYTICS[Analytics Service]
-        SCROLLCOIN[ScrollCoin Service]
+        ScrollGold[ScrollGold Service]
     end
     
     subgraph "Data Layer"
@@ -86,7 +86,7 @@ graph TB
     GATEWAY --> SPIRITUAL
     GATEWAY --> COMMUNITY
     GATEWAY --> ANALYTICS
-    GATEWAY --> SCROLLCOIN
+    GATEWAY --> ScrollGold
     
     AUTH --> POSTGRES
     COURSE --> POSTGRES
@@ -99,7 +99,7 @@ graph TB
     COMMUNITY --> POSTGRES
     COMMUNITY --> REDIS
     ANALYTICS --> POSTGRES
-    SCROLLCOIN --> BLOCKCHAIN
+    ScrollGold --> BLOCKCHAIN
     
     COURSE --> REDIS
     AI --> REDIS
@@ -195,7 +195,7 @@ sequenceDiagram
 
 **Integration Points:**
 - Stripe for credit card processing
-- Ethereum blockchain for ScrollCoin
+- Ethereum blockchain for ScrollGold
 - Database for transaction records
 - Email service for receipts
 
@@ -212,7 +212,7 @@ sequenceDiagram
     alt Credit Card
         PaymentService->>Stripe: Process Payment
         Stripe-->>PaymentService: Payment Result
-    else ScrollCoin
+    else ScrollGold
         PaymentService->>Blockchain: Transfer Tokens
         Blockchain-->>PaymentService: Transaction Hash
     end
@@ -532,7 +532,7 @@ interface BlockchainIntegration {
   network: 'ethereum-mainnet';
   provider: 'infura';
   contracts: {
-    scrollCoin: '0x...';
+    ScrollGold: '0x...';
     scrollBadge: '0x...';
   };
   confirmations: 12;
@@ -594,7 +594,7 @@ Client Request
 - User registrations
 - Course enrollments
 - Payment transactions
-- ScrollCoin circulation
+- ScrollGold circulation
 - AI tutor usage
 
 **Infrastructure Metrics:**

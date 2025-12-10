@@ -28,7 +28,7 @@ const CourseCreateSchema = z.object({
   difficulty: z.enum(['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'PROPHETIC']),
   duration: z.number().min(1),
   scrollXPReward: z.number().min(0),
-  scrollCoinCost: z.number().min(0),
+  scrollGoldCost: z.number().min(0),
   facultyId: z.string()
 });
 

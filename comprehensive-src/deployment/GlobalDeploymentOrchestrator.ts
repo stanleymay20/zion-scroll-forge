@@ -329,8 +329,8 @@ export class GlobalDeploymentOrchestrator {
     // Deploy enrollment system
     await this.deployService('enrollment-system', region);
     
-    // Deploy ScrollCoin system
-    await this.deployService('scrollcoin-system', region);
+    // Deploy ScrollGold system
+    await this.deployService('ScrollGold-system', region);
   }
 
   /**

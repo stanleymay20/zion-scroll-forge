@@ -268,7 +268,7 @@ export type AchievementType =
   | 'service'
   | 'research'
   | 'scrollbadge'
-  | 'scrollcoin';
+  | 'scrollgold';
 
 // Skill Endorsements
 export interface SkillEndorsement {

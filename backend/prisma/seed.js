@@ -59,7 +59,7 @@ async function seedBasicData() {
             difficulty: 'BEGINNER',
             duration: 40,
             scrollXPReward: 100,
-            scrollCoinCost: 0.0,
+            scrollGoldCost: 0.0,
             facultyId: faculty.id,
             isActive: true,
             publishedAt: new Date(),

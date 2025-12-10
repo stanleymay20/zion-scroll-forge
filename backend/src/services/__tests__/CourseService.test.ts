@@ -22,7 +22,7 @@ describe('CourseService', () => {
         duration: 40,
         facultyId: 'test-faculty-id',
         scrollXPReward: 100,
-        scrollCoinCost: 50
+        scrollGoldCost: 50
       };
 
       // This will fail without a real database connection

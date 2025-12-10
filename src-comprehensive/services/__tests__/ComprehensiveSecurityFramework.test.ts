@@ -2,7 +2,7 @@ import { ComprehensiveSecurityService } from '../ComprehensiveSecurityService';
 import { SecurityComplianceService } from '../SecurityComplianceService';
 import { DataPrivacyComplianceService } from '../DataPrivacyComplianceService';
 import { SpiritualContentFilterService } from '../SpiritualContentFilterService';
-import { ScrollCoinFraudPreventionService } from '../ScrollCoinFraudPreventionService';
+import { ScrollGoldFraudPreventionService } from '../ScrollGoldFraudPreventionService';
 
 describe('Comprehensive Security Framework', () => {
   let securityService: ComprehensiveSecurityService;
@@ -290,11 +290,11 @@ describe('Comprehensive Security Framework', () => {
     });
   });
 
-  describe('ScrollCoin Fraud Prevention Service', () => {
-    let service: ScrollCoinFraudPreventionService;
+  describe('ScrollGold Fraud Prevention Service', () => {
+    let service: ScrollGoldFraudPreventionService;
 
     beforeEach(() => {
-      service = new ScrollCoinFraudPreventionService();
+      service = new ScrollGoldFraudPreventionService();
     });
 
     test('should validate transactions for fraud', async () => {
@@ -541,7 +541,7 @@ describe('Comprehensive Security Framework', () => {
       expect(securitySvc).toBeInstanceOf(SecurityComplianceService);
       expect(privacySvc).toBeInstanceOf(DataPrivacyComplianceService);
       expect(contentSvc).toBeInstanceOf(SpiritualContentFilterService);
-      expect(fraudSvc).toBeInstanceOf(ScrollCoinFraudPreventionService);
+      expect(fraudSvc).toBeInstanceOf(ScrollGoldFraudPreventionService);
     });
   });
 
@@ -626,7 +626,7 @@ describe('Comprehensive Security Framework', () => {
       expect(propheticCheck.flags.some(f => f.type === 'accuracy')).toBe(true);
     });
 
-    test('should prevent ScrollCoin fraud across global transactions', async () => {
+    test('should prevent ScrollGold fraud across global transactions', async () => {
       const fraudService = securityService.getFraudService();
 
       // Test high-velocity transaction detection

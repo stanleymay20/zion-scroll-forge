@@ -341,10 +341,10 @@ export class DegreeTemplateService {
       {
         id: 'mba-se-core-2',
         type: RequirementType.CORE_COURSE,
-        title: 'ScrollCoin Economics',
+        title: 'ScrollGold Economics',
         description: 'Cryptocurrency and divine economy principles',
         credits: 4,
-        courseIds: ['scrollcoin-economics-602'],
+        courseIds: ['ScrollGold-economics-602'],
         spiritualObjectives: ['Divine provision understanding', 'Generosity principles'],
         practicalObjectives: ['Cryptocurrency management', 'Economic modeling'],
         isRequired: true,
@@ -647,8 +647,8 @@ export class DegreeTemplateService {
         },
         {
           id: 'se-pa-2',
-          title: 'ScrollCoin Integration',
-          description: 'Integrating ScrollCoin economy into business model',
+          title: 'ScrollGold Integration',
+          description: 'Integrating ScrollGold economy into business model',
           requiredHours: 150,
           deliverables: ['Integration plan', 'Economic model', 'Impact measurement'],
           assessmentCriteria: ['Integration success', 'Economic sustainability', 'Community benefit']

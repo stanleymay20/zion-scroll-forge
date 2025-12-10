@@ -182,13 +182,13 @@ export const SystemConfiguration: React.FC = () => {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <Label>ScrollCoin Economy</Label>
+                  <Label>ScrollGold Economy</Label>
                   <Switch
-                    checked={config.features.scrollCoin}
+                    checked={config.features.ScrollGold}
                     onCheckedChange={(checked) =>
                       setConfig({
                         ...config,
-                        features: { ...config.features, scrollCoin: checked },
+                        features: { ...config.features, ScrollGold: checked },
                       })
                     }
                   />

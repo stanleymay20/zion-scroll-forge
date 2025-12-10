@@ -10,7 +10,7 @@ All compilation errors have been fixed. The Course Recommendation Engine impleme
 **Issue**: Line break in the middle of `export class` keyword
 **Fix**: Removed line break to properly format `export class UserAcceptanceTestSuite`
 
-### 2. AdmissionsScrollCoinIntegrationService.ts
+### 2. AdmissionsScrollGoldIntegrationService.ts
 **Issue**: Unclosed JSDoc comment and incomplete method
 **Fix**: Completed the `processWorkTradePayment` method with proper closing
 

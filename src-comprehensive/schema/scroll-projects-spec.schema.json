@@ -68,11 +68,11 @@
       "maxLength": 2000,
       "description": "AI-generated summary of the project"
     },
-    "scrollcoin_earned": {
+    "ScrollGold_earned": {
       "type": "number",
       "minimum": 0,
       "maximum": 1000000,
-      "description": "Total ScrollCoin earned from this project"
+      "description": "Total ScrollGold earned from this project"
     },
     "published": {
       "type": "boolean",

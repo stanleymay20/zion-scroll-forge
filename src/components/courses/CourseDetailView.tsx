@@ -206,7 +206,7 @@ export const CourseDetailView: React.FC<CourseDetailViewProps> = ({
               <Progress value={progressPercentage} className="h-3" />
               <div className="flex justify-between mt-2 text-sm text-muted-foreground">
                 <span>Progress: {Math.round(progressPercentage)}%</span>
-                <span>{enrollment?.total_xp_earned} XP • {enrollment?.total_scrollcoin_earned} ScrollCoins</span>
+                <span>{enrollment?.total_xp_earned} XP • {enrollment?.total_ScrollGold_earned} ScrollGolds</span>
               </div>
             </div>
           )}
@@ -334,7 +334,7 @@ export const CourseDetailView: React.FC<CourseDetailViewProps> = ({
                                     </span>
                                     <span className="flex items-center gap-1">
                                       <Star className="h-3 w-3" />
-                                      {assessment.scrollcoin_reward} Coins
+                                      {assessment.ScrollGold_reward} Coins
                                     </span>
                                     {getAssessmentScore(assessment.assessment_id) && (
                                       <span className="flex items-center gap-1 text-green-600">
@@ -531,7 +531,7 @@ export const CourseDetailView: React.FC<CourseDetailViewProps> = ({
                           </span>
                           <span className="flex items-center gap-1">
                             <Star className="h-3 w-3" />
-                            {reward.scrollcoin_reward}
+                            {reward.ScrollGold_reward}
                           </span>
                         </div>
                         {reward.badge_unlock && (
@@ -610,8 +610,8 @@ export const CourseDetailView: React.FC<CourseDetailViewProps> = ({
                     <div className="text-muted-foreground">{course.xp_multiplier}x</div>
                   </div>
                   <div>
-                    <div className="font-medium">ScrollCoin Multiplier</div>
-                    <div className="text-muted-foreground">{course.scrollcoin_multiplier}x</div>
+                    <div className="font-medium">ScrollGold Multiplier</div>
+                    <div className="text-muted-foreground">{course.ScrollGold_multiplier}x</div>
                   </div>
                   <div>
                     <div className="font-medium">Final Project</div>

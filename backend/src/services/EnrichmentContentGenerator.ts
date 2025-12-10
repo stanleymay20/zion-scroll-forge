@@ -125,7 +125,7 @@ export interface EnrichmentMetadata {
   targetAudience: 'high_achiever' | 'gifted' | 'accelerated';
   prerequisiteKnowledge: string[];
   estimatedCompletionTime: number; // hours
-  scrollCoinReward: number;
+  ScrollGoldReward: number;
 }
 
 export interface GenerateEnrichmentRequest {
@@ -283,7 +283,7 @@ export class EnrichmentContentGenerator {
         targetAudience: this.determineTargetAudience(profile),
         prerequisiteKnowledge: [`Mastery of ${request.topic} fundamentals`],
         estimatedCompletionTime: this.calculateCompletionTime(extensionActivities, challengeProblems),
-        scrollCoinReward: this.calculateScrollCoinReward(extensionActivities, challengeProblems)
+        ScrollGoldReward: this.calculateScrollGoldReward(extensionActivities, challengeProblems)
       }
     };
 
@@ -566,7 +566,7 @@ Return JSON:
     return activityTime + problemTime;
   }
 
-  private calculateScrollCoinReward(
+  private calculateScrollGoldReward(
     activities: ExtensionActivity[],
     problems: ChallengeProblem[]
   ): number {

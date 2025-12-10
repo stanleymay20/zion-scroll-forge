@@ -145,7 +145,7 @@ export interface CampaignBudget {
   total: number;
   allocation: BudgetAllocation[];
   currency: string;
-  scrollCoinIncentives: number;
+  ScrollGoldIncentives: number;
 }
 
 export interface BudgetAllocation {
@@ -460,7 +460,7 @@ export class MarketingOutreachService {
           { category: 'Prophetic Endorsements', amount: 25000, percentage: 5, justification: 'Spiritual authority and credibility' }
         ],
         currency: 'USD',
-        scrollCoinIncentives: 100000
+        ScrollGoldIncentives: 100000
       },
       metrics: {
         reach: 0,
@@ -670,7 +670,7 @@ export class MarketingOutreachService {
             'Increase investment in kingdom network partnerships for higher spiritual alignment',
             'Expand prophetic endorsement program for greater credibility',
             'Develop region-specific campaigns for better cultural resonance',
-            'Implement ScrollCoin incentive programs for viral growth'
+            'Implement ScrollGold incentive programs for viral growth'
           ]
         };
         resolve(report);

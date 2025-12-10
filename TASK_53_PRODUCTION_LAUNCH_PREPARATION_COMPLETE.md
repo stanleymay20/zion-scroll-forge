@@ -117,7 +117,7 @@ Comprehensive production launch preparation system implemented with security aud
 4. Select Course Interests
 5. Platform Tour
 6. AI Tutor Introduction
-7. ScrollCoin Wallet Setup
+7. ScrollGold Wallet Setup
 
 **Faculty Onboarding Steps**:
 1. Complete Profile
@@ -152,7 +152,7 @@ Comprehensive production launch preparation system implemented with security aud
 
 **Pre-configured Flags**:
 - AI Tutor Video Avatar (50% rollout)
-- ScrollCoin Rewards (100% rollout)
+- ScrollGold Rewards (100% rollout)
 - ScrollBadge NFT (75% rollout)
 - AI-Powered Grading (100% for faculty/admin)
 - Real-time Collaboration (80% rollout)
@@ -245,7 +245,7 @@ Comprehensive production launch preparation system implemented with security aud
 1. AI-Powered Tutoring
 2. Spiritual Formation
 3. Accredited Degrees
-4. ScrollCoin Rewards
+4. ScrollGold Rewards
 5. Global Accessibility
 6. Community Learning
 7. Comprehensive Courses

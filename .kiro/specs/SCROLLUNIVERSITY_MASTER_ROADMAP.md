@@ -30,7 +30,7 @@
    - **Dependencies:** Platform infrastructure
    - **Blocks:** All systems requiring audit trails
 
-3. **scroll-scrollcoin-meter** ⭐⭐⭐⭐⭐
+3. **scroll-ScrollGold-meter** ⭐⭐⭐⭐⭐
    - Economic engine and coin distribution
    - Anti-fraud and integrity validation
    - Global exchange and conversion
@@ -138,7 +138,7 @@
     - ScrollXP and achievement systems
     - Leaderboards and competitions
     - Social learning features
-    - **Dependencies:** Course spec, student profiles, ScrollCoin meter
+    - **Dependencies:** Course spec, student profiles, ScrollGold meter
     - **Blocks:** Engagement features
 
 17. **scroll-projects-spec** ⭐⭐⭐⭐⭐
@@ -165,7 +165,7 @@
     - ScrollSeal certificate generation
     - HeavenLedger integration
     - Global recognition networks
-    - **Dependencies:** Degree engine, student profiles, ScrollCoin meter
+    - **Dependencies:** Degree engine, student profiles, ScrollGold meter
     - **Blocks:** Credential verification
 
 20. **scroll-transcript-generator** ⭐⭐⭐⭐
@@ -230,14 +230,14 @@
     - Student project marketplace
     - Skill and service trading
     - Economic opportunity platform
-    - **Dependencies:** Projects spec, ScrollCoin meter, seal certification
+    - **Dependencies:** Projects spec, ScrollGold meter, seal certification
     - **Blocks:** Economic opportunities
 
 28. **scroll-tuition-system** ⭐⭐⭐⭐
     - Revolutionary tuition model
     - Value-based education pricing
     - Economic sustainability framework
-    - **Dependencies:** ScrollCoin meter, billing agent
+    - **Dependencies:** ScrollGold meter, billing agent
     - **Blocks:** Financial sustainability
 
 ### **Priority 4C: Administrative Systems (Months 15-16)**
@@ -252,7 +252,7 @@
     - Financial transaction processing
     - Billing and payment management
     - Revenue optimization
-    - **Dependencies:** ScrollCoin meter, tuition system
+    - **Dependencies:** ScrollGold meter, tuition system
     - **Blocks:** Financial operations
 
 ---
@@ -282,7 +282,7 @@
 ### **Phase 1 Success Metrics:**
 - ✅ Platform infrastructure 99.9% uptime
 - ✅ Complete audit trail coverage
-- ✅ ScrollCoin economy operational
+- ✅ ScrollGold economy operational
 - ✅ Student profiles active for 1000+ users
 
 ### **Phase 2 Success Metrics:**
@@ -332,7 +332,7 @@
 - Establish ScrollUniversity as the premier alternative to traditional education
 
 ### **Economic Sustainability:**
-- Create self-sustaining ScrollCoin economy
+- Create self-sustaining ScrollGold economy
 - Generate revenue through value creation, not debt
 - Provide economic opportunity for students and mentors
 - Maintain transparent and ethical financial practices

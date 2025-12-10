@@ -12,7 +12,7 @@ Successfully implemented a comprehensive dashboard and navigation system for Scr
 **Features Implemented:**
 - Dynamic greeting based on time of day and user name
 - Christ Lordship acknowledgment card
-- Quick stats cards (Courses, ScrollCoins, Prayers, Progress)
+- Quick stats cards (Courses, ScrollGolds, Prayers, Progress)
 - Quick actions grid with 12 common tasks
 - Recent activity feed
 - Announcements section
@@ -26,7 +26,7 @@ Successfully implemented a comprehensive dashboard and navigation system for Scr
 **Data Integration:**
 - Uses `useDashboard()` hook for real-time data
 - Integrates with `useUserEnrollments()` for course progress
-- Connects to ScrollCoin economy
+- Connects to ScrollGold economy
 - Spiritual formation tracking
 
 ### 2. Responsive Navigation Menu with Role-Based Items
@@ -42,7 +42,7 @@ Successfully implemented a comprehensive dashboard and navigation system for Scr
   2. Learning (Courses, AI Tutors, XR, Labs, Assessments, Study Groups)
   3. Spiritual Formation (Devotion, Prayer, Scripture, Mentor)
   4. Community (Feed, Messaging, Fellowship, Testimonies)
-  5. ScrollCoin Economy (Wallet, Earn, Store, Leaderboard)
+  5. ScrollGold Economy (Wallet, Earn, Store, Leaderboard)
   6. Academic Progress (Transcript, Degree Audit, Achievements, Scholarships)
   7. Faculty Tools (Dashboard, Course Management, Gradebook, Analytics) - Faculty/Admin only
   8. Administration (Admin Dashboard, Admissions, Analytics, System Status) - Admin only
@@ -104,11 +104,11 @@ Successfully implemented a comprehensive dashboard and navigation system for Scr
 - User avatar with fallback initials
 - Full name and email display
 - Current role badge
-- ScrollCoin balance display
+- ScrollGold balance display
 - Quick links to:
   - Profile
   - Transcript
-  - ScrollCoin Wallet
+  - ScrollGold Wallet
   - Achievements
   - Spiritual Formation
   - Settings
@@ -202,7 +202,7 @@ src/
 - `useDashboard()` - Dashboard statistics
 - `useUserEnrollments()` - Course enrollments
 - `useProfile()` - User profile data
-- `useScrollCoin()` - ScrollCoin balance
+- `useScrollGold()` - ScrollGold balance
 - `useNotifications()` - Notifications
 
 ### Routing
@@ -264,14 +264,14 @@ Dashboard tracks:
 - Most visited sections
 - Time spent on dashboard
 - Course progress trends
-- ScrollCoin earning patterns
+- ScrollGold earning patterns
 
 ## 🔄 Integration Points
 
 ### Backend APIs
 - `/api/dashboard` - Dashboard statistics
 - `/api/courses` - Course data
-- `/api/scrollcoin` - ScrollCoin balance
+- `/api/ScrollGold` - ScrollGold balance
 - `/api/notifications` - Notifications
 - `/api/profile` - User profile
 
@@ -279,7 +279,7 @@ Dashboard tracks:
 - Supabase subscriptions for live updates
 - Notification real-time delivery
 - Course progress updates
-- ScrollCoin balance changes
+- ScrollGold balance changes
 
 ## 🧪 Testing Recommendations
 

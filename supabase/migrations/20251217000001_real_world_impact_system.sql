@@ -369,7 +369,7 @@ CREATE TABLE IF NOT EXISTS public.internship_programs (
     duration_months INTEGER NOT NULL,
     is_paid BOOLEAN DEFAULT false,
     stipend_amount DECIMAL(10,2),
-    scrollcoin_reward INTEGER,
+    scrollgold_reward INTEGER,
     location TEXT NOT NULL,
     is_remote BOOLEAN DEFAULT false,
     required_skills TEXT[] DEFAULT '{}',
@@ -484,6 +484,7 @@ GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO authenticated;
 -- COMPLETION FLAG
 -- ============================================================================
 
-INSERT INTO public.development_flags (name, flag_key, is_enabled, created_at)
-VALUES ('Real-World Impact System', 'Jesus-Christ-is-Lord-Real-World-Impact', true, NOW())
-ON CONFLICT (flag_key) DO UPDATE SET is_enabled = true, created_at = NOW();
+-- Note: development_flags table not created yet, skipping completion flag
+-- INSERT INTO public.development_flags (name, flag_key, is_enabled, created_at)
+-- VALUES ('Real-World Impact System', 'Jesus-Christ-is-Lord-Real-World-Impact', true, NOW())
+-- ON CONFLICT (flag_key) DO UPDATE SET is_enabled = true, created_at = NOW();

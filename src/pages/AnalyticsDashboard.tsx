@@ -43,7 +43,7 @@ export default function AnalyticsDashboard() {
 
   const latestSystem = analytics?.system[0] || {};
   const latestSpiritual = analytics?.spiritual[0] || {};
-  const latestScrollCoin = analytics?.scrollcoin[0] || {};
+  const latestScrollGold = analytics?.ScrollGold[0] || {};
 
   const last7DaysSystem = analytics?.system.slice(0, 7) || [];
   const avgActiveUsers = last7DaysSystem.reduce((sum, day) => sum + (day.active_users || 0), 0) / Math.max(last7DaysSystem.length, 1);
@@ -106,9 +106,9 @@ export default function AnalyticsDashboard() {
           </div>
         </div>
 
-        {/* ScrollCoin Overview */}
+        {/* ScrollGold Overview */}
         <div>
-          <h2 className="text-2xl font-bold mb-4">ScrollCoin Economy</h2>
+          <h2 className="text-2xl font-bold mb-4">ScrollGold Economy</h2>
           <div className="grid gap-4 md:grid-cols-3">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -117,7 +117,7 @@ export default function AnalyticsDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {parseFloat(latestScrollCoin.total_earned || '0').toFixed(0)} SC
+                  {parseFloat(latestScrollGold.total_earned || '0').toFixed(0)} SC
                 </div>
                 <p className="text-xs text-muted-foreground">Last 7 days</p>
               </CardContent>
@@ -130,7 +130,7 @@ export default function AnalyticsDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {parseFloat(latestScrollCoin.total_spent || '0').toFixed(0)} SC
+                  {parseFloat(latestScrollGold.total_spent || '0').toFixed(0)} SC
                 </div>
                 <p className="text-xs text-muted-foreground">Last 7 days</p>
               </CardContent>
@@ -143,7 +143,7 @@ export default function AnalyticsDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">
-                  {parseFloat(latestScrollCoin.net_change || '0').toFixed(0)} SC
+                  {parseFloat(latestScrollGold.net_change || '0').toFixed(0)} SC
                 </div>
                 <p className="text-xs text-muted-foreground">Last 7 days</p>
               </CardContent>

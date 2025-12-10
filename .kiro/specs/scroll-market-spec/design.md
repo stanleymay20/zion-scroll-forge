@@ -6,7 +6,7 @@ ScrollMarketSpec creates a revolutionary marketplace where ScrollUniversity stud
 
 ## Architecture
 
-The system follows a distributed marketplace architecture with secure transactions, reputation management, and comprehensive quality assurance. It integrates with ScrollCoin systems and maintains kingdom alignment through built-in ethical guidelines and community oversight.
+The system follows a distributed marketplace architecture with secure transactions, reputation management, and comprehensive quality assurance. It integrates with ScrollGold systems and maintains kingdom alignment through built-in ethical guidelines and community oversight.
 
 ```mermaid
 graph TB
@@ -55,7 +55,7 @@ graph TB
     "description": "markdown",
     "category": "string",
     "subcategory": "string",
-    "price_scrollcoins": "decimal",
+    "price_ScrollGolds": "decimal",
     "price_usd": "decimal",
     "delivery_time": "integer",
     "requirements": ["string"],
@@ -72,7 +72,7 @@ graph TB
     "buyer_id": "uuid",
     "seller_id": "uuid",
     "order_type": "project_purchase | service_booking | tutoring_session | collaboration_request",
-    "total_amount_scrollcoins": "decimal",
+    "total_amount_ScrollGolds": "decimal",
     "total_amount_usd": "decimal",
     "requirements": "text",
     "delivery_date": "timestamp",
@@ -90,7 +90,7 @@ graph TB
     "experience_level": "beginner | intermediate | advanced | expert",
     "portfolio_url": "string",
     "bio": "text",
-    "hourly_rate_scrollcoins": "decimal",
+    "hourly_rate_ScrollGolds": "decimal",
     "hourly_rate_usd": "decimal",
     "availability": "json",
     "response_time": "integer",
@@ -111,10 +111,10 @@ graph TB
     "order_id": "uuid",
     "buyer_id": "uuid",
     "seller_id": "uuid",
-    "amount_scrollcoins": "decimal",
+    "amount_ScrollGolds": "decimal",
     "amount_usd": "decimal",
     "transaction_type": "payment | escrow | release | refund | fee",
-    "payment_method": "scrollcoin | credit_card | bank_transfer | crypto",
+    "payment_method": "ScrollGold | credit_card | bank_transfer | crypto",
     "status": "pending | processing | completed | failed | cancelled",
     "fees": {
       "platform_fee": "decimal",
@@ -128,7 +128,7 @@ graph TB
     "escrow_id": "uuid",
     "order_id": "uuid",
     "amount_held": "decimal",
-    "currency": "scrollcoin | usd",
+    "currency": "ScrollGold | usd",
     "release_conditions": ["string"],
     "dispute_deadline": "timestamp",
     "auto_release_date": "timestamp",
@@ -231,7 +231,7 @@ graph TB
 
 ### Integration Tests
 - End-to-end order placement and fulfillment workflows
-- Cross-system integration with ScrollCoin and user profile systems
+- Cross-system integration with ScrollGold and user profile systems
 - Real-time messaging and collaboration features
 - Multi-currency payment processing and conversion
 
@@ -246,11 +246,11 @@ graph TB
 ### Dependencies (Incoming)
 - **scroll-student-profile-spec:** User profiles and skill verification for seller validation
 - **scroll-projects-spec:** Completed projects for marketplace listing and portfolio building
-- **scroll-scrollcoin-meter:** Payment processing and ScrollCoin transaction management
+- **scroll-ScrollGold-meter:** Payment processing and ScrollGold transaction management
 - **scroll-transcript-generator:** Academic credentials for service provider verification
 
 ### Data Flow (Outgoing)
-- **scroll-scrollcoin-meter:** Transaction processing and revenue distribution
+- **scroll-ScrollGold-meter:** Transaction processing and revenue distribution
 - **scroll-audit-trail-spec:** All marketplace activities and transaction logging
 - **scroll-seal-certification:** Seller verification and credential validation
 - **scroll-university-portal:** Marketplace notifications and activity updates
@@ -313,7 +313,7 @@ graph TB
 
 ### Transaction Fees
 - **Platform Fee:** 5% of transaction value for marketplace operations and development
-- **Payment Processing:** 2.5% for credit card transactions, 1% for ScrollCoin transactions
+- **Payment Processing:** 2.5% for credit card transactions, 1% for ScrollGold transactions
 - **Mentor Contribution:** 2.5% goes to mentor development and community support
 - **Quality Assurance:** 1% for dispute resolution and quality monitoring systems
 
@@ -321,7 +321,7 @@ graph TB
 - **Project Sales:** Keep 90% of sale price after platform fees
 - **Service Completion:** Earn full agreed amount plus potential tips and bonuses
 - **Repeat Business:** Reduced fees for sellers with high repeat customer rates
-- **Excellence Bonuses:** Additional ScrollCoin rewards for exceptional service and reviews
+- **Excellence Bonuses:** Additional ScrollGold rewards for exceptional service and reviews
 
 ### Buyer Protections
 - **Satisfaction Guarantee:** Full refund if deliverables don't meet agreed specifications

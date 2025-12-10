@@ -378,7 +378,7 @@ export class PropheticLawGovernanceFacultyService {
         department: 'Covenant Law Foundations',
         estimatedHours: 45,
         xpReward: 150,
-        scrollCoinCost: 25,
+        scrollGoldCost: 25,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.XR_MODE],
         prerequisites: [],
         learningObjectives: [
@@ -442,7 +442,7 @@ export class PropheticLawGovernanceFacultyService {
         department: 'Covenant Law Foundations',
         estimatedHours: 50,
         xpReward: 175,
-        scrollCoinCost: 30,
+        scrollGoldCost: 30,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.RESEARCH_TRACK, DeliveryMode.AI_TUTOR],
         prerequisites: ['SLG100'],
         learningObjectives: [
@@ -475,7 +475,7 @@ export class PropheticLawGovernanceFacultyService {
         department: 'Constitutional Design & Nation Building',
         estimatedHours: 55,
         xpReward: 200,
-        scrollCoinCost: 35,
+        scrollGoldCost: 35,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.MENTOR_SESSIONS],
         prerequisites: ['SLG100'],
         constitutionalElements: [
@@ -503,7 +503,7 @@ export class PropheticLawGovernanceFacultyService {
         department: 'International Law & Global Governance',
         estimatedHours: 60,
         xpReward: 250,
-        scrollCoinCost: 50,
+        scrollGoldCost: 50,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.RESEARCH_TRACK, DeliveryMode.MENTOR_SESSIONS],
         prerequisites: ['SLG204', 'SLG150'],
         internationalLawIntegration: {
@@ -544,7 +544,7 @@ export class PropheticLawGovernanceFacultyService {
         department: 'ScrollCourt Systems & Legal Practice',
         estimatedHours: 70,
         xpReward: 300,
-        scrollCoinCost: 75,
+        scrollGoldCost: 75,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.RESEARCH_TRACK],
         prerequisites: ['SLG204', 'SLG300'],
         scrollCourtTraining: {
@@ -585,7 +585,7 @@ export class PropheticLawGovernanceFacultyService {
         department: 'International Law & Global Governance',
         estimatedHours: 40,
         xpReward: 200,
-        scrollCoinCost: 40,
+        scrollGoldCost: 40,
         deliveryModes: [DeliveryMode.XR_MODE, DeliveryMode.ONLINE_PORTAL, DeliveryMode.MENTOR_SESSIONS],
         prerequisites: ['SLG300'],
         nationBuildingComponent: {
@@ -625,7 +625,7 @@ export class PropheticLawGovernanceFacultyService {
         department: 'ScrollCourt Systems & Legal Practice',
         estimatedHours: 35,
         xpReward: 175,
-        scrollCoinCost: 60,
+        scrollGoldCost: 60,
         deliveryModes: [DeliveryMode.XR_MODE, DeliveryMode.AI_TUTOR],
         prerequisites: ['SLG410']
       }
@@ -662,7 +662,7 @@ export class PropheticLawGovernanceFacultyService {
       prerequisites: courseData.prerequisites || [],
       estimatedHours: courseData.estimatedHours || 40,
       xpReward: courseData.xpReward || 100,
-      scrollCoinCost: courseData.scrollCoinCost || 25,
+      scrollGoldCost: courseData.scrollGoldCost || 25,
       
       deliveryModes: courseData.deliveryModes || [DeliveryMode.ONLINE_PORTAL],
       assessmentMethods: this.createAssessmentMethods(courseData.courseCode!),
@@ -1135,7 +1135,7 @@ export class PropheticLawGovernanceFacultyService {
         difficulty: this.mapCourseLevelToDifficulty(course.level),
         duration: course.estimatedHours,
         scrollXPReward: course.xpReward,
-        scrollCoinCost: course.scrollCoinCost,
+        scrollGoldCost: course.scrollGoldCost,
         prerequisites: course.prerequisites,
         facultyId: faculty.id,
         isActive: true,

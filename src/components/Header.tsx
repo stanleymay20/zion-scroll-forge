@@ -24,8 +24,8 @@ export const Header = () => {
           <a href="#prayer" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
             Prayer Center
           </a>
-          <a href="#scrollcoin" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            ScrollCoin
+          <a href="#ScrollGold" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+            ScrollGold
           </a>
         </nav>
 

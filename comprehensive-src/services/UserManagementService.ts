@@ -111,19 +111,19 @@ export class UserManagementService {
         ...validatedData,
         passwordHash,
         scrollAlignment: 0.0,
-        scrollCoinBalance: 100.0, // Welcome bonus
+        ScrollGoldBalance: 100.0, // Welcome bonus
         workTradeCredits: 0.0,
         enrollmentStatus: EnrollmentStatus.ACTIVE,
         academicLevel: AcademicLevel.SCROLL_OPEN,
       },
       include: {
         enrollments: true,
-        scrollCoinTransactions: true,
+        ScrollGoldTransactions: true,
       }
     });
 
-    // Create welcome ScrollCoin transaction
-    await prisma.scrollCoinTransaction.create({
+    // Create welcome ScrollGold transaction
+    await prisma.ScrollGoldTransaction.create({
       data: {
         userId: user.id,
         amount: 100.0,
@@ -152,7 +152,7 @@ export class UserManagementService {
       },
       include: {
         enrollments: true,
-        scrollCoinTransactions: true,
+        ScrollGoldTransactions: true,
       }
     });
 
@@ -202,7 +202,7 @@ export class UserManagementService {
             course: true
           }
         },
-        scrollCoinTransactions: true,
+        ScrollGoldTransactions: true,
         certifications: true,
         mentorships: true,
       }
@@ -226,7 +226,7 @@ export class UserManagementService {
       data: validatedData,
       include: {
         enrollments: true,
-        scrollCoinTransactions: true,
+        ScrollGoldTransactions: true,
       }
     });
 
@@ -252,7 +252,7 @@ export class UserManagementService {
       },
       include: {
         enrollments: true,
-        scrollCoinTransactions: true,
+        ScrollGoldTransactions: true,
       }
     });
 
@@ -276,7 +276,7 @@ export class UserManagementService {
         take: limit,
         include: {
           enrollments: true,
-          scrollCoinTransactions: true,
+          ScrollGoldTransactions: true,
         },
         orderBy: { createdAt: 'desc' }
       }),
@@ -316,7 +316,7 @@ export class UserManagementService {
         take: limit,
         include: {
           enrollments: true,
-          scrollCoinTransactions: true,
+          ScrollGoldTransactions: true,
         },
         orderBy: { createdAt: 'desc' }
       }),
@@ -348,7 +348,7 @@ export class UserManagementService {
       data: { role: newRole },
       include: {
         enrollments: true,
-        scrollCoinTransactions: true,
+        ScrollGoldTransactions: true,
       }
     });
 
@@ -373,7 +373,7 @@ export class UserManagementService {
       data: { enrollmentStatus: status },
       include: {
         enrollments: true,
-        scrollCoinTransactions: true,
+        ScrollGoldTransactions: true,
       }
     });
 
@@ -390,7 +390,7 @@ export class UserManagementService {
       completedCourses: number;
       inProgressCourses: number;
       totalScrollXP: number;
-      scrollCoinBalance: number;
+      ScrollGoldBalance: number;
       spiritualMaturityLevel: string;
       recentAchievements: any[];
     };
@@ -423,7 +423,7 @@ export class UserManagementService {
         completedCourses,
         inProgressCourses,
         totalScrollXP,
-        scrollCoinBalance: user.scrollCoinBalance,
+        ScrollGoldBalance: user.ScrollGoldBalance,
         spiritualMaturityLevel,
         recentAchievements
       }

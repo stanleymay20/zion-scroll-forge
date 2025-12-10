@@ -212,7 +212,7 @@ export default function Courses() {
                 </div>
 
                 <div className="md:col-span-3">
-                  <Label>Price Range (ScrollCoin): {priceRange[0]} - {priceRange[1]} SC</Label>
+                  <Label>Price Range (ScrollGold): {priceRange[0]} - {priceRange[1]} SC</Label>
                   <Slider
                     value={priceRange}
                     onValueChange={setPriceRange}
@@ -364,7 +364,7 @@ export default function Courses() {
             id: enrollingCourse.id,
             title: enrollingCourse.title,
             price_cents: enrollingCourse.price_cents,
-            scrollCoinCost: enrollingCourse.scroll_coin_cost,
+            ScrollGoldCost: enrollingCourse.scroll_gold_cost,
             scholarshipEligible: enrollingCourse.scholarship_eligible,
           }}
           isOpen={!!enrollingCourse}

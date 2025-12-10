@@ -11,13 +11,13 @@
 
 ### **New Database Tables**
 - `learning_analytics_daily` - Daily learning metrics (enrollments, completions, quiz attempts)
-- `scrollcoin_analytics_daily` - Daily ScrollCoin economy metrics
+- `ScrollGold_analytics_daily` - Daily ScrollGold economy metrics
 - `spiritual_analytics_daily` - Daily spiritual formation metrics
 - `system_analytics_daily` - Daily system health metrics
 
 ### **Edge Functions**
 - `daily-analytics-rollup` - Aggregates yesterday's data into analytics tables
-  - Processes enrollments, module completions, ScrollCoin transactions
+  - Processes enrollments, module completions, ScrollGold transactions
   - Tracks spiritual metrics and AI tutor usage
   - Logs via spiritual_events_log
 
@@ -25,14 +25,14 @@
 - `src/hooks/useAnalytics.ts`:
   - `useAnalyticsOverview()` - Fetches latest 7 days of all analytics
   - `useCourseAnalytics(courseId)` - Returns 30 days of course-specific metrics
-  - `useScrollCoinAnalytics()` - Returns 30 days of ScrollCoin data
+  - `useScrollGoldAnalytics()` - Returns 30 days of ScrollGold data
   - `useSpiritualAnalytics()` - Returns 30 days of spiritual metrics
 
 ### **UI Pages**
 - **AnalyticsDashboard** (`/analytics/dashboard`)
   - Faculty/admin only
   - System overview: active users, AI sessions, new enrollments
-  - ScrollCoin economy: earned, spent, net change
+  - ScrollGold economy: earned, spent, net change
   - Spiritual formation: prayer users, total prayers, answered prayers
 
 - **CourseAnalyticsPage** (`/analytics/courses/:courseId`)
@@ -85,7 +85,7 @@
 Notifications created automatically for:
 - AI tutor responses (in ai-tutor-chat edge function)
 - Application accepted/rejected (in student-lifecycle edge function)
-- ScrollCoin rewards (in student-lifecycle edge function)
+- ScrollGold rewards (in student-lifecycle edge function)
 
 ---
 

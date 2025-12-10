@@ -1013,20 +1013,20 @@
  * Blockchain Integration Service
  * "By the Spirit of Truth, we establish immutable records on the blockchain"
  * 
- * Service for interacting with Ethereum blockchain and ScrollCoin smart contract.
+ * Service for interacting with Ethereum blockchain and ScrollGold smart contract.
  * Handles minting, transfers, burning, and verification of on-chain transactions.
  */
 &nbsp;
 <span class="cstat-no" title="statement not covered" >import { ethers } from 'ethers';</span>
 <span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
-<span class="cstat-no" title="statement not covered" >import scrollCoinConfig from '../config/scrollcoin.config';</span>
+<span class="cstat-no" title="statement not covered" >import ScrollGoldConfig from '../config/ScrollGold.config';</span>
 import {
   BlockchainTransactionReceipt,
   BlockchainNetworkStatus,
   GasEstimate,
   TransactionVerification,
-  ScrollCoinTransactionData
-} from '../types/scrollcoin.types';
+  ScrollGoldTransactionData
+} from '../types/ScrollGold.types';
 &nbsp;
 <span class="cstat-no" title="statement not covered" >export class B</span>lockchainIntegrationService {
   private static instance: BlockchainIntegrationService;
@@ -1050,13 +1050,13 @@ import {
    */
   private <span class="fstat-no" title="function not covered" >initializeProvider(</span>): void {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!scrollCoinConfig.blockchainEnabled) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!ScrollGoldConfig.blockchainEnabled) {</span>
 <span class="cstat-no" title="statement not covered" >        logger.info('Blockchain integration disabled');</span>
 <span class="cstat-no" title="statement not covered" >        return;</span>
       }
 &nbsp;
       // Initialize provider
-<span class="cstat-no" title="statement not covered" >      this.provider = new ethers.JsonRpcProvider(scrollCoinConfig.rpcUrl);</span>
+<span class="cstat-no" title="statement not covered" >      this.provider = new ethers.JsonRpcProvider(ScrollGoldConfig.rpcUrl);</span>
 &nbsp;
       // Initialize wallet (in production, use secure key management)
       const privateKey = <span class="cstat-no" title="statement not covered" >process.env.BLOCKCHAIN_PRIVATE_KEY;</span>
@@ -1065,17 +1065,17 @@ import {
       }
 &nbsp;
       // Initialize contract
-<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (scrollCoinConfig.contractAddress &amp;&amp; scrollCoinConfig.contractABI) {</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (ScrollGoldConfig.contractAddress &amp;&amp; ScrollGoldConfig.contractABI) {</span>
 <span class="cstat-no" title="statement not covered" >        this.contract = new ethers.Contract(</span>
-          scrollCoinConfig.contractAddress,
-          scrollCoinConfig.contractABI,
+          ScrollGoldConfig.contractAddress,
+          ScrollGoldConfig.contractABI,
           this.wallet || this.provider
         );
       }
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      logger.info('Blockchain provider initialized', {</span>
-        network: scrollCoinConfig.networkName,
-        contractAddress: scrollCoinConfig.contractAddress
+        network: ScrollGoldConfig.networkName,
+        contractAddress: ScrollGoldConfig.contractAddress
       });
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Error initializing blockchain provider:', error);</span>
@@ -1100,7 +1100,7 @@ import {
         blockNumber,
         networkName: network.name,
         gasPrice: feeData.gasPrice?.toString() || '0',
-        contractAddress: scrollCoinConfig.contractAddress
+        contractAddress: ScrollGoldConfig.contractAddress
       };
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      logger.error('Error getting network status:', error);</span>
@@ -1109,13 +1109,13 @@ import {
         blockNumber: 0,
         networkName: 'unknown',
         gasPrice: '0',
-        contractAddress: scrollCoinConfig.contractAddress
+        contractAddress: ScrollGoldConfig.contractAddress
       };
     }
   }
 &nbsp;
   /**
-   * Mint ScrollCoin tokens on blockchain
+   * Mint ScrollGold tokens on blockchain
    */
 <span class="fstat-no" title="function not covered" >  async </span>mintTokens(
     toAddress: string,
@@ -1168,7 +1168,7 @@ import {
   }
 &nbsp;
   /**
-   * Transfer ScrollCoin tokens on blockchain
+   * Transfer ScrollGold tokens on blockchain
    */
 <span class="fstat-no" title="function not covered" >  async </span>transferTokens(
     fromAddress: string,
@@ -1214,7 +1214,7 @@ import {
   }
 &nbsp;
   /**
-   * Burn ScrollCoin tokens on blockchain
+   * Burn ScrollGold tokens on blockchain
    */
 <span class="fstat-no" title="function not covered" >  async </span>burnTokens(
     fromAddress: string,
@@ -1283,7 +1283,7 @@ import {
    */
 <span class="fstat-no" title="function not covered" >  async </span>verifyTransaction(
     txHash: string,
-    expectedData: Partial&lt;ScrollCoinTransactionData&gt;
+    expectedData: Partial&lt;ScrollGoldTransactionData&gt;
   ): Promise&lt;TransactionVerification&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!this.provider) {</span>
@@ -1296,7 +1296,7 @@ import {
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!receipt) {</span>
 <span class="cstat-no" title="statement not covered" >        return {</span>
           isValid: false,
-          transaction: expectedData as ScrollCoinTransactionData,
+          transaction: expectedData as ScrollGoldTransactionData,
           discrepancies: ['Transaction not found on blockchain']
         };
       }
@@ -1307,7 +1307,7 @@ import {
 <span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!tx) {</span>
 <span class="cstat-no" title="statement not covered" >        return {</span>
           isValid: false,
-          transaction: expectedData as ScrollCoinTransactionData,
+          transaction: expectedData as ScrollGoldTransactionData,
           discrepancies: ['Transaction details not found']
         };
       }
@@ -1337,7 +1337,7 @@ import {
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      return {</span>
         isValid: discrepancies.length === 0,
-        transaction: expectedData as ScrollCoinTransactionData,
+        transaction: expectedData as ScrollGoldTransactionData,
         blockchainData,
         discrepancies: discrepancies.length &gt; 0 ? discrepancies : undefined
       };
@@ -1477,7 +1477,7 @@ import {
    * Check if blockchain is enabled and connected
    */
 <span class="fstat-no" title="function not covered" >  isEnabled(</span>): boolean {
-<span class="cstat-no" title="statement not covered" >    return scrollCoinConfig.blockchainEnabled &amp;&amp; this.provider !== null;</span>
+<span class="cstat-no" title="statement not covered" >    return ScrollGoldConfig.blockchainEnabled &amp;&amp; this.provider !== null;</span>
   }
 }
 &nbsp;
@@ -1489,7 +1489,7 @@ import {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:09.019Z
+                at 2025-12-02T16:54:11.658Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

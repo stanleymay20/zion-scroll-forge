@@ -103,7 +103,7 @@ describe('StudentProfileIntegrationService', () => {
         spiritualGifts: ['Teaching', 'Wisdom'],
         kingdomVision: 'Advancing God\'s kingdom through education',
         scrollAlignment: 0.85,
-        scrollCoinBalance: 100.0,
+        scrollGoldBalance: 100.0,
         workTradeCredits: 0.0
       };
 
@@ -134,7 +134,7 @@ describe('StudentProfileIntegrationService', () => {
           spiritualGifts: ['Teaching', 'Wisdom'],
           kingdomVision: 'Advancing God\'s kingdom through education',
           scrollAlignment: 0.85,
-          scrollCoinBalance: 100.0,
+          scrollGoldBalance: 100.0,
           workTradeCredits: 0.0
         })
       });

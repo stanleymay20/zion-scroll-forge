@@ -99,7 +99,7 @@ npx tsx scripts/comprehensive-course-verification.ts
 
 1. Sacred AI & Machine Learning Engineering (10 modules)
 2. Kingdom Economics Foundations (8 modules)
-3. ScrollCoin & Digital Currency Systems (8 modules)
+3. ScrollGold & Digital Currency Systems (8 modules)
 4. Global Trade & Kingdom Commerce (10 modules)
 5. AI Trading & Financial Technology (10 modules)
 6. Introduction to Prophetic AI (8 modules)

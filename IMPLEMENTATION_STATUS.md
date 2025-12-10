@@ -18,7 +18,7 @@
 1. **Prisma Schema** - Comprehensive schema with 50+ models
 2. **Supabase Migrations** - 35+ migration files
 3. **Complete Schema Sync** - New migration with RLS policies, functions, triggers
-4. **Security & Roles** - User roles, permissions, ScrollCoin functions
+4. **Security & Roles** - User roles, permissions, ScrollGold functions
 5. **Spiritual Formation** - Prayer, devotions, scripture memory tables
 6. **Community System** - Messages, study groups, events tables
 7. **Billing & Payments** - Stripe integration tables
@@ -55,7 +55,7 @@
   - Webhook handlers
   - Invoice generation
   
-- [ ] **ScrollCoin Blockchain** (Task 13)
+- [ ] **ScrollGold Blockchain** (Task 13)
   - Smart contract deployment
   - Token minting/burning
   - Wallet management
@@ -104,7 +104,7 @@
   - Billing history
   - Invoice download
   
-- [ ] **ScrollCoin Wallet UI** (Task 35)
+- [ ] **ScrollGold Wallet UI** (Task 35)
   - Balance display
   - Transaction history
   - Send/receive interface
@@ -164,7 +164,7 @@
 8. Assessment and grading engine
 
 ### Phase 3: Economy & Credentials (Week 5-6)
-9. ScrollCoin blockchain integration
+9. ScrollGold blockchain integration
 10. ScrollBadge NFT system
 11. Scholarship management
 12. Student lifecycle tracking
@@ -202,7 +202,7 @@ STRIPE_WEBHOOK_SECRET=whsec_...
 # Blockchain
 ETHEREUM_RPC_URL=https://...
 PRIVATE_KEY=0x...
-SCROLLCOIN_CONTRACT_ADDRESS=0x...
+ScrollGold_CONTRACT_ADDRESS=0x...
 SCROLLBADGE_CONTRACT_ADDRESS=0x...
 
 # Storage
@@ -268,7 +268,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
 ### Internship & Fellowship Programs
 - Program management
 - Application processing
-- Stipend and ScrollCoin rewards
+- Stipend and ScrollGold rewards
 - Performance tracking
 
 ## 📝 Notes

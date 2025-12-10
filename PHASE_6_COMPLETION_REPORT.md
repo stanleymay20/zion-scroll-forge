@@ -9,7 +9,7 @@ Phase 6 enterprise upgrade completed successfully. Analytics cron job scheduled,
 ### 1. Analytics Cron Job
 - **pg_cron** and **pg_net** extensions enabled
 - Daily analytics rollup scheduled for midnight UTC
-- Automatic aggregation of learning, ScrollCoin, spiritual, and system metrics
+- Automatic aggregation of learning, ScrollGold, spiritual, and system metrics
 
 ### 2. Dynamic Faculty System (12 Faculties)
 - Replaced hardcoded faculties with live Supabase data

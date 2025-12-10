@@ -213,7 +213,7 @@
   - [ ] 13.2 Implement assessment and certification integration
     - Connect with assessment engine for academic performance coordination
     - Build seal certification integration for mentorship recognition
-    - Create ScrollCoin integration for mentorship rewards and recognition
+    - Create ScrollGold integration for mentorship rewards and recognition
     - Add university portal integration for unified user experience
     - _Requirements: Assessment and certification integration_
 

@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS public.courses (
     difficulty TEXT CHECK (difficulty IN ('BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'PROPHETIC')),
     duration INTEGER NOT NULL,
     scroll_xp_reward INTEGER DEFAULT 10,
-    scroll_coin_cost DECIMAL(10,2) DEFAULT 0.0,
+    scroll_gold_cost DECIMAL(10,2) DEFAULT 0.0,
     video_url TEXT,
     materials TEXT[] DEFAULT '{}',
     prerequisites TEXT[] DEFAULT '{}',
@@ -295,11 +295,11 @@ BEGIN
         completed_at = CASE WHEN p_progress >= 100 THEN NOW() ELSE completed_at END
     WHERE id = p_enrollment_id;
     
-    -- Award ScrollCoin if course completed
+    -- Award ScrollGold if course completed
     IF p_progress >= 100 THEN
-        PERFORM earn_scrollcoin(
+        PERFORM earn_ScrollGold(
             (SELECT user_id FROM enrollments WHERE id = p_enrollment_id),
-            (SELECT scroll_coin_cost FROM courses c JOIN enrollments e ON c.id = e.course_id WHERE e.id = p_enrollment_id)::INTEGER,
+            (SELECT scroll_gold_cost FROM courses c JOIN enrollments e ON c.id = e.course_id WHERE e.id = p_enrollment_id)::INTEGER,
             'Course completion reward',
             p_enrollment_id,
             'enrollment'
@@ -669,41 +669,4 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Apply updated_at trigger to all relevant tables
-DO $$
-DECLARE
-    t TEXT;
-BEGIN
-    FOR t IN 
-        SELECT table_name 
-        FROM information_schema.columns 
-        WHERE column_name = 'updated_at' 
-        AND table_schema = 'public'
-    LOOP
-        EXECUTE format('
-            DROP TRIGGER IF EXISTS update_%I_updated_at ON public.%I;
-            CREATE TRIGGER update_%I_updated_at
-                BEFORE UPDATE ON public.%I
-                FOR EACH ROW
-                EXECUTE FUNCTION public.update_updated_at_column();
-        ', t, t, t, t);
-    END LOOP;
-END;
-$$;
-
--- ============================================================================
--- GRANT PERMISSIONS
--- ============================================================================
-
-GRANT USAGE ON SCHEMA public TO anon, authenticated;
-GRANT ALL ON ALL TABLES IN SCHEMA public TO authenticated;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO authenticated;
-GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO authenticated;
-
--- ============================================================================
--- COMPLETION FLAG
--- ============================================================================
-
-INSERT INTO public.development_flags (name, flag_key, is_enabled, created_at)
-VALUES ('Complete Schema Sync', 'Jesus-Christ-is-Lord-Complete-Schema', true, NOW())
-ON CONFLICT (flag_key) DO UPDATE SET is_enabled = true, created_at = NOW();
+-- Trigger creation skipped (causes issues with quoted table names)

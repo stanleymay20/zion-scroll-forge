@@ -73,9 +73,9 @@ async function demonstrateScrollEconomyFaculty() {
       console.log(`Department: ${course.department}`);
       console.log(`Duration: ${course.estimatedHours} hours`);
       console.log(`XP Reward: ${course.xpReward}`);
-      console.log(`ScrollCoin Cost: ${course.scrollCoinCost}`);
+      console.log(`ScrollGold Cost: ${course.ScrollGoldCost}`);
       console.log(`Economic Model: ${course.economicModel.modelType}`);
-      console.log(`ScrollCoin Integration: ${course.scrollCoinIntegration.hasScrollCoinComponent ? 'Yes' : 'No'}`);
+      console.log(`ScrollGold Integration: ${course.ScrollGoldIntegration.hasScrollGoldComponent ? 'Yes' : 'No'}`);
       console.log(`Learning Objectives: ${course.learningObjectives.length}`);
       console.log(`Spiritual Objectives: ${course.spiritualObjectives.length}`);
       console.log();
@@ -91,7 +91,7 @@ async function demonstrateScrollEconomyFaculty() {
       console.log(`Prerequisites: ${course.prerequisites.join(', ')}`);
       console.log(`Duration: ${course.estimatedHours} hours`);
       console.log(`XP Reward: ${course.xpReward}`);
-      console.log(`ScrollCoin Cost: ${course.scrollCoinCost}`);
+      console.log(`ScrollGold Cost: ${course.ScrollGoldCost}`);
       console.log(`Economic Model: ${course.economicModel.modelType}`);
       console.log();
     });
@@ -110,7 +110,7 @@ async function demonstrateScrollEconomyFaculty() {
         console.log(`  ${index + 1}. ${lab.labName}`);
         console.log(`     Skills: ${lab.practicalSkills.join(', ')}`);
         console.log(`     Tools: ${lab.tools.join(', ')}`);
-        console.log(`     ScrollCoin Reward: ${lab.scrollCoinReward}`);
+        console.log(`     ScrollGold Reward: ${lab.ScrollGoldReward}`);
       });
       console.log();
     });
@@ -200,10 +200,10 @@ async function demonstrateScrollEconomyFaculty() {
     console.log(`  Total: ${report.courseBreakdown.total}`);
     console.log();
     
-    console.log('ScrollCoin Metrics:');
-    console.log(`  Total Rewards: ${report.scrollCoinMetrics.totalRewards}`);
-    console.log(`  Average Cost: ${report.scrollCoinMetrics.averageCost}`);
-    console.log(`  Integration Rate: ${report.scrollCoinMetrics.integrationRate}%`);
+    console.log('ScrollGold Metrics:');
+    console.log(`  Total Rewards: ${report.ScrollGoldMetrics.totalRewards}`);
+    console.log(`  Average Cost: ${report.ScrollGoldMetrics.averageCost}`);
+    console.log(`  Integration Rate: ${report.ScrollGoldMetrics.integrationRate}%`);
     console.log();
     
     console.log('Kingdom Impact:');
@@ -229,7 +229,7 @@ async function demonstrateScrollEconomyFaculty() {
     console.log(`✅ Advanced Courses: ${advancedCourses.length} courses (SEC310, SEC402)`);
     console.log(`✅ Practical Labs: ${practicalLabs.length} labs (SECLAB01, SECCERT)`);
     console.log(`✅ Course Content: Comprehensive modules, lectures, notes, videos, assessments`);
-    console.log(`✅ ScrollCoin Integration: All courses integrated with divine currency`);
+    console.log(`✅ ScrollGold Integration: All courses integrated with divine currency`);
     console.log(`✅ Kingdom Economics: Biblical principles embedded throughout`);
     console.log(`✅ Learning Path: 5-phase progression from foundation to mastery`);
     console.log(`✅ Integration: Successfully integrated with curriculum grid`);
@@ -237,7 +237,7 @@ async function demonstrateScrollEconomyFaculty() {
     console.log();
     console.log('🏛️  ScrollEconomy & Financial Reformation Faculty is ready for 800+ courses!');
     console.log('💰 Building the kingdom economy through divine finance principles');
-    console.log('🪙  ScrollCoin-powered education for global transformation');
+    console.log('🪙  ScrollGold-powered education for global transformation');
 
   } catch (error) {
     console.error('❌ Demo failed:', error);

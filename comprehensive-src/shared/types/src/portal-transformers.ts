@@ -34,7 +34,7 @@ export interface APIScrollUser {
   username: string;
   first_name: string;
   last_name: string;
-  scroll_coin_wallet?: string;
+  scroll_gold_wallet?: string;
   preferred_language: string;
   time_zone: string;
   scroll_node_id?: string;
@@ -47,7 +47,7 @@ export interface APIScrollUser {
   role: string;
   enrollment_status: string;
   academic_level: string;
-  scroll_coin_balance: number;
+  scroll_gold_balance: number;
   work_trade_credits: number;
   created_at: string;
   updated_at: string;
@@ -63,7 +63,7 @@ export interface APIPortalCourse {
   level: string;
   duration_weeks: number;
   xp_reward: number;
-  scroll_coin_cost: number;
+  scroll_gold_cost: number;
   prerequisites: string[];
   featured: boolean;
   enrollment_open: boolean;
@@ -81,7 +81,7 @@ export interface APIPortalEnrollment {
   completion_date?: string;
   progress_percentage: number;
   xp_earned: number;
-  scroll_coins_earned: number;
+  scroll_golds_earned: number;
   current_lesson_id?: string;
   status: string;
   created_at: string;
@@ -184,7 +184,7 @@ export function transformAPIUserToScrollUser(apiUser: APIScrollUser): ScrollUser
     username: apiUser.username,
     firstName: apiUser.first_name,
     lastName: apiUser.last_name,
-    scrollCoinWallet: apiUser.scroll_coin_wallet,
+    scrollGoldWallet: apiUser.scroll_gold_wallet,
     preferredLanguage: apiUser.preferred_language,
     timeZone: apiUser.time_zone,
     scrollNodeId: apiUser.scroll_node_id,
@@ -197,7 +197,7 @@ export function transformAPIUserToScrollUser(apiUser: APIScrollUser): ScrollUser
     role: apiUser.role as any,
     enrollmentStatus: apiUser.enrollment_status as any,
     academicLevel: apiUser.academic_level as any,
-    scrollCoinBalance: apiUser.scroll_coin_balance,
+    scrollGoldBalance: apiUser.scroll_gold_balance,
     workTradeCredits: apiUser.work_trade_credits,
     profile: {
       firstName: apiUser.first_name,
@@ -225,7 +225,7 @@ export function transformScrollUserToAPI(user: Partial<ScrollUser>): Partial<API
     username: user.username,
     first_name: user.firstName,
     last_name: user.lastName,
-    scroll_coin_wallet: user.scrollCoinWallet,
+    scroll_gold_wallet: user.scrollGoldWallet,
     preferred_language: user.preferredLanguage,
     time_zone: user.timeZone,
     scroll_node_id: user.scrollNodeId,
@@ -238,7 +238,7 @@ export function transformScrollUserToAPI(user: Partial<ScrollUser>): Partial<API
     role: user.role,
     enrollment_status: user.enrollmentStatus,
     academic_level: user.academicLevel,
-    scroll_coin_balance: user.scrollCoinBalance,
+    scroll_gold_balance: user.scrollGoldBalance,
     work_trade_credits: user.workTradeCredits
   };
 }
@@ -256,7 +256,7 @@ export function transformAPICourseToPortalCourse(apiCourse: APIPortalCourse): Po
     level: apiCourse.level as any,
     durationWeeks: apiCourse.duration_weeks,
     xpReward: apiCourse.xp_reward,
-    scrollCoinCost: apiCourse.scroll_coin_cost,
+    scrollGoldCost: apiCourse.scroll_gold_cost,
     prerequisites: apiCourse.prerequisites || [],
     featured: apiCourse.featured,
     enrollmentOpen: apiCourse.enrollment_open,
@@ -280,7 +280,7 @@ export function transformPortalCourseToAPI(course: Partial<PortalCourse>): Parti
     level: course.level,
     duration_weeks: course.durationWeeks,
     xp_reward: course.xpReward,
-    scroll_coin_cost: course.scrollCoinCost,
+    scroll_gold_cost: course.scrollGoldCost,
     prerequisites: course.prerequisites,
     featured: course.featured,
     enrollment_open: course.enrollmentOpen,
@@ -301,7 +301,7 @@ export function transformAPIEnrollmentToPortalEnrollment(apiEnrollment: APIPorta
     completionDate: apiEnrollment.completion_date,
     progressPercentage: apiEnrollment.progress_percentage,
     xpEarned: apiEnrollment.xp_earned,
-    scrollCoinsEarned: apiEnrollment.scroll_coins_earned,
+    scrollGoldsEarned: apiEnrollment.scroll_golds_earned,
     currentLessonId: apiEnrollment.current_lesson_id,
     status: apiEnrollment.status as any,
     createdAt: apiEnrollment.created_at,

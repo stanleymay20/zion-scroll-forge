@@ -195,8 +195,8 @@
     - Create grade book integration for participation and engagement
     - _Requirements: 4.1, 5.1_
 
-  - [ ] 11.2 Integrate with ScrollCoin reward and gamification systems
-    - Implement ScrollCoin rewards for active participation in avatar sessions
+  - [ ] 11.2 Integrate with ScrollGold reward and gamification systems
+    - Implement ScrollGold rewards for active participation in avatar sessions
     - Create achievement badges for avatar interaction milestones
     - Build leaderboards for engagement and learning progress
     - Implement special rewards for spiritual growth and testimony sharing

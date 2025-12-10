@@ -251,7 +251,7 @@ async function genModule(supabase: any, apiKey: string, course: any, order: numb
         model: 'google/gemini-2.5-pro',
         messages: [{
           role: 'user',
-          content: `Create module ${order} for course "${course.title}". 900-1200 words markdown content with scripture reference and ScrollCoin reward markers. Return ONLY valid JSON with no markdown formatting: {"title": "module title", "content_md": "# Module Title\\n\\n... full markdown content here ..."}`
+          content: `Create module ${order} for course "${course.title}". 900-1200 words markdown content with scripture reference and ScrollGold reward markers. Return ONLY valid JSON with no markdown formatting: {"title": "module title", "content_md": "# Module Title\\n\\n... full markdown content here ..."}`
         }],
         temperature: 0.7,
       }),

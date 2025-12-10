@@ -32,17 +32,17 @@ async function setupCurriculumGrid() {
         level: CourseLevel.UNDERGRADUATE,
         estimatedHours: 40,
         xpReward: 100,
-        scrollCoinCost: 50,
+        ScrollGoldCost: 50,
         status: CourseStatus.PUBLISHED
       },
       {
-        title: 'ScrollCoin Economics and Digital Currency',
+        title: 'ScrollGold Economics and Digital Currency',
         description: 'Biblical economic principles applied to modern digital currency systems',
         faculty: SupremeScrollFaculty.SCROLL_ECONOMY_FINANCE,
         level: CourseLevel.GRADUATE,
         estimatedHours: 60,
         xpReward: 150,
-        scrollCoinCost: 75,
+        ScrollGoldCost: 75,
         status: CourseStatus.PUBLISHED
       },
       {
@@ -52,7 +52,7 @@ async function setupCurriculumGrid() {
         level: CourseLevel.GRADUATE,
         estimatedHours: 80,
         xpReward: 200,
-        scrollCoinCost: 100,
+        ScrollGoldCost: 100,
         status: CourseStatus.PUBLISHED
       },
       {
@@ -62,7 +62,7 @@ async function setupCurriculumGrid() {
         level: CourseLevel.DOCTORAL,
         estimatedHours: 120,
         xpReward: 300,
-        scrollCoinCost: 150,
+        ScrollGoldCost: 150,
         status: CourseStatus.PUBLISHED
       },
       {
@@ -72,7 +72,7 @@ async function setupCurriculumGrid() {
         level: CourseLevel.GRADUATE,
         estimatedHours: 100,
         xpReward: 250,
-        scrollCoinCost: 125,
+        ScrollGoldCost: 125,
         status: CourseStatus.PUBLISHED
       },
       {
@@ -82,7 +82,7 @@ async function setupCurriculumGrid() {
         level: CourseLevel.GRADUATE,
         estimatedHours: 70,
         xpReward: 175,
-        scrollCoinCost: 90,
+        ScrollGoldCost: 90,
         status: CourseStatus.PUBLISHED
       },
       {
@@ -92,7 +92,7 @@ async function setupCurriculumGrid() {
         level: CourseLevel.UNDERGRADUATE,
         estimatedHours: 50,
         xpReward: 125,
-        scrollCoinCost: 60,
+        ScrollGoldCost: 60,
         status: CourseStatus.PUBLISHED
       },
       {
@@ -102,7 +102,7 @@ async function setupCurriculumGrid() {
         level: CourseLevel.UNDERGRADUATE,
         estimatedHours: 45,
         xpReward: 110,
-        scrollCoinCost: 55,
+        ScrollGoldCost: 55,
         status: CourseStatus.PUBLISHED
       },
       {
@@ -112,7 +112,7 @@ async function setupCurriculumGrid() {
         level: CourseLevel.GRADUATE,
         estimatedHours: 90,
         xpReward: 225,
-        scrollCoinCost: 110,
+        ScrollGoldCost: 110,
         status: CourseStatus.PUBLISHED
       },
       {
@@ -122,7 +122,7 @@ async function setupCurriculumGrid() {
         level: CourseLevel.UNDERGRADUATE,
         estimatedHours: 55,
         xpReward: 140,
-        scrollCoinCost: 70,
+        ScrollGoldCost: 70,
         status: CourseStatus.PUBLISHED
       },
       {
@@ -132,7 +132,7 @@ async function setupCurriculumGrid() {
         level: CourseLevel.GRADUATE,
         estimatedHours: 110,
         xpReward: 275,
-        scrollCoinCost: 140,
+        ScrollGoldCost: 140,
         status: CourseStatus.PUBLISHED
       },
       {
@@ -142,7 +142,7 @@ async function setupCurriculumGrid() {
         level: CourseLevel.GRADUATE,
         estimatedHours: 85,
         xpReward: 210,
-        scrollCoinCost: 105,
+        ScrollGoldCost: 105,
         status: CourseStatus.PUBLISHED
       }
     ];

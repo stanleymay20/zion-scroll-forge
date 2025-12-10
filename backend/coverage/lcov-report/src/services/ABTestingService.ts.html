@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">12.03% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/133</span>
+                <span class='fraction'>0/133</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">7.69% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/39</span>
+                <span class='fraction'>0/39</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">13.04% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/23</span>
+                <span class='fraction'>0/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">11.2% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>14/125</span>
+                <span class='fraction'>0/125</span>
             </div>
         
             
@@ -595,8 +595,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -606,27 +606,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -670,8 +670,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1116,14 +1116,14 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * A/B Testing Service
  * Comprehensive A/B testing framework for feature optimization
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
-import { logger } from '../utils/logger';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
+<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/logger';</span>
 import {
   ABTest,
   ABTestStatus,
@@ -1133,27 +1133,27 @@ import {
   CreateABTestRequest,
 } from '../types/post-launch.types';
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
-export class ABTestingService {
+<span class="cstat-no" title="statement not covered" >export class A</span>BTestingService {
   /**
    * Create a new A/B test
    */
-  async createTest(userId: string, request: CreateABTestRequest): Promise&lt;ABTest&gt; {
-    try {
+<span class="fstat-no" title="function not covered" >  async </span>createTest(userId: string, request: CreateABTestRequest): Promise&lt;ABTest&gt; {
+<span class="cstat-no" title="statement not covered" >    try {</span>
       // Validate traffic allocation
-      const totalAllocation = request.variants.reduce((sum, v) =&gt; sum + v.trafficAllocation, 0);
-      if (Math.abs(totalAllocation - 100) &gt; 0.01) {
-        throw new Error('Total traffic allocation must equal 100%');
+      const totalAllocation = <span class="cstat-no" title="statement not covered" >request.variants.reduce(<span class="fstat-no" title="function not covered" >(s</span>um, v) =&gt; <span class="cstat-no" title="statement not covered" >sum + v.trafficAllocation,</span> 0);</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (Math.abs(totalAllocation - 100) &gt; 0.01) {</span>
+<span class="cstat-no" title="statement not covered" >        throw new Error('Total traffic allocation must equal 100%');</span>
       }
 &nbsp;
       // Ensure at least one control variant
-      const hasControl = request.variants.some((v) =&gt; v.isControl);
-      <span class="missing-if-branch" title="if path not taken" >I</span>if (!hasControl) {
+      const hasControl = <span class="cstat-no" title="statement not covered" >request.variants.some(<span class="fstat-no" title="function not covered" >(v</span>) =&gt; <span class="cstat-no" title="statement not covered" >v.isControl)</span>;</span>
+<span class="cstat-no" title="statement not covered" >      <span class="missing-if-branch" title="if path not taken" >I</span>if (!hasControl) {</span>
 <span class="cstat-no" title="statement not covered" >        throw new Error('At least one variant must be marked as control');</span>
       }
 &nbsp;
-      const result = await prisma.$queryRaw&lt;any[]&gt;`
+      const result = <span class="cstat-no" title="statement not covered" >await prisma.$queryRaw&lt;any[]&gt;`</span>
         INSERT INTO ab_tests (
           id, name, description, hypothesis, feature, variants, target_audience,
           metrics, status, start_date, end_date, created_by, created_at, updated_at
@@ -1197,8 +1197,8 @@ export class ABTestingService {
         updatedAt: result[0].updated_at,
       };
     } catch (error) {
-      logger.error('Error creating A/B test:', error);
-      throw error;
+<span class="cstat-no" title="statement not covered" >      logger.error('Error creating A/B test:', error);</span>
+<span class="cstat-no" title="statement not covered" >      throw error;</span>
     }
   }
 &nbsp;
@@ -1643,7 +1643,7 @@ export class ABTestingService {
   }
 }
 &nbsp;
-export default ABTestingService;
+<span class="cstat-no" title="statement not covered" >export default ABTestingService;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1651,7 +1651,7 @@ export default ABTestingService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:03.756Z
+                at 2025-12-02T16:54:09.620Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

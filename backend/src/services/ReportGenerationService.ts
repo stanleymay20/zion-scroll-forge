@@ -451,9 +451,9 @@ export class ReportGenerationService {
     lines.push(`Average Transaction,${data.revenueMetrics.averageTransactionValue.toFixed(2)}`);
     lines.push(`Course Enrollments Revenue,${data.enrollmentRevenue.courseEnrollments.toFixed(2)}`);
     lines.push(`Subscription Revenue,${data.enrollmentRevenue.subscriptionRevenue.toFixed(2)}`);
-    lines.push(`ScrollCoin Minted,${data.scrollCoinMetrics.totalMinted}`);
-    lines.push(`ScrollCoin Burned,${data.scrollCoinMetrics.totalBurned}`);
-    lines.push(`Circulating Supply,${data.scrollCoinMetrics.circulatingSupply}`);
+    lines.push(`ScrollGold Minted,${data.ScrollGoldMetrics.totalMinted}`);
+    lines.push(`ScrollGold Burned,${data.ScrollGoldMetrics.totalBurned}`);
+    lines.push(`Circulating Supply,${data.ScrollGoldMetrics.circulatingSupply}`);
     lines.push(`Scholarships Awarded,${data.scholarshipMetrics.totalAwarded.toFixed(2)}`);
     lines.push(`Remaining Budget,${data.scholarshipMetrics.remainingBudget.toFixed(2)}`);
     return lines.join('\n');

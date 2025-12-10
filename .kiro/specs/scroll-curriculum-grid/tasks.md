@@ -34,10 +34,10 @@
 
 
   - Create faculty structure for 800+ economics and finance courses
-  - Implement foundational courses: SEC101 (ScrollEconomy Foundations), SEC205 (Digital Currencies vs ScrollCoin)
+  - Implement foundational courses: SEC101 (ScrollEconomy Foundations), SEC205 (Digital Currencies vs ScrollGold)
   - Build advanced courses: SEC310 (Kingdom Trade Systems), SEC402 (Financial Prophecy)
   - Create practical labs: SECLAB01 (Building ScrollBank), SECCERT (ScrollAccounting)
-  - Integrate ScrollCoin economy and divine finance principles
+  - Integrate ScrollGold economy and divine finance principles
   - _Requirements: 1.2, 6.3, 7.4_
 
 - [x] 4. Prophetic Law & Global Governance Faculty Setup
@@ -99,7 +99,7 @@
   - Implement marketplace courses: SLI101 (Marketplace Priesthood), SLI210 (AI-Powered Kingdom Startups)
   - Build productivity courses: SLI301 (Time Management in Covenant Economics), SLI402 (Sacred Productivity)
   - Create practical labs: SLIXR (Business Prophecy & ScrollVenture Lab)
-  - Integrate ScrollCoin-based startup development and sacred labor principles
+  - Integrate ScrollGold-based startup development and sacred labor principles
   - _Requirements: 2.2, 6.2, 7.4_
 
 - [ ] 9. Global Missions & Scroll Evangelism Faculty Construction
@@ -171,7 +171,7 @@
 - [ ] 10.7 Sacred Labor & Kingdom Entrepreneurship Faculty Development
   - Create comprehensive faculty structure for 600+ entrepreneurship and labor courses
   - Implement Marketplace Prophets & Kingdom Business department for prophetic marketplace ministry
-  - Build ScrollCoin Startups & Blockchain Business department for divine currency ventures
+  - Build ScrollGold Startups & Blockchain Business department for divine currency ventures
   - Create Sacred Productivity & Time Management department for biblical work principles
   - Implement Innovation Labs & ScrollForge Studio for hands-on product development
   - _Requirements: 2.2, 6.2, 7.4_
@@ -210,7 +210,7 @@
 
 - [ ] 11. Faculty-Wide Core Curriculum System
   - Implement universal core courses required for all students: SCU001 (ScrollIdentity), SCU002 (AI + Prophecy Foundations)
-  - Create immersive experiences: SCU003 (XR Bible Experience), SCU004 (ScrollCoin Financial Literacy)
+  - Create immersive experiences: SCU003 (XR Bible Experience), SCU004 (ScrollGold Financial Literacy)
   - Build governance foundation: SCU005 (ScrollGovernance, Nationhood, and Kingdom Law)
   - Integrate core curriculum with all faculty specializations and degree programs
   - Create prerequisite and progression pathways across all faculties
@@ -276,7 +276,7 @@
 - [ ] 19. Global Accessibility and Localization Engine
   - Create multilingual support system for 50+ language tracks including Twi, Yoruba, Arabic, Hebrew, Chinese, Spanish
   - Implement cultural adaptation system localizing content while maintaining core spiritual principles
-  - Build economic accessibility system with free/low-cost options and ScrollCoin-based payments
+  - Build economic accessibility system with free/low-cost options and ScrollGold-based payments
   - Create offline learning capabilities with progressive content loading for limited connectivity
   - Implement regional relevance system adapting examples and applications to local contexts
   - _Requirements: 11.1, 11.2, 11.3, 11.4, 11.5_

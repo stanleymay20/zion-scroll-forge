@@ -29,7 +29,7 @@ graph TB
         COURSE[Course Management]
         USER[User Management]
         CERT[Certification Service]
-        COIN[ScrollCoin Service]
+        COIN[ScrollGold Service]
     end
     
     subgraph "AI Infrastructure"
@@ -99,7 +99,7 @@ The platform follows a domain-driven design with the following core services:
 2. **Course Management Service**: Handles curriculum, content delivery, and XR experiences
 3. **User Management Service**: Manages student profiles, progress tracking, and spiritual formation
 4. **Certification Service**: Issues ScrollBadges and ScrollCertified™ credentials
-5. **ScrollCoin Service**: Manages the divine economy and reward systems
+5. **ScrollGold Service**: Manages the divine economy and reward systems
 6. **Faculty Service**: Coordinates human and AI faculty interactions
 7. **Global Access Service**: Handles multilingual support and offline synchronization
 
@@ -202,7 +202,7 @@ interface ScrollUApp {
   scrollXR: XRInterface;
   divineScorecard: ProgressTracker;
   propheticCheckins: SpiritualGuidance;
-  scrollCoinWallet: CryptocurrencyWallet;
+  ScrollGoldWallet: CryptocurrencyWallet;
   offlineMode: OfflineCapabilities;
 }
 
@@ -218,7 +218,7 @@ interface PersonalizedTutor {
 - Native iOS and Android applications
 - Offline-first architecture with sync capabilities
 - XR integration for immersive biblical and scientific experiences
-- Gamified learning with ScrollCoin rewards
+- Gamified learning with ScrollGold rewards
 - Spiritual formation tracking and guidance
 
 ### Faculty Management System
@@ -291,7 +291,7 @@ interface Student {
   academicRecord: AcademicHistory;
   spiritualJourney: SpiritualFormation;
   callingTrack: MissionTrack;
-  scrollCoinBalance: number;
+  ScrollGoldBalance: number;
   achievements: ScrollBadge[];
   mentorRelationships: MentorConnection[];
 }
@@ -323,8 +323,8 @@ interface ScrollDeanConfig {
   teachingStyle: PedagogicalApproach;
 }
 
-// ScrollCoin Transaction
-interface ScrollCoinTransaction {
+// ScrollGold Transaction
+interface ScrollGoldTransaction {
   id: string;
   fromUserId: string;
   toUserId: string;

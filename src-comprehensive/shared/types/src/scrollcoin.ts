@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-// ScrollCoin Integration Types
-export interface ScrollCoinWallet {
+// ScrollGold Integration Types
+export interface ScrollGoldWallet {
   wallet_id: string;
   user_id: string;
   address: string;
@@ -61,7 +61,7 @@ export interface Scholarship {
   name: string;
   description: string;
   amount: number;
-  currency: 'ScrollCoin' | 'USD' | 'EUR';
+  currency: 'ScrollGold' | 'USD' | 'EUR';
   eligibility_criteria: EligibilityCriteria;
   application_deadline: string;
   award_date: string;
@@ -197,7 +197,7 @@ export interface WorkstudyProgram {
   name: string;
   description: string;
   type: WorkstudyType;
-  hourly_rate_scrollcoin: number;
+  hourly_rate_ScrollGold: number;
   max_hours_per_week: number;
   duration_weeks: number;
   requirements: WorkstudyRequirement[];
@@ -232,16 +232,16 @@ export interface WorkstudyApplication {
   start_date?: string;
   end_date?: string;
   hours_worked: number;
-  earnings_scrollcoin: number;
+  earnings_ScrollGold: number;
 }
 
-export interface ScrollCoinMission {
+export interface ScrollGoldMission {
   mission_id: string;
   title: string;
   description: string;
   type: MissionType;
   difficulty: MissionDifficulty;
-  reward_scrollcoin: number;
+  reward_ScrollGold: number;
   bonus_xp: number;
   requirements: MissionRequirement[];
   steps: MissionStep[];
@@ -328,7 +328,7 @@ export interface PaymentMethod {
 }
 
 export type PaymentMethodType = 
-  | 'scrollcoin_wallet'
+  | 'ScrollGold_wallet'
   | 'credit_card'
   | 'bank_transfer'
   | 'paypal'
@@ -336,7 +336,7 @@ export type PaymentMethodType =
   | 'mobile_money';
 
 export interface PaymentMethodDetails {
-  // For ScrollCoin
+  // For ScrollGold
   wallet_address?: string;
   
   // For Credit Card
@@ -381,7 +381,7 @@ export type PaymentIntentStatus =
   | 'refunded';
 
 // Validation Schemas
-export const ScrollCoinWalletSchema = z.object({
+export const ScrollGoldWalletSchema = z.object({
   wallet_id: z.string().uuid(),
   user_id: z.string().uuid(),
   address: z.string(),
@@ -409,7 +409,7 @@ export const ScholarshipSchema = z.object({
   name: z.string().min(1),
   description: z.string(),
   amount: z.number().positive(),
-  currency: z.enum(['ScrollCoin', 'USD', 'EUR']),
+  currency: z.enum(['ScrollGold', 'USD', 'EUR']),
   application_deadline: z.string().datetime(),
   award_date: z.string().datetime(),
   renewable: z.boolean(),
@@ -417,13 +417,13 @@ export const ScholarshipSchema = z.object({
   created_at: z.string().datetime()
 });
 
-export const ScrollCoinMissionSchema = z.object({
+export const ScrollGoldMissionSchema = z.object({
   mission_id: z.string().uuid(),
   title: z.string().min(1),
   description: z.string(),
   type: z.enum(['evangelism', 'community_service', 'content_creation', 'peer_mentoring', 'prayer_intercession', 'scripture_memorization', 'skill_development', 'global_outreach']),
   difficulty: z.enum(['easy', 'medium', 'hard', 'expert']),
-  reward_scrollcoin: z.number().positive(),
+  reward_ScrollGold: z.number().positive(),
   bonus_xp: z.number().nonnegative(),
   deadline: z.string().datetime().optional(),
   status: z.enum(['active', 'completed', 'expired', 'suspended'])

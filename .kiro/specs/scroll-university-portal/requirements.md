@@ -30,17 +30,17 @@ The ScrollUniversityPortal is the central web platform and mobile application th
 4. WHEN course content is accessed THEN the system SHALL display materials in the selected language when available
 5. WHEN translations are unavailable THEN the system SHALL gracefully fallback to English with clear indicators
 
-### Requirement 3: Authentication and ScrollCoin Integration
+### Requirement 3: Authentication and ScrollGold Integration
 
-**User Story:** As a student, I want to authenticate securely with ScrollCoin integration, so that I can access my personalized learning environment and track my rewards.
+**User Story:** As a student, I want to authenticate securely with ScrollGold integration, so that I can access my personalized learning environment and track my rewards.
 
 #### Acceptance Criteria
 
-1. WHEN a user registers THEN the system SHALL create a ScrollCoin wallet and unique student profile
-2. WHEN a user logs in THEN the system SHALL support ScrollCoin authentication and traditional email/password methods
+1. WHEN a user registers THEN the system SHALL create a ScrollGold wallet and unique student profile
+2. WHEN a user logs in THEN the system SHALL support ScrollGold authentication and traditional email/password methods
 3. WHEN authentication occurs THEN the system SHALL integrate with ScrollOathEnforcer for identity verification
 4. WHEN a session is established THEN the system SHALL maintain secure session management with JWT tokens
-5. WHEN a user accesses premium features THEN the system SHALL validate ScrollCoin balance and permissions
+5. WHEN a user accesses premium features THEN the system SHALL validate ScrollGold balance and permissions
 
 ### Requirement 4: Personalized Dashboard and Tracking
 
@@ -49,7 +49,7 @@ The ScrollUniversityPortal is the central web platform and mobile application th
 #### Acceptance Criteria
 
 1. WHEN a user logs in THEN the system SHALL display a personalized dashboard with current courses and progress
-2. WHEN dashboard loads THEN the system SHALL show degree progress, XP earned, ScrollCoin balance, and upcoming assignments
+2. WHEN dashboard loads THEN the system SHALL show degree progress, XP earned, ScrollGold balance, and upcoming assignments
 3. WHEN a user accesses AI tutors THEN the system SHALL provide 24/7 access to GPT-4o AI tutors for all departments
 4. WHEN progress is updated THEN the system SHALL integrate with ScrollDegreeEngine for real-time skill tracking
 5. WHEN achievements are earned THEN the system SHALL display ScrollBadge™ credentials and certificates
@@ -61,8 +61,8 @@ The ScrollUniversityPortal is the central web platform and mobile application th
 #### Acceptance Criteria
 
 1. WHEN a user browses courses THEN the system SHALL display all nine faculties with their respective course offerings
-2. WHEN course details are viewed THEN the system SHALL show prerequisites, duration, XP rewards, and ScrollCoin costs
-3. WHEN a user enrolls THEN the system SHALL validate prerequisites and process ScrollCoin payments
+2. WHEN course details are viewed THEN the system SHALL show prerequisites, duration, XP rewards, and ScrollGold costs
+3. WHEN a user enrolls THEN the system SHALL validate prerequisites and process ScrollGold payments
 4. WHEN enrollment is complete THEN the system SHALL integrate with ScrollCourseSpec for course access
 5. WHEN courses are accessed THEN the system SHALL provide seamless integration with ScrollXR Classrooms for immersive experiences
 
@@ -141,12 +141,12 @@ The ScrollUniversityPortal is the central web platform and mobile application th
 1. WHEN errors occur THEN the system SHALL capture structured logs and user-safe messages
 2. WHEN thresholds breach THEN alerting and health endpoints SHALL indicate status
 
-**User Story:** As a student, I want access to ScrollScholarships and financial aid options, so that I can afford my education through ScrollCoin missions or prophetic workstudy.
+**User Story:** As a student, I want access to ScrollScholarships and financial aid options, so that I can afford my education through ScrollGold missions or prophetic workstudy.
 
 #### Acceptance Criteria
 
 1. WHEN applying for aid THEN the system SHALL provide scholarship application workflows with eligibility checking
-2. WHEN scholarships are awarded THEN the system SHALL integrate with ScrollCoin systems for tuition coverage
+2. WHEN scholarships are awarded THEN the system SHALL integrate with ScrollGold systems for tuition coverage
 3. WHEN workstudy is available THEN the system SHALL provide prophetic workstudy matching and tracking
-4. WHEN missions are completed THEN the system SHALL automatically credit ScrollCoin earnings toward tuition
+4. WHEN missions are completed THEN the system SHALL automatically credit ScrollGold earnings toward tuition
 5. WHEN financial status changes THEN the system SHALL update access permissions and course availability accordingly

@@ -37,7 +37,7 @@ router.get('/blockchain-foundation', async (req: Request, res: Response) => {
           strategicImplications: [
             'First blockchain-integrated education platform',
             'Immutable credential verification system',
-            'Revolutionary ScrollCoin economy integration'
+            'Revolutionary ScrollGold economy integration'
           ]
         }
       },

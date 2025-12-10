@@ -18,7 +18,7 @@ The Course Content Creation system implementation is **BLOCKED** by multiple cri
 
 **Duplicate Definitions Found**:
 ```
-Line 334 & 2451: model ScrollCoinTransaction (DUPLICATE)
+Line 334 & 2451: model ScrollGoldTransaction (DUPLICATE)
 Line 2303 & 2643: enum LectureType (DUPLICATE)
 Line 973 & 2655: model Scholarship (DUPLICATE)
 Line 997 & 2700: model ScholarshipApplication (DUPLICATE)
@@ -29,7 +29,7 @@ Line 1602 & 2994: enum VerificationStatus (DUPLICATE)
 **Prisma Validation Output**:
 ```
 Error: P1012
-error: The model "ScrollCoinTransaction" cannot be defined because a model with that name already exists.
+error: The model "ScrollGoldTransaction" cannot be defined because a model with that name already exists.
   --> prisma\schema.prisma:2451
 
 error: The enum "LectureType" cannot be defined because a enum with that name already exists.

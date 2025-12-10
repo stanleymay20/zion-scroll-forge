@@ -212,7 +212,7 @@ export class AdmissionsQualityAssuranceFramework {
       'student-profile-integration',
       'assessment-engine-integration',
       'university-portal-integration',
-      'scrollcoin-integration',
+      'scrollgold-integration',
       'prayer-integration',
       'audit-trail-integration'
     ];

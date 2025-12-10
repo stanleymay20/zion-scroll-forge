@@ -45,7 +45,7 @@ export interface ForumPost {
   isPinned: boolean;
   isLocked: boolean;
   spiritualInsight?: string;
-  scrollCoinReward?: number;
+  scrollGoldReward?: number;
 }
 
 export interface ForumReply {
@@ -58,7 +58,7 @@ export interface ForumReply {
   likes: number;
   parentReplyId?: string;
   isHelpful: boolean;
-  scrollCoinReward?: number;
+  scrollGoldReward?: number;
 }
 
 export interface PeerMentorship {
@@ -83,7 +83,7 @@ export interface MentorshipSession {
   status: SessionStatus;
   notes?: string;
   feedback?: SessionFeedback;
-  scrollCoinReward?: number;
+  scrollGoldReward?: number;
 }
 
 export interface StudyGroup {
@@ -132,7 +132,7 @@ export interface ProjectTask {
   createdAt: Date;
   updatedAt: Date;
   dependencies: string[];
-  scrollCoinReward?: number;
+  scrollGoldReward?: number;
 }
 
 export interface GlobalNetworking {
@@ -262,7 +262,7 @@ export interface GroupMember {
   joinedAt: Date;
   isActive: boolean;
   contributions: number;
-  scrollCoinEarned: number;
+  scrollGoldEarned: number;
 }
 
 export enum MemberRole {
@@ -327,7 +327,7 @@ export interface ProjectMember {
   role: ProjectRole;
   joinedAt: Date;
   contributions: string[];
-  scrollCoinEarned: number;
+  scrollGoldEarned: number;
 }
 
 export enum ProjectRole {

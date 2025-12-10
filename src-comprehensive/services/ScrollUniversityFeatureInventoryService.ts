@@ -206,7 +206,7 @@ export default class ScrollUniversityFeatureInventoryService {
         weight: 1.3,
         subcategories: [
           { id: 'credentials', name: 'Credential Verification', description: 'Blockchain-verified certificates and degrees', weight: 0.4, parentCategory: 'blockchain_integration' },
-          { id: 'scrollcoin', name: 'ScrollCoin Economy', description: 'Revolutionary economic model and rewards', weight: 0.35, parentCategory: 'blockchain_integration' },
+          { id: 'ScrollGold', name: 'ScrollGold Economy', description: 'Revolutionary economic model and rewards', weight: 0.35, parentCategory: 'blockchain_integration' },
           { id: 'nft', name: 'ScrollBadge NFTs', description: 'Non-fungible token achievements and badges', weight: 0.25, parentCategory: 'blockchain_integration' }
         ],
         scoringCriteria: []
@@ -340,11 +340,11 @@ export default class ScrollUniversityFeatureInventoryService {
         tags: ['spiritual', 'scorecard', 'growth', 'prophetic', 'unique']
       },
       {
-        id: 'scrollcoin-economy',
-        name: 'ScrollCoin Revolutionary Economy',
+        id: 'ScrollGold-economy',
+        name: 'ScrollGold Revolutionary Economy',
         description: 'Blockchain-based economic system rewarding learning and spiritual growth',
         category: 'blockchain_integration',
-        subcategory: 'scrollcoin',
+        subcategory: 'ScrollGold',
         status: 'production',
         maturityLevel: 'revolutionary',
         spiritualAlignment: 'integrated',
@@ -352,10 +352,10 @@ export default class ScrollUniversityFeatureInventoryService {
         competitiveAdvantage: 'revolutionary_advantage',
         userImpact: 'transformational',
         implementationDetails: {
-          services: ['ScrollCoinService', 'BlockchainService', 'RewardMechanismService'],
-          components: ['ScrollCoinWallet', 'RewardNotification', 'EconomyDashboard'],
-          apis: ['/api/scrollcoin', '/api/blockchain', '/api/rewards'],
-          databases: ['scrollcoin_transactions', 'blockchain_records', 'reward_mechanisms'],
+          services: ['ScrollGoldService', 'BlockchainService', 'RewardMechanismService'],
+          components: ['ScrollGoldWallet', 'RewardNotification', 'EconomyDashboard'],
+          apis: ['/api/ScrollGold', '/api/blockchain', '/api/rewards'],
+          databases: ['ScrollGold_transactions', 'blockchain_records', 'reward_mechanisms'],
           integrations: ['Ethereum_Blockchain', 'Smart_Contracts', 'Wallet_Integration'],
           technologies: ['Blockchain', 'Smart Contracts', 'Cryptocurrency', 'DeFi'],
           architecture: ['blockchain_integrated', 'microservices', 'event_driven']
@@ -600,7 +600,7 @@ export default class ScrollUniversityFeatureInventoryService {
       {
         id: 'blockchain-education-economy',
         name: 'Blockchain Education Economy',
-        description: 'Revolutionary economic model using ScrollCoin to reward learning and spiritual growth',
+        description: 'Revolutionary economic model using ScrollGold to reward learning and spiritual growth',
         category: 'blockchain_economy',
         competitiveGap: 'revolutionary_gap',
         marketImpact: 'industry',
@@ -616,13 +616,13 @@ export default class ScrollUniversityFeatureInventoryService {
           },
           {
             type: 'user_feedback',
-            description: 'Students report increased motivation through ScrollCoin rewards',
+            description: 'Students report increased motivation through ScrollGold rewards',
             source: 'User Satisfaction Surveys',
             reliability: 'high',
             lastVerified: new Date()
           }
         ],
-        relatedFeatures: ['scrollcoin-economy', 'blockchain-credentials', 'reward-mechanisms']
+        relatedFeatures: ['ScrollGold-economy', 'blockchain-credentials', 'reward-mechanisms']
       },
       {
         id: 'global-offline-accessibility',

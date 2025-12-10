@@ -10,7 +10,7 @@
 - [ ] 2. Build student project and product marketplace system
   - Create ProjectMarketplaceService for project listing and sales management
   - Implement project validation with authenticity and quality verification
-  - Build secure transaction processing with ScrollCoin and traditional payment integration
+  - Build secure transaction processing with ScrollGold and traditional payment integration
   - Create buyer protection system with guarantees and dispute resolution
   - Add seller support tools with marketing analytics and optimization suggestions
   - Write comprehensive tests for project marketplace workflows and transaction security
@@ -30,7 +30,7 @@
   - Build tutor matching system based on subject expertise and learning style compatibility
   - Create virtual meeting integration with resource sharing and session recording
   - Add tutor quality verification through assessment scores and mentor recommendations
-  - Implement tutoring payment processing with ScrollCoin transactions and fair compensation
+  - Implement tutoring payment processing with ScrollGold transactions and fair compensation
   - Write tests for tutoring session management and outcome tracking effectiveness
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6_
 
@@ -52,13 +52,13 @@
   - Write integration tests for external client workflows and business relationship management
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6_
 
-- [ ] 7. Create comprehensive ScrollCoin integration and economic incentive system
-  - Implement ScrollCoinIntegrationService for seamless marketplace payment processing
+- [ ] 7. Create comprehensive ScrollGold integration and economic incentive system
+  - Implement ScrollGoldIntegrationService for seamless marketplace payment processing
   - Build economic incentive system with rewards for quality service and customer satisfaction
   - Create coin earning facilitation through marketplace participation and community building
   - Add economic analytics with earning patterns and spending behavior tracking
   - Implement economic stability measures with anti-fraud protection and fair pricing guidelines
-  - Write tests for ScrollCoin transaction processing and economic incentive effectiveness
+  - Write tests for ScrollGold transaction processing and economic incentive effectiveness
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, 6.6_
 
 - [ ] 8. Build comprehensive quality assurance and reputation management system
@@ -118,7 +118,7 @@
 - [ ] 14. Build ScrollUniversity ecosystem integration system
   - Create SystemIntegrationService for seamless connection with all ScrollUniversity components
   - Implement data synchronization with student-profile-spec, transcript-generator, and seal-certification
-  - Build real-time integration with scrollcoin-meter, projects-spec, and assessment-engine
+  - Build real-time integration with ScrollGold-meter, projects-spec, and assessment-engine
   - Add comprehensive API for external system communication and marketplace data exchange
   - Create audit trail integration for complete marketplace activity logging and accountability
   - Write extensive integration tests for cross-system data consistency and synchronization accuracy

@@ -4,7 +4,7 @@ import { ScrollButton } from '../ui/ScrollButton';
 import { LanguageSwitcher } from '../common/LanguageSwitcher';
 import { UserMenu } from '../common/UserMenu';
 import { NotificationCenter } from '../common/NotificationCenter';
-import { ScrollCoinBalance } from '../common/ScrollCoinBalance';
+import { ScrollGoldBalance } from '../common/ScrollGoldBalance';
 
 interface ScrollHeaderProps {
   onSidebarToggle?: () => void;
@@ -239,7 +239,7 @@ export const ScrollHeader: React.FC<ScrollHeaderProps> = ({
       </LeftSection>
 
       <RightSection>
-        <ScrollCoinBalance />
+        <ScrollGoldBalance />
         <NotificationCenter />
         <LanguageSwitcher />
         <UserMenu />

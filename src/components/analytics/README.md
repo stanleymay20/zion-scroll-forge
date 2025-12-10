@@ -98,12 +98,12 @@ Learning patterns and performance analytics for individual students with predict
 ```
 
 ### FinancialAnalyticsDashboard
-Revenue tracking and financial projections with ScrollCoin metrics and scholarship data.
+Revenue tracking and financial projections with ScrollGold metrics and scholarship data.
 
 **Features:**
 - Revenue metrics and trends
 - Revenue breakdown by source
-- ScrollCoin economy metrics
+- ScrollGold economy metrics
 - Scholarship program tracking
 - AI-powered revenue forecasting
 

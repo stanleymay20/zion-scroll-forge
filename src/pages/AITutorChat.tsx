@@ -30,7 +30,7 @@ const tutorDetails: Record<string, any> = {
   "economicus-scrollus": {
     name: "Economicus Scrollus",
     faculty: "Scroll Economy",
-    specialty: "Kingdom Economics & ScrollCoin Theory",
+    specialty: "Kingdom Economics & ScrollGold Theory",
     personality: "Strategic & Kingdom-Minded",
     icon: Coins
   },

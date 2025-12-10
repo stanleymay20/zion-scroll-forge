@@ -67,7 +67,7 @@ async function validateCurriculumGrid() {
       level: CourseLevel.UNDERGRADUATE,
       estimatedHours: 40,
       xpReward: 100,
-      scrollCoinCost: 50,
+      scrollGoldCost: 50,
       status: CourseStatus.PUBLISHED
     };
 

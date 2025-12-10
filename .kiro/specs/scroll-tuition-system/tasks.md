@@ -26,10 +26,10 @@
   - Write unit tests for pricing calculations with various global locations
   - _Requirements: 1.3, 3.2, 3.3, 3.4_
 
-- [ ] 3.2 Build ScrollCoin discount and work-trade credit system
-  - Implement ScrollCoin balance integration and discount calculations
+- [ ] 3.2 Build ScrollGold discount and work-trade credit system
+  - Implement ScrollGold balance integration and discount calculations
   - Create work-trade credit calculation logic for different work types
-  - Write validation for ScrollCoin-to-fiat conversion rates
+  - Write validation for ScrollGold-to-fiat conversion rates
   - _Requirements: 2.1, 2.2, 2.4, 4.4_
 
 - [ ] 3.3 Create scholarship eligibility and pricing logic
@@ -45,9 +45,9 @@
   - Create payment method validation and routing logic
   - _Requirements: 4.1, 4.2_
 
-- [ ] 4.2 Implement ScrollCoin payment integration
-  - Create ScrollCoin wallet connection and transaction processing
-  - Build ScrollCoin balance verification and payment deduction
+- [ ] 4.2 Implement ScrollGold payment integration
+  - Create ScrollGold wallet connection and transaction processing
+  - Build ScrollGold balance verification and payment deduction
   - Implement transaction logging and confirmation system
   - _Requirements: 2.1, 2.2, 4.2_
 
@@ -82,9 +82,9 @@
   - Implement mentorship assignment and tracking system
   - _Requirements: 5.1, 5.2, 5.4, 5.5_
 
-- [ ] 6. Build ScrollCoin earning and work-trade system
-- [ ] 6.1 Implement ScrollCoin earning mechanisms
-  - Create daily XP streak tracking and ScrollCoin rewards (+1 SC/day)
+- [ ] 6. Build ScrollGold earning and work-trade system
+- [ ] 6.1 Implement ScrollGold earning mechanisms
+  - Create daily XP streak tracking and ScrollGold rewards (+1 SC/day)
   - Build course completion detection and rewards (+10 SC)
   - Implement research publication rewards (+25 SC)
   - _Requirements: 2.2, 2.3_

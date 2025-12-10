@@ -28,14 +28,14 @@ The ScrollCritical Thinking & Innovation Engine is now operational - the core di
 - **+50 XP**: Build solutions that solve local needs
 - **+25 XP**: Propose and test new theories/models
 - **+20 XP**: Discern and correct GPT hallucinations
-- **Automatic ScrollCoin Conversion**: 10 XP = 1 ScrollCoin for tuition/rewards
+- **Automatic ScrollGold Conversion**: 10 XP = 1 ScrollGold for tuition/rewards
 
 ### **🌍 4. Weekly Innovation Challenges (ScrollLabs)**
 - **ScrollPrompt System**: Weekly problems like "Design AI to interpret dreams ethically"
 - **Global Team Formation**: Students grouped across nations for maximum diversity
 - **Build Phase Management**: Week-long innovation cycles with mentor support
 - **ScrollGallery Publishing**: Best works showcased on ScrollYouTube and public platforms
-- **Real ScrollCoin Rewards**: Tangible currency for innovation excellence
+- **Real ScrollGold Rewards**: Tangible currency for innovation excellence
 
 ### **🤖 5. Multi-Dimensional Learning Integration**
 - **ScrollMentorGPT**: 24/7 AI tutoring via chat, voice, image, scroll queries
@@ -71,7 +71,7 @@ ScrollCriticalThinkingEngine {
 ```
 
 ### **Database Integration:**
-- **ScrollXP Transactions**: Automatic tracking and ScrollCoin conversion
+- **ScrollXP Transactions**: Automatic tracking and ScrollGold conversion
 - **Critical Thinking Profiles**: Reasoning development and spiritual growth metrics
 - **Innovation Projects**: Complete pipeline from problem to publication
 - **Global Collaboration**: Cross-cultural team formation and management
@@ -99,7 +99,7 @@ ScrollCriticalThinkingEngine {
 ### **🏆 Reward-Driven Excellence:**
 - **Critical thinking becomes promotion path** (not punishment)
 - **ScrollXP rewards intellectual courage** and spiritual discernment
-- **ScrollCoin economy** funds education through kingdom service
+- **ScrollGold economy** funds education through kingdom service
 - **Global recognition** for innovation and transformation
 
 ---
@@ -110,7 +110,7 @@ ScrollCriticalThinkingEngine {
 Students can walk through the Edenic body, hear organs speak prophetically, and develop healing protocols that integrate spiritual and medical wisdom.
 
 ### **🌍 ScrollEconomics Innovation**
-Build real economy simulations with ScrollCoin, test kingdom principles against Babylonian systems, and develop policies for national transformation.
+Build real economy simulations with ScrollGold, test kingdom principles against Babylonian systems, and develop policies for national transformation.
 
 ### **🕊️ ScrollTheology Labs**
 Participate in prophetic livestreams where apostles unpack "the mystery of Melchizedek" while students ask real-time questions and receive revelation.
@@ -140,7 +140,7 @@ Interactive GPT sandbox where students test hallucinations, repair biased datase
 The ScrollCritical Thinking Engine is operational and ready to:
 1. **Process student reasoning submissions** with prophetic assessment
 2. **Generate weekly innovation challenges** that solve global problems
-3. **Award ScrollXP and ScrollCoin** for critical thinking excellence
+3. **Award ScrollXP and ScrollGold** for critical thinking excellence
 4. **Form global teams** for cross-cultural collaboration
 5. **Publish solutions** that demonstrate kingdom impact
 

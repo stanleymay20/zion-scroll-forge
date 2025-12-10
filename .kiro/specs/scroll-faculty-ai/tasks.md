@@ -37,7 +37,7 @@
 - [ ] 2.2 Build Immersive Educational Experiences
   - Create XR laboratory environments for hands-on learning in virtual spaces
   - Implement ScrollMedicine XR where students walk through the Edenic body and hear organs speak prophetically
-  - Build ScrollEconomics XR for real economy simulations with ScrollCoin and GPT dashboards
+  - Build ScrollEconomics XR for real economy simulations with ScrollGold and GPT dashboards
   - Create ScrollTheology XR experiences for exploring biblical locations and prophetic visions
   - Implement safety protocols and user comfort measures for extended XR learning sessions
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
@@ -88,14 +88,14 @@
   - Create weekly innovation challenges such as designing national AI policies for healthcare
   - Implement food insecurity detection system building using real-time data and AI
   - Build healing protocol development labs for specific diseases and conditions
-  - Create economic simulation challenges using ScrollCoin and real market data
+  - Create economic simulation challenges using ScrollGold and real market data
   - Implement legal framework development for emerging technology governance
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
 - [ ] 4.3 Create Real-World Application Development
   - Build mobile app development labs for ministry and kingdom applications
   - Implement research paper generation and publication system
-  - Create business plan development with ScrollCoin integration
+  - Create business plan development with ScrollGold integration
   - Build legal memo and policy document creation tools
   - Implement ministry tool development for churches and missions
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_

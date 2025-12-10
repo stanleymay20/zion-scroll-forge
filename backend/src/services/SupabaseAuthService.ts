@@ -119,7 +119,7 @@ export class SupabaseAuthService {
           role: 'STUDENT',
           enrollmentStatus: 'ACTIVE',
           academicLevel: 'SCROLL_OPEN',
-          scrollCoinBalance: 10.0,
+          ScrollGoldBalance: 10.0,
           scrollAlignment: 0.1,
           supabaseUserId: authData.user.id
         },
@@ -130,15 +130,15 @@ export class SupabaseAuthService {
           firstName: true,
           lastName: true,
           role: true,
-          scrollCoinBalance: true,
+          ScrollGoldBalance: true,
           scrollAlignment: true,
           supabaseUserId: true,
           createdAt: true
         }
       });
 
-      // Award welcome ScrollCoin
-      await prisma.scrollCoinTransaction.create({
+      // Award welcome ScrollGold
+      await prisma.ScrollGoldTransaction.create({
         data: {
           userId: user.id,
           amount: 10.0,
@@ -208,7 +208,7 @@ export class SupabaseAuthService {
           lastName: true,
           role: true,
           enrollmentStatus: true,
-          scrollCoinBalance: true,
+          ScrollGoldBalance: true,
           scrollAlignment: true,
           supabaseUserId: true,
           lastLoginAt: true
@@ -379,14 +379,14 @@ export class SupabaseAuthService {
             role: 'STUDENT',
             enrollmentStatus: 'ACTIVE',
             academicLevel: 'SCROLL_OPEN',
-            scrollCoinBalance: 10.0,
+            ScrollGoldBalance: 10.0,
             scrollAlignment: 0.1,
             supabaseUserId: authData.user.id
           }
         });
 
         // Award welcome bonus
-        await prisma.scrollCoinTransaction.create({
+        await prisma.ScrollGoldTransaction.create({
           data: {
             userId: user.id,
             amount: 10.0,

@@ -17,7 +17,7 @@ interface UserStats {
   completedCourses: number;
   inProgressCourses: number;
   totalScrollXP: number;
-  scrollCoinBalance: number;
+  ScrollGoldBalance: number;
   spiritualMaturityLevel: string;
   recentAchievements: any[];
 }
@@ -205,8 +205,8 @@ const UserDashboard: React.FC = () => {
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600">ScrollCoin</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.scrollCoinBalance}</p>
+                <p className="text-sm font-medium text-gray-600">ScrollGold</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.ScrollGoldBalance}</p>
               </div>
               <Coins className="w-8 h-8 text-yellow-600" />
             </div>
@@ -337,7 +337,7 @@ const UserDashboard: React.FC = () => {
                 <div className="flex items-center space-x-3">
                   <Coins className="w-5 h-5 text-yellow-600" />
                   <div>
-                    <p className="text-sm font-medium text-gray-900">ScrollCoin Wallet</p>
+                    <p className="text-sm font-medium text-gray-900">ScrollGold Wallet</p>
                     <p className="text-xs text-gray-600">Manage your divine currency</p>
                   </div>
                 </div>

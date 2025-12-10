@@ -57,7 +57,7 @@ export interface StudyPlan {
 export interface LearningGoal {
   id: string;
   user_id: string;
-  goal_type: 'course_completion' | 'mastery_level' | 'scrollcoin_earning' | 'study_time';
+  goal_type: 'course_completion' | 'mastery_level' | 'scrollgold_earning' | 'study_time';
   target_value: number;
   current_value: number;
   deadline?: string;

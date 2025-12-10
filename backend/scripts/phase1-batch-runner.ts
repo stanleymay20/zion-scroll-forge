@@ -25,7 +25,7 @@ const PHASE1_COURSES = [
   
   // SCROLLECON (5 courses)
   { code: 'SCROLLECON_101', title: 'Biblical Economics & Stewardship', faculty: 'SCROLLECON' },
-  { code: 'SCROLLECON_201', title: 'ScrollCoin & Digital Currency Systems', faculty: 'SCROLLECON' },
+  { code: 'SCROLLECON_201', title: 'ScrollGold & Digital Currency Systems', faculty: 'SCROLLECON' },
   { code: 'SCROLLECON_301', title: 'Entrepreneurship & Business as Ministry', faculty: 'SCROLLECON' },
   { code: 'SCROLLECON_401', title: 'Global Economics & Financial Reformation', faculty: 'SCROLLECON' },
   { code: 'SCROLLECON_501', title: 'Wealth Transfer & Kingdom Investment', faculty: 'SCROLLECON' },

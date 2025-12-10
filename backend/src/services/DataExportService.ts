@@ -241,7 +241,7 @@ export class DataExportService {
           where: { userId }
         });
 
-        data.scrollCoinTransactions = await prisma.scrollCoinTransaction.findMany({
+        data.ScrollGoldTransactions = await prisma.ScrollGoldTransaction.findMany({
           where: { userId }
         });
 
@@ -364,8 +364,8 @@ export class DataExportService {
           },
           {
             category: 'Financial Data',
-            description: 'Payment history and ScrollCoin transactions',
-            dataPoints: ['payments', 'scrollcoin transactions', 'scholarships'],
+            description: 'Payment history and ScrollGold transactions',
+            dataPoints: ['payments', 'ScrollGold transactions', 'scholarships'],
             sensitive: true
           }
         ],

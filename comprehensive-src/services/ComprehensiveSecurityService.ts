@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import { SecurityComplianceService } from './SecurityComplianceService';
 import { DataPrivacyComplianceService } from './DataPrivacyComplianceService';
 import { SpiritualContentFilterService } from './SpiritualContentFilterService';
-import { ScrollCoinFraudPreventionService } from './ScrollCoinFraudPreventionService';
+import { ScrollGoldFraudPreventionService } from './ScrollGoldFraudPreventionService';
 
 export interface SecurityConfiguration {
   threatDetection: {
@@ -123,7 +123,7 @@ export class ComprehensiveSecurityService extends EventEmitter {
   private securityService: SecurityComplianceService;
   private privacyService: DataPrivacyComplianceService;
   private contentService: SpiritualContentFilterService;
-  private fraudService: ScrollCoinFraudPreventionService;
+  private fraudService: ScrollGoldFraudPreventionService;
   
   private configuration: SecurityConfiguration;
   private incidents: Map<string, SecurityIncident> = new Map();
@@ -179,7 +179,7 @@ export class ComprehensiveSecurityService extends EventEmitter {
     this.securityService = new SecurityComplianceService();
     this.privacyService = new DataPrivacyComplianceService();
     this.contentService = new SpiritualContentFilterService();
-    this.fraudService = new ScrollCoinFraudPreventionService();
+    this.fraudService = new ScrollGoldFraudPreventionService();
   }
 
   private setupEventHandlers(): void {
@@ -514,10 +514,10 @@ export class ComprehensiveSecurityService extends EventEmitter {
         alert.severity,
         `Fraud Alert: ${alert.type}`,
         alert.description,
-        ['scrollcoin', 'transactions'],
+        ['ScrollGold', 'transactions'],
         {
           users: 1,
-          systems: ['scrollcoin'],
+          systems: ['ScrollGold'],
           dataTypes: ['financial']
         }
       );
@@ -642,7 +642,7 @@ export class ComprehensiveSecurityService extends EventEmitter {
     return this.contentService;
   }
 
-  getFraudService(): ScrollCoinFraudPreventionService {
+  getFraudService(): ScrollGoldFraudPreventionService {
     return this.fraudService;
   }
 

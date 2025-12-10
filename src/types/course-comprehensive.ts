@@ -3,7 +3,7 @@
  * Implements all mandatory course components as per steering rules:
  * - Modules, lectures, notes, videos, assessments
  * - Spiritual formation integration
- * - ScrollCoin rewards and XP tracking
+ * - ScrollGold rewards and XP tracking
  * - AI tutoring and mentorship
  */
 
@@ -97,7 +97,7 @@ export interface Assessment {
   passing_score: number;
   max_attempts: number;
   xp_reward: number;
-  scrollcoin_reward: number;
+  ScrollGold_reward: number;
   time_limit?: number; // in minutes
   required: boolean;
   spiritual_component?: SpiritualAssessmentComponent;
@@ -184,7 +184,7 @@ export interface ComprehensiveCourse {
   scroll_field: ScrollField;
   difficulty_level: DifficultyLevel;
   xp_multiplier: number;
-  scrollcoin_multiplier: number;
+  ScrollGold_multiplier: number;
   
   // Course Structure
   modules: CourseModule[];
@@ -242,7 +242,7 @@ export interface MilestoneReward {
   milestone_id: string;
   percentage: number; // 25, 50, 75, 100
   xp_reward: number;
-  scrollcoin_reward: number;
+  ScrollGold_reward: number;
   badge_unlock?: string;
   special_recognition?: string;
   spiritual_milestone?: string;
@@ -274,7 +274,7 @@ export interface StudentEnrollment {
   
   // XP and Rewards
   total_xp_earned: number;
-  total_scrollcoin_earned: number;
+  total_ScrollGold_earned: number;
   milestones_achieved: string[];
   badges_earned: string[];
   
@@ -432,7 +432,7 @@ export interface ProgressUpdateResponse {
   success: boolean;
   new_progress_percentage: number;
   xp_awarded: number;
-  scrollcoin_awarded: number;
+  ScrollGold_awarded: number;
   milestones_achieved: string[];
   badges_unlocked: string[];
   spiritual_growth_update?: SpiritualGrowthMetrics;
@@ -445,7 +445,7 @@ export interface CourseIntegrationConfig {
   project_spec_integration: boolean;
   xp_tracker_sync: boolean;
   audit_trail_logging: boolean;
-  scrollcoin_rewards_enabled: boolean;
+  ScrollGold_rewards_enabled: boolean;
   ai_tutoring_enabled: boolean;
   spiritual_formation_tracking: boolean;
   mentor_assignment_automation: boolean;

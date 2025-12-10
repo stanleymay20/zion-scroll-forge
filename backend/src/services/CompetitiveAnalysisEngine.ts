@@ -189,7 +189,7 @@ export class CompetitiveAnalysisEngine {
       const technicalAdvantages: TechnicalAdvantages = {
         uniqueFeatures: [
           'Prophetic Intelligence AI',
-          'ScrollCoin economy',
+          'ScrollGold economy',
           'ScrollBadge NFT credentials',
           'Spiritual formation tracking',
           'Prayer integration',

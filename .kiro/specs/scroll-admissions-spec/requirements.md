@@ -67,7 +67,7 @@ The ScrollAdmissionsSpec creates a comprehensive admissions system that goes bey
 1. WHEN financial assessment occurs THEN the system SHALL evaluate family income, financial need, and ability to fund education
 2. WHEN scholarship eligibility is determined THEN the system SHALL assess merit, need, and kingdom calling for scholarship awards
 3. WHEN financial planning is provided THEN the system SHALL help families understand costs and develop funding strategies
-4. WHEN ScrollCoin opportunities are presented THEN the system SHALL explain how students can earn coins through learning and achievement
+4. WHEN ScrollGold opportunities are presented THEN the system SHALL explain how students can earn coins through learning and achievement
 5. WHEN financial barriers are identified THEN the system SHALL provide alternative funding options and payment plans
 6. WHEN financial stewardship is assessed THEN the system SHALL evaluate responsible money management and kingdom financial principles
 

@@ -1,22 +1,39 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15-alpine
-    container_name: scrolluniversity-test-db
-    environment:
-      POSTGRES_USER: scrolluser
-      POSTGRES_PASSWORD: scrollpass
-      POSTGRES_DB: scrolluniversity
+  redis-test:
+    image: redis:7-alpine
+    container_name: scrolluniversity-redis-test
     ports:
-      - "5432:5432"
+      - "6380:6379"
+    command: redis-server --appendonly yes
     volumes:
-      - postgres_test_data:/var/lib/postgresql/data
+      - redis-test-data:/data
+    environment:
+      - REDIS_PASSWORD=
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U scrolluser -d scrolluniversity"]
-      interval: 5s
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-test:
+    image: postgres:15-alpine
+    container_name: scrolluniversity-postgres-test
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_DB: zion_scroll_test
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: test_password
+    volumes:
+      - postgres-test-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U test_user -d zion_scroll_test"]
+      interval: 10s
       timeout: 5s
       retries: 5
 
 volumes:
-  postgres_test_data:
+  redis-test-data:
+  postgres-test-data:

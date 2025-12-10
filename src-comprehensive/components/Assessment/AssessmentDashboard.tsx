@@ -117,7 +117,7 @@ export const AssessmentDashboard: React.FC<AssessmentDashboardProps> = ({
           prayer_requests: ['Wisdom in calling', 'Cultural sensitivity']
         },
         overall_grade: 'A-',
-        scroll_coin_earned: 75,
+        scroll_gold_earned: 75,
         areas_for_growth: ['Cultural sensitivity', 'Leadership skills'],
         strengths_identified: ['Biblical knowledge', 'Technical aptitude'],
         next_steps: ['Advanced leadership course', 'Cross-cultural experience'],
@@ -214,7 +214,7 @@ export const AssessmentDashboard: React.FC<AssessmentDashboardProps> = ({
                 <div>
                   <h4 className="font-medium text-gray-800">Assessment #{result.id}</h4>
                   <p className="text-sm text-gray-600">Overall Grade: {result.overall_grade}</p>
-                  <p className="text-sm text-gray-600">ScrollCoin Earned: {result.scroll_coin_earned}</p>
+                  <p className="text-sm text-gray-600">ScrollGold Earned: {result.scroll_gold_earned}</p>
                 </div>
                 <div className="text-right">
                   <p className="text-sm text-gray-500">Academic: {result.academic_score}%</p>

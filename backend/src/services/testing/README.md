@@ -41,7 +41,7 @@ Validates connections with university systems:
 - Student Profile System integration
 - Assessment Engine integration
 - University Portal integration
-- ScrollCoin system integration
+- ScrollGold system integration
 - Prayer integration system
 - Audit Trail system integration
 

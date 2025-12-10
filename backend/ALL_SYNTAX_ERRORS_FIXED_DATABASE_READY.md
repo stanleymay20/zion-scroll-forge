@@ -32,7 +32,7 @@ postgresql://scrolluser:scrollpass@localhost:5432/scrolluniversity
 
 The Prisma schema has duplicate models that need to be cleaned up before migrations can run:
 
-- Duplicate `ScrollCoinTransaction` model
+- Duplicate `ScrollGoldTransaction` model
 - Duplicate `LectureType` enum
 - Duplicate `Scholarship` model
 - Duplicate `ScholarshipApplication` model

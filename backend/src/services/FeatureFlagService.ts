@@ -48,9 +48,9 @@ export class FeatureFlagService {
         environment: ['production']
       },
       {
-        id: 'scrollcoin-rewards',
-        name: 'ScrollCoin Rewards',
-        description: 'Enable ScrollCoin earning and spending',
+        id: 'ScrollGold-rewards',
+        name: 'ScrollGold Rewards',
+        description: 'Enable ScrollGold earning and spending',
         enabled: true,
         rolloutPercentage: 100,
         environment: ['production', 'staging']

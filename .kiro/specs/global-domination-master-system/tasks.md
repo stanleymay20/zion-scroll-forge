@@ -357,12 +357,12 @@ This implementation plan breaks down the Global Domination Master System into ph
 
 ---
 
-## Phase 7: ScrollCoin Governance DAO (Months 22-25)
+## Phase 7: ScrollGold Governance DAO (Months 22-25)
 
 ### 7. SGDAO Implementation
 
 - [ ] 7.1 Develop smart contracts
-  - Create ERC-20 ScrollCoin token with governance
+  - Create ERC-20 ScrollGold token with governance
   - Implement proposal creation and voting mechanisms
   - Build quadratic voting to prevent whale dominance
   - Set up treasury management and fund allocation

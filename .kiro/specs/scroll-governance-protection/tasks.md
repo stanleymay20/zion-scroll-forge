@@ -173,7 +173,7 @@
     - Build Year 3 GPT Agents Re-Training and Verification system
     - Create Year 4 ScrollDefense Prophet Simulation and intensive spiritual testing
     - Implement Year 5 Student ScrollCompetence Reviews and formation assessment
-    - Build Year 6 Financial and Ethical Audit including ScrollCoin system verification
+    - Build Year 6 Financial and Ethical Audit including ScrollGold system verification
     - Write integration tests for all year-specific implementations
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 7.5, 7.6_
 
@@ -220,7 +220,7 @@
     - _Requirements: 9.1, 9.2_
 
   - [ ] 10.2 Build financial independence and donor resistance
-    - Create ScrollCoin economy integration for self-sustaining financial model
+    - Create ScrollGold economy integration for self-sustaining financial model
     - Implement automatic rejection of donor influence on spiritual matters
     - Build prophetic authority protection from financial pressure
     - Create transparent financial accountability within covenant framework

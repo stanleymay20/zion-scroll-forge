@@ -142,7 +142,7 @@ export interface PrivacySettings {
   // Activity Visibility
   showCourseProgress: boolean;
   showAchievements: boolean;
-  showScrollCoinBalance: boolean;
+  showScrollGoldBalance: boolean;
   showSpiritualGrowth: boolean;
   
   // Communication

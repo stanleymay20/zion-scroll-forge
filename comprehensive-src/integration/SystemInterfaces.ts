@@ -10,7 +10,7 @@ import {
   SpiritualProfile, 
   AcademicProfile, 
   Course, 
-  ScrollCoinAccount, 
+  ScrollGoldAccount, 
   Assessment, 
   ScrollProject, 
   PrayerRequest, 
@@ -197,7 +197,7 @@ export interface ScrollCourseInterface {
     subscribes: [
       'user.created',
       'payment.completed',
-      'scrollcoin.earned',
+      'ScrollGold.earned',
       'assessment.passed',
       'spiritual.milestone'
     ];
@@ -207,40 +207,40 @@ export interface ScrollCourseInterface {
 }
 
 // ============================================================================
-// SCROLLCOIN ECONOMY SYSTEM
+// ScrollGold ECONOMY SYSTEM
 // ============================================================================
 
-export interface ScrollCoinMeterInterface {
-  name: 'scroll-scrollcoin-meter';
+export interface ScrollGoldMeterInterface {
+  name: 'scroll-ScrollGold-meter';
   version: 'v1';
   
   endpoints: {
     getBalance: {
       method: 'GET';
-      path: '/api/scrollcoin/{userId}/balance';
-      description: 'Get user ScrollCoin balance';
-      response: APIResponse<ScrollCoinAccount>;
+      path: '/api/ScrollGold/{userId}/balance';
+      description: 'Get user ScrollGold balance';
+      response: APIResponse<ScrollGoldAccount>;
     };
     
     transfer: {
       method: 'POST';
-      path: '/api/scrollcoin/transfer';
-      description: 'Transfer ScrollCoin between users';
+      path: '/api/ScrollGold/transfer';
+      description: 'Transfer ScrollGold between users';
       request: { fromUserId: string; toUserId: string; amount: number; reason: string; };
       response: APIResponse<{ transactionId: string; success: boolean; }>;
     };
     
     earn: {
       method: 'POST';
-      path: '/api/scrollcoin/earn';
-      description: 'Award ScrollCoin for achievements';
+      path: '/api/ScrollGold/earn';
+      description: 'Award ScrollGold for achievements';
       request: { userId: string; amount: number; category: string; metadata: any; };
       response: APIResponse<{ transactionId: string; newBalance: number; }>;
     };
     
     getTransactions: {
       method: 'GET';
-      path: '/api/scrollcoin/{userId}/transactions';
+      path: '/api/ScrollGold/{userId}/transactions';
       description: 'Get transaction history';
       response: APIResponse<PaginatedResponse<any>>;
     };
@@ -248,9 +248,9 @@ export interface ScrollCoinMeterInterface {
   
   events: {
     publishes: [
-      'scrollcoin.earned',
-      'scrollcoin.spent',
-      'scrollcoin.transferred',
+      'ScrollGold.earned',
+      'ScrollGold.spent',
+      'ScrollGold.transferred',
       'wallet.created',
       'transaction.completed',
       'fraud.detected'
@@ -434,7 +434,7 @@ export interface ScrollProjectsInterface {
       'course.enrolled',
       'mentor.assigned',
       'assessment.passed',
-      'scrollcoin.earned'
+      'ScrollGold.earned'
     ];
   };
   
@@ -667,7 +667,7 @@ export const SCROLL_UNIVERSITY_SYSTEM_INTERFACES = {
   'scroll-university-platform': {} as ScrollUniversityPlatformInterface,
   'scroll-student-profile-spec': {} as ScrollStudentProfileInterface,
   'scroll-course-spec': {} as ScrollCourseInterface,
-  'scroll-scrollcoin-meter': {} as ScrollCoinMeterInterface,
+  'scroll-ScrollGold-meter': {} as ScrollGoldMeterInterface,
   'scroll-faculty-ai': {} as ScrollFacultyAIInterface,
   'scroll-assessment-engine': {} as ScrollAssessmentEngineInterface,
   'scroll-projects-spec': {} as ScrollProjectsInterface,

@@ -114,7 +114,7 @@ export enum PaymentMethod {
   CASH = 'cash',
   STOCK = 'stock',
   CRYPTOCURRENCY = 'cryptocurrency',
-  SCROLLCOIN = 'scrollcoin'
+  scrollgold = 'scrollgold'
 }
 
 export enum RecurringFrequency {

@@ -442,11 +442,11 @@ export class ComprehensiveCourseService {
   // Integration Methods
 
   /**
-   * Sync with ScrollCoin system for rewards
+   * Sync with ScrollGold system for rewards
    */
-  async syncScrollCoinRewards(studentId: string, courseId: string): Promise<void> {
+  async syncScrollGoldRewards(studentId: string, courseId: string): Promise<void> {
     try {
-      const response = await fetch(`${this.baseUrl}/api/scrollcoin/sync`, {
+      const response = await fetch(`${this.baseUrl}/api/ScrollGold/sync`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -460,10 +460,10 @@ export class ComprehensiveCourseService {
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to sync ScrollCoin rewards: ${response.statusText}`);
+        throw new Error(`Failed to sync ScrollGold rewards: ${response.statusText}`);
       }
     } catch (error) {
-      console.error('Error syncing ScrollCoin rewards:', error);
+      console.error('Error syncing ScrollGold rewards:', error);
       throw error;
     }
   }
@@ -557,28 +557,28 @@ export class ComprehensiveCourseService {
         milestone_id: 'milestone-25',
         percentage: 25,
         xp_reward: 100,
-        scrollcoin_reward: 50,
+        ScrollGold_reward: 50,
         spiritual_milestone: 'Foundation Established'
       },
       {
         milestone_id: 'milestone-50',
         percentage: 50,
         xp_reward: 200,
-        scrollcoin_reward: 100,
+        ScrollGold_reward: 100,
         spiritual_milestone: 'Growth Evident'
       },
       {
         milestone_id: 'milestone-75',
         percentage: 75,
         xp_reward: 300,
-        scrollcoin_reward: 150,
+        ScrollGold_reward: 150,
         spiritual_milestone: 'Maturity Developing'
       },
       {
         milestone_id: 'milestone-100',
         percentage: 100,
         xp_reward: 500,
-        scrollcoin_reward: 250,
+        ScrollGold_reward: 250,
         badge_unlock: 'Course Completion Badge',
         spiritual_milestone: 'Transformation Complete'
       }

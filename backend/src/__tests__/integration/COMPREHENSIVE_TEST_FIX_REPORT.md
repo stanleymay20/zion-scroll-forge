@@ -66,7 +66,7 @@ const student = await prisma.user.create({
 - `lastName` (required)
 - `enrollmentStatus` (required)
 - `academicLevel` (required)
-- `scrollCoinBalance` (required)
+- `scrollGoldBalance` (required)
 - `scrollAlignment` (required)
 
 **Fix Applied**:
@@ -82,7 +82,7 @@ const student = await prisma.user.create({
     role: 'STUDENT',
     enrollmentStatus: 'ACTIVE',
     academicLevel: 'SCROLL_OPEN',
-    scrollCoinBalance: 100.0,
+    scrollGoldBalance: 100.0,
     scrollAlignment: 0.5
   }
 });

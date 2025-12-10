@@ -145,7 +145,7 @@ router.post('/submit',
           prayerRequests: []
         },
         overallGrade: calculateOverallGrade(gradingResult.academicScore, gradingResult.spiritualScore),
-        scrollCoinEarned: calculateScrollCoinReward(gradingResult.academicScore, gradingResult.spiritualScore),
+        ScrollGoldEarned: calculateScrollGoldReward(gradingResult.academicScore, gradingResult.spiritualScore),
         areasForGrowth: gradingResult.aiFeedback.areas_for_improvement,
         strengthsIdentified: gradingResult.aiFeedback.strengths,
         nextSteps: gradingResult.aiFeedback.next_learning_steps,
@@ -579,7 +579,7 @@ function calculateOverallGrade(academicScore: number, spiritualScore: number): s
   return 'F';
 }
 
-function calculateScrollCoinReward(academicScore: number, spiritualScore: number): number {
+function calculateScrollGoldReward(academicScore: number, spiritualScore: number): number {
   const baseReward = 50;
   const bonusMultiplier = ((academicScore + spiritualScore) / 200);
   return Math.floor(baseReward * bonusMultiplier);

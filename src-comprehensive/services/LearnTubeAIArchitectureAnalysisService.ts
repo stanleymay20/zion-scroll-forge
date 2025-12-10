@@ -440,13 +440,13 @@ export class LearnTubeAIArchitectureAnalysisService {
               '31+ Systems vs 12 APIs: Comprehensive ecosystem vs Limited integrations',
               'Blockchain Integration vs Traditional APIs: Web3 vs Web2 only',
               'Spiritual Formation vs Skill Development: Holistic vs Narrow focus',
-              'Kingdom Economy vs Traditional Payment: ScrollCoin vs Standard billing'
+              'Kingdom Economy vs Traditional Payment: ScrollGold vs Standard billing'
             ],
             scrollUniversityAdvantages: [
               '31+ integrated systems create comprehensive educational ecosystem',
               'Blockchain integration enables Web3 capabilities and immutable credentials',
               'Spiritual formation systems provide holistic character development',
-              'ScrollCoin economy creates innovative value-based learning incentives'
+              'ScrollGold economy creates innovative value-based learning incentives'
             ],
             learnTubeAILimitations: [
               'Limited API ecosystem restricts integration possibilities',
@@ -628,7 +628,7 @@ export class LearnTubeAIArchitectureAnalysisService {
           basePrice: 29.99,
           valueBasedPricing: false,
           scholarshipAvailability: false,
-          scrollCoinIntegration: false,
+          ScrollGoldIntegration: false,
           spiritualEconomyAlignment: false
         },
         strengths: [

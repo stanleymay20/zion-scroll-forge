@@ -64,7 +64,7 @@ describe('Assessment and Evaluation System', () => {
         type: 'essay' as const,
         maxScore: 100,
         passingScore: 70,
-        scrollCoinReward: 75
+        scrollGoldReward: 75
       };
 
       const assessment = await assessmentService.createAcademicAssessment(framework.id, assessmentData);
@@ -74,7 +74,7 @@ describe('Assessment and Evaluation System', () => {
       expect(assessment.type).toBe('essay');
       expect(assessment.maxScore).toBe(100);
       expect(assessment.passingScore).toBe(70);
-      expect(assessment.scrollCoinReward).toBe(75);
+      expect(assessment.scrollGoldReward).toBe(75);
       expect(assessment.aiGradingConfig).toBeDefined();
       expect(assessment.rubric).toBeDefined();
     });
@@ -183,7 +183,7 @@ describe('Assessment and Evaluation System', () => {
       expect(result.ai_feedback.strengths).toBeDefined();
       expect(result.ai_feedback.areas_for_improvement).toBeDefined();
       expect(result.prophetic_insights).toBeDefined();
-      expect(result.scroll_coin_earned).toBeGreaterThan(0);
+      expect(result.scroll_gold_earned).toBeGreaterThan(0);
       expect(result.kingdom_impact_potential).toBeGreaterThan(0);
     });
 

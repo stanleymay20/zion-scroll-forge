@@ -35,7 +35,7 @@ The Zion-Scroll-FORGE AppSystem foundation has been successfully established wit
   - AI tutor sessions
   - Notifications
 - ✅ Row Level Security (RLS) policies for all tables
-- ✅ Database functions (ScrollCoin, progress tracking, notifications)
+- ✅ Database functions (ScrollGold, progress tracking, notifications)
 - ✅ Triggers for automatic timestamp updates
 - ✅ Indexes for performance optimization
 
@@ -135,7 +135,7 @@ The Zion-Scroll-FORGE AppSystem foundation has been successfully established wit
 
 ### Important Features (Should Have)
 
-#### 6. ScrollCoin Blockchain Integration
+#### 6. ScrollGold Blockchain Integration
 **Estimated Time**: 5-7 days
 - Smart contract development and deployment
 - Token minting/burning
@@ -221,7 +221,7 @@ The Zion-Scroll-FORGE AppSystem foundation has been successfully established wit
 
 ### Week 5-6: Payments & Economy
 9. Stripe payment integration
-10. ScrollCoin blockchain (testnet)
+10. ScrollGold blockchain (testnet)
 11. ScrollBadge NFT system (testnet)
 12. Scholarship management
 
@@ -336,7 +336,7 @@ The Zion-Scroll-FORGE AppSystem foundation has been successfully established wit
 
 ### Medium Term (Next Month)
 11. Deploy to production
-12. Implement ScrollCoin blockchain
+12. Implement ScrollGold blockchain
 13. Build ScrollBadge NFT system
 14. Complete spiritual formation modules
 15. Launch beta program
@@ -412,7 +412,7 @@ The Zion-Scroll-FORGE AppSystem foundation has been successfully established wit
 ### Production Launch
 - [ ] 50+ courses across all faculties
 - [ ] 1000+ active students
-- [ ] ScrollCoin economy operational
+- [ ] ScrollGold economy operational
 - [ ] ScrollBadge NFTs issued
 - [ ] Mobile app launched
 - [ ] 99.9% uptime SLA

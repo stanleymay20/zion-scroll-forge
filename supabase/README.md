@@ -94,7 +94,7 @@ The complete production schema includes:
 
 - **User Management**: Extended user profiles with roles and permissions
 - **Course System**: Courses, enrollments, assignments, and submissions
-- **Payment System**: Payments and ScrollCoin transactions
+- **Payment System**: Payments and ScrollGold transactions
 - **Credentials**: Certifications and ScrollBadge NFTs
 - **Research**: Academic research papers
 - **Admissions**: Application processing system
@@ -114,7 +114,7 @@ All tables have RLS policies that enforce:
 Core business logic functions:
 - `enroll_in_course()` - Enroll students with payment processing
 - `grade_submission()` - Grade assignments and award XP
-- `complete_course()` - Complete courses and award ScrollCoin
+- `complete_course()` - Complete courses and award ScrollGold
 - `process_payment()` - Process payments with multiple methods
 - `get_course_progress()` - Get detailed course progress
 - `search_courses()` - Search courses with filters
@@ -137,7 +137,7 @@ Realtime subscriptions enabled for:
 - `enrollments` - Course progress updates
 - `submissions` - Grading updates
 - `ai_tutor_sessions` - Live AI tutor sessions
-- `scrollcoin_transactions` - Balance updates
+- `ScrollGold_transactions` - Balance updates
 
 ## Testing
 

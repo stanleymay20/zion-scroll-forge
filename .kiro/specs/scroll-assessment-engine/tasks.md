@@ -91,7 +91,7 @@
 - [ ] 11. Create ScrollUniversity ecosystem integration system
   - Implement SystemIntegrationService for seamless connection with all ScrollUniversity components
   - Build data synchronization with course-spec, student-profile-spec, and degree-engine systems
-  - Create real-time integration with gamified-learning, scrollcoin-meter, and transcript-generator
+  - Create real-time integration with gamified-learning, scrollgold-meter, and transcript-generator
   - Add comprehensive API for external system communication and assessment data exchange
   - Implement audit trail integration for complete assessment activity logging and accountability
   - Write extensive integration tests for cross-system data consistency and synchronization accuracy

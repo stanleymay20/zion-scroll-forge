@@ -382,8 +382,8 @@ export class AnalyticsDashboardService {
       const subscriptionPayments = payments.filter(p => p.type === 'SUBSCRIPTION');
       const oneTimePayments = payments.filter(p => p.type === 'ONE_TIME');
 
-      // ScrollCoin metrics
-      const scrollCoinTransactions = await prisma.scrollCoinTransaction.findMany({
+      // ScrollGold metrics
+      const ScrollGoldTransactions = await prisma.ScrollGoldTransaction.findMany({
         where: {
           createdAt: {
             gte: timeRange.startDate,
@@ -392,11 +392,11 @@ export class AnalyticsDashboardService {
         },
       });
 
-      const totalMinted = scrollCoinTransactions
+      const totalMinted = ScrollGoldTransactions
         .filter(t => t.type === 'MINT')
         .reduce((sum, t) => sum + Number(t.amount), 0);
 
-      const totalBurned = scrollCoinTransactions
+      const totalBurned = ScrollGoldTransactions
         .filter(t => t.type === 'BURN')
         .reduce((sum, t) => sum + Number(t.amount), 0);
 
@@ -437,12 +437,12 @@ export class AnalyticsDashboardService {
           subscriptionRevenue: subscriptionPayments.reduce((sum, p) => sum + Number(p.amount), 0),
           oneTimePayments: oneTimePayments.reduce((sum, p) => sum + Number(p.amount), 0),
         },
-        scrollCoinMetrics: {
+        ScrollGoldMetrics: {
           totalMinted,
           totalBurned,
           circulatingSupply: totalMinted - totalBurned,
           averageBalance: 0, // TODO: Calculate
-          transactionVolume: scrollCoinTransactions.length,
+          transactionVolume: ScrollGoldTransactions.length,
         },
         scholarshipMetrics: {
           totalAwarded: totalDisbursed,

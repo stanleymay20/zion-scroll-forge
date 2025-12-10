@@ -22,7 +22,7 @@ interface LaunchMetrics {
   coursesLaunched: number;
   globalReach: number;
   partnershipsActive: number;
-  scrollCoinsAwarded: number;
+  ScrollGoldsAwarded: number;
   nationsImpacted: number;
 }
 
@@ -42,7 +42,7 @@ export const LaunchDashboard: React.FC = () => {
     coursesLaunched: 3,
     globalReach: 0,
     partnershipsActive: 0,
-    scrollCoinsAwarded: 0,
+    ScrollGoldsAwarded: 0,
     nationsImpacted: 0
   });
   const [launchStatus, setLaunchStatus] = useState<LaunchStatus>({
@@ -226,8 +226,8 @@ export const LaunchDashboard: React.FC = () => {
             <div className="flex items-center mb-2">
               <Zap className="w-8 h-8 text-orange-400 mr-3" />
               <div>
-                <p className="text-2xl font-bold text-white">{launchMetrics.scrollCoinsAwarded.toLocaleString()}</p>
-                <p className="text-sm text-gray-300">ScrollCoins Awarded</p>
+                <p className="text-2xl font-bold text-white">{launchMetrics.ScrollGoldsAwarded.toLocaleString()}</p>
+                <p className="text-sm text-gray-300">ScrollGolds Awarded</p>
               </div>
             </div>
           </div>
@@ -252,7 +252,7 @@ export const LaunchDashboard: React.FC = () => {
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-xl font-bold text-white">{course.title}</h3>
                   <span className="bg-yellow-500 text-black px-2 py-1 rounded-full text-sm font-semibold">
-                    {course.scrollCoins} ScrollCoins
+                    {course.ScrollGolds} ScrollGolds
                   </span>
                 </div>
                 <p className="text-gray-300 mb-4">{course.description}</p>

@@ -290,7 +290,7 @@ class UserManagementService {
         stats: {
           coursesEnrolled: 0,
           coursesCompleted: 0,
-          scrollCoins: 0,
+          scrollGolds: 0,
           scrollBadges: 0,
         },
         recentActivity: [],

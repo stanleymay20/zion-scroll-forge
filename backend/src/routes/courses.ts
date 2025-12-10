@@ -51,7 +51,7 @@ router.get('/', async (req, res) => {
       difficulty: req.query.difficulty as any,
       minDuration: req.query.minDuration ? parseInt(req.query.minDuration as string) : undefined,
       maxDuration: req.query.maxDuration ? parseInt(req.query.maxDuration as string) : undefined,
-      maxScrollCoinCost: req.query.maxScrollCoinCost ? parseFloat(req.query.maxScrollCoinCost as string) : undefined,
+      maxScrollGoldCost: req.query.maxScrollGoldCost ? parseFloat(req.query.maxScrollGoldCost as string) : undefined,
       isActive: req.query.isActive !== undefined ? req.query.isActive === 'true' : true,
       page: req.query.page ? parseInt(req.query.page as string) : 1,
       limit: req.query.limit ? parseInt(req.query.limit as string) : 20,

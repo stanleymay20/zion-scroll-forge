@@ -524,7 +524,7 @@ export default function CourseDetail() {
           id: course.id,
           title: course.title,
           price_cents: course.price_cents,
-          scrollCoinCost: course.scroll_coin_cost,
+          scrollGoldCost: course.scroll_gold_cost,
           scholarshipEligible: course.scholarship_eligible,
         }}
         isOpen={showEnrollmentFlow}

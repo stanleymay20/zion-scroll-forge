@@ -30,7 +30,7 @@ async function testCourseManagement() {
       difficulty: Difficulty.BEGINNER,
       duration: 40,
       scrollXPReward: 100,
-      scrollCoinCost: 50,
+      ScrollGoldCost: 50,
       facultyId: 'test-faculty-id'
     };
     console.log('   📝 Course input validated:');
@@ -38,7 +38,7 @@ async function testCourseManagement() {
     console.log(`      Difficulty: ${courseInput.difficulty}`);
     console.log(`      Duration: ${courseInput.duration} hours`);
     console.log(`      ScrollXP Reward: ${courseInput.scrollXPReward}`);
-    console.log(`      ScrollCoin Cost: ${courseInput.scrollCoinCost}\n`);
+    console.log(`      ScrollGold Cost: ${courseInput.ScrollGoldCost}\n`);
 
     // Test 3: Enrollment interface
     console.log('3️⃣ Testing enrollment interface...');

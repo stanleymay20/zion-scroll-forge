@@ -32,7 +32,7 @@ export class BlockchainService {
   }
 
   /**
-   * Record a ScrollCoin transaction on the blockchain
+   * Record a ScrollGold transaction on the blockchain
    */
   async recordTransaction(
     fromAddress: string,

@@ -97,7 +97,7 @@ async function demonstrateTestingFramework(): Promise<void> {
       'student-profile-integration',
       'assessment-engine-integration',
       'university-portal-integration',
-      'scrollcoin-integration',
+      'ScrollGold-integration',
       'prayer-integration',
       'audit-trail-integration'
     ];
@@ -200,7 +200,7 @@ async function demonstrateTestingFramework(): Promise<void> {
     console.log('   📚 Student Profile System');
     console.log('   🎯 Assessment Engine');
     console.log('   🌐 University Portal');
-    console.log('   🪙 ScrollCoin System');
+    console.log('   🪙 ScrollGold System');
     console.log('   🙏 Prayer Integration');
     console.log('   📋 Audit Trail System');
     console.log('');

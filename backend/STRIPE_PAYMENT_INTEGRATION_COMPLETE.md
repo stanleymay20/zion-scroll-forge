@@ -58,7 +58,7 @@ All routes are protected with authentication middleware and include proper valid
 
 The service integrates with existing Prisma models:
 - **Payment model**: Stores payment records with Stripe payment intent IDs
-- **User model**: Stores Stripe customer IDs (using scrollCoinWallet field temporarily)
+- **User model**: Stores Stripe customer IDs (using ScrollGoldWallet field temporarily)
 - Automatic status updates on webhook events (PENDING → COMPLETED/FAILED/REFUNDED)
 
 ### 4. Webhook Event Handling
@@ -121,8 +121,8 @@ STRIPE_ANNUAL_PRICE_ID=price_annual (optional)
 ✅ **Requirement 6.1**: WHEN a student selects a payment method THEN the System SHALL integrate with Stripe for credit card processing
 - Implemented via `createPaymentIntent` with automatic payment methods
 
-✅ **Requirement 6.2**: WHEN a student pays with ScrollCoin THEN the System SHALL deduct the amount from their wallet and grant access immediately
-- Payment system ready for ScrollCoin integration (separate task)
+✅ **Requirement 6.2**: WHEN a student pays with ScrollGold THEN the System SHALL deduct the amount from their wallet and grant access immediately
+- Payment system ready for ScrollGold integration (separate task)
 
 ✅ **Requirement 6.4**: WHEN a payment fails THEN the System SHALL retry automatically and notify the student with clear instructions
 - Webhook handling for failed payments with notification hooks
@@ -137,7 +137,7 @@ STRIPE_ANNUAL_PRICE_ID=price_annual (optional)
 
 ### Future Integrations
 1. **Email Service**: TODO hooks for payment confirmation emails
-2. **ScrollCoin Service**: Ready for hybrid payment integration
+2. **ScrollGold Service**: Ready for hybrid payment integration
 3. **Course Access**: TODO hooks for automatic course enrollment on payment
 4. **Notification Service**: TODO hooks for payment status notifications
 
@@ -249,7 +249,7 @@ All payment operations are logged with:
 
 1. Implement email notifications for payment events
 2. Add automatic course access grant on successful payment
-3. Integrate with ScrollCoin for hybrid payments
+3. Integrate with ScrollGold for hybrid payments
 4. Build frontend payment UI components
 5. Add payment analytics dashboard
 6. Implement subscription management UI

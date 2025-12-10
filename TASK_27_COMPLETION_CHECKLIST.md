@@ -78,7 +78,7 @@
 - [x] Full name display
 - [x] Email display
 - [x] Role badge
-- [x] ScrollCoin balance
+- [x] ScrollGold balance
 - [x] Profile link
 - [x] Transcript link
 - [x] Wallet link
@@ -230,7 +230,7 @@
 - [x] useDashboard hook
 - [x] useUserEnrollments hook
 - [x] useProfile hook
-- [x] useScrollCoin hook
+- [x] useScrollGold hook
 - [x] useNotifications hook
 - [x] React Query caching
 - [x] Error handling
@@ -240,7 +240,7 @@
 - [x] Supabase subscriptions
 - [x] Notification delivery
 - [x] Course progress updates
-- [x] ScrollCoin balance updates
+- [x] ScrollGold balance updates
 - [x] Optimistic updates
 
 ### Routing ✅

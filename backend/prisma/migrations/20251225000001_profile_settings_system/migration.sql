@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS "PrivacySettings" (
     "showDateOfBirth" BOOLEAN NOT NULL DEFAULT false,
     "showCourseProgress" BOOLEAN NOT NULL DEFAULT true,
     "showAchievements" BOOLEAN NOT NULL DEFAULT true,
-    "showScrollCoinBalance" BOOLEAN NOT NULL DEFAULT false,
+    "showScrollGoldBalance" BOOLEAN NOT NULL DEFAULT false,
     "showSpiritualGrowth" BOOLEAN NOT NULL DEFAULT true,
     "allowMessagesFrom" TEXT NOT NULL DEFAULT 'everyone',
     "allowFriendRequests" BOOLEAN NOT NULL DEFAULT true,

@@ -52,7 +52,7 @@ The ScrollCritical Thinking & Innovation Engine represents the revolutionary cor
 2. WHEN team debates occur THEN the system SHALL group students across nations to refine ideas through cross-cultural collaboration and diverse perspectives
 3. WHEN build phase begins THEN the system SHALL provide tools and resources for students to deploy agents, apps, or white papers within the week timeframe
 4. WHEN public sharing happens THEN the system SHALL showcase best works on ScrollGallery and ScrollYouTube with proper attribution and impact metrics
-5. WHEN ScrollCoin awards are distributed THEN the system SHALL provide real currency rewards for innovation that can be used for tuition or other benefits
+5. WHEN ScrollGold awards are distributed THEN the system SHALL provide real currency rewards for innovation that can be used for tuition or other benefits
 
 ### Requirement 5: Spiritual and Mental Integration System
 

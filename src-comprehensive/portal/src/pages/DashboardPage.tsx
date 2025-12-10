@@ -61,7 +61,7 @@ export const DashboardPage: React.FC = () => {
         
         <StatCard variant="elevated">
           <StatValue>1,247</StatValue>
-          <StatLabel>ScrollCoins Earned</StatLabel>
+          <StatLabel>ScrollGolds Earned</StatLabel>
         </StatCard>
         
         <StatCard variant="elevated">

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">8.6% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/93</span>
+                <span class='fraction'>0/93</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">6.45% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/62</span>
+                <span class='fraction'>0/62</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">4.34% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/23</span>
+                <span class='fraction'>0/23</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">9.09% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/88</span>
+                <span class='fraction'>0/88</span>
             </div>
         
             
@@ -664,9 +664,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -685,9 +685,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -695,8 +695,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1254,15 +1254,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">/**
  * Prophetic Check-in Service
  * Manages prophetic check-ins and spiritual growth tracking
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
-import { AIGatewayService } from './AIGatewayService';
-import VectorStoreService from './VectorStoreService';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
+<span class="cstat-no" title="statement not covered" >import { AIGatewayService } from './AIGatewayService';</span>
+<span class="cstat-no" title="statement not covered" >import VectorStoreService from './VectorStoreService';</span>
 import {
   PropheticCheckIn,
   PropheticCheckInRequest,
@@ -1281,18 +1281,18 @@ import {
   ScriptureReference
 } from '../types/prophetic-checkin.types';
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
-export class PropheticCheckInService {
+<span class="cstat-no" title="statement not covered" >export class P</span>ropheticCheckInService {
   private aiGateway: AIGatewayService;
   private vectorStore: VectorStoreService;
 &nbsp;
-  constructor(
+<span class="fstat-no" title="function not covered" >  constructor(</span>
     aiGateway?: AIGatewayService,
     vectorStore?: VectorStoreService
   ) {
-    this.aiGateway = aiGateway || new AIGatewayService();
-    this.vectorStore = vectorStore || new VectorStoreService();
+<span class="cstat-no" title="statement not covered" >    this.aiGateway = aiGateway || new AIGatewayService();</span>
+<span class="cstat-no" title="statement not covered" >    this.vectorStore = vectorStore || new VectorStoreService();</span>
   }
 &nbsp;
   /**
@@ -1850,7 +1850,7 @@ Format as JSON.`;
   }
 }
 &nbsp;
-export default PropheticCheckInService;
+<span class="cstat-no" title="statement not covered" >export default PropheticCheckInService;</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1858,7 +1858,7 @@ export default PropheticCheckInService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:03.756Z
+                at 2025-12-02T16:54:09.620Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

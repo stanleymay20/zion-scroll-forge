@@ -2,7 +2,7 @@
  * Reward Notification Component
  * "Let every righteous deed be celebrated with divine recognition"
  * 
- * Component for displaying ScrollCoin reward notifications and achievements
+ * Component for displaying ScrollGold reward notifications and achievements
  */
 
 import React, { useState, useEffect } from 'react';

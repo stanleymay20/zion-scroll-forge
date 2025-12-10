@@ -46,7 +46,7 @@ export default function ModuleDetail() {
         onSuccess: () => {
           toast({ 
             title: '✅ Module Completed',
-            description: 'ScrollCoins have been added to your account!'
+            description: 'ScrollGolds have been added to your account!'
           });
         }
       }

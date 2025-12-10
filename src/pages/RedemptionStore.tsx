@@ -101,10 +101,10 @@ export default function RedemptionStore() {
   const redeemItem = useMutation({
     mutationFn: async (item: typeof storeItems[0]) => {
       if (!wallet || wallet.balance < item.cost) {
-        throw new Error("Insufficient ScrollCoin balance");
+        throw new Error("Insufficient ScrollGold balance");
       }
 
-      const { error } = await supabase.rpc("spend_scrollcoin", {
+      const { error } = await supabase.rpc("spend_ScrollGold", {
         p_user_id: user!.id,
         p_amount: item.cost,
         p_desc: `Redeemed: ${item.name}`,
@@ -135,7 +135,7 @@ export default function RedemptionStore() {
     : storeItems;
 
   return (
-    <PageTemplate title="Redemption Store" description="Redeem your ScrollCoins for rewards">
+    <PageTemplate title="Redemption Store" description="Redeem your ScrollGolds for rewards">
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Balance Card */}
         <Card className="border-2 border-primary">
@@ -147,10 +147,10 @@ export default function RedemptionStore() {
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Your Balance</p>
-                  <p className="text-3xl font-bold">{wallet?.balance || 0} ScrollCoins</p>
+                  <p className="text-3xl font-bold">{wallet?.balance || 0} ScrollGolds</p>
                 </div>
               </div>
-              <Button variant="outline" onClick={() => window.location.href = "/scrollcoin"}>
+              <Button variant="outline" onClick={() => window.location.href = "/ScrollGold"}>
                 Earn More
               </Button>
             </div>

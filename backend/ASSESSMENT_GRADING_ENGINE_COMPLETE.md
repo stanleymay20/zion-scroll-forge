@@ -74,7 +74,7 @@ The complete Assessment and Grading Engine has been successfully implemented for
 - GPA calculation (4.0 scale)
 - Credit hour tracking
 - Course completion detection
-- ScrollXP and ScrollCoin rewards
+- ScrollXP and ScrollGold rewards
 
 **Transcript Features:**
 - Complete academic transcript generation
@@ -118,7 +118,7 @@ TranscriptService
 ├── Grade calculations
 ├── GPA tracking
 ├── Transcript generation
-└── ScrollCoin/XP rewards
+└── ScrollGold/XP rewards
 
 GradingService (Enhanced)
 ├── Code grading with AI
@@ -142,7 +142,7 @@ GradingService (Enhanced)
    ↓
 6. TranscriptService updates grades and GPA
    ↓
-7. ScrollCoin/XP rewards awarded
+7. ScrollGold/XP rewards awarded
    ↓
 8. Student receives grade and feedback
 ```
@@ -153,7 +153,7 @@ GradingService (Enhanced)
 - `Assignment` - Assignment definitions
 - `Submission` - Student submissions with grades
 - `Enrollment` - Course enrollment and progress
-- `ScrollCoinTransaction` - Reward tracking
+- `ScrollGoldTransaction` - Reward tracking
 - `User` - Student profiles and balances
 
 **Fields Added to Submissions:**
@@ -283,7 +283,7 @@ Authorization: Bearer <token>
 ### Grade Management
 - Real-time transcript updates
 - GPA calculation
-- ScrollXP and ScrollCoin rewards
+- ScrollXP and ScrollGold rewards
 - Progress tracking
 - Official transcript generation
 
@@ -306,7 +306,7 @@ Authorization: Bearer <token>
 2. Receive automated grade and feedback
 3. View detailed feedback with suggestions
 4. Track progress in transcript
-5. Earn ScrollCoin rewards
+5. Earn ScrollGold rewards
 
 ### For Faculty
 1. Review submissions
@@ -320,7 +320,7 @@ Authorization: Bearer <token>
 1. Monitor grading system health
 2. Review flagged submissions
 3. Generate transcripts
-4. Track ScrollCoin distribution
+4. Track ScrollGold distribution
 5. Analyze grading patterns
 
 ## Future Enhancements
@@ -393,7 +393,7 @@ const defaultRubric: GradingRubric = {
 - Plagiarism detection rate
 - Student satisfaction
 - Grade distribution
-- ScrollCoin distribution
+- ScrollGold distribution
 
 ### Health Checks
 - AI service availability

@@ -38,7 +38,7 @@ The Scholarship Management System provides a comprehensive solution for managing
 - `ScholarshipStatus` - Draft, active, inactive, closed, suspended
 - `ApplicationStatus` - Draft, submitted, under review, approved, rejected, etc.
 - `DisbursementStatus` - Pending, scheduled, processing, completed, failed
-- `DisbursementMethod` - Tuition credit, ScrollCoin, bank transfer, check
+- `DisbursementMethod` - Tuition credit, ScrollGold, bank transfer, check
 
 **Interfaces:**
 - `ScholarshipData` - Complete scholarship information
@@ -83,7 +83,7 @@ The Scholarship Management System provides a comprehensive solution for managing
 **Eligibility Criteria Supported:**
 - Academic: GPA, academic level, course completion
 - Demographic: Age, location, enrollment status
-- Spiritual: Ministry experience, spiritual gifts, ScrollCoin balance
+- Spiritual: Ministry experience, spiritual gifts, ScrollGold balance
 - Custom: Flexible JSON-based criteria
 
 #### ScholarshipApplicationService
@@ -145,7 +145,7 @@ The Scholarship Management System provides a comprehensive solution for managing
 
 **Disbursement Methods:**
 - Direct tuition credit
-- ScrollCoin transfer
+- ScrollGold transfer
 - Bank transfer
 - Check payment
 
@@ -396,7 +396,7 @@ Authorization: Bearer <token>
   "eligibilityCriteria": {
     "minGPA": 3.5,
     "requiredAcademicLevel": ["SCROLL_OPEN", "SCROLL_FOUNDATION"],
-    "minScrollCoinBalance": 500
+    "minScrollGoldBalance": 500
   },
   "applicationDeadline": "2025-12-31T23:59:59Z",
   "awardDate": "2026-01-15T00:00:00Z",
@@ -442,14 +442,14 @@ Response:
     "matchedCriteria": [
       "GPA meets minimum requirement (3.5)",
       "Academic level matches requirement",
-      "ScrollCoin balance meets requirement"
+      "ScrollGold balance meets requirement"
     ],
     "failedCriteria": [],
     "recommendations": [],
     "details": {
       "userGPA": 3.8,
       "academicLevel": "SCROLL_OPEN",
-      "scrollCoinBalance": 750
+      "ScrollGoldBalance": 750
     }
   }
 }

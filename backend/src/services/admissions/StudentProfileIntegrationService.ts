@@ -114,8 +114,8 @@ export class StudentProfileIntegrationService {
           timeZone: profileData.timeZone || 'UTC',
           bio: profileData.bio,
           
-          // Initialize ScrollCoin balance
-          scrollCoinBalance: 100.0, // Welcome bonus
+          // Initialize ScrollGold balance
+          ScrollGoldBalance: 100.0, // Welcome bonus
           workTradeCredits: 0.0,
           
           updatedAt: new Date()

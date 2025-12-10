@@ -24,7 +24,7 @@ Per ScrollUniversity directive: **"Do not fall back to simplified output. If an 
 
 ### Error 1: Prisma Schema Corruption
 **6 duplicate models/enums** in schema.prisma preventing validation:
-- ScrollCoinTransaction (lines 334 & 2451)
+- ScrollGoldTransaction (lines 334 & 2451)
 - LectureType (lines 2303 & 2643)
 - Scholarship (lines 973 & 2655)
 - ScholarshipApplication (lines 997 & 2700)

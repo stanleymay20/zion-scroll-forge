@@ -231,7 +231,7 @@ export class OfficialTranscriptService {
     const innovationScore = scrollAlignment * 0.7 + kingdomImpact * 0.3;
 
     // Get ScrollXP from transactions
-    const xpTransactions = await prisma.scrollCoinTransaction.findMany({
+    const xpTransactions = await prisma.scrollGoldTransaction.findMany({
       where: {
         userId: studentId,
         type: 'EARNED'

@@ -34,7 +34,7 @@ describe('AnalyticsService', () => {
           graduationRate: 0.78,
           globalReachCountries: 10,
           averageSpiritualGrowth: 0.85,
-          scrollCoinCirculation: 1500000
+          scrollGoldCirculation: 1500000
         },
         studentProgress: [],
         facultyPerformance: [],
@@ -42,7 +42,7 @@ describe('AnalyticsService', () => {
           totalStudents: 15000,
           globalReach: {},
           careerPathwayDistribution: {},
-          scrollCoinEconomy: {
+          scrollGoldEconomy: {
             totalCirculation: 1500000,
             dailyTransactions: 8000,
             rewardDistribution: {
@@ -325,7 +325,7 @@ describe('AnalyticsService', () => {
         graduationRate: 0.78,
         globalReachCountries: 10,
         averageSpiritualGrowth: 0.85,
-        scrollCoinCirculation: 1500000
+        scrollGoldCirculation: 1500000
       };
 
       mockFetch.mockResolvedValueOnce({

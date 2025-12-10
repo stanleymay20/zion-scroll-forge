@@ -100,7 +100,7 @@
   - Build faith-based employer network connection and job placement system
   - Implement digital identity wallet synchronization (EU Digital Credentials, Africa SmartCerts)
   - Create LinkedIn, GitHub, and professional network integration
-  - Build ScrollCoin-powered employment opportunity connection system
+  - Build ScrollGold-powered employment opportunity connection system
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5_
 
 - [ ] 14. Global Alignment Network (GAN) Alumni System
@@ -161,12 +161,12 @@
   - Implement security testing and penetration testing protocols
   - _Requirements: 9.1, 9.2, 9.3, 11.2_
 
-- [ ] 21. ScrollCoin Economy Integration
-  - Integrate ScrollCoin rewards for certification completion and achievements
-  - Create ScrollCoin-powered employment and opportunity marketplace
+- [ ] 21. ScrollGold Economy Integration
+  - Integrate ScrollGold rewards for certification completion and achievements
+  - Create ScrollGold-powered employment and opportunity marketplace
   - Implement token-based incentive system for peer assistance and mentorship
-  - Build ScrollCoin wallet integration for credential-related transactions
-  - Create economic analytics for ScrollCoin circulation and impact measurement
+  - Build ScrollGold wallet integration for credential-related transactions
+  - Create economic analytics for ScrollGold circulation and impact measurement
   - _Requirements: 1.5, 6.5, 10.4_
 
 - [ ] 22. Cultural Adaptation and Multilingual Support

@@ -135,9 +135,9 @@ This master implementation plan consolidates all ScrollUniversity specs into a u
 **Dependencies:** Phase 5 complete
 **Specs Involved:** scroll-tuition-system
 
-- [ ] 6.1 Build ScrollCoin Payment Integration
-  - Create ScrollCoin wallet integration and transaction processing
-  - Implement multi-currency payment system (fiat, crypto, ScrollCoin)
+- [ ] 6.1 Build ScrollGold Payment Integration
+  - Create ScrollGold wallet integration and transaction processing
+  - Implement multi-currency payment system (fiat, crypto, ScrollGold)
   - Build work-trade credit calculation and management
   - Create scholarship and financial aid processing
   - _Primary Spec: scroll-tuition-system_

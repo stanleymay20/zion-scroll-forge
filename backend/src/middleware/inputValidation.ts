@@ -278,7 +278,7 @@ export const validationSets = {
     baseValidations.uuid('facultyId'),
     baseValidations.positiveInteger('duration'),
     baseValidations.positiveInteger('scrollXPReward'),
-    baseValidations.positiveFloat('scrollCoinCost'),
+    baseValidations.positiveFloat('scrollGoldCost'),
     body('difficulty').isIn(['BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'PROPHETIC']),
     baseValidations.stringArray('prerequisites', 5),
     baseValidations.url('videoUrl')

@@ -19,7 +19,7 @@ export interface ContentGenerationReport {
   errorsEncountered: number;
   antiDriftValidations: number;
   antiDriftRegenerations: number;
-  totalScrollCoins: number;
+  totalScrollGolds: number;
   duration: string;
 }
 

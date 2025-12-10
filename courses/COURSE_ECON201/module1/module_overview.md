@@ -1,6 +1,6 @@
 ```markdown
 # Module 1: Foundations of Digital Currency & Kingdom Economics  
-**Course:** ScrollCoin & Digital Currency Systems  
+**Course:** ScrollGold & Digital Currency Systems  
 **Level:** Undergraduate | **Category:** Economics  
 
 ---
@@ -45,7 +45,7 @@ By the end of this module, students will be able to:
 3. **Lecture 3:** *Ethics of Crypto: Greed, Generosity, and Governance*  
    - Analyzing ICOs, scams, and ethical investing.  
 4. **Lecture 4:** *Hands-On Faith: Using Crypto for Mission*  
-   - Demo: Sending ScrollCoin to a ministry partner.  
+   - Demo: Sending ScrollGold to a ministry partner.  
 
 ---
 

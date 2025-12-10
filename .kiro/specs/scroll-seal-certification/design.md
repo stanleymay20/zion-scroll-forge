@@ -131,7 +131,7 @@ interface CertificationRequest {
   academicRecord: AcademicTranscript;
   spiritualFormation: SpiritualMetrics;
   portfolioItems: PortfolioItem[];
-  scrollCoinEarned: number;
+  scrollGoldEarned: number;
 }
 
 interface ScrollSeal {
@@ -401,7 +401,7 @@ enum PartnerType {
   UN_SDG_SCHOOL = "un_sdg",
   FAITH_EMPLOYER = "faith_employer",
   DIGITAL_WALLET = "digital_wallet",
-  SCROLLCOIN_EMPLOYER = "scrollcoin_employer",
+  scrollGold_EMPLOYER = "scrollGold_employer",
   PROFESSIONAL_NETWORK = "professional_network"
 }
 ```

@@ -2,431 +2,1271 @@
 
 ## Overview
 
-The ScrollBillingAgent is architected as a comprehensive financial management system that serves as the economic backbone of ScrollUniversity. Built on microservices architecture with event-driven communication, the system integrates traditional financial operations with ScrollCoin economics while maintaining kingdom principles of transparency, stewardship, and service. The design emphasizes scalability, security, and seamless integration with the broader ScrollUniversity ecosystem.
+The ScrollBillingAgent implements a three-layer billing architecture that is **simple in money, rich in grace**. Built on Stripe + Supabase infrastructure, it provides production-ready payment processing while adding ScrollGold as a motivational and spiritual overlay.
 
-The system operates on three core architectural layers: the Financial Operations Layer (billing, payments, invoicing), the Integration Layer (ScrollCoin, external systems, APIs), and the Intelligence Layer (analytics, fraud detection, compliance). This design ensures robust financial operations while maintaining the flexibility to adapt to evolving educational and economic needs.
+**Core Philosophy:**
+- **Fiat First**: Stripe handles all real money (cards, SEPA, PayPal) - simple, compliant, production-ready
+- **ScrollGold as Blessing**: Internal loyalty system (like Google Play credits) - NOT cryptocurrency, just database records
+- **Kingdom Economics**: Access → Transformation → Stewardship
+
+**Architecture Layers:**
+1. **Access Layer**: What students pay for (courses, AI tutors, labs, certificates)
+2. **Payment Layer**: How they pay (Stripe for fiat, simple database for ScrollGold)
+3. **Kingdom Token Layer**: ScrollGold rewards for achievement, service, faithfulness
 
 ## Architecture
 
-### System Architecture Overview
+### System Components
 
-```mermaid
-graph TB
-    subgraph "Client Layer"
-        WEB[Web Portal]
-        MOBILE[Mobile App]
-        API[API Clients]
-    end
-    
-    subgraph "API Gateway Layer"
-        GATEWAY[API Gateway]
-        AUTH[Authentication Service]
-        RATE[Rate Limiting]
-    end
-    
-    subgraph "Core Services Layer"
-        BILLING[Billing Service]
-        PAYMENT[Payment Service]
-        INVOICE[Invoice Service]
-        SUBSCRIPTION[Subscription Service]
-        SCROLLCOIN[ScrollCoin Integration]
-        TAX[Tax Service]
-        REPORTING[Reporting Service]
-        FRAUD[Fraud Detection]
-    end
-    
-    subgraph "Data Layer"
-        POSTGRES[(PostgreSQL)]
-        REDIS[(Redis Cache)]
-        ELASTICSEARCH[(Elasticsearch)]
-    end
-    
-    subgraph "External Integrations"
-        STRIPE[Stripe/Payment Processors]
-        BANKS[Banking APIs]
-        TAX_API[Tax APIs]
-        ACCOUNTING[Accounting Systems]
-        SCROLLSYS[ScrollUniversity Systems]
-    end
-    
-    WEB --> GATEWAY
-    MOBILE --> GATEWAY
-    API --> GATEWAY
-    
-    GATEWAY --> AUTH
-    GATEWAY --> BILLING
-    GATEWAY --> PAYMENT
-    GATEWAY --> INVOICE
-    
-    BILLING --> POSTGRES
-    PAYMENT --> STRIPE
-    PAYMENT --> BANKS
-    SCROLLCOIN --> SCROLLSYS
-    TAX --> TAX_API
-    REPORTING --> ELASTICSEARCH
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Frontend (React)                          │
+│  - Payment UI Components                                     │
+│  - ScrollGold Wallet Interface                               │
+│  - Subscription Management                                   │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                            ▼
+┌─────────────────────────────────────────────────────────────┐
+│                Backend Services (Node.js)                    │
+│  - BillingService                                            │
+│  - StripeWebhookHandler                                      │
+│  - ScrollGoldService                                         │
+│  - SubscriptionManager                                       │
+└─────────────────────────────────────────────────────────────┘
+                            │
+                ┌───────────┴───────────┐
+                ▼                       ▼
+┌──────────────────────┐    ┌──────────────────────┐
+│   Stripe API         │    │   Supabase DB        │
+│  - Products          │    │  - subscriptions     │
+│  - Prices            │    │  - payments          │
+│  - Customers         │    │  - invoices          │
+│  - Subscriptions     │    │  - scrollgold_*      │
+│  - Webhooks          │    │  - enrollments       │
+└──────────────────────┘    └──────────────────────┘
 ```
 
-### Service Architecture
+### Data Flow
 
-The system follows a domain-driven design approach with bounded contexts for each major financial function:
+**Purchase Flow:**
+1. Student selects product (course/subscription)
+2. Frontend creates Stripe Checkout Session
+3. Student completes payment on Stripe
+4. Stripe fires `checkout.session.completed` webhook
+5. Backend grants access + initializes ScrollGold wallet
+6. Student receives confirmation email
 
-**Financial Operations Domain:**
-- Billing Service: Manages billing cycles, invoice generation, and payment scheduling
-- Payment Service: Handles payment processing, multi-currency support, and payment method management
-- Invoice Service: Creates, delivers, and tracks invoices with professional formatting
-- Subscription Service: Manages recurring payments, subscription lifecycle, and dunning management
+**Subscription Flow:**
+1. Student subscribes to All-Access Monthly
+2. Stripe creates recurring subscription
+3. Each billing cycle: `invoice.payment_succeeded` webhook
+4. Backend extends access + awards loyalty ScrollGold
+5. If payment fails: grace period → retry → eventual suspension
 
-**Integration Domain:**
-- ScrollCoin Integration Service: Manages hybrid payments and coin-to-currency conversions
-- External Payment Gateway Service: Interfaces with Stripe, PayPal, and banking systems
-- Accounting Integration Service: Syncs with QuickBooks, Xero, and enterprise ERP systems
-- Tax Service: Handles tax calculations, compliance, and reporting across jurisdictions
+**ScrollGold Flow:**
+1. Student completes module with 80%+ score
+2. Backend awards ScrollGold to wallet
+3. Student accumulates ScrollGold over time
+4. Student applies ScrollGold discount at checkout
+5. Stripe processes reduced amount
+6. Backend records ScrollGold transaction
 
-**Intelligence Domain:**
-- Analytics Service: Provides financial reporting, forecasting, and business intelligence
-- Fraud Detection Service: AI-powered fraud prevention and security monitoring
-- Compliance Service: Ensures regulatory compliance and audit trail maintenance
-- Customer Financial Service: Manages student accounts, payment plans, and financial aid integration
 
 ## Components and Interfaces
 
-### Core Components
+### Core Services
 
-#### BillingEngine
+#### BillingService
 ```typescript
-interface BillingEngine {
-  generateInvoices(billingCycle: BillingCycle): Promise<Invoice[]>
-  processBillingSchedule(schedule: BillingSchedule): Promise<BillingResult>
-  calculateCharges(services: Service[], discounts: Discount[]): Promise<ChargeCalculation>
-  handleBillingDisputes(dispute: BillingDispute): Promise<DisputeResolution>
+class BillingService {
+  // Stripe Product Management
+  async createProduct(productData: ProductInput): Promise<StripeProduct>
+  async updateProduct(productId: string, updates: ProductUpdate): Promise<StripeProduct>
+  async listProducts(filters?: ProductFilters): Promise<StripeProduct[]>
+  
+  // Checkout & Payment
+  async createCheckoutSession(sessionData: CheckoutSessionInput): Promise<CheckoutSession>
+  async createPaymentIntent(intentData: PaymentIntentInput): Promise<PaymentIntent>
+  async processRefund(paymentId: string, amount?: number): Promise<Refund>
+  
+  // Subscription Management
+  async createSubscription(subscriptionData: SubscriptionInput): Promise<Subscription>
+  async updateSubscription(subscriptionId: string, updates: SubscriptionUpdate): Promise<Subscription>
+  async cancelSubscription(subscriptionId: string, options?: CancelOptions): Promise<Subscription>
+  
+  // Invoice Management
+  async generateInvoice(invoiceData: InvoiceInput): Promise<Invoice>
+  async sendInvoice(invoiceId: string): Promise<void>
+  async recordPayment(paymentData: PaymentRecord): Promise<Payment>
 }
 ```
 
-#### PaymentProcessor
+#### StripeWebhookHandler
 ```typescript
-interface PaymentProcessor {
-  processPayment(payment: PaymentRequest): Promise<PaymentResult>
-  handleMultiCurrency(amount: Money, targetCurrency: Currency): Promise<ConversionResult>
-  processHybridPayment(scrollCoins: number, traditionalAmount: Money): Promise<HybridPaymentResult>
-  validatePaymentMethod(method: PaymentMethod): Promise<ValidationResult>
+class StripeWebhookHandler {
+  async handleCheckoutCompleted(session: Stripe.Checkout.Session): Promise<void>
+  async handleInvoicePaymentSucceeded(invoice: Stripe.Invoice): Promise<void>
+  async handleInvoicePaymentFailed(invoice: Stripe.Invoice): Promise<void>
+  async handleSubscriptionCreated(subscription: Stripe.Subscription): Promise<void>
+  async handleSubscriptionUpdated(subscription: Stripe.Subscription): Promise<void>
+  async handleSubscriptionDeleted(subscription: Stripe.Subscription): Promise<void>
+  async handleCustomerUpdated(customer: Stripe.Customer): Promise<void>
+  
+  // Webhook Verification
+  async verifyWebhookSignature(payload: string, signature: string): Promise<boolean>
 }
 ```
 
-#### ScrollCoinIntegrator
+#### ScrollGoldService
 ```typescript
-interface ScrollCoinIntegrator {
-  processScrollCoinPayment(coins: number, studentId: string): Promise<CoinPaymentResult>
-  convertCoinsToFiat(coins: number, targetCurrency: Currency): Promise<ConversionResult>
-  checkCoinBalance(studentId: string): Promise<CoinBalance>
-  recordCoinTransaction(transaction: CoinTransaction): Promise<TransactionRecord>
+class ScrollGoldService {
+  // Wallet Management
+  async createWallet(userId: string): Promise<ScrollGoldWallet>
+  async getWallet(userId: string): Promise<ScrollGoldWallet>
+  async getBalance(userId: string): Promise<number>
+  
+  // Earning ScrollGold
+  async awardScrollGold(userId: string, amount: number, reason: string, metadata?: object): Promise<Transaction>
+  async awardModuleCompletion(userId: string, moduleId: string, score: number): Promise<Transaction>
+  async awardDailyStreak(userId: string, streakDays: number): Promise<Transaction>
+  async awardCommunityService(userId: string, serviceType: string): Promise<Transaction>
+  async bestowHonorScrollGold(userId: string, amount: number, reason: string): Promise<Transaction>
+  
+  // Spending ScrollGold
+  async applyDiscount(userId: string, amount: number, purchaseId: string): Promise<Transaction>
+  async purchasePremiumFeature(userId: string, featureId: string, cost: number): Promise<Transaction>
+  async unlockMentorship(userId: string, mentorshipId: string): Promise<Transaction>
+  
+  // Transaction History
+  async getTransactionHistory(userId: string, filters?: TransactionFilters): Promise<Transaction[]>
+  async getEarningOpportunities(userId: string): Promise<EarningOpportunity[]>
 }
 ```
 
-#### TaxCalculator
+#### SubscriptionManager
 ```typescript
-interface TaxCalculator {
-  calculateTax(amount: Money, location: Location, serviceType: ServiceType): Promise<TaxCalculation>
-  updateTaxRates(jurisdiction: string): Promise<TaxRateUpdate>
-  generateTaxReports(period: ReportingPeriod): Promise<TaxReport[]>
-  handleTaxExemptions(exemption: TaxExemption): Promise<ExemptionResult>
+class SubscriptionManager {
+  // Tier Management
+  async upgradeTier(userId: string, newTier: SubscriptionTier): Promise<Subscription>
+  async downgradeTier(userId: string, newTier: SubscriptionTier): Promise<Subscription>
+  async calculateProration(currentTier: SubscriptionTier, newTier: SubscriptionTier): Promise<ProrationAmount>
+  
+  // Access Control
+  async grantAccess(userId: string, resourceId: string, resourceType: string): Promise<void>
+  async revokeAccess(userId: string, resourceId: string, resourceType: string): Promise<void>
+  async checkAccess(userId: string, resourceId: string): Promise<boolean>
+  
+  // Subscription Analytics
+  async getSubscriptionMetrics(): Promise<SubscriptionMetrics>
+  async getChurnRate(period: DateRange): Promise<number>
+  async getLifetimeValue(userId: string): Promise<number>
 }
 ```
 
-### API Interfaces
-
-#### REST API Endpoints
-
-**Billing Management:**
-- `POST /api/v1/billing/invoices` - Generate invoices
-- `GET /api/v1/billing/invoices/{id}` - Retrieve invoice details
-- `PUT /api/v1/billing/invoices/{id}/status` - Update invoice status
-- `POST /api/v1/billing/schedules` - Create billing schedules
-- `GET /api/v1/billing/disputes` - List billing disputes
-
-**Payment Processing:**
-- `POST /api/v1/payments/process` - Process payments
-- `POST /api/v1/payments/hybrid` - Process hybrid ScrollCoin/fiat payments
-- `GET /api/v1/payments/methods` - List available payment methods
-- `POST /api/v1/payments/refunds` - Process refunds
-- `GET /api/v1/payments/history/{studentId}` - Payment history
-
-**Subscription Management:**
-- `POST /api/v1/subscriptions` - Create subscriptions
-- `PUT /api/v1/subscriptions/{id}` - Modify subscriptions
-- `DELETE /api/v1/subscriptions/{id}` - Cancel subscriptions
-- `GET /api/v1/subscriptions/analytics` - Subscription analytics
-
-**Financial Reporting:**
-- `GET /api/v1/reports/revenue` - Revenue reports
-- `GET /api/v1/reports/tax` - Tax reports
-- `GET /api/v1/reports/analytics` - Financial analytics
-- `POST /api/v1/reports/custom` - Generate custom reports
-
-#### Event-Driven Architecture
-
-**Published Events:**
-- `InvoiceGenerated` - When new invoices are created
-- `PaymentProcessed` - When payments are successfully processed
-- `PaymentFailed` - When payment processing fails
-- `SubscriptionCreated` - When new subscriptions are established
-- `FraudDetected` - When suspicious activity is identified
-- `TaxCalculated` - When tax calculations are completed
-
-**Consumed Events:**
-- `StudentEnrolled` - From enrollment system to create billing records
-- `CourseCompleted` - From course system to trigger completion-based billing
-- `ScrollCoinsEarned` - From ScrollCoin system to update student balances
-- `ServiceActivated` - From various systems to trigger billing
 
 ## Data Models
 
-### Core Financial Entities
+### Supabase Database Schema
 
-#### Invoice Model
+#### Core Billing Tables
+
+```sql
+-- Subscriptions Table
+CREATE TABLE subscriptions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  stripe_subscription_id TEXT UNIQUE,
+  stripe_customer_id TEXT NOT NULL,
+  
+  -- Subscription Details
+  tier TEXT NOT NULL CHECK (tier IN ('FREE_TIER', 'SINGLE_COURSE', 'ALL_ACCESS_MONTHLY', 'ALL_ACCESS_YEARLY', 'PROGRAM_TRACK', 'ELITE_LEADERSHIP', 'INSTITUTIONAL')),
+  status TEXT NOT NULL CHECK (status IN ('active', 'canceled', 'past_due', 'unpaid', 'trialing', 'incomplete')),
+  
+  -- Pricing
+  amount_cents INTEGER NOT NULL,
+  currency TEXT NOT NULL DEFAULT 'EUR',
+  interval TEXT CHECK (interval IN ('month', 'year', 'one_time')),
+  
+  -- Dates
+  current_period_start TIMESTAMPTZ,
+  current_period_end TIMESTAMPTZ,
+  trial_end TIMESTAMPTZ,
+  canceled_at TIMESTAMPTZ,
+  ended_at TIMESTAMPTZ,
+  
+  -- Features & Limits
+  ai_tutor_minutes INTEGER DEFAULT 0, -- 0 = unlimited
+  course_access_type TEXT DEFAULT 'all', -- 'all', 'single', 'program'
+  has_certificates BOOLEAN DEFAULT false,
+  has_lab_access BOOLEAN DEFAULT false,
+  has_community_access BOOLEAN DEFAULT false,
+  
+  -- Metadata
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_subscriptions_user_id ON subscriptions(user_id);
+CREATE INDEX idx_subscriptions_stripe_subscription_id ON subscriptions(stripe_subscription_id);
+CREATE INDEX idx_subscriptions_status ON subscriptions(status);
+CREATE INDEX idx_subscriptions_tier ON subscriptions(tier);
+
+-- Payments Table
+CREATE TABLE payments (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  subscription_id UUID REFERENCES subscriptions(id) ON DELETE SET NULL,
+  
+  -- Stripe Details
+  stripe_payment_intent_id TEXT UNIQUE,
+  stripe_charge_id TEXT,
+  stripe_invoice_id TEXT,
+  
+  -- Payment Details
+  amount_cents INTEGER NOT NULL,
+  currency TEXT NOT NULL DEFAULT 'EUR',
+  status TEXT NOT NULL CHECK (status IN ('pending', 'succeeded', 'failed', 'refunded', 'canceled')),
+  payment_method TEXT, -- 'card', 'sepa', 'paypal', etc.
+  
+  -- ScrollGold Integration
+  scrollgold_applied INTEGER DEFAULT 0,
+  scrollgold_discount_cents INTEGER DEFAULT 0,
+  
+  -- Metadata
+  description TEXT,
+  receipt_url TEXT,
+  failure_reason TEXT,
+  metadata JSONB DEFAULT '{}',
+  
+  -- Timestamps
+  paid_at TIMESTAMPTZ,
+  refunded_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_payments_user_id ON payments(user_id);
+CREATE INDEX idx_payments_subscription_id ON payments(subscription_id);
+CREATE INDEX idx_payments_stripe_payment_intent_id ON payments(stripe_payment_intent_id);
+CREATE INDEX idx_payments_status ON payments(status);
+CREATE INDEX idx_payments_created_at ON payments(created_at DESC);
+
+-- Invoices Table
+CREATE TABLE invoices (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  subscription_id UUID REFERENCES subscriptions(id) ON DELETE SET NULL,
+  
+  -- Stripe Details
+  stripe_invoice_id TEXT UNIQUE,
+  
+  -- Invoice Details
+  invoice_number TEXT UNIQUE NOT NULL,
+  amount_cents INTEGER NOT NULL,
+  amount_due_cents INTEGER NOT NULL,
+  amount_paid_cents INTEGER DEFAULT 0,
+  currency TEXT NOT NULL DEFAULT 'EUR',
+  status TEXT NOT NULL CHECK (status IN ('draft', 'open', 'paid', 'void', 'uncollectible')),
+  
+  -- Dates
+  due_date DATE,
+  paid_at TIMESTAMPTZ,
+  voided_at TIMESTAMPTZ,
+  
+  -- Line Items
+  line_items JSONB DEFAULT '[]',
+  
+  -- Files
+  invoice_pdf_url TEXT,
+  hosted_invoice_url TEXT,
+  
+  -- Metadata
+  notes TEXT,
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_invoices_user_id ON invoices(user_id);
+CREATE INDEX idx_invoices_subscription_id ON invoices(subscription_id);
+CREATE INDEX idx_invoices_stripe_invoice_id ON invoices(stripe_invoice_id);
+CREATE INDEX idx_invoices_status ON invoices(status);
+CREATE INDEX idx_invoices_invoice_number ON invoices(invoice_number);
+
+
+#### ScrollGold Tables
+
+```sql
+-- ScrollGold Wallets Table
+CREATE TABLE scrollgold_wallets (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+  
+  -- Balance
+  balance INTEGER NOT NULL DEFAULT 0 CHECK (balance >= 0),
+  lifetime_earned INTEGER NOT NULL DEFAULT 0,
+  lifetime_spent INTEGER NOT NULL DEFAULT 0,
+  
+  -- Earning Stats
+  earned_from_modules INTEGER DEFAULT 0,
+  earned_from_streaks INTEGER DEFAULT 0,
+  earned_from_service INTEGER DEFAULT 0,
+  earned_from_bestowed INTEGER DEFAULT 0,
+  
+  -- Spending Stats
+  spent_on_discounts INTEGER DEFAULT 0,
+  spent_on_features INTEGER DEFAULT 0,
+  spent_on_mentorship INTEGER DEFAULT 0,
+  
+  -- Metadata
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_scrollgold_wallets_user_id ON scrollgold_wallets(user_id);
+CREATE INDEX idx_scrollgold_wallets_balance ON scrollgold_wallets(balance DESC);
+
+-- ScrollGold Transactions Table
+CREATE TABLE scrollgold_transactions (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  wallet_id UUID NOT NULL REFERENCES scrollgold_wallets(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  
+  -- Transaction Details
+  type TEXT NOT NULL CHECK (type IN ('earn', 'spend', 'bestow', 'refund', 'adjustment')),
+  amount INTEGER NOT NULL,
+  balance_after INTEGER NOT NULL,
+  
+  -- Reason & Context
+  reason TEXT NOT NULL,
+  category TEXT, -- 'module_completion', 'daily_streak', 'community_service', 'discount', 'premium_feature', etc.
+  
+  -- Related Entities
+  related_entity_type TEXT, -- 'module', 'course', 'payment', 'feature', etc.
+  related_entity_id UUID,
+  
+  -- Metadata
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_scrollgold_transactions_wallet_id ON scrollgold_transactions(wallet_id);
+CREATE INDEX idx_scrollgold_transactions_user_id ON scrollgold_transactions(user_id);
+CREATE INDEX idx_scrollgold_transactions_type ON scrollgold_transactions(type);
+CREATE INDEX idx_scrollgold_transactions_created_at ON scrollgold_transactions(created_at DESC);
+
+-- ScrollGold Earning Rules Table
+CREATE TABLE scrollgold_earning_rules (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  
+  -- Rule Details
+  name TEXT NOT NULL,
+  description TEXT,
+  category TEXT NOT NULL,
+  amount INTEGER NOT NULL,
+  
+  -- Conditions
+  conditions JSONB DEFAULT '{}', -- e.g., {"min_score": 80, "module_type": "core"}
+  
+  -- Limits
+  max_per_day INTEGER,
+  max_per_week INTEGER,
+  max_per_user INTEGER,
+  
+  -- Status
+  is_active BOOLEAN DEFAULT true,
+  
+  -- Metadata
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_scrollgold_earning_rules_category ON scrollgold_earning_rules(category);
+CREATE INDEX idx_scrollgold_earning_rules_is_active ON scrollgold_earning_rules(is_active);
+
+
+#### Supporting Tables
+
+```sql
+-- Stripe Products Configuration Table
+CREATE TABLE stripe_products (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  
+  -- Stripe Details
+  stripe_product_id TEXT UNIQUE NOT NULL,
+  stripe_price_id TEXT UNIQUE NOT NULL,
+  
+  -- Product Details
+  name TEXT NOT NULL,
+  description TEXT,
+  tier TEXT NOT NULL,
+  
+  -- Pricing
+  amount_cents INTEGER NOT NULL,
+  currency TEXT NOT NULL DEFAULT 'EUR',
+  interval TEXT, -- 'month', 'year', 'one_time'
+  
+  -- Features
+  features JSONB DEFAULT '{}',
+  
+  -- Status
+  is_active BOOLEAN DEFAULT true,
+  
+  -- Metadata
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_stripe_products_stripe_product_id ON stripe_products(stripe_product_id);
+CREATE INDEX idx_stripe_products_tier ON stripe_products(tier);
+CREATE INDEX idx_stripe_products_is_active ON stripe_products(is_active);
+
+-- Enrollment Access Control Table (links subscriptions to courses)
+CREATE TABLE enrollment_access (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  subscription_id UUID REFERENCES subscriptions(id) ON DELETE CASCADE,
+  
+  -- Access Details
+  resource_type TEXT NOT NULL CHECK (resource_type IN ('course', 'program', 'lab', 'feature', 'mentorship')),
+  resource_id UUID NOT NULL,
+  
+  -- Access Period
+  granted_at TIMESTAMPTZ DEFAULT NOW(),
+  expires_at TIMESTAMPTZ,
+  revoked_at TIMESTAMPTZ,
+  
+  -- Status
+  is_active BOOLEAN DEFAULT true,
+  
+  -- Metadata
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_enrollment_access_user_id ON enrollment_access(user_id);
+CREATE INDEX idx_enrollment_access_subscription_id ON enrollment_access(subscription_id);
+CREATE INDEX idx_enrollment_access_resource ON enrollment_access(resource_type, resource_id);
+CREATE INDEX idx_enrollment_access_is_active ON enrollment_access(is_active);
+
+-- Webhook Events Log Table
+CREATE TABLE webhook_events (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  
+  -- Stripe Details
+  stripe_event_id TEXT UNIQUE NOT NULL,
+  event_type TEXT NOT NULL,
+  
+  -- Processing
+  status TEXT NOT NULL CHECK (status IN ('pending', 'processing', 'succeeded', 'failed')),
+  attempts INTEGER DEFAULT 0,
+  
+  -- Data
+  payload JSONB NOT NULL,
+  error_message TEXT,
+  
+  -- Timestamps
+  processed_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX idx_webhook_events_stripe_event_id ON webhook_events(stripe_event_id);
+CREATE INDEX idx_webhook_events_event_type ON webhook_events(event_type);
+CREATE INDEX idx_webhook_events_status ON webhook_events(status);
+CREATE INDEX idx_webhook_events_created_at ON webhook_events(created_at DESC);
+
+
+### TypeScript Type Definitions
+
 ```typescript
-interface Invoice {
-  id: string
-  studentId: string
-  invoiceNumber: string
-  issueDate: Date
-  dueDate: Date
-  amount: Money
-  currency: Currency
-  lineItems: InvoiceLineItem[]
-  taxAmount: Money
-  totalAmount: Money
-  status: InvoiceStatus
-  paymentTerms: PaymentTerms
-  billingAddress: Address
-  metadata: Record<string, any>
+// Subscription Types
+export enum SubscriptionTier {
+  FREE_TIER = 'FREE_TIER',
+  SINGLE_COURSE = 'SINGLE_COURSE',
+  ALL_ACCESS_MONTHLY = 'ALL_ACCESS_MONTHLY',
+  ALL_ACCESS_YEARLY = 'ALL_ACCESS_YEARLY',
+  PROGRAM_TRACK = 'PROGRAM_TRACK',
+  ELITE_LEADERSHIP = 'ELITE_LEADERSHIP',
+  INSTITUTIONAL = 'INSTITUTIONAL'
 }
-```
 
-#### Payment Model
-```typescript
-interface Payment {
-  id: string
-  invoiceId: string
-  studentId: string
-  amount: Money
-  currency: Currency
-  paymentMethod: PaymentMethod
-  scrollCoinsUsed?: number
-  traditionalAmount?: Money
-  status: PaymentStatus
-  processedAt: Date
-  transactionId: string
-  gatewayResponse: GatewayResponse
-  metadata: Record<string, any>
+export enum SubscriptionStatus {
+  ACTIVE = 'active',
+  CANCELED = 'canceled',
+  PAST_DUE = 'past_due',
+  UNPAID = 'unpaid',
+  TRIALING = 'trialing',
+  INCOMPLETE = 'incomplete'
 }
-```
 
-#### Subscription Model
-```typescript
-interface Subscription {
-  id: string
-  studentId: string
-  planId: string
-  status: SubscriptionStatus
-  currentPeriodStart: Date
-  currentPeriodEnd: Date
-  billingCycle: BillingCycle
-  amount: Money
-  currency: Currency
-  paymentMethod: PaymentMethod
-  trialEnd?: Date
-  canceledAt?: Date
-  metadata: Record<string, any>
+export interface Subscription {
+  id: string;
+  userId: string;
+  stripeSubscriptionId?: string;
+  stripeCustomerId: string;
+  tier: SubscriptionTier;
+  status: SubscriptionStatus;
+  amountCents: number;
+  currency: string;
+  interval?: 'month' | 'year' | 'one_time';
+  currentPeriodStart?: Date;
+  currentPeriodEnd?: Date;
+  trialEnd?: Date;
+  canceledAt?: Date;
+  endedAt?: Date;
+  aiTutorMinutes: number;
+  courseAccessType: string;
+  hasCertificates: boolean;
+  hasLabAccess: boolean;
+  hasCommunityAccess: boolean;
+  metadata: Record<string, any>;
+  createdAt: Date;
+  updatedAt: Date;
 }
-```
 
-### Financial Analytics Models
-
-#### Revenue Analytics
-```typescript
-interface RevenueAnalytics {
-  period: ReportingPeriod
-  totalRevenue: Money
-  revenueBySource: Record<string, Money>
-  revenueByRegion: Record<string, Money>
-  scrollCoinRevenue: Money
-  traditionalRevenue: Money
-  recurringRevenue: Money
-  oneTimeRevenue: Money
-  growthRate: number
-  projectedRevenue: Money
+// Payment Types
+export enum PaymentStatus {
+  PENDING = 'pending',
+  SUCCEEDED = 'succeeded',
+  FAILED = 'failed',
+  REFUNDED = 'refunded',
+  CANCELED = 'canceled'
 }
-```
 
-#### Student Financial Profile
-```typescript
-interface StudentFinancialProfile {
-  studentId: string
-  totalPaid: Money
-  outstandingBalance: Money
-  scrollCoinBalance: number
-  paymentHistory: Payment[]
-  subscriptions: Subscription[]
-  paymentMethods: PaymentMethod[]
-  creditScore?: number
-  riskAssessment: RiskLevel
-  financialAidEligibility: FinancialAid[]
+export interface Payment {
+  id: string;
+  userId: string;
+  subscriptionId?: string;
+  stripePaymentIntentId?: string;
+  stripeChargeId?: string;
+  stripeInvoiceId?: string;
+  amountCents: number;
+  currency: string;
+  status: PaymentStatus;
+  paymentMethod?: string;
+  scrollgoldApplied: number;
+  scrollgoldDiscountCents: number;
+  description?: string;
+  receiptUrl?: string;
+  failureReason?: string;
+  metadata: Record<string, any>;
+  paidAt?: Date;
+  refundedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
 }
-```
+
+// ScrollGold Types
+export enum ScrollGoldTransactionType {
+  EARN = 'earn',
+  SPEND = 'spend',
+  BESTOW = 'bestow',
+  REFUND = 'refund',
+  ADJUSTMENT = 'adjustment'
+}
+
+export interface ScrollGoldWallet {
+  id: string;
+  userId: string;
+  balance: number;
+  lifetimeEarned: number;
+  lifetimeSpent: number;
+  earnedFromModules: number;
+  earnedFromStreaks: number;
+  earnedFromService: number;
+  earnedFromBestowed: number;
+  spentOnDiscounts: number;
+  spentOnFeatures: number;
+  spentOnMentorship: number;
+  metadata: Record<string, any>;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ScrollGoldTransaction {
+  id: string;
+  walletId: string;
+  userId: string;
+  type: ScrollGoldTransactionType;
+  amount: number;
+  balanceAfter: number;
+  reason: string;
+  category?: string;
+  relatedEntityType?: string;
+  relatedEntityId?: string;
+  metadata: Record<string, any>;
+  createdAt: Date;
+}
+
+// Product Configuration Types
+export interface ProductConfig {
+  tier: SubscriptionTier;
+  name: string;
+  description: string;
+  amountCents: number;
+  currency: string;
+  interval?: 'month' | 'year' | 'one_time';
+  features: {
+    aiTutorMinutes: number;
+    courseAccessType: string;
+    hasCertificates: boolean;
+    hasLabAccess: boolean;
+    hasCommunityAccess: boolean;
+  };
+  metadata?: Record<string, any>;
+}
+
 
 ## Error Handling
 
-### Error Classification System
+### Error Categories
 
-**Financial Errors:**
-- `PAYMENT_DECLINED` - Payment method declined by processor
-- `INSUFFICIENT_FUNDS` - Insufficient ScrollCoins or traditional funds
-- `CURRENCY_CONVERSION_FAILED` - Currency conversion service unavailable
-- `TAX_CALCULATION_ERROR` - Tax service error or invalid jurisdiction
-- `INVOICE_GENERATION_FAILED` - Invoice creation or delivery failure
+1. **Payment Errors**
+   - Card declined
+   - Insufficient funds
+   - Payment method expired
+   - Fraud detection triggered
 
-**Integration Errors:**
-- `GATEWAY_TIMEOUT` - Payment gateway timeout or unavailability
-- `SCROLLCOIN_SERVICE_ERROR` - ScrollCoin integration service failure
-- `ACCOUNTING_SYNC_FAILED` - Accounting system synchronization failure
-- `BANK_API_ERROR` - Banking API integration failure
+2. **Subscription Errors**
+   - Invalid tier upgrade/downgrade
+   - Subscription already exists
+   - Subscription not found
+   - Proration calculation failed
 
-**Security Errors:**
-- `FRAUD_DETECTED` - Suspicious transaction patterns identified
-- `AUTHENTICATION_FAILED` - Invalid credentials or expired tokens
-- `AUTHORIZATION_DENIED` - Insufficient permissions for operation
-- `PCI_COMPLIANCE_VIOLATION` - Payment card industry compliance issue
+3. **ScrollGold Errors**
+   - Insufficient balance
+   - Invalid transaction amount
+   - Wallet not found
+   - Earning rule violation
 
-### Error Recovery Strategies
+4. **Webhook Errors**
+   - Invalid signature
+   - Duplicate event
+   - Processing timeout
+   - Database transaction failed
 
-**Payment Processing Recovery:**
+### Error Handling Strategy
+
 ```typescript
-class PaymentRecoveryService {
-  async retryFailedPayment(paymentId: string): Promise<PaymentResult> {
-    const payment = await this.getPayment(paymentId)
-    const retryStrategy = this.determineRetryStrategy(payment.failureReason)
-    
-    switch (retryStrategy) {
-      case 'IMMEDIATE_RETRY':
-        return this.processPayment(payment)
-      case 'DELAYED_RETRY':
-        return this.scheduleRetry(payment, { delay: '1h' })
-      case 'ALTERNATIVE_METHOD':
-        return this.suggestAlternativePayment(payment)
-      case 'MANUAL_REVIEW':
-        return this.flagForManualReview(payment)
-    }
+class BillingError extends Error {
+  constructor(
+    public code: string,
+    public message: string,
+    public statusCode: number,
+    public details?: any
+  ) {
+    super(message);
+    this.name = 'BillingError';
   }
+}
+
+// Error Codes
+export enum BillingErrorCode {
+  PAYMENT_FAILED = 'PAYMENT_FAILED',
+  INSUFFICIENT_SCROLLGOLD = 'INSUFFICIENT_SCROLLGOLD',
+  SUBSCRIPTION_NOT_FOUND = 'SUBSCRIPTION_NOT_FOUND',
+  INVALID_TIER_CHANGE = 'INVALID_TIER_CHANGE',
+  WEBHOOK_VERIFICATION_FAILED = 'WEBHOOK_VERIFICATION_FAILED',
+  STRIPE_API_ERROR = 'STRIPE_API_ERROR',
+  DATABASE_ERROR = 'DATABASE_ERROR'
+}
+
+// Error Handler
+async function handleBillingError(error: Error): Promise<void> {
+  if (error instanceof BillingError) {
+    // Log structured error
+    logger.error('Billing error occurred', {
+      code: error.code,
+      message: error.message,
+      details: error.details
+    });
+    
+    // Send alert if critical
+    if (error.statusCode >= 500) {
+      await alertService.sendCriticalAlert(error);
+    }
+    
+    // Record in monitoring
+    await monitoringService.recordError(error);
+  }
+  
+  throw error;
 }
 ```
 
-**Data Consistency Recovery:**
+### Retry Logic
+
 ```typescript
-class ConsistencyRecoveryService {
-  async reconcileFinancialData(): Promise<ReconciliationResult> {
-    const discrepancies = await this.detectDiscrepancies()
-    const resolutions = await Promise.all(
-      discrepancies.map(d => this.resolveDiscrepancy(d))
-    )
-    return this.generateReconciliationReport(resolutions)
+async function retryWithBackoff<T>(
+  operation: () => Promise<T>,
+  maxRetries: number = 3,
+  baseDelay: number = 1000
+): Promise<T> {
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      return await operation();
+    } catch (error) {
+      if (attempt === maxRetries - 1) throw error;
+      
+      const delay = baseDelay * Math.pow(2, attempt);
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
   }
+  throw new Error('Max retries exceeded');
 }
 ```
 
 ## Testing Strategy
 
-### Testing Pyramid Implementation
+### Unit Tests
 
-**Unit Testing (70%):**
-- Financial calculation accuracy testing
-- Payment processing logic validation
-- Tax calculation verification
-- Currency conversion accuracy
-- ScrollCoin integration logic
-- Fraud detection algorithm testing
-
-**Integration Testing (20%):**
-- Payment gateway integration testing
-- ScrollCoin system integration validation
-- Accounting system synchronization testing
-- Tax service API integration testing
-- Database transaction integrity testing
-- Event-driven communication testing
-
-**End-to-End Testing (10%):**
-- Complete billing cycle testing
-- Multi-currency payment flow testing
-- Subscription lifecycle testing
-- Financial reporting accuracy testing
-- Compliance workflow testing
-- Disaster recovery testing
-
-### Financial Testing Scenarios
-
-**Payment Processing Tests:**
 ```typescript
-describe('Payment Processing', () => {
-  test('should process hybrid ScrollCoin and fiat payment', async () => {
-    const payment = {
-      studentId: 'student-123',
-      totalAmount: { amount: 1000, currency: 'USD' },
-      scrollCoins: 500,
-      traditionalAmount: { amount: 500, currency: 'USD' }
+describe('BillingService', () => {
+  describe('createCheckoutSession', () => {
+    it('should create checkout session with correct product', async () => {
+      const session = await billingService.createCheckoutSession({
+        userId: 'user-123',
+        tier: SubscriptionTier.ALL_ACCESS_MONTHLY,
+        successUrl: 'https://app.scrolluniversity.com/success',
+        cancelUrl: 'https://app.scrolluniversity.com/cancel'
+      });
+      
+      expect(session.url).toBeDefined();
+      expect(session.metadata.userId).toBe('user-123');
+    });
+    
+    it('should apply ScrollGold discount when provided', async () => {
+      const session = await billingService.createCheckoutSession({
+        userId: 'user-123',
+        tier: SubscriptionTier.ALL_ACCESS_MONTHLY,
+        scrollgoldDiscount: 100,
+        successUrl: 'https://app.scrolluniversity.com/success',
+        cancelUrl: 'https://app.scrolluniversity.com/cancel'
+      });
+      
+      expect(session.amount_total).toBeLessThan(4900); // €49 - discount
+    });
+  });
+});
+
+describe('ScrollGoldService', () => {
+  describe('awardScrollGold', () => {
+    it('should increase wallet balance', async () => {
+      const transaction = await scrollGoldService.awardScrollGold(
+        'user-123',
+        50,
+        'Module completion'
+      );
+      
+      expect(transaction.amount).toBe(50);
+      expect(transaction.type).toBe(ScrollGoldTransactionType.EARN);
+      
+      const wallet = await scrollGoldService.getWallet('user-123');
+      expect(wallet.balance).toBeGreaterThanOrEqual(50);
+    });
+  });
+  
+  describe('applyDiscount', () => {
+    it('should throw error if insufficient balance', async () => {
+      await expect(
+        scrollGoldService.applyDiscount('user-123', 1000, 'purchase-456')
+      ).rejects.toThrow('Insufficient ScrollGold balance');
+    });
+  });
+});
+```
+
+### Integration Tests
+
+```typescript
+describe('Stripe Webhook Integration', () => {
+  it('should grant access on checkout.session.completed', async () => {
+    const event = createMockStripeEvent('checkout.session.completed', {
+      customer: 'cus_123',
+      subscription: 'sub_123',
+      metadata: { userId: 'user-123', tier: 'ALL_ACCESS_MONTHLY' }
+    });
+    
+    await webhookHandler.handleCheckoutCompleted(event.data.object);
+    
+    const subscription = await db.subscriptions.findOne({ userId: 'user-123' });
+    expect(subscription.status).toBe('active');
+    
+    const access = await db.enrollment_access.findMany({ userId: 'user-123' });
+    expect(access.length).toBeGreaterThan(0);
+  });
+});
+```
+
+
+## Configuration Management
+
+### Environment Variables
+
+```bash
+# Stripe Configuration
+STRIPE_SECRET_KEY=sk_live_...
+STRIPE_PUBLISHABLE_KEY=pk_live_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+
+# Supabase Configuration
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=eyJ...
+SUPABASE_SERVICE_ROLE_KEY=eyJ...
+
+# ScrollGold Configuration
+SCROLLGOLD_EARN_MODULE_COMPLETION=50
+SCROLLGOLD_EARN_DAILY_STREAK=10
+SCROLLGOLD_EARN_COMMUNITY_SERVICE=25
+SCROLLGOLD_DISCOUNT_RATE=0.05  # 100 ScrollGold = €5 discount
+
+# Product Pricing (in cents)
+PRICE_ALL_ACCESS_MONTHLY=4900  # €49
+PRICE_ALL_ACCESS_YEARLY=45000  # €450 (€37.50/month)
+PRICE_ELITE_LEADERSHIP=25000   # €250/month
+
+# Feature Flags
+ENABLE_SCROLLGOLD=true
+ENABLE_INSTITUTIONAL_LICENSING=true
+ENABLE_MULTI_CURRENCY=false  # Phase 2
+```
+
+### Product Configuration
+
+```typescript
+// backend/src/config/billing.config.ts
+export const PRODUCT_CONFIGS: Record<SubscriptionTier, ProductConfig> = {
+  [SubscriptionTier.FREE_TIER]: {
+    tier: SubscriptionTier.FREE_TIER,
+    name: 'Free Tier',
+    description: 'Access to free courses and limited AI tutoring',
+    amountCents: 0,
+    currency: 'EUR',
+    interval: 'month',
+    features: {
+      aiTutorMinutes: 30,
+      courseAccessType: 'free_only',
+      hasCertificates: false,
+      hasLabAccess: false,
+      hasCommunityAccess: true
     }
-    
-    const result = await paymentService.processHybridPayment(payment)
-    
-    expect(result.status).toBe('SUCCESS')
-    expect(result.scrollCoinsUsed).toBe(500)
-    expect(result.traditionalAmountCharged.amount).toBe(500)
-  })
-})
+  },
+  
+  [SubscriptionTier.ALL_ACCESS_MONTHLY]: {
+    tier: SubscriptionTier.ALL_ACCESS_MONTHLY,
+    name: 'All-Access Monthly',
+    description: 'Unlimited courses, AI tutoring, and certificates',
+    amountCents: parseInt(process.env.PRICE_ALL_ACCESS_MONTHLY || '4900'),
+    currency: 'EUR',
+    interval: 'month',
+    features: {
+      aiTutorMinutes: 0, // unlimited
+      courseAccessType: 'all',
+      hasCertificates: true,
+      hasLabAccess: true,
+      hasCommunityAccess: true
+    }
+  },
+  
+  [SubscriptionTier.ALL_ACCESS_YEARLY]: {
+    tier: SubscriptionTier.ALL_ACCESS_YEARLY,
+    name: 'All-Access Yearly',
+    description: 'Unlimited courses, AI tutoring, and certificates - save 25%',
+    amountCents: parseInt(process.env.PRICE_ALL_ACCESS_YEARLY || '45000'),
+    currency: 'EUR',
+    interval: 'year',
+    features: {
+      aiTutorMinutes: 0, // unlimited
+      courseAccessType: 'all',
+      hasCertificates: true,
+      hasLabAccess: true,
+      hasCommunityAccess: true
+    }
+  },
+  
+  [SubscriptionTier.ELITE_LEADERSHIP]: {
+    tier: SubscriptionTier.ELITE_LEADERSHIP,
+    name: 'Elite Leadership Track',
+    description: 'Premium mentorship, ScrollIntel, and leadership labs',
+    amountCents: parseInt(process.env.PRICE_ELITE_LEADERSHIP || '25000'),
+    currency: 'EUR',
+    interval: 'month',
+    features: {
+      aiTutorMinutes: 0, // unlimited
+      courseAccessType: 'all',
+      hasCertificates: true,
+      hasLabAccess: true,
+      hasCommunityAccess: true
+    },
+    metadata: {
+      hasScrollIntelAccess: true,
+      hasScrollArkAccess: true,
+      hasMentorshipAccess: true,
+      hasEntrepreneurshipStudio: true
+    }
+  }
+};
 ```
 
-**Tax Calculation Tests:**
+### ScrollGold Earning Rules Configuration
+
 ```typescript
-describe('Tax Calculation', () => {
-  test('should calculate correct tax for educational services', async () => {
-    const calculation = await taxService.calculateTax({
-      amount: { amount: 1000, currency: 'USD' },
-      location: { country: 'US', state: 'CA' },
-      serviceType: 'EDUCATION'
-    })
-    
-    expect(calculation.taxAmount.amount).toBe(0) // Educational exemption
-    expect(calculation.exemptionReason).toBe('EDUCATIONAL_INSTITUTION')
-  })
-})
+// backend/src/config/scrollgold.config.ts
+export const SCROLLGOLD_EARNING_RULES = {
+  MODULE_COMPLETION: {
+    name: 'Module Completion',
+    category: 'achievement',
+    amount: 50,
+    conditions: { minScore: 80 }
+  },
+  
+  DAILY_STREAK: {
+    name: 'Daily Study Streak',
+    category: 'consistency',
+    amount: 10,
+    maxPerDay: 10
+  },
+  
+  COMMUNITY_SERVICE: {
+    name: 'Community Service',
+    category: 'service',
+    amount: 25,
+    maxPerWeek: 100
+  },
+  
+  PEER_MENTORING: {
+    name: 'Peer Mentoring',
+    category: 'service',
+    amount: 50,
+    maxPerWeek: 200
+  },
+  
+  RESEARCH_PUBLICATION: {
+    name: 'Research Publication',
+    category: 'achievement',
+    amount: 500
+  },
+  
+  FAITHFUL_PAYMENT: {
+    name: 'Faithful Recurring Payment',
+    category: 'faithfulness',
+    amount: 20,
+    conditions: { consecutivePayments: 3 }
+  }
+};
+
+export const SCROLLGOLD_SPENDING_OPTIONS = {
+  COURSE_DISCOUNT: {
+    name: 'Course Discount',
+    conversionRate: 0.05, // 100 ScrollGold = €5 discount
+    maxDiscount: 0.50 // Max 50% discount
+  },
+  
+  PREMIUM_AI_HOURS: {
+    name: 'Premium AI Lab Hours',
+    cost: 100, // 100 ScrollGold per hour
+  },
+  
+  MENTORSHIP_CIRCLE: {
+    name: 'Mentorship Circle Access',
+    cost: 500 // 500 ScrollGold per month
+  },
+  
+  GOVERNANCE_VOTE: {
+    name: 'Governance Vote Weight',
+    cost: 50 // 50 ScrollGold per vote
+  }
+};
 ```
 
-### Performance Testing
 
-**Load Testing Scenarios:**
-- 10,000 concurrent payment processing requests
-- 50,000 invoice generation operations per hour
-- 1,000 simultaneous subscription modifications
-- 100,000 financial report queries per day
+## Implementation Roadmap
 
-**Stress Testing Scenarios:**
-- Payment gateway failure simulation
-- Database connection pool exhaustion
-- ScrollCoin service unavailability
-- High-volume fraud detection processing
+### Phase 1: Core Stripe + Supabase Integration (Week 1-2)
 
-### Security Testing
+**Goal**: Get basic payment processing working with Stripe + Supabase
 
-**Financial Security Tests:**
-- PCI DSS compliance validation
-- Payment data encryption verification
-- Fraud detection accuracy testing
-- Authentication and authorization testing
-- Data breach simulation and response testing
-- Regulatory compliance audit simulation
+1. **Database Setup**
+   - Create Supabase migration with all billing tables
+   - Set up indexes and foreign keys
+   - Create RLS policies for security
 
-**ScrollCoin Security Tests:**
-- Coin balance manipulation prevention
-- Double-spending prevention
-- Unauthorized coin transfer detection
-- Coin-to-fiat conversion rate manipulation prevention
+2. **Stripe Product Configuration**
+   - Create Stripe products for FREE_TIER, ALL_ACCESS_MONTHLY, ALL_ACCESS_YEARLY
+   - Configure prices and metadata
+   - Set up webhook endpoints
 
-This comprehensive design provides the foundation for a robust, scalable, and secure financial management system that serves ScrollUniversity's mission while maintaining the highest standards of financial integrity and kingdom principles.
+3. **Core Services**
+   - Implement BillingService with Stripe SDK
+   - Implement StripeWebhookHandler
+   - Implement basic SubscriptionManager
+
+4. **Webhook Integration**
+   - Handle checkout.session.completed
+   - Handle invoice.payment_succeeded
+   - Handle subscription lifecycle events
+
+5. **Frontend Components**
+   - Payment form with Stripe Elements
+   - Subscription management UI
+   - Payment history display
+
+### Phase 2: ScrollGold System (Week 3)
+
+**Goal**: Add ScrollGold earning and spending
+
+1. **ScrollGold Database**
+   - Implement wallet and transaction tables
+   - Create earning rules table
+   - Set up transaction logging
+
+2. **ScrollGold Service**
+   - Implement wallet creation and management
+   - Implement earning logic (modules, streaks, service)
+   - Implement spending logic (discounts, features)
+
+3. **Integration Points**
+   - Award ScrollGold on module completion
+   - Award ScrollGold on daily streaks
+   - Apply ScrollGold discounts at checkout
+
+4. **Frontend Components**
+   - ScrollGold wallet interface
+   - Transaction history
+   - Earning opportunities display
+
+### Phase 3: Advanced Features (Week 4)
+
+**Goal**: Add institutional licensing and analytics
+
+1. **Institutional Licensing**
+   - Multi-seat subscription management
+   - Custom portal configuration
+   - Institutional billing and invoicing
+
+2. **Analytics & Reporting**
+   - Subscription metrics dashboard
+   - Revenue analytics
+   - Churn analysis
+   - ScrollGold economy metrics
+
+3. **Admin Tools**
+   - Subscription management interface
+   - ScrollGold bestowing tools
+   - Financial reporting
+
+### Phase 4: Optimization & Scale (Week 5+)
+
+**Goal**: Production hardening and optimization
+
+1. **Performance**
+   - Implement caching for product configs
+   - Optimize database queries
+   - Add connection pooling
+
+2. **Monitoring**
+   - Set up error tracking (Sentry)
+   - Add performance monitoring
+   - Create alerting for failed payments
+
+3. **Testing**
+   - Comprehensive unit test coverage
+   - Integration tests for webhook flows
+   - Load testing for high-volume scenarios
+
+4. **Documentation**
+   - API documentation
+   - Admin user guides
+   - Developer integration guides
+
+
+## Security Considerations
+
+### Payment Security
+
+1. **PCI Compliance**
+   - Never store card details directly
+   - Use Stripe Elements for card input
+   - Use Stripe Customer objects for payment methods
+   - Implement SCA (Strong Customer Authentication) for EU
+
+2. **Webhook Security**
+   - Verify webhook signatures using Stripe webhook secret
+   - Implement idempotency checks to prevent duplicate processing
+   - Use HTTPS for all webhook endpoints
+   - Rate limit webhook endpoints
+
+3. **Data Protection**
+   - Encrypt sensitive data at rest
+   - Use HTTPS for all API communications
+   - Implement proper access controls (RLS in Supabase)
+   - Audit log all financial transactions
+
+### ScrollGold Security
+
+1. **Balance Manipulation Prevention**
+   - Use database transactions for all balance updates
+   - Implement balance validation checks
+   - Log all ScrollGold transactions with audit trail
+   - Set maximum earning limits per day/week
+
+2. **Fraud Detection**
+   - Monitor unusual earning patterns
+   - Flag rapid balance changes
+   - Implement velocity checks
+   - Alert on suspicious activity
+
+### Access Control
+
+1. **Role-Based Access**
+   - Students: View own subscriptions and payments
+   - Admins: Manage all subscriptions and bestow ScrollGold
+   - Finance: Access financial reports and analytics
+   - Support: View customer billing issues
+
+2. **Row-Level Security (Supabase)**
+```sql
+-- Students can only see their own subscriptions
+CREATE POLICY "Users can view own subscriptions"
+  ON subscriptions FOR SELECT
+  USING (auth.uid() = user_id);
+
+-- Students can only see their own payments
+CREATE POLICY "Users can view own payments"
+  ON payments FOR SELECT
+  USING (auth.uid() = user_id);
+
+-- Students can only see their own ScrollGold wallet
+CREATE POLICY "Users can view own wallet"
+  ON scrollgold_wallets FOR SELECT
+  USING (auth.uid() = user_id);
+
+-- Only admins can bestow ScrollGold
+CREATE POLICY "Admins can bestow ScrollGold"
+  ON scrollgold_transactions FOR INSERT
+  USING (
+    auth.jwt() ->> 'role' = 'admin' 
+    AND type = 'bestow'
+  );
+```
+
+## Monitoring and Observability
+
+### Key Metrics
+
+1. **Revenue Metrics**
+   - Monthly Recurring Revenue (MRR)
+   - Annual Recurring Revenue (ARR)
+   - Average Revenue Per User (ARPU)
+   - Customer Lifetime Value (CLV)
+
+2. **Subscription Metrics**
+   - New subscriptions per day/week/month
+   - Churn rate
+   - Upgrade/downgrade rates
+   - Trial conversion rate
+
+3. **Payment Metrics**
+   - Payment success rate
+   - Failed payment recovery rate
+   - Refund rate
+   - Average transaction value
+
+4. **ScrollGold Metrics**
+   - Total ScrollGold in circulation
+   - Average wallet balance
+   - Earning rate by category
+   - Spending rate by category
+   - ScrollGold discount usage rate
+
+### Logging Strategy
+
+```typescript
+// Structured logging for all billing events
+logger.info('Payment processed', {
+  userId: 'user-123',
+  paymentId: 'pay-456',
+  amountCents: 4900,
+  currency: 'EUR',
+  status: 'succeeded',
+  scrollgoldApplied: 100,
+  timestamp: new Date().toISOString()
+});
+
+logger.info('ScrollGold awarded', {
+  userId: 'user-123',
+  amount: 50,
+  reason: 'Module completion',
+  moduleId: 'mod-789',
+  balanceAfter: 250,
+  timestamp: new Date().toISOString()
+});
+
+logger.error('Webhook processing failed', {
+  eventId: 'evt-123',
+  eventType: 'invoice.payment_failed',
+  error: error.message,
+  attempts: 3,
+  timestamp: new Date().toISOString()
+});
+```
+
+### Alerting Rules
+
+1. **Critical Alerts** (Immediate notification)
+   - Webhook endpoint down
+   - Payment processing failure rate > 10%
+   - Database connection failures
+   - Stripe API errors
+
+2. **Warning Alerts** (Review within 1 hour)
+   - Churn rate spike
+   - Failed payment recovery rate drop
+   - ScrollGold balance anomalies
+   - Subscription cancellation spike
+
+3. **Info Alerts** (Daily digest)
+   - Daily revenue summary
+   - New subscription count
+   - ScrollGold economy health
+   - Top earning/spending users
+
+## Deployment Strategy
+
+### Environment Setup
+
+1. **Development**
+   - Use Stripe test mode
+   - Local Supabase instance or dev project
+   - Mock webhook events for testing
+
+2. **Staging**
+   - Use Stripe test mode
+   - Staging Supabase project
+   - Real webhook integration testing
+
+3. **Production**
+   - Use Stripe live mode
+   - Production Supabase project
+   - Full monitoring and alerting
+   - Backup and disaster recovery
+
+### Deployment Checklist
+
+- [ ] Environment variables configured
+- [ ] Stripe products created
+- [ ] Stripe webhook endpoints registered
+- [ ] Database migrations applied
+- [ ] RLS policies enabled
+- [ ] Monitoring dashboards configured
+- [ ] Alert rules configured
+- [ ] Backup strategy implemented
+- [ ] Documentation updated
+- [ ] Team training completed
+

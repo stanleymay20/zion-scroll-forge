@@ -254,7 +254,7 @@ interface XPUpdate {
 - **onAssessmentSubmit:** Trigger grading, provide feedback, update transcript
 
 ### Progress Events
-- **onMilestoneReached:** Award ScrollCoin, send celebration, update achievements
+- **onMilestoneReached:** Award ScrollGold, send celebration, update achievements
 - **onStudentStruggling:** Alert mentor, suggest tutoring, provide resources
 - **onCourseComplete:** Generate certificate, update transcript, unlock next courses
 - **onInactivityDetected:** Send re-engagement, notify mentor, suggest support
@@ -266,7 +266,7 @@ interface XPUpdate {
 
 ## Billing/Coin Logic
 
-### ScrollCoin Rewards
+### ScrollGold Rewards
 - **Lecture Completion:** 10 coins × difficulty multiplier
 - **Assessment Pass:** 25 coins × difficulty multiplier
 - **Course Completion:** 100 coins × difficulty multiplier

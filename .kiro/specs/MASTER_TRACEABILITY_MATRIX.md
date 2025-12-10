@@ -62,11 +62,11 @@ This matrix links specification requirements to concrete implementations (code),
 - Spec: `.kiro/specs/scroll-seal-certification/requirements.md`
 - Code
   - Smart contract scaffold: `backend/contracts/ScrollCredentialVerification.sol`
-  - ScrollCoin/credential endpoints: `backend/src` (shared services)
+  - ScrollGold/credential endpoints: `backend/src` (shared services)
 - Validation
   - Included in platform and credential validations
 - Tests
-  - Covered via service integration and ScrollCoin tests
+  - Covered via service integration and ScrollGold tests
 
 ## 6) scroll-assessment-engine
 - Spec: `.kiro/specs/scroll-assessment-engine/requirements.md`
@@ -121,9 +121,9 @@ This matrix links specification requirements to concrete implementations (code),
 - Validation
   - Exercise via functional demos `enhanced-frontend.html`
 
-## 12) scroll-scrollcoin-meter (Economy)
-- Spec: `.kiro/specs/scroll-scrollcoin-meter/requirements.md`
-- Complementary doc: `docs/SCROLLCOIN_ECONOMY.md`
+## 12) scroll-ScrollGold-meter (Economy)
+- Spec: `.kiro/specs/scroll-ScrollGold-meter/requirements.md`
+- Complementary doc: `docs/ScrollGold_ECONOMY.md`
 - Code
   - Wallet/transactions/rewards: backend services under `backend/src/**`
   - Public endpoints: `simple-demo-server.js`, `enhanced-backend-server.js`
@@ -138,19 +138,19 @@ This matrix links specification requirements to concrete implementations (code),
 - Tasks: `.kiro/specs/scroll-gamified-learning/tasks.md`
 - Code
   - Mobile and web UI: `mobile/**`, `src/**`
-  - Rewards integration via ScrollCoin services
+  - Rewards integration via ScrollGold services
 - Validation
   - Engagement metrics validated via app demos and analytics scripts
 
   Requirement mapping (selected highlights):
-  - Req 1 (Core engine, XP, levels, leaderboards): `mobile/src/**`, `src/components/**`, ScrollCoin hooks in `backend/src/**`
+  - Req 1 (Core engine, XP, levels, leaderboards): `mobile/src/**`, `src/components/**`, ScrollGold hooks in `backend/src/**`
   - Req 2 (Streaks & notifications): `mobile/src/**` notification handlers; portal UI in `src/components/**`
   - Req 3 (AI tutor gamification): `src/services/**` tutor integration; validators in `src/testing/validators/**`
   - Req 4 (Learning worlds): UI flows `mobile/src/**`; content integration `src/services/**`
   - Req 5 (XR quests): `src/integration/**` and XR fallbacks in portal components
   - Req 6 (ScrollMap): UI + data `mobile/src/**`, `src/services/**`
   - Req 7 (Voice/audio): mobile audio flows `mobile/src/**`
-  - Req 8 (Rewards/ScrollCoin): economy in `backend/src/**` and endpoints in root demo servers
+  - Req 8 (Rewards/ScrollGold): economy in `backend/src/**` and endpoints in root demo servers
   - Req 9–12 (Social, builds, adaptive, dashboards): `src/components/**`, `src/services/**`, analytics in `src/testing/**`
   - Req 13–22 (Mobile/offline, seasons, spiritual, sync, localization, safety, perf, testing, integration): cross-cutting across `mobile/**`, `src/**`, `backend/**`
 
@@ -204,7 +204,7 @@ This matrix links specification requirements to concrete implementations (code),
   - Req 1–5 (Access, i18n, auth, dashboard, enrollment): `src/components/**`, `src/services/**`, gateway `src/gateway/**`
   - Req 6–8 (Faculty/admin, global ops, ecosystem): `src/portal/**`, `src/integration/**`, backend routes `backend/src/**`
   - Req 9 (XR/fallbacks): `src/integration/**`, UI fallbacks in `src/components/**`
-  - Req 10 (Scholarships/workstudy): `src/services/**` + ScrollCoin integration in backend
+  - Req 10 (Scholarships/workstudy): `src/services/**` + ScrollGold integration in backend
   - Req 11 (AI tutor UI): `src/components/**` chat, `src/services/**` sessions
   - Req 12 (Offline Sacred Sync): offline cache/PWA in `public/`, `src/**`, mobile sync `mobile/**`
   - Req 13 (Accessibility): UI patterns in `src/components/**`
@@ -224,7 +224,7 @@ This matrix links specification requirements to concrete implementations (code),
 ---
 
 ## Coverage Status (High-Level)
-- Platform, Curriculum, Student Profile, ScrollCoin, Assessment, GPT Verifier, Audit, Drift Detection: Addressed and validated by existing scripts and tests.
+- Platform, Curriculum, Student Profile, ScrollGold, Assessment, GPT Verifier, Audit, Drift Detection: Addressed and validated by existing scripts and tests.
 - Portal, Faculty AI, Gamified Learning, XR, Mobile: Design and tasks complete; implementation in progress; validated partially via demos and framework validators.
 - Credentialing/Transcript/Succession: Requirements complete; implementation linked through platform services and smart-contract scaffolds; end-to-end verification pending final integrations.
 

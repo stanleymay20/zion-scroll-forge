@@ -40,7 +40,7 @@ export const WelcomeDashboard: React.FC<WelcomeDashboardProps> = ({ user }) => {
       'course_selection': '/courses',
       'advisor_introduction': '/advisor',
       'community_introduction': '/community',
-      'scrollcoin_tutorial': '/scrollcoin/tutorial',
+      'ScrollGold_tutorial': '/ScrollGold/tutorial',
       'spiritual_formation_setup': '/spiritual-formation/setup',
       'completion': '/dashboard'
     };
@@ -97,7 +97,7 @@ export const WelcomeDashboard: React.FC<WelcomeDashboardProps> = ({ user }) => {
     },
     {
       icon: Award,
-      title: 'ScrollCoin Rewards',
+      title: 'ScrollGold Rewards',
       description: 'Earn rewards for your achievements'
     },
     {
@@ -134,7 +134,7 @@ export const WelcomeDashboard: React.FC<WelcomeDashboardProps> = ({ user }) => {
           <Sparkles className="h-4 w-4 text-blue-600" />
           <AlertDescription className="text-blue-900">
             <strong>New to ScrollUniversity?</strong> Complete the onboarding checklist below 
-            to unlock all features and earn 100 ScrollCoins!
+            to unlock all features and earn 100 ScrollGolds!
           </AlertDescription>
         </Alert>
 

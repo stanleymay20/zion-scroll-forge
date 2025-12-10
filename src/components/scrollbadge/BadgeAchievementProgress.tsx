@@ -38,7 +38,7 @@ export const BadgeAchievementProgress: React.FC<BadgeAchievementProgressProps> =
           targetCount: 10,
           progress: 70,
           isCompleted: false,
-          reward: '500 ScrollCoin'
+          reward: '500 ScrollGold'
         },
         {
           achievementType: 'HIGH_ACHIEVER',
@@ -58,7 +58,7 @@ export const BadgeAchievementProgress: React.FC<BadgeAchievementProgressProps> =
           targetCount: 3,
           progress: 33,
           isCompleted: false,
-          reward: '1000 ScrollCoin'
+          reward: '1000 ScrollGold'
         },
         {
           achievementType: 'PERFECT_SCORE',
@@ -78,7 +78,7 @@ export const BadgeAchievementProgress: React.FC<BadgeAchievementProgressProps> =
           targetCount: 1,
           progress: 0,
           isCompleted: false,
-          reward: 'Degree Completion Badge + 5000 ScrollCoin'
+          reward: 'Degree Completion Badge + 5000 ScrollGold'
         }
       ];
 

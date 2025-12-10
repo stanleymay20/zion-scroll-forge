@@ -6,15 +6,15 @@ import {
   SessionFeedback,
   MentorshipProgress
 } from '../types/community';
-import { ScrollCoinService } from './ScrollCoinService';
+import { ScrollGoldService } from './ScrollGoldService';
 import { PropheticIntelligenceService } from './PropheticIntelligenceService';
 
 export class PeerMentoringService {
-  private scrollCoinService: ScrollCoinService;
+  private ScrollGoldService: ScrollGoldService;
   private propheticService: PropheticIntelligenceService;
 
   constructor() {
-    this.scrollCoinService = new ScrollCoinService();
+    this.ScrollGoldService = new ScrollGoldService();
     this.propheticService = new PropheticIntelligenceService();
   }
 
@@ -56,8 +56,8 @@ export class PeerMentoringService {
   async acceptMentorshipRequest(mentorshipId: string, mentorId: string): Promise<void> {
     await this.updateMentorshipStatus(mentorshipId, MentorshipStatus.ACTIVE);
     
-    // Award ScrollCoin to mentor for accepting mentorship
-    await this.scrollCoinService.awardCoins(mentorId, 25, 'Accepted mentorship request');
+    // Award ScrollGold to mentor for accepting mentorship
+    await this.ScrollGoldService.awardCoins(mentorId, 25, 'Accepted mentorship request');
     
     // Create initial session
     await this.scheduleInitialSession(mentorshipId);
@@ -78,7 +78,7 @@ export class PeerMentoringService {
       scheduledAt: sessionData.scheduledAt,
       duration: sessionData.duration,
       status: SessionStatus.SCHEDULED,
-      scrollCoinReward: 0
+      ScrollGoldReward: 0
     };
 
     await this.storeSession(session);
@@ -104,7 +104,7 @@ export class PeerMentoringService {
       await this.updateSessionFeedback(sessionId, feedback);
     }
 
-    // Award ScrollCoin to mentor for completed session
+    // Award ScrollGold to mentor for completed session
     const session = await this.getSessionById(sessionId);
     if (session) {
       const mentorship = await this.getMentorshipById(session.mentorshipId);
@@ -122,7 +122,7 @@ export class PeerMentoringService {
           totalReward += 15;
         }
 
-        await this.scrollCoinService.awardCoins(mentorship.mentorId, totalReward, 'Completed mentorship session');
+        await this.ScrollGoldService.awardCoins(mentorship.mentorId, totalReward, 'Completed mentorship session');
         await this.updateSessionReward(sessionId, totalReward);
       }
     }
@@ -179,9 +179,9 @@ export class PeerMentoringService {
     if (mentorship) {
       mentorship.progress.goalsCompleted += 1;
       
-      // Award ScrollCoin for goal completion
-      await this.scrollCoinService.awardCoins(mentorship.menteeId, 20, 'Completed mentorship goal');
-      await this.scrollCoinService.awardCoins(mentorship.mentorId, 15, 'Helped mentee complete goal');
+      // Award ScrollGold for goal completion
+      await this.ScrollGoldService.awardCoins(mentorship.menteeId, 20, 'Completed mentorship goal');
+      await this.ScrollGoldService.awardCoins(mentorship.mentorId, 15, 'Helped mentee complete goal');
       
       await this.updateMentorshipProgressInDatabase(mentorshipId, mentorship.progress);
       
@@ -198,8 +198,8 @@ export class PeerMentoringService {
     const mentorship = await this.getMentorshipById(mentorshipId);
     if (mentorship) {
       // Award completion bonus
-      await this.scrollCoinService.awardCoins(mentorship.mentorId, 100, 'Completed mentorship program');
-      await this.scrollCoinService.awardCoins(mentorship.menteeId, 75, 'Completed mentorship program');
+      await this.ScrollGoldService.awardCoins(mentorship.mentorId, 100, 'Completed mentorship program');
+      await this.ScrollGoldService.awardCoins(mentorship.menteeId, 75, 'Completed mentorship program');
       
       // Generate completion certificate
       await this.generateMentorshipCertificate(mentorship);
@@ -218,10 +218,10 @@ export class PeerMentoringService {
     if (validation.isAligned) {
       await this.storeSpiritualGuidance(mentorshipId, guidance);
       
-      // Award bonus ScrollCoin for spiritual mentoring
+      // Award bonus ScrollGold for spiritual mentoring
       const mentorship = await this.getMentorshipById(mentorshipId);
       if (mentorship) {
-        await this.scrollCoinService.awardCoins(mentorship.mentorId, 30, 'Provided spiritual guidance');
+        await this.ScrollGoldService.awardCoins(mentorship.mentorId, 30, 'Provided spiritual guidance');
       }
     }
   }
@@ -230,7 +230,7 @@ export class PeerMentoringService {
     totalMentorships: number;
     completedMentorships: number;
     averageRating: number;
-    totalScrollCoinsEarned: number;
+    totalScrollGoldsEarned: number;
     skillsImproved: string[];
     spiritualGrowthAreas: string[];
   }> {
@@ -338,7 +338,7 @@ export class PeerMentoringService {
       totalMentorships: 0,
       completedMentorships: 0,
       averageRating: 0,
-      totalScrollCoinsEarned: 0,
+      totalScrollGoldsEarned: 0,
       skillsImproved: [],
       spiritualGrowthAreas: []
     };

@@ -153,7 +153,7 @@ class LovableToSupabaseMigration {
       'assignment',
       'submission',
       'payment',
-      'scrollCoinTransaction',
+      'scrollGoldTransaction',
       'scrollBadge',
       'prayerEntry',
       'dailyDevotion',

@@ -27,10 +27,10 @@ Comprehensive TypeScript interfaces for:
 
 #### EnrollmentService (`backend/src/services/EnrollmentService.ts`)
 - ✅ Create course enrollments with payment processing
-- ✅ Support for multiple payment methods (ScrollCoin, scholarship, work-trade, credit card)
+- ✅ Support for multiple payment methods (ScrollGold, scholarship, work-trade, credit card)
 - ✅ Prerequisite checking
 - ✅ Progress tracking and updates
-- ✅ Course completion rewards (ScrollXP and ScrollCoin)
+- ✅ Course completion rewards (ScrollXP and ScrollGold)
 - ✅ Enrollment withdrawal
 - ✅ Bulk enrollment operations
 - ✅ Enrollment statistics
@@ -60,7 +60,7 @@ Comprehensive TypeScript interfaces for:
 5. Choose Your First Course
 6. Meet Your Academic Advisor
 7. Join the Community
-8. Understanding ScrollCoin
+8. Understanding ScrollGold
 9. Set Up Spiritual Formation
 10. Onboarding Complete
 
@@ -93,7 +93,7 @@ Comprehensive TypeScript interfaces for:
 - ✅ Module progress tracking
 - ✅ Quiz and assessment support
 - ✅ Certificate issuance
-- ✅ ScrollCoin rewards (50 coins)
+- ✅ ScrollGold rewards (50 coins)
 - ✅ Module completion validation
 
 **Orientation Modules:**
@@ -101,7 +101,7 @@ Comprehensive TypeScript interfaces for:
 2. Platform Overview
 3. Academic Policies
 4. Spiritual Formation Introduction
-5. ScrollCoin Economy
+5. ScrollGold Economy
 6. AI Tutor Tutorial
 7. Community Guidelines
 8. Technical Requirements
@@ -115,7 +115,7 @@ Comprehensive TypeScript interfaces for:
   - Learning metrics (quizzes, scores)
   - Spiritual growth (devotions, prayer, scripture)
   - Community engagement (forums, study groups)
-  - ScrollCoin economy tracking
+  - ScrollGold economy tracking
 - ✅ At-risk student identification
 - ✅ Risk factor analysis
 - ✅ Intervention recommendations
@@ -214,11 +214,11 @@ Comprehensive TypeScript interfaces for:
 - ✅ User, Enrollment, Course models
 - ✅ Mentorship for advisor relationships
 - ✅ UserPreferences for onboarding/orientation data
-- ✅ ScrollCoinTransaction for rewards
+- ✅ ScrollGoldTransaction for rewards
 - ✅ Payment for enrollment payments
 
 ### Payment Integration
-- ✅ ScrollCoin payment processing
+- ✅ ScrollGold payment processing
 - ✅ Scholarship application
 - ✅ Work-trade credits
 - ✅ Credit card support (via Stripe)
@@ -304,7 +304,7 @@ Content-Type: application/json
 
 {
   "courseId": "course_123",
-  "paymentMethod": "scroll_coin",
+  "paymentMethod": "scroll_gold",
   "notes": "Excited to start learning!"
 }
 ```
@@ -344,8 +344,8 @@ Content-Type: application/json
 
 ### Default Settings
 - Enrollment expiration: 1 year
-- Onboarding completion reward: 100 ScrollCoins
-- Orientation completion reward: 50 ScrollCoins
+- Onboarding completion reward: 100 ScrollGolds
+- Orientation completion reward: 50 ScrollGolds
 - Course completion reward: Based on course.scrollXPReward
 
 ## Compliance

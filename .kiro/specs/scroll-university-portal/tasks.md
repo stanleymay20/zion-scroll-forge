@@ -51,7 +51,7 @@
 
 - [ ] 3.2 Create authentication and authorization system
   - Implement JWT-based authentication with refresh token support
-  - Add ScrollCoin wallet integration for authentication
+  - Add ScrollGold wallet integration for authentication
   - Create role-based access control (RBAC) system
   - Implement password hashing and security utilities
   - Write unit tests for authentication flows and security measures
@@ -67,7 +67,7 @@
 
 - [ ] 4. Implement user management and profile system
 - [ ] 4.1 Create user registration and profile management
-  - Implement user registration with email verification and ScrollCoin wallet creation
+  - Implement user registration with email verification and ScrollGold wallet creation
   - Add user profile management with multi-language preferences
   - Create user preference settings and customization options
   - Implement user avatar upload and profile picture management
@@ -93,7 +93,7 @@
 
 - [ ] 5.2 Create enrollment and payment processing
   - Implement course enrollment workflow with prerequisite validation
-  - Add ScrollCoin payment processing and transaction management
+  - Add ScrollGold payment processing and transaction management
   - Create enrollment confirmation and notification system
   - Implement refund and cancellation policies
   - Write unit tests for enrollment workflows and payment processing
@@ -134,7 +134,7 @@
 
 - [ ] 7. Create dashboard and progress tracking system
 - [ ] 7.1 Implement personalized student dashboard
-  - Create dashboard with course progress, XP tracking, and ScrollCoin balance
+  - Create dashboard with course progress, XP tracking, and ScrollGold balance
   - Add upcoming assignments, deadlines, and notification center
   - Implement achievement and badge display system
   - Create personalized learning recommendations and suggested courses
@@ -192,9 +192,9 @@
   - Write unit tests for scholarship and financial aid systems
   - _Requirements: 10.1, 10.2, 10.3, 10.4, 10.5_
 
-- [ ] 10.2 Integrate ScrollCoin missions and workstudy programs
+- [ ] 10.2 Integrate ScrollGold missions and workstudy programs
   - Create prophetic workstudy matching and tracking system
-  - Implement ScrollCoin mission completion verification
+  - Implement ScrollGold mission completion verification
   - Add automatic tuition credit processing for completed missions
   - Create workstudy progress tracking and payment systems
   - Write unit tests for mission and workstudy integration
@@ -212,7 +212,7 @@
 - [ ] 11.2 Create authentication and user interface components
   - Implement login, registration, and profile management interfaces
   - Add multi-language switching and RTL support for Hebrew and Arabic
-  - Create ScrollCoin wallet integration and balance display
+  - Create ScrollGold wallet integration and balance display
   - Implement user preferences and settings management
   - Write unit tests for authentication and user interface components
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 3.1, 3.2, 3.3, 3.4, 3.5_

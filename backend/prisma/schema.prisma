@@ -1392,7 +1392,9 @@ model User {
   updatedAt             DateTime                  @updatedAt @map("updated_at")
   
   // Relations
-  // scrollCoinTransactions ScrollCoinTransaction[] // Temporarily commented until model is created
+  scrollGoldWallet      ScrollGoldWalletBalance?
+  scrollGoldEvents      ScrollGoldEarningEvent[]
+  scrollGoldTransactions ScrollGoldTransaction[]
   
   @@index([email], map: "idx_user_email")
   @@index([username], map: "idx_user_username")
@@ -1747,4 +1749,634 @@ model Diploma {
   @@index([userId], map: "idx_diploma_user")
   @@index([degreeEnrollmentId], map: "idx_diploma_enrollment")
   @@map("diplomas")
+}
+
+
+// =====================================================
+// ACADEMIC YEAR AUTOMATION - FACULTY TEACHING OPERATIONS
+// =====================================================
+// These models support the TeachingLoadService and academic year automation
+
+model FacultyProfile {
+  id                              String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId                          String   @map("user_id") @db.Uuid
+  employeeId                      String   @unique @map("employee_id") @db.VarChar(50)
+  
+  // Personal Information
+  firstName                       String   @map("first_name") @db.VarChar(100)
+  lastName                        String   @map("last_name") @db.VarChar(100)
+  email                          String   @unique @db.VarChar(255)
+  phone                          String?  @db.VarChar(20)
+  officeLocation                 String?  @map("office_location") @db.VarChar(100)
+  
+  // Academic Information
+  title                          String   @db.VarChar(100)
+  department                     String   @db.VarChar(100)
+  rank                           String   @db.VarChar(50)
+  tenureStatus                   String   @default("non_tenure_track") @map("tenure_status") @db.VarChar(20)
+  hireDate                       DateTime @map("hire_date") @db.Date
+  
+  // Teaching Information
+  maxTeachingLoadCredits         Int      @default(12) @map("max_teaching_load_credits")
+  preferredTeachingLoadCredits   Int      @default(9) @map("preferred_teaching_load_credits")
+  sabbaticalEligible             Boolean  @default(false) @map("sabbatical_eligible")
+  sabbaticalNextEligibleDate     DateTime? @map("sabbatical_next_eligible_date") @db.Date
+  
+  // Status and Metadata
+  status                         String   @default("active") @db.VarChar(20)
+  bio                           String?  @db.Text
+  researchInterests             String[] @map("research_interests")
+  
+  // Audit fields
+  createdAt                     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdBy                     String?  @map("created_by") @db.Uuid
+  updatedBy                     String?  @map("updated_by") @db.Uuid
+  
+  // Relations
+  specializations               FacultySpecialization[]
+  availability                  FacultyAvailability[]
+  courseAssignments             CourseAssignment[]
+  teachingLoads                 FacultyTeachingLoad[]
+  development                   FacultyDevelopment[]
+  workloadHistory               FacultyWorkloadHistory[]
+  officeHours                   FacultyOfficeHours[]
+  
+  @@map("faculty_profiles")
+}
+
+model FacultySpecialization {
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  facultyId                     String   @map("faculty_id") @db.Uuid
+  
+  // Specialization Details
+  subjectArea                   String   @map("subject_area") @db.VarChar(100)
+  expertiseLevel                String   @default("competent") @map("expertise_level") @db.VarChar(20)
+  yearsExperience               Int      @default(0) @map("years_experience")
+  certificationRequired         Boolean  @default(false) @map("certification_required")
+  certificationStatus           String   @default("not_required") @map("certification_status") @db.VarChar(20)
+  
+  // Teaching Authorization
+  canTeachUndergraduate         Boolean  @default(true) @map("can_teach_undergraduate")
+  canTeachGraduate              Boolean  @default(false) @map("can_teach_graduate")
+  canTeachDoctoral              Boolean  @default(false) @map("can_teach_doctoral")
+  
+  // Metadata
+  createdAt                     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  
+  // Relations
+  faculty                       FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  
+  @@map("faculty_specializations")
+}
+
+model FacultyAvailability {
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  facultyId                     String   @map("faculty_id") @db.Uuid
+  semesterId                    String   @map("semester_id") @db.Uuid
+  
+  // Availability Status
+  availabilityStatus            String   @default("available") @map("availability_status") @db.VarChar(20)
+  maxCourses                    Int?     @default(4) @map("max_courses")
+  maxCreditHours                Int?     @default(12) @map("max_credit_hours")
+  
+  // Time Preferences
+  preferredDays                 String[] @map("preferred_days") @db.VarChar(20)
+  preferredTimes                String[] @map("preferred_times") @db.VarChar(20)
+  avoidBackToBack               Boolean  @default(false) @map("avoid_back_to_back")
+  
+  // Course Type Preferences
+  prefersOnline                 Boolean  @default(false) @map("prefers_online")
+  prefersHybrid                 Boolean  @default(false) @map("prefers_hybrid")
+  prefersInPerson               Boolean  @default(true) @map("prefers_in_person")
+  
+  // Special Considerations
+  sabbaticalSemester            Boolean  @default(false) @map("sabbatical_semester")
+  researchRelease               Boolean  @default(false) @map("research_release")
+  administrativeDuties          Boolean  @default(false) @map("administrative_duties")
+  
+  // Notes and Comments
+  notes                         String?  @db.Text
+  
+  // Metadata
+  createdAt                     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  
+  // Relations
+  faculty                       FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  
+  @@unique([facultyId, semesterId])
+  @@map("faculty_availability")
+}
+
+model CourseAssignment {
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  
+  // Assignment Details
+  facultyId                     String   @map("faculty_id") @db.Uuid
+  courseId                      String   @map("course_id") @db.Uuid
+  semesterId                    String   @map("semester_id") @db.Uuid
+  sectionId                     String?  @map("section_id") @db.Uuid
+  
+  // Assignment Role
+  assignmentRole                String   @default("instructor") @map("assignment_role") @db.VarChar(30)
+  primaryInstructor             Boolean  @default(true) @map("primary_instructor")
+  
+  // Teaching Load Calculation
+  creditHours                   Decimal  @default(3.0) @map("credit_hours") @db.Decimal(4, 2)
+  contactHours                  Decimal  @default(3.0) @map("contact_hours") @db.Decimal(4, 2)
+  enrollmentCount               Int      @default(0) @map("enrollment_count")
+  workloadFactor                Decimal  @default(1.0) @map("workload_factor") @db.Decimal(3, 2)
+  
+  // Assignment Status
+  assignmentStatus              String   @default("assigned") @map("assignment_status") @db.VarChar(20)
+  confirmationDate              DateTime? @map("confirmation_date") @db.Timestamptz(6)
+  confirmedBy                   String?  @map("confirmed_by") @db.Uuid
+  
+  // Scheduling Information
+  meetingDays                   String[] @map("meeting_days") @db.VarChar(20)
+  meetingTimes                  String?  @map("meeting_times") @db.VarChar(50)
+  classroom                     String?  @db.VarChar(50)
+  deliveryMode                  String   @default("in_person") @map("delivery_mode") @db.VarChar(20)
+  
+  // Special Considerations
+  overloadAssignment            Boolean  @default(false) @map("overload_assignment")
+  releaseTimeGranted            Boolean  @default(false) @map("release_time_granted")
+  stipendAmount                 Decimal  @default(0.00) @map("stipend_amount") @db.Decimal(10, 2)
+  
+  // Notes and Comments
+  assignmentNotes               String?  @map("assignment_notes") @db.Text
+  
+  // Audit fields
+  createdAt                     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  createdBy                     String?  @map("created_by") @db.Uuid
+  updatedBy                     String?  @map("updated_by") @db.Uuid
+  
+  // Relations
+  faculty                       FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  
+  @@unique([facultyId, courseId, semesterId, sectionId])
+  @@map("course_assignments")
+}
+
+model FacultyTeachingLoad {
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  facultyId                     String   @map("faculty_id") @db.Uuid
+  semesterId                    String   @map("semester_id") @db.Uuid
+  
+  // Load Calculations
+  totalCreditHours              Decimal  @default(0.0) @map("total_credit_hours") @db.Decimal(5, 2)
+  totalContactHours             Decimal  @default(0.0) @map("total_contact_hours") @db.Decimal(5, 2)
+  totalCourses                  Int      @default(0) @map("total_courses")
+  totalStudents                 Int      @default(0) @map("total_students")
+  
+  // Load Analysis
+  standardLoadCredits           Decimal  @default(12.0) @map("standard_load_credits") @db.Decimal(4, 2)
+  overloadCredits               Decimal  @default(0.0) @map("overload_credits") @db.Decimal(4, 2)
+  underloadCredits              Decimal  @default(0.0) @map("underload_credits") @db.Decimal(4, 2)
+  loadPercentage                Decimal  @default(0.0) @map("load_percentage") @db.Decimal(5, 2)
+  
+  // Load Status
+  loadStatus                    String   @default("normal") @map("load_status") @db.VarChar(20)
+  requiresApproval              Boolean  @default(false) @map("requires_approval")
+  approvedBy                    String?  @map("approved_by") @db.Uuid
+  approvalDate                  DateTime? @map("approval_date") @db.Timestamptz(6)
+  
+  // Adjustments and Releases
+  researchReleaseCredits        Decimal  @default(0.0) @map("research_release_credits") @db.Decimal(4, 2)
+  administrativeReleaseCredits  Decimal  @default(0.0) @map("administrative_release_credits") @db.Decimal(4, 2)
+  sabbaticalRelease             Boolean  @default(false) @map("sabbatical_release")
+  
+  // Financial Information
+  overloadCompensation          Decimal  @default(0.0) @map("overload_compensation") @db.Decimal(10, 2)
+  stipendTotal                  Decimal  @default(0.0) @map("stipend_total") @db.Decimal(10, 2)
+  
+  // Metadata
+  calculatedAt                  DateTime @default(now()) @map("calculated_at") @db.Timestamptz(6)
+  createdAt                     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  
+  // Relations
+  faculty                       FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  
+  @@unique([facultyId, semesterId], name: "facultyId_semesterId")
+  @@map("faculty_teaching_loads")
+}
+
+model TeachingLoadOptimization {
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  semesterId                    String   @map("semester_id") @db.Uuid
+  
+  // Optimization Parameters
+  optimizationType              String   @default("balanced") @map("optimization_type") @db.VarChar(30)
+  priorityFactors               Json     @default("{}") @map("priority_factors") @db.JsonB
+  
+  // Constraints
+  maxOverloadPercentage         Decimal  @default(25.0) @map("max_overload_percentage") @db.Decimal(5, 2)
+  minCourseEnrollment           Int      @default(8) @map("min_course_enrollment")
+  maxCourseEnrollment           Int      @default(35) @map("max_course_enrollment")
+  
+  // Status and Results
+  optimizationStatus            String   @default("pending") @map("optimization_status") @db.VarChar(20)
+  startedAt                     DateTime? @map("started_at") @db.Timestamptz(6)
+  completedAt                   DateTime? @map("completed_at") @db.Timestamptz(6)
+  
+  // Results
+  totalAssignments              Int      @default(0) @map("total_assignments")
+  facultySatisfiedCount         Int      @default(0) @map("faculty_satisfied_count")
+  overloadAssignments           Int      @default(0) @map("overload_assignments")
+  optimizationScore             Decimal  @default(0.0) @map("optimization_score") @db.Decimal(5, 2)
+  
+  // Metadata
+  requestedBy                   String   @map("requested_by") @db.Uuid
+  createdAt                     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  
+  // Relations
+  recommendations               OptimizationRecommendation[]
+  
+  @@map("teaching_load_optimizations")
+}
+
+model OptimizationRecommendation {
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  optimizationId                String   @map("optimization_id") @db.Uuid
+  
+  // Recommendation Details
+  facultyId                     String   @map("faculty_id") @db.Uuid
+  courseId                      String   @map("course_id") @db.Uuid
+  recommendationType            String   @map("recommendation_type") @db.VarChar(30)
+  
+  // Recommendation Scoring
+  preferenceScore               Decimal  @default(0.0) @map("preference_score") @db.Decimal(5, 2)
+  qualificationScore            Decimal  @default(0.0) @map("qualification_score") @db.Decimal(5, 2)
+  workloadImpactScore           Decimal  @default(0.0) @map("workload_impact_score") @db.Decimal(5, 2)
+  overallScore                  Decimal  @default(0.0) @map("overall_score") @db.Decimal(5, 2)
+  
+  // Implementation Status
+  recommendationStatus          String   @default("pending") @map("recommendation_status") @db.VarChar(20)
+  reviewedBy                    String?  @map("reviewed_by") @db.Uuid
+  reviewDate                    DateTime? @map("review_date") @db.Timestamptz(6)
+  reviewNotes                   String?  @map("review_notes") @db.Text
+  
+  // Metadata
+  createdAt                     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  
+  // Relations
+  optimization                  TeachingLoadOptimization @relation(fields: [optimizationId], references: [id], onDelete: Cascade)
+  
+  @@map("optimization_recommendations")
+}
+
+model FacultyDevelopment {
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  facultyId                     String   @map("faculty_id") @db.Uuid
+  
+  // Development Activity
+  activityType                  String   @map("activity_type") @db.VarChar(30)
+  activityTitle                 String   @map("activity_title") @db.VarChar(200)
+  activityDescription           String?  @map("activity_description") @db.Text
+  
+  // Dates and Duration
+  startDate                     DateTime @map("start_date") @db.Date
+  endDate                       DateTime? @map("end_date") @db.Date
+  hoursCompleted                Decimal  @default(0.0) @map("hours_completed") @db.Decimal(5, 2)
+  
+  // Certification and Credits
+  certificationEarned           Boolean  @default(false) @map("certification_earned")
+  continuingEducationCredits    Decimal  @default(0.0) @map("continuing_education_credits") @db.Decimal(4, 2)
+  
+  // Financial Information
+  cost                          Decimal  @default(0.0) @db.Decimal(10, 2)
+  fundingSource                 String?  @map("funding_source") @db.VarChar(50)
+  reimbursementAmount           Decimal  @default(0.0) @map("reimbursement_amount") @db.Decimal(10, 2)
+  
+  // Status and Approval
+  approvalRequired              Boolean  @default(false) @map("approval_required")
+  approvedBy                    String?  @map("approved_by") @db.Uuid
+  approvalDate                  DateTime? @map("approval_date") @db.Timestamptz(6)
+  
+  // Impact on Teaching
+  enhancesTeachingAreas         String[] @map("enhances_teaching_areas")
+  newCourseQualifications       String[] @map("new_course_qualifications")
+  
+  // Metadata
+  createdAt                     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  
+  // Relations
+  faculty                       FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  
+  @@map("faculty_development")
+}
+
+model FacultyWorkloadHistory {
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  facultyId                     String   @map("faculty_id") @db.Uuid
+  semesterId                    String   @map("semester_id") @db.Uuid
+  
+  // Historical Load Data
+  creditHours                   Decimal  @map("credit_hours") @db.Decimal(5, 2)
+  contactHours                  Decimal  @map("contact_hours") @db.Decimal(5, 2)
+  courseCount                   Int      @map("course_count")
+  studentCount                  Int      @map("student_count")
+  
+  // Performance Metrics
+  averageCourseRating           Decimal? @map("average_course_rating") @db.Decimal(3, 2)
+  studentSuccessRate            Decimal? @map("student_success_rate") @db.Decimal(5, 2)
+  courseCompletionRate          Decimal? @map("course_completion_rate") @db.Decimal(5, 2)
+  
+  // Load Analysis
+  loadEfficiencyScore           Decimal? @map("load_efficiency_score") @db.Decimal(5, 2)
+  preferenceSatisfactionScore   Decimal? @map("preference_satisfaction_score") @db.Decimal(5, 2)
+  
+  // Metadata
+  recordedAt                    DateTime @default(now()) @map("recorded_at") @db.Timestamptz(6)
+  createdAt                     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  
+  // Relations
+  faculty                       FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  
+  @@map("faculty_workload_history")
+}
+
+model FacultyOfficeHours {
+  id                            String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  facultyId                     String   @map("faculty_id") @db.Uuid
+  semesterId                    String   @map("semester_id") @db.Uuid
+  
+  // Schedule Information
+  dayOfWeek                     String   @map("day_of_week") @db.VarChar(10)
+  startTime                     DateTime @map("start_time") @db.Time(6)
+  endTime                       DateTime @map("end_time") @db.Time(6)
+  location                      String?  @db.VarChar(100)
+  
+  // Availability Type
+  officeHourType                String   @default("regular") @map("office_hour_type") @db.VarChar(20)
+  virtualMeetingLink            String?  @map("virtual_meeting_link") @db.VarChar(255)
+  
+  // Status
+  isActive                      Boolean  @default(true) @map("is_active")
+  notes                         String?  @db.Text
+  
+  // Metadata
+  createdAt                     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                     DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  
+  // Relations
+  faculty                       FacultyProfile @relation(fields: [facultyId], references: [id], onDelete: Cascade)
+  
+  @@unique([facultyId, semesterId, dayOfWeek, startTime])
+  @@map("faculty_office_hours")
+}
+
+// ============================================================================
+// SCROLLGOLD BILLING INTEGRATION SYSTEM
+// Complete ScrollGold economy integration with billing system
+// ============================================================================
+
+model ScrollGoldEarningRule {
+  id                    String                   @id @default(uuid())
+  ruleName              String                   @unique @map("rule_name")
+  ruleType              String                   @map("rule_type")
+  description           String?
+  baseAmount            Int                      @map("base_amount")
+  maxAmount             Int?                     @map("max_amount")
+  requiresVerification  Boolean                  @default(false) @map("requires_verification")
+  cooldownHours         Int?                     @map("cooldown_hours")
+  isActive              Boolean                  @default(true) @map("is_active")
+  priority              Int                      @default(0)
+  createdAt             DateTime                 @default(now()) @map("created_at")
+  updatedAt             DateTime                 @updatedAt @map("updated_at")
+  
+  earningEvents         ScrollGoldEarningEvent[]
+  transactions          ScrollGoldTransaction[]
+  
+  @@index([ruleType], map: "idx_scrollgold_earning_rule_type")
+  @@index([isActive], map: "idx_scrollgold_earning_rule_active")
+  @@map("scrollgold_earning_rules")
+}
+
+model ScrollGoldWalletBalance {
+  id                          String    @id @default(uuid())
+  userId                      String    @unique @map("user_id")
+  currentBalance              Int       @default(0) @map("current_balance")
+  lifetimeEarned              Int       @default(0) @map("lifetime_earned")
+  lifetimeSpent               Int       @default(0) @map("lifetime_spent")
+  totalModuleCompletions      Int       @default(0) @map("total_module_completions")
+  totalStreakDays             Int       @default(0) @map("total_streak_days")
+  totalCommunityServiceHours  Decimal   @default(0) @map("total_community_service_hours")
+  totalFaithfulPayments       Int       @default(0) @map("total_faithful_payments")
+  totalDiscountsAppliedCents  Int       @default(0) @map("total_discounts_applied_cents")
+  totalFeaturesUnlocked       Int       @default(0) @map("total_features_unlocked")
+  isFrozen                    Boolean   @default(false) @map("is_frozen")
+  frozenReason                String?   @map("frozen_reason")
+  frozenAt                    DateTime? @map("frozen_at")
+  lastTransactionAt           DateTime? @map("last_transaction_at")
+  createdAt                   DateTime  @default(now()) @map("created_at")
+  updatedAt                   DateTime  @updatedAt @map("updated_at")
+  
+  user                        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId], map: "idx_scrollgold_wallet_user")
+  @@index([currentBalance], map: "idx_scrollgold_wallet_balance")
+  @@map("scrollgold_wallet_balances")
+}
+
+model ScrollGoldEarningEvent {
+  id                  String    @id @default(uuid())
+  userId              String    @map("user_id")
+  eventType           String    @map("event_type")
+  earningRuleId       String    @map("earning_rule_id")
+  amountEarned        Int       @map("amount_earned")
+  courseId            String?   @map("course_id")
+  moduleId            String?   @map("module_id")
+  scorePercentage     Int?      @map("score_percentage")
+  streakDays          Int?      @map("streak_days")
+  verificationStatus  String    @default("PENDING") @map("verification_status")
+  verifiedBy          String?   @map("verified_by")
+  verifiedAt          DateTime? @map("verified_at")
+  processedAt         DateTime? @map("processed_at")
+  transactionId       String?   @map("transaction_id")
+  duplicateCheckHash  String?   @map("duplicate_check_hash")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  
+  user                User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  earningRule         ScrollGoldEarningRule  @relation(fields: [earningRuleId], references: [id])
+  
+  @@index([userId], map: "idx_scrollgold_earning_event_user")
+  @@index([eventType], map: "idx_scrollgold_earning_event_type")
+  @@index([verificationStatus], map: "idx_scrollgold_earning_event_verification")
+  @@index([duplicateCheckHash], map: "idx_scrollgold_earning_event_duplicate")
+  @@map("scrollgold_earning_events")
+}
+
+model ScrollGoldTransaction {
+  id                  String    @id @default(uuid())
+  userId              String    @map("user_id")
+  amount              Int
+  transactionType     String    @map("transaction_type")
+  reason              String
+  category            String?
+  balanceAfter        Int       @map("balance_after")
+  earningRuleId       String?   @map("earning_rule_id")
+  spendingOptionId    String?   @map("spending_option_id")
+  subscriptionId      String?   @map("subscription_id")
+  paymentId           String?   @map("payment_id")
+  billingRelated      Boolean   @default(false) @map("billing_related")
+  relatedEntityType   String?   @map("related_entity_type")
+  relatedEntityId     String?   @map("related_entity_id")
+  metadata            Json      @default("{}")
+  verificationStatus  String    @default("PENDING") @map("verification_status")
+  fraudCheckPassed    Boolean   @default(true) @map("fraud_check_passed")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  
+  user                User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  earningRule         ScrollGoldEarningRule?  @relation(fields: [earningRuleId], references: [id])
+  
+  @@index([userId], map: "idx_scrollgold_transaction_user")
+  @@index([transactionType], map: "idx_scrollgold_transaction_type")
+  @@index([billingRelated], map: "idx_scrollgold_transaction_billing")
+  @@index([createdAt], map: "idx_scrollgold_transaction_date")
+  @@map("scrollgold_transactions")
+}
+
+
+// ============================================================================
+// SCROLL PROBLEM IDENTIFICATION SYSTEM
+// ============================================================================
+
+model ScrollProblem {
+  id                        String                @id @default(uuid())
+  title                     String
+  description               String
+  category                  ProblemCategory
+  complexity                ProblemComplexity
+  affectedPopulation        Int                   @map("affected_population")
+  geographicScope           String                @map("geographic_scope")
+  urgency                   Int
+  priority                  Int
+  currentSolutions          Json                  @map("current_solutions")
+  gaps                      Json
+  constraints               Json
+  stakeholders              Json
+  dataAvailable             Json                  @map("data_available")
+  successMetrics            Json                  @map("success_metrics")
+  kingdomRelevance          Int                   @map("kingdom_relevance")
+  scripturalBasis           Json                  @map("scriptural_basis")
+  transformationalPotential Int                   @map("transformational_potential")
+  requiredSkills            String[]              @map("required_skills")
+  estimatedDuration         Int                   @map("estimated_duration")
+  isActive                  Boolean               @default(true) @map("is_active")
+  createdAt                 DateTime              @default(now()) @map("created_at")
+  updatedAt                 DateTime              @updatedAt @map("updated_at")
+  
+  // Relations
+  assignments               ProblemAssignment[]
+  
+  @@index([category])
+  @@index([complexity])
+  @@index([priority])
+  @@index([isActive])
+  @@map("scroll_problem")
+}
+
+model ProblemAssignment {
+  id            String                  @id @default(uuid())
+  problemId     String                  @map("problem_id")
+  assigneeId    String                  @map("assignee_id")
+  assigneeType  AssigneeType            @map("assignee_type")
+  assignedAt    DateTime                @default(now()) @map("assigned_at")
+  deadline      DateTime
+  status        AssignmentStatus        @default(assigned)
+  progress      Int                     @default(0)
+  notes         String?
+  updatedAt     DateTime                @updatedAt @map("updated_at")
+  
+  // Relations
+  problem       ScrollProblem           @relation(fields: [problemId], references: [id], onDelete: Cascade)
+  milestones    AssignmentMilestone[]
+  feedback      AssignmentFeedback[]
+  
+  @@index([assigneeId, assigneeType])
+  @@index([problemId])
+  @@index([status])
+  @@map("problem_assignment")
+}
+
+model AssignmentMilestone {
+  id            String              @id @default(uuid())
+  assignmentId  String              @map("assignment_id")
+  title         String
+  description   String?
+  dueDate       DateTime            @map("due_date")
+  completed     Boolean             @default(false)
+  completedAt   DateTime?           @map("completed_at")
+  createdAt     DateTime            @default(now()) @map("created_at")
+  
+  // Relations
+  assignment    ProblemAssignment   @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  
+  @@index([assignmentId])
+  @@map("assignment_milestone")
+}
+
+model AssignmentFeedback {
+  id            String              @id @default(uuid())
+  assignmentId  String              @map("assignment_id")
+  providerId    String              @map("provider_id")
+  providerType  FeedbackProvider    @map("provider_type")
+  content       String
+  helpful       Boolean             @default(false)
+  createdAt     DateTime            @default(now()) @map("created_at")
+  
+  // Relations
+  assignment    ProblemAssignment   @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  
+  @@index([assignmentId])
+  @@map("assignment_feedback")
+}
+
+// Enums for ScrollProblem Identification System
+enum ProblemCategory {
+  climate_solutions
+  ai_ethics
+  health_access
+  biblical_literacy
+  economic_justice
+  educational_reform
+  governance_systems
+  spiritual_formation
+  social_justice
+  technology_access
+}
+
+enum ProblemComplexity {
+  beginner
+  intermediate
+  advanced
+  expert
+}
+
+enum AssigneeType {
+  student
+  team
+}
+
+enum AssignmentStatus {
+  assigned
+  in_progress
+  submitted
+  reviewed
+  completed
+  cancelled
+}
+
+enum FeedbackProvider {
+  mentor
+  peer
+  ai
 }

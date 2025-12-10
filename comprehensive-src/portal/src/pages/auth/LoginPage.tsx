@@ -67,7 +67,7 @@ export const LoginPage: React.FC = () => {
         
         <LoginForm onSubmit={handleSubmit}>
           <ScrollInput
-            label="Email or ScrollCoin Wallet"
+            label="Email or ScrollGold Wallet"
             type="email"
             placeholder="Enter your email or wallet address"
             fullWidth
@@ -85,7 +85,7 @@ export const LoginPage: React.FC = () => {
           </ScrollButton>
           
           <ScrollButton type="button" variant="prophetic" fullWidth>
-            Connect ScrollCoin Wallet
+            Connect ScrollGold Wallet
           </ScrollButton>
           
           <ScrollButton type="button" variant="tertiary" fullWidth>

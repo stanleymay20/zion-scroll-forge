@@ -56,7 +56,7 @@ graph LR
     A --> G[Student Profile System]
     A --> H[Prayer Integration System]
     A --> I[Audit Trail System]
-    A --> J[ScrollCoin Meter]
+    A --> J[ScrollGold Meter]
 ```
 
 ## Components and Interfaces

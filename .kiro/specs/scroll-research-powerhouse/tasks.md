@@ -26,7 +26,7 @@
 
 - [ ] 4. ScrollEconomy & Divine Finance Faculty Development
   - Create sacred economics research platform with alternative currency analysis
-  - Implement sovereign budget modeling and circular ScrollCoin economy research
+  - Implement sovereign budget modeling and circular ScrollGold economy research
   - Build economic data analysis tools with inflation, poverty, and job market tracking
   - Create divine finance models with biblical stewardship principles
   - Implement weekly ScrollMarkets report generation system

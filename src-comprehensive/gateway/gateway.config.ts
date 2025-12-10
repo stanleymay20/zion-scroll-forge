@@ -193,7 +193,7 @@ export const serviceConfigs = {
     retries: 1,
     circuitBreaker: { failureThreshold: 2, timeout: 120000 }
   },
-  'scrollcoin-meter': {
+  'scrollgold-meter': {
     rateLimit: { windowMs: 15 * 60 * 1000, max: 100 },
     timeout: 5000,
     retries: 3,

@@ -113,7 +113,7 @@ Navigate to: **http://localhost:3000/onboarding**
 - Personalized learning paths
 - AI tutor support
 - Community features
-- ScrollCoin rewards
+- ScrollGold rewards
 
 **Assessment System**
 - Automated quizzes
@@ -230,7 +230,7 @@ supabase start
 - Enroll in SCROLLFOUND_101
 - Complete first lecture
 - Submit first assessment
-- Verify ScrollCoin rewards
+- Verify ScrollGold rewards
 
 ### 3. Monitor & Optimize (ONGOING)
 - Track student engagement
@@ -252,7 +252,7 @@ supabase start
 - Student analytics dashboard
 - Course completion metrics
 - Spiritual formation tracking
-- ScrollCoin economy monitoring
+- ScrollGold economy monitoring
 
 ---
 

@@ -16,34 +16,34 @@ console.log(`Total lines: ${lines.length}`);
 
 // Find duplicate section boundaries
 // The duplicate section starts around line 2450 and we need to remove it
-// We'll find it by looking for the second occurrence of "ScrollCoin Blockchain Integration"
+// We'll find it by looking for the second occurrence of "ScrollGold Blockchain Integration"
 
-let firstScrollCoinLine = -1;
-let secondScrollCoinLine = -1;
+let firstScrollGoldLine = -1;
+let secondScrollGoldLine = -1;
 
 for (let i = 0; i < lines.length; i++) {
-  if (lines[i].includes('ScrollCoin Blockchain Integration')) {
-    if (firstScrollCoinLine === -1) {
-      firstScrollCoinLine = i;
+  if (lines[i].includes('ScrollGold Blockchain Integration')) {
+    if (firstScrollGoldLine === -1) {
+      firstScrollGoldLine = i;
     } else {
-      secondScrollCoinLine = i;
+      secondScrollGoldLine = i;
       break;
     }
   }
 }
 
-console.log(`First ScrollCoin section: line ${firstScrollCoinLine + 1}`);
-console.log(`Second ScrollCoin section (duplicate): line ${secondScrollCoinLine + 1}`);
+console.log(`First ScrollGold section: line ${firstScrollGoldLine + 1}`);
+console.log(`Second ScrollGold section (duplicate): line ${secondScrollGoldLine + 1}`);
 
 // Find where the duplicate section ends (before any new unique content)
 // The duplicate section should end before line 2883
 let duplicateSectionEnd = lines.length;
 
-// Remove from second ScrollCoin occurrence to end of file
+// Remove from second ScrollGold occurrence to end of file
 // (since the duplicates go all the way to the end)
-const cleanedLines = lines.slice(0, secondScrollCoinLine);
+const cleanedLines = lines.slice(0, secondScrollGoldLine);
 
-console.log(`Removing lines ${secondScrollCoinLine + 1} to ${lines.length}`);
+console.log(`Removing lines ${secondScrollGoldLine + 1} to ${lines.length}`);
 console.log(`New total lines: ${cleanedLines.length}`);
 
 const cleanedContent = cleanedLines.join('\n');

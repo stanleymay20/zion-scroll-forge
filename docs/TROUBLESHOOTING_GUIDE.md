@@ -247,7 +247,7 @@
 3. **Try Different Payment Method**
    - Use different credit card
    - Try PayPal (if available)
-   - Use ScrollCoin
+   - Use ScrollGold
    - Apply for scholarship
 
 4. **Contact Support**
@@ -256,7 +256,7 @@
    - Include error message
    - Request manual enrollment
 
-### Issue: ScrollCoin Transaction Failed
+### Issue: ScrollGold Transaction Failed
 
 **Symptoms:**
 - Transaction pending indefinitely
@@ -266,10 +266,10 @@
 **Solutions:**
 
 1. **Check Balance**
-   - Navigate to ScrollCoin wallet
+   - Navigate to ScrollGold wallet
    - Verify sufficient balance
    - Account for transaction fees
-   - Earn more ScrollCoin if needed
+   - Earn more ScrollGold if needed
 
 2. **Wait for Confirmation**
    - Blockchain transactions take time

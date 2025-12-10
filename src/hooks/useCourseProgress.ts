@@ -81,8 +81,8 @@ export const useCompleteModule = (courseId: string) => {
 
       if (progressError) throw progressError;
 
-      // Award ScrollCoins
-      const { error: coinError } = await supabase.rpc('earn_scrollcoin', {
+      // Award ScrollGolds
+      const { error: coinError } = await supabase.rpc('earn_ScrollGold', {
         p_user_id: user.id,
         p_amount: 50,
         p_desc: 'Module completion reward'
@@ -128,7 +128,7 @@ export const useCompleteModule = (courseId: string) => {
         await supabase.from('user_stats').insert({
           user_id: user.id,
           total_xp: 25,
-          total_scrollcoins: 50,
+          total_ScrollGolds: 50,
           courses_completed: progress === 100 ? 1 : 0,
           current_streak: 1,
           longest_streak: 1,
@@ -141,7 +141,7 @@ export const useCompleteModule = (courseId: string) => {
 
         await supabase.from('user_stats').update({
           total_xp: userStats.total_xp + 25,
-          total_scrollcoins: userStats.total_scrollcoins + 50,
+          total_ScrollGolds: userStats.total_ScrollGolds + 50,
           courses_completed: newCoursesCompleted,
           last_activity_date: new Date().toISOString().split('T')[0],
         }).eq('user_id', user.id);
@@ -160,7 +160,7 @@ export const useCompleteModule = (courseId: string) => {
       queryClient.invalidateQueries({ queryKey: ['user_stats'] });
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
       toast.success('Module completed! 🎉', {
-        description: 'You earned 50 ScrollCoins!',
+        description: 'You earned 50 ScrollGolds!',
       });
     },
     onError: (error: Error) => {

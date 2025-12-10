@@ -1,0 +1,72 @@
+{
+  "project": "ScrollUniversity",
+  "description": "API testing configuration for ScrollUniversity backend",
+  "workspace": {
+    "id": "",
+    "name": "ScrollUniversity API Testing"
+  },
+  "collections": {
+    "main": {
+      "id": "",
+      "name": "ScrollUniversity Backend API",
+      "description": "Complete API collection for ScrollUniversity backend services"
+    }
+  },
+  "environments": {
+    "local": {
+      "id": "",
+      "name": "Local Development",
+      "values": {
+        "base_url": "http://localhost:3000",
+        "api_version": "v1"
+      }
+    },
+    "staging": {
+      "id": "",
+      "name": "Staging",
+      "values": {
+        "base_url": "https://staging-api.scrolluniversity.com",
+        "api_version": "v1"
+      }
+    },
+    "production": {
+      "id": "",
+      "name": "Production",
+      "values": {
+        "base_url": "https://api.scrolluniversity.com",
+        "api_version": "v1"
+      }
+    }
+  },
+  "routes": {
+    "authentication": [
+      "/api/auth/login",
+      "/api/auth/register",
+      "/api/auth/logout",
+      "/api/auth/refresh"
+    ],
+    "courses": [
+      "/api/courses",
+      "/api/courses/:id",
+      "/api/courses/:id/enroll"
+    ],
+    "users": [
+      "/api/users/profile",
+      "/api/users/:id"
+    ],
+    "admissions": [
+      "/api/admissions/applications",
+      "/api/admissions/applications/:id"
+    ],
+    "spiritual_formation": [
+      "/api/spiritual-formation/devotions",
+      "/api/spiritual-formation/prayer"
+    ],
+    "scrollgold": [
+      "/api/scrollgold/balance",
+      "/api/scrollgold/transactions"
+    ]
+  },
+  "setup_status": "pending",
+  "notes": "Run setup after configuring POSTMAN_API_KEY environment variable"
+}

@@ -234,7 +234,7 @@ export class AdmissionsQualityAssuranceFramework extends EventEmitter {
       'student-profile-integration',
       'assessment-engine-integration',
       'university-portal-integration',
-      'scrollcoin-integration',
+      'scrollgold-integration',
       'prayer-integration',
       'audit-trail-integration'
     ];

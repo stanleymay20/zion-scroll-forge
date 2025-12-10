@@ -102,7 +102,7 @@ const PHASE1_CATALOG = {
       },
       {
         code: 'SCROLLECON_201',
-        title: 'ScrollCoin & Digital Currency Systems',
+        title: 'ScrollGold & Digital Currency Systems',
         level: 'intermediate',
         description: 'Understanding blockchain economics, cryptocurrency, and kingdom-aligned digital finance.'
       },

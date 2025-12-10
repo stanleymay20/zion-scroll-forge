@@ -68,7 +68,7 @@ function getExportConfig(): ExportConfig {
       'assignments',
       'submissions',
       'payments',
-      'scrollcoin_transactions',
+      'scrollgold_transactions',
       'scrollbadges',
       'prayer_journal_entries',
       'devotions',

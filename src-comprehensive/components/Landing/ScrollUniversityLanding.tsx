@@ -20,15 +20,15 @@ interface CourseCardProps {
   description: string;
   level: string;
   duration: string;
-  scrollCoins: number;
+  ScrollGolds: number;
 }
 
-const CourseCard: React.FC<CourseCardProps> = ({ title, description, level, duration, scrollCoins }) => (
+const CourseCard: React.FC<CourseCardProps> = ({ title, description, level, duration, ScrollGolds }) => (
   <div className="bg-gradient-to-br from-purple-900/50 to-blue-900/50 rounded-xl p-6 border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300">
     <div className="flex justify-between items-start mb-4">
       <h3 className="text-xl font-bold text-white">{title}</h3>
       <span className="bg-yellow-500 text-black px-2 py-1 rounded-full text-sm font-semibold">
-        {scrollCoins} ScrollCoins
+        {ScrollGolds} ScrollGolds
       </span>
     </div>
     <p className="text-gray-300 mb-4">{description}</p>
@@ -149,21 +149,21 @@ export const ScrollUniversityLanding: React.FC = () => {
               description="Foundational course integrating biblical principles with legal frameworks for kingdom governance and justice systems."
               level="Foundational"
               duration="8 weeks"
-              scrollCoins={500}
+              ScrollGolds={500}
             />
             <CourseCard
               title="ScrollAI Foundations"
               description="Introduction to AI development with spiritual alignment, covering GPT integration and prophetic intelligence systems."
               level="Intermediate"
               duration="10 weeks"
-              scrollCoins={750}
+              ScrollGolds={750}
             />
             <CourseCard
               title="XR Bible Intro"
               description="Immersive biblical experiences using extended reality technology to walk through scripture and sacred history."
               level="Beginner"
               duration="6 weeks"
-              scrollCoins={400}
+              ScrollGolds={400}
             />
           </div>
         </div>

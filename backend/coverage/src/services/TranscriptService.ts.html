@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.03% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/132</span>
+                <span class='fraction'>0/132</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">3.47% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/115</span>
+                <span class='fraction'>0/115</span>
             </div>
         
             
@@ -556,12 +556,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -586,7 +584,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1042,10 +1042,10 @@
  * Manages academic transcripts, grade calculations, and GPA tracking
  */
 &nbsp;
-import { PrismaClient } from '@prisma/client';
-import { logger } from '../utils/productionLogger';
+<span class="cstat-no" title="statement not covered" >import { PrismaClient } from '@prisma/client';</span>
+<span class="cstat-no" title="statement not covered" >import { logger } from '../utils/productionLogger';</span>
 &nbsp;
-const prisma = new PrismaClient();
+const prisma = <span class="cstat-no" title="statement not covered" >new PrismaClient();</span>
 &nbsp;
 export interface GradeCalculation {
   courseId: string;
@@ -1072,7 +1072,7 @@ export interface TranscriptData {
   };
 }
 &nbsp;
-export class TranscriptService {
+<span class="cstat-no" title="statement not covered" >export class T</span>ranscriptService {
   /**
    * Update grade for a specific assignment
    */
@@ -1215,11 +1215,11 @@ export class TranscriptService {
         `Course Completion: ${enrollment.course.title}`
       );
 &nbsp;
-      // Award ScrollCoin
-      const scrollCoinReward = <span class="cstat-no" title="statement not covered" >this.calculateScrollCoinReward(finalScore);</span>
-<span class="cstat-no" title="statement not covered" >      await this.awardScrollCoin(</span>
+      // Award ScrollGold
+      const ScrollGoldReward = <span class="cstat-no" title="statement not covered" >this.calculateScrollGoldReward(finalScore);</span>
+<span class="cstat-no" title="statement not covered" >      await this.awardScrollGold(</span>
         enrollment.userId,
-        scrollCoinReward,
+        ScrollGoldReward,
         `Course Completion: ${enrollment.course.title}`
       );
 &nbsp;
@@ -1228,7 +1228,7 @@ export class TranscriptService {
         courseId: enrollment.courseId,
         finalScore,
         xpAwarded: completionXP,
-        scrollCoinAwarded: scrollCoinReward
+        ScrollGoldAwarded: ScrollGoldReward
       });
 &nbsp;
     } catch (error: any) {
@@ -1394,9 +1394,9 @@ export class TranscriptService {
   }
 &nbsp;
   /**
-   * Calculate ScrollCoin reward for course completion
+   * Calculate ScrollGold reward for course completion
    */
-  private <span class="fstat-no" title="function not covered" >calculateScrollCoinReward(</span>finalScore: number): number {
+  private <span class="fstat-no" title="function not covered" >calculateScrollGoldReward(</span>finalScore: number): number {
     let baseReward = <span class="cstat-no" title="statement not covered" >10;</span>
     
 <span class="cstat-no" title="statement not covered" >    if (finalScore &gt;= 95) {</span>
@@ -1423,15 +1423,15 @@ export class TranscriptService {
   }
 &nbsp;
   /**
-   * Award ScrollCoin to user
+   * Award ScrollGold to user
    */
-  private <span class="fstat-no" title="function not covered" >async </span>awardScrollCoin(
+  private <span class="fstat-no" title="function not covered" >async </span>awardScrollGold(
     userId: string,
     amount: number,
     description: string
   ): Promise&lt;void&gt; {
 <span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      await prisma.scrollCoinTransaction.create({</span>
+<span class="cstat-no" title="statement not covered" >      await prisma.ScrollGoldTransaction.create({</span>
         data: {
           userId,
           amount,
@@ -1445,16 +1445,16 @@ export class TranscriptService {
 <span class="cstat-no" title="statement not covered" >      await prisma.user.update({</span>
         where: { id: userId },
         data: {
-          scrollCoinBalance: {
+          ScrollGoldBalance: {
             increment: amount
           }
         }
       });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      logger.info('ScrollCoin awarded', { userId, amount, description });</span>
+<span class="cstat-no" title="statement not covered" >      logger.info('ScrollGold awarded', { userId, amount, description });</span>
 &nbsp;
     } catch (error: any) {
-<span class="cstat-no" title="statement not covered" >      logger.error('Award ScrollCoin error', { error: error.message });</span>
+<span class="cstat-no" title="statement not covered" >      logger.error('Award ScrollGold error', { error: error.message });</span>
     }
   }
 &nbsp;
@@ -1528,7 +1528,7 @@ export class TranscriptService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-30T22:23:09.019Z
+                at 2025-12-02T16:54:11.658Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

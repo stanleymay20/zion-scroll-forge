@@ -1,7 +1,7 @@
 /**
  * ScrollEconomy & Financial Reformation Faculty Service
  * Comprehensive faculty management for 800+ economics and finance courses
- * Integrating ScrollCoin economy and divine finance principles
+ * Integrating ScrollGold economy and divine finance principles
  */
 
 import { PrismaClient } from '@prisma/client';
@@ -34,7 +34,7 @@ import {
 
 export interface ScrollEconomyCourse extends ScrollCourse {
   economicModel: EconomicModel;
-  scrollCoinIntegration: ScrollCoinIntegration;
+  ScrollGoldIntegration: ScrollGoldIntegration;
   kingdomEconomicsPrinciples: KingdomEconomicsPrinciple[];
   financialReformationFocus: FinancialReformationArea[];
   practicalLabs: EconomicLab[];
@@ -48,9 +48,9 @@ export interface EconomicModel {
   globalRelevance: string[];
 }
 
-export interface ScrollCoinIntegration {
-  hasScrollCoinComponent: boolean;
-  scrollCoinApplications: string[];
+export interface ScrollGoldIntegration {
+  hasScrollGoldComponent: boolean;
+  ScrollGoldApplications: string[];
   blockchainTechnology: boolean;
   smartContractUsage: boolean;
   divineFinancePrinciples: string[];
@@ -76,7 +76,7 @@ export interface EconomicLab {
   practicalSkills: string[];
   tools: string[];
   outcomes: string[];
-  scrollCoinReward: number;
+  ScrollGoldReward: number;
 }
 
 export enum EconomicModelType {
@@ -136,21 +136,21 @@ export class ScrollEconomyFacultyService {
       },
       {
         id: this.generateId(),
-        name: 'ScrollCoin & Digital Currency',
+        name: 'ScrollGold & Digital Currency',
         focus: 'Cryptocurrency and blockchain technology for kingdom economics',
         courses: [],
         head: {
           id: this.generateId(),
           name: 'Dr. David Blockchain',
           title: 'Department Head - Digital Currency',
-          specialization: ['Blockchain Technology', 'ScrollCoin Development', 'Smart Contracts'],
+          specialization: ['Blockchain Technology', 'ScrollGold Development', 'Smart Contracts'],
           courses: [],
           researchAreas: ['Divine Currency Systems', 'Blockchain Ethics', 'Decentralized Finance'],
           spiritualGifts: ['Innovation', 'Technical Excellence', 'Kingdom Vision'],
           propheticInsight: true
         },
         researchAreas: [
-          'ScrollCoin vs Fiat Currency',
+          'ScrollGold vs Fiat Currency',
           'Blockchain for Kingdom Finance',
           'Smart Contracts for Covenant Economics',
           'Decentralized Kingdom Banking'
@@ -242,14 +242,14 @@ export class ScrollEconomyFacultyService {
       },
       {
         id: this.generateId(),
-        name: 'ScrollCoin Developer',
+        name: 'ScrollGold Developer',
         description: 'Specialized training in blockchain technology and divine currency systems',
         requiredCourses: ['SEC205', 'SEC305', 'SEC405', 'SECLAB01'],
         electiveCourses: ['SEC501', 'SEC520', 'SEC550'],
         practicalRequirements: [
           {
-            requirement: 'ScrollCoin Application Development',
-            description: 'Build functional ScrollCoin-based application',
+            requirement: 'ScrollGold Application Development',
+            description: 'Build functional ScrollGold-based application',
             assessmentCriteria: ['Technical excellence', 'Kingdom alignment', 'User impact'],
             kingdomApplication: 'Create tools for kingdom financial transformation'
           }
@@ -274,7 +274,7 @@ export class ScrollEconomyFacultyService {
 
     return {
       faculty: SupremeScrollFaculty.SCROLL_ECONOMY_FINANCE,
-      description: 'Biblical economic principles for modern application and financial reformation through ScrollCoin economy and divine finance principles',
+      description: 'Biblical economic principles for modern application and financial reformation through ScrollGold economy and divine finance principles',
       targetCourseCount: 800,
       currentCourseCount: 0,
       departments,
@@ -284,7 +284,7 @@ export class ScrollEconomyFacultyService {
         hasResearchComponent: true,
         researchAreas: [
           'Covenant Economics',
-          'ScrollCoin Development',
+          'ScrollGold Development',
           'Kingdom Trade Systems',
           'Prophetic Financial Analysis',
           'Divine Banking Models'
@@ -355,7 +355,7 @@ export class ScrollEconomyFacultyService {
         department: 'Kingdom Economics Foundations',
         estimatedHours: 45,
         xpReward: 150,
-        scrollCoinCost: 0, // Free foundational course
+        ScrollGoldCost: 0, // Free foundational course
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.SCROLLU_APP, DeliveryMode.AI_TUTOR],
         learningObjectives: [
           {
@@ -400,9 +400,9 @@ export class ScrollEconomyFacultyService {
           kingdomImpact: 'Transform economic systems through biblical principles',
           globalRelevance: ['Developing nations', 'Economic reform', 'Poverty alleviation']
         },
-        scrollCoinIntegration: {
-          hasScrollCoinComponent: true,
-          scrollCoinApplications: ['Basic ScrollCoin wallet setup', 'Understanding divine currency principles'],
+        ScrollGoldIntegration: {
+          hasScrollGoldComponent: true,
+          ScrollGoldApplications: ['Basic ScrollGold wallet setup', 'Understanding divine currency principles'],
           blockchainTechnology: false,
           smartContractUsage: false,
           divineFinancePrinciples: ['Tithe and offering systems', 'Kingdom wealth distribution']
@@ -410,21 +410,21 @@ export class ScrollEconomyFacultyService {
       },
       {
         courseCode: 'SEC205',
-        title: 'Digital Currencies vs ScrollCoin',
-        description: 'Comprehensive analysis of cryptocurrency systems with focus on ScrollCoin as divine currency for kingdom economics',
+        title: 'Digital Currencies vs ScrollGold',
+        description: 'Comprehensive analysis of cryptocurrency systems with focus on ScrollGold as divine currency for kingdom economics',
         level: CourseLevel.UNDERGRADUATE,
         faculty: SupremeScrollFaculty.SCROLL_ECONOMY_FINANCE,
-        department: 'ScrollCoin & Digital Currency',
+        department: 'ScrollGold & Digital Currency',
         estimatedHours: 40,
         xpReward: 200,
-        scrollCoinCost: 50,
+        ScrollGoldCost: 50,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.AI_TUTOR],
         learningObjectives: [
           {
             id: this.generateId(),
-            description: 'Compare and contrast various cryptocurrency systems with ScrollCoin',
+            description: 'Compare and contrast various cryptocurrency systems with ScrollGold',
             bloomsLevel: BloomsLevel.ANALYZE,
-            assessmentCriteria: ['Analyzes crypto technologies', 'Evaluates ScrollCoin advantages'],
+            assessmentCriteria: ['Analyzes crypto technologies', 'Evaluates ScrollGold advantages'],
             kingdomApplication: 'Choose appropriate digital currency for kingdom purposes'
           },
           {
@@ -450,13 +450,13 @@ export class ScrollEconomyFacultyService {
             'Matthew 25:14-30 - Parable of the talents',
             '1 Corinthians 4:2 - Stewards must be faithful'
           ],
-          practicalApplication: 'Use ScrollCoin for kingdom transactions and wealth building',
+          practicalApplication: 'Use ScrollGold for kingdom transactions and wealth building',
           kingdomImpact: 'Establish divine currency system for global kingdom economy',
           globalRelevance: ['Financial inclusion', 'Cross-border payments', 'Economic sovereignty']
         },
-        scrollCoinIntegration: {
-          hasScrollCoinComponent: true,
-          scrollCoinApplications: ['ScrollCoin trading', 'Wallet management', 'Transaction processing'],
+        ScrollGoldIntegration: {
+          hasScrollGoldComponent: true,
+          ScrollGoldApplications: ['ScrollGold trading', 'Wallet management', 'Transaction processing'],
           blockchainTechnology: true,
           smartContractUsage: true,
           divineFinancePrinciples: ['Divine currency backing', 'Prophetic value determination']
@@ -489,7 +489,7 @@ export class ScrollEconomyFacultyService {
         prerequisites: ['SEC101', 'SEC205'],
         estimatedHours: 60,
         xpReward: 300,
-        scrollCoinCost: 100,
+        ScrollGoldCost: 100,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.XR_MODE, DeliveryMode.MENTOR_SESSIONS],
         learningObjectives: [
           {
@@ -526,9 +526,9 @@ export class ScrollEconomyFacultyService {
           kingdomImpact: 'Transform global trade through righteous commerce',
           globalRelevance: ['International trade reform', 'Economic diplomacy', 'Global justice']
         },
-        scrollCoinIntegration: {
-          hasScrollCoinComponent: true,
-          scrollCoinApplications: ['International ScrollCoin payments', 'Trade settlement systems'],
+        ScrollGoldIntegration: {
+          hasScrollGoldComponent: true,
+          ScrollGoldApplications: ['International ScrollGold payments', 'Trade settlement systems'],
           blockchainTechnology: true,
           smartContractUsage: true,
           divineFinancePrinciples: ['Fair trade protocols', 'Divine trade agreements']
@@ -544,7 +544,7 @@ export class ScrollEconomyFacultyService {
         prerequisites: ['SEC310', 'SEC401'],
         estimatedHours: 50,
         xpReward: 400,
-        scrollCoinCost: 150,
+        ScrollGoldCost: 150,
         deliveryModes: [DeliveryMode.MENTOR_SESSIONS, DeliveryMode.XR_MODE, DeliveryMode.RESEARCH_TRACK],
         learningObjectives: [
           {
@@ -581,9 +581,9 @@ export class ScrollEconomyFacultyService {
           kingdomImpact: 'Provide prophetic guidance for kingdom economic strategies',
           globalRelevance: ['Economic forecasting', 'Market timing', 'Investment guidance']
         },
-        scrollCoinIntegration: {
-          hasScrollCoinComponent: true,
-          scrollCoinApplications: ['Prophetic ScrollCoin trading', 'Divine market timing'],
+        ScrollGoldIntegration: {
+          hasScrollGoldComponent: true,
+          ScrollGoldApplications: ['Prophetic ScrollGold trading', 'Divine market timing'],
           blockchainTechnology: true,
           smartContractUsage: true,
           divineFinancePrinciples: ['Prophetic value assessment', 'Divine market intervention']
@@ -609,14 +609,14 @@ export class ScrollEconomyFacultyService {
       {
         courseCode: 'SECLAB01',
         title: 'Building ScrollBank',
-        description: 'Hands-on practical lab for building blockchain-based kingdom banking systems with smart contracts and ScrollCoin integration',
+        description: 'Hands-on practical lab for building blockchain-based kingdom banking systems with smart contracts and ScrollGold integration',
         level: CourseLevel.CERTIFICATE,
         faculty: SupremeScrollFaculty.SCROLL_ECONOMY_FINANCE,
         department: 'Banking & Financial Infrastructure',
         prerequisites: ['SEC205', 'SEC305'],
         estimatedHours: 80,
         xpReward: 500,
-        scrollCoinCost: 200,
+        ScrollGoldCost: 200,
         deliveryModes: [DeliveryMode.XR_MODE, DeliveryMode.ONLINE_PORTAL, DeliveryMode.MENTOR_SESSIONS],
         learningObjectives: [
           {
@@ -650,7 +650,7 @@ export class ScrollEconomyFacultyService {
             practicalSkills: ['System design', 'Database modeling', 'API development'],
             tools: ['Node.js', 'PostgreSQL', 'Blockchain SDK'],
             outcomes: ['Functional banking prototype', 'Technical documentation'],
-            scrollCoinReward: 100
+            ScrollGoldReward: 100
           },
           {
             labName: 'Smart Contract Development Lab',
@@ -658,15 +658,15 @@ export class ScrollEconomyFacultyService {
             practicalSkills: ['Smart contract programming', 'Security testing', 'Deployment'],
             tools: ['Solidity', 'Truffle', 'Web3.js'],
             outcomes: ['Deployed smart contracts', 'Security audit report'],
-            scrollCoinReward: 150
+            ScrollGoldReward: 150
           },
           {
-            labName: 'ScrollCoin Integration Lab',
-            description: 'Integrate ScrollCoin payment and wallet systems',
+            labName: 'ScrollGold Integration Lab',
+            description: 'Integrate ScrollGold payment and wallet systems',
             practicalSkills: ['Payment processing', 'Wallet integration', 'Transaction handling'],
-            tools: ['ScrollCoin API', 'Payment gateways', 'Mobile SDKs'],
-            outcomes: ['ScrollCoin payment system', 'Mobile wallet integration'],
-            scrollCoinReward: 200
+            tools: ['ScrollGold API', 'Payment gateways', 'Mobile SDKs'],
+            outcomes: ['ScrollGold payment system', 'Mobile wallet integration'],
+            ScrollGoldReward: 200
           }
         ]
       },
@@ -680,7 +680,7 @@ export class ScrollEconomyFacultyService {
         prerequisites: ['SEC101', 'SEC150'],
         estimatedHours: 60,
         xpReward: 350,
-        scrollCoinCost: 100,
+        ScrollGoldCost: 100,
         deliveryModes: [DeliveryMode.ONLINE_PORTAL, DeliveryMode.AI_TUTOR, DeliveryMode.MENTOR_SESSIONS],
         learningObjectives: [
           {
@@ -714,7 +714,7 @@ export class ScrollEconomyFacultyService {
             practicalSkills: ['Double-entry bookkeeping', 'Financial statements', 'Audit trails'],
             tools: ['QuickBooks', 'Excel', 'Kingdom Accounting Software'],
             outcomes: ['Complete financial statements', 'Audit-ready books'],
-            scrollCoinReward: 75
+            ScrollGoldReward: 75
           },
           {
             labName: 'Prophetic Financial Planning Lab',
@@ -722,7 +722,7 @@ export class ScrollEconomyFacultyService {
             practicalSkills: ['Budget planning', 'Financial forecasting', 'Prophetic discernment'],
             tools: ['Financial planning software', 'Prophetic planning templates'],
             outcomes: ['Prophetic financial plan', 'Kingdom budget model'],
-            scrollCoinReward: 100
+            ScrollGoldReward: 100
           }
         ]
       }
@@ -751,9 +751,9 @@ export class ScrollEconomyFacultyService {
       globalRelevance: ['Economic reform', 'Kingdom advancement']
     };
 
-    const scrollCoinIntegration = courseData.scrollCoinIntegration || {
-      hasScrollCoinComponent: true,
-      scrollCoinApplications: ['Basic ScrollCoin usage'],
+    const ScrollGoldIntegration = courseData.ScrollGoldIntegration || {
+      hasScrollGoldComponent: true,
+      ScrollGoldApplications: ['Basic ScrollGold usage'],
       blockchainTechnology: false,
       smartContractUsage: false,
       divineFinancePrinciples: ['Biblical stewardship']
@@ -808,7 +808,7 @@ export class ScrollEconomyFacultyService {
       ],
       researchIntegration: {
         hasResearchComponent: true,
-        researchAreas: ['Kingdom Economics', 'ScrollCoin Development'],
+        researchAreas: ['Kingdom Economics', 'ScrollGold Development'],
         publicationOpportunities: ['ScrollEconomy Research Journal'],
         collaborationPotential: ['Faculty research projects']
       }
@@ -960,7 +960,7 @@ export class ScrollEconomyFacultyService {
       prerequisites: courseData.prerequisites || [],
       estimatedHours: courseData.estimatedHours || 40,
       xpReward: courseData.xpReward || 100,
-      scrollCoinCost: courseData.scrollCoinCost || 0,
+      ScrollGoldCost: courseData.ScrollGoldCost || 0,
       deliveryModes: courseData.deliveryModes || [DeliveryMode.ONLINE_PORTAL],
       assessmentMethods,
       scrollCertification,
@@ -976,7 +976,7 @@ export class ScrollEconomyFacultyService {
         }
       ],
       status: CourseStatus.PUBLISHED,
-      tags: ['economics', 'finance', 'kingdom', 'scrollcoin'],
+      tags: ['economics', 'finance', 'kingdom', 'ScrollGold'],
       language: 'English',
       culturalContext: [CulturalContext.WESTERN, CulturalContext.AFRICAN, CulturalContext.ASIAN],
       createdAt: new Date(),
@@ -987,7 +987,7 @@ export class ScrollEconomyFacultyService {
       
       // ScrollEconomy-specific fields
       economicModel,
-      scrollCoinIntegration,
+      ScrollGoldIntegration,
       kingdomEconomicsPrinciples,
       financialReformationFocus,
       practicalLabs: courseData.practicalLabs || []
@@ -1070,11 +1070,11 @@ export class ScrollEconomyFacultyService {
     if (courseData.courseCode === 'SEC205') {
       baseModules.push({
         id: this.generateId(),
-        title: 'ScrollCoin Technology Deep Dive',
-        description: 'Technical understanding of ScrollCoin blockchain and divine currency principles',
+        title: 'ScrollGold Technology Deep Dive',
+        description: 'Technical understanding of ScrollGold blockchain and divine currency principles',
         orderIndex: 2,
         estimatedHours: 15,
-        learningObjectives: ['Master ScrollCoin technology'],
+        learningObjectives: ['Master ScrollGold technology'],
         content: {
           lectures: [],
           readings: [],

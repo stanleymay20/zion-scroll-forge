@@ -204,7 +204,7 @@ COURSE_[CODE]/
 ### Phase 2: Platform Integration
 - [ ] Import courses into database
 - [ ] Configure AI tutor for each course
-- [ ] Set up ScrollCoin rewards
+- [ ] Set up ScrollGold rewards
 - [ ] Enable enrollment system
 
 ### Phase 3: Quality Assurance

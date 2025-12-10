@@ -206,7 +206,7 @@ export interface PricingStructure {
   basePrice?: number;
   valueBasedPricing: boolean;
   scholarshipAvailability: boolean;
-  scrollCoinIntegration: boolean;
+  scrollGoldIntegration: boolean;
   spiritualEconomyAlignment: boolean;
 }
 
