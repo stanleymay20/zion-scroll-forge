@@ -151,30 +151,118 @@ Format as clean HTML.`;
   return await generateContent(prompt, systemPrompt);
 }
 
-// Generate video script
-async function generateVideoScript(moduleTitle: string, courseTitle: string, duration: number = 15): Promise<string> {
-  const systemPrompt = `You are writing professional educational video scripts.
-Include clear narrator cues, visual suggestions, and timing notes.
-Make content engaging and suitable for video presentation.`;
+// Generate video script for D-ID (concise for API limits)
+async function generateVideoScript(moduleTitle: string, courseTitle: string): Promise<string> {
+  const systemPrompt = `You are a warm, engaging professor at Scroll University creating a video lecture.
+Write a compelling script that is 150-200 words (about 60-90 seconds when spoken).
+Make it conversational and engaging - this will be spoken by an AI avatar.
+Include:
+- A warm welcome
+- The key topic and why it matters
+- 2-3 main points
+- An encouraging conclusion
+Do NOT include any visual cues, narrator markers, or timing notes - just the spoken text.`;
 
-  const prompt = `Create a ${duration}-minute video lecture script for:
+  const prompt = `Create a concise video lecture script for:
 Course: ${courseTitle}
 Topic: ${moduleTitle}
 
-Include:
-1. Hook/Introduction (capture attention in first 30 seconds)
-2. Learning Objectives Statement
-3. Main Content Sections (with [VISUAL CUE] markers)
-4. Key Point Summaries
-5. Examples and Illustrations
-6. Scripture Integration Points
-7. Interactive Pause Points (for reflection)
-8. Conclusion and Call to Action
-9. Preview of Next Lesson
-
-Format with clear [NARRATOR], [VISUAL], [ON-SCREEN TEXT], and [TIMING] markers.`;
+Remember: Keep it under 200 words for the video avatar to speak naturally.`;
 
   return await generateContent(prompt, systemPrompt);
+}
+
+// Generate video using D-ID API
+const didApiKey = Deno.env.get('DID_API_KEY');
+
+async function generateVideoWithDID(
+  script: string,
+  moduleSlug: string,
+  basePath: string,
+  weekNumber: number
+): Promise<{ url: string | null; talkId: string | null; status: string }> {
+  if (!didApiKey) {
+    console.log('D-ID API key not configured, skipping video generation');
+    return { url: null, talkId: null, status: 'skipped' };
+  }
+
+  try {
+    console.log('Creating D-ID talk with script:', script.substring(0, 100) + '...');
+    
+    // Create the talk request
+    const createResponse = await fetch('https://api.d-id.com/talks', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${didApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        source_url: 'https://create-images-results.d-id.com/DefaultPresenters/Noelle_f/image.jpeg',
+        script: {
+          type: 'text',
+          input: script.substring(0, 1500), // D-ID has text limits
+          provider: {
+            type: 'microsoft',
+            voice_id: 'en-US-JennyNeural'
+          }
+        },
+        config: {
+          fluent: true,
+          pad_audio: 0.5,
+          stitch: true
+        }
+      })
+    });
+
+    if (!createResponse.ok) {
+      const errorText = await createResponse.text();
+      console.error('D-ID create error:', errorText);
+      return { url: null, talkId: null, status: 'error' };
+    }
+
+    const createData = await createResponse.json();
+    const talkId = createData.id;
+    console.log('D-ID talk created:', talkId);
+
+    // Poll for completion (max 60 attempts = 5 minutes)
+    let videoUrl = null;
+    let status = 'processing';
+    
+    for (let i = 0; i < 60; i++) {
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      
+      const statusResponse = await fetch(`https://api.d-id.com/talks/${talkId}`, {
+        headers: { 'Authorization': `Basic ${didApiKey}` }
+      });
+
+      const statusData = await statusResponse.json();
+      status = statusData.status;
+      console.log(`D-ID status check ${i + 1}: ${status}`);
+
+      if (status === 'done') {
+        videoUrl = statusData.result_url;
+        break;
+      } else if (status === 'error') {
+        console.error('D-ID error:', statusData.error);
+        return { url: null, talkId, status: 'error' };
+      }
+    }
+
+    if (videoUrl) {
+      // Download and upload to Supabase Storage
+      const videoResponse = await fetch(videoUrl);
+      const videoBuffer = await videoResponse.arrayBuffer();
+      const videoPath = `${basePath}/week-${weekNumber}/${moduleSlug}-video-lecture.mp4`;
+      
+      const uploadedUrl = await uploadToStorage('materials', videoPath, new Uint8Array(videoBuffer), 'video/mp4');
+      return { url: uploadedUrl, talkId, status: 'complete' };
+    }
+
+    return { url: null, talkId, status: 'timeout' };
+  } catch (error) {
+    console.error('D-ID video generation error:', error);
+    return { url: null, talkId: null, status: 'error' };
+  }
 }
 
 // Generate audio using ElevenLabs TTS
@@ -367,27 +455,81 @@ async function generateModuleMaterials(
     console.error('Discussion guide error:', e);
   }
 
-  // 5. Generate Video Script
-  try {
-    console.log('Generating video script...');
-    const videoScript = await generateVideoScript(moduleTitle, courseTitle);
-    const scriptPath = `${basePath}/week-${weekNumber}/${moduleSlug}-video-script.html`;
-    const scriptUrl = await uploadToStorage('materials', scriptPath, videoScript, 'text/html');
-    
-    if (scriptUrl) {
-      const { data: material } = await supabase.from('learning_materials').insert({
-        module_id: moduleId,
-        institution_id: institutionId,
-        title: `${moduleTitle} - Video Script`,
-        kind: 'video_script',
-        url: scriptUrl,
-        meta: { type: 'video_script', week: weekNumber, duration_minutes: 15, generated: true }
-      }).select().single();
+  // 5. Generate Video Lecture with D-ID
+  if (didApiKey) {
+    try {
+      console.log('Generating video lecture with D-ID...');
+      const videoScript = await generateVideoScript(moduleTitle, courseTitle);
       
-      if (material) materials.push(material);
+      // First save the script
+      const scriptPath = `${basePath}/week-${weekNumber}/${moduleSlug}-video-script.html`;
+      await uploadToStorage('materials', scriptPath, videoScript, 'text/html');
+      
+      // Generate actual video with D-ID
+      const videoResult = await generateVideoWithDID(videoScript, moduleSlug, basePath, weekNumber);
+      
+      if (videoResult.url) {
+        const { data: material } = await supabase.from('learning_materials').insert({
+          module_id: moduleId,
+          institution_id: institutionId,
+          title: `${moduleTitle} - Video Lecture`,
+          kind: 'video',
+          url: videoResult.url,
+          meta: { 
+            type: 'video_lecture', 
+            week: weekNumber, 
+            generated: true,
+            did_talk_id: videoResult.talkId,
+            status: videoResult.status
+          }
+        }).select().single();
+        
+        if (material) materials.push(material);
+      } else if (videoResult.talkId) {
+        // Video is still processing, save with pending status
+        const { data: material } = await supabase.from('learning_materials').insert({
+          module_id: moduleId,
+          institution_id: institutionId,
+          title: `${moduleTitle} - Video Lecture (Processing)`,
+          kind: 'video',
+          url: '',
+          meta: { 
+            type: 'video_lecture', 
+            week: weekNumber, 
+            generated: true,
+            did_talk_id: videoResult.talkId,
+            status: 'processing'
+          }
+        }).select().single();
+        
+        if (material) materials.push(material);
+      }
+    } catch (e) {
+      console.error('Video generation error:', e);
     }
-  } catch (e) {
-    console.error('Video script error:', e);
+  } else {
+    // Fallback: just generate script if no D-ID key
+    try {
+      console.log('Generating video script (no D-ID key)...');
+      const videoScript = await generateVideoScript(moduleTitle, courseTitle);
+      const scriptPath = `${basePath}/week-${weekNumber}/${moduleSlug}-video-script.html`;
+      const scriptUrl = await uploadToStorage('materials', scriptPath, videoScript, 'text/html');
+      
+      if (scriptUrl) {
+        const { data: material } = await supabase.from('learning_materials').insert({
+          module_id: moduleId,
+          institution_id: institutionId,
+          title: `${moduleTitle} - Video Script`,
+          kind: 'video_script',
+          url: scriptUrl,
+          meta: { type: 'video_script', week: weekNumber, generated: true }
+        }).select().single();
+        
+        if (material) materials.push(material);
+      }
+    } catch (e) {
+      console.error('Video script error:', e);
+    }
   }
 
   // 6. Generate Audio Lecture (if ElevenLabs key is available)
