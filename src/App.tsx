@@ -58,6 +58,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Apply from "./pages/Apply";
 import FacultyDashboard from "./pages/FacultyDashboard";
 import Gradebook from "./pages/Gradebook";
+import FacultyGradebookIndex from "./pages/FacultyGradebookIndex";
 import AlumniPortal from "./pages/AlumniPortal";
 import ProfilePage from "./pages/Profile";
 import DegreesPage from "./pages/Degrees";
@@ -288,6 +289,7 @@ const App = () => (
               <Route path="quiz-taking/:quizId" element={<QuizTaking />} />
               <Route path="faculty" element={<FacultyDashboard />} />
               <Route path="faculty/admin" element={<FacultyAdmin />} />
+              <Route path="faculty/gradebook" element={<FacultyGradebookIndex />} />
               <Route path="faculty/gradebook/:courseId" element={<Gradebook />} />
               <Route path="admin/admissions" element={<AdmissionsReview />} />
               <Route path="alumni" element={<AlumniPortal />} />
