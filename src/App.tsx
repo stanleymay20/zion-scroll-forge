@@ -119,6 +119,8 @@ import CourseCatalog from "./pages/CourseCatalog";
 import CourseDetailPage from "./pages/CourseDetailPage";
 import MyCourses from "./pages/MyCourses";
 import QuizTaking from "./pages/QuizTaking";
+import AcademicCalendar from "./pages/AcademicCalendar";
+import ScrollLibrary from "./pages/ScrollLibrary";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -362,6 +364,8 @@ const App = () => (
             <Route path="research" element={<ComingSoonPage title="Research Hub" />} />
             <Route path="help" element={<ComingSoonPage title="Help Center" />} />
             <Route path="mobile-demo" element={<MobileFeaturesDemo />} />
+            <Route path="academic-calendar" element={<AcademicCalendar />} />
+            <Route path="scroll-library" element={<ScrollLibrary />} />
           </Route>
           
           {/* Catch-all route for 404 */}

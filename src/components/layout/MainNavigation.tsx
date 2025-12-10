@@ -7,7 +7,7 @@ import {
   ChevronDown, ChevronRight, BarChart3, Code, Workflow,
   GitBranch, Database, Monitor, Users, Cpu, BookOpen,
   GraduationCap, Heart, Coins, MessageSquare, Trophy,
-  Calendar, Video, Briefcase, Shield, Bell
+  Calendar, Video, Briefcase, Shield, Bell, Library
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -49,6 +49,7 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       icon: GraduationCap,
       items: [
         { label: "Course Catalog", href: "/courses", icon: BookOpen },
+        { label: "ScrollLibrary", href: "/scroll-library", icon: Library },
         { label: "AI Tutors", href: "/ai-tutors", icon: Bot },
         { label: "XR Classrooms", href: "/xr-classrooms", icon: Video },
         { label: "Virtual Labs", href: "/virtual-labs", icon: Monitor },
@@ -93,6 +94,7 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       items: [
         { label: "Transcript", href: "/transcript", icon: FileText },
         { label: "Degree Audit", href: "/degree-audit", icon: GraduationCap },
+        { label: "Academic Calendar", href: "/academic-calendar", icon: Calendar },
         { label: "Achievements", href: "/achievements", icon: Trophy },
         { label: "Scholarships", href: "/scholarships", icon: Coins },
       ]
