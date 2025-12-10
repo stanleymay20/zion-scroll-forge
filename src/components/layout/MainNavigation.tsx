@@ -116,6 +116,7 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       roles: ["admin"],
       items: [
         { label: "Admin Dashboard", href: "/admin", icon: Shield, roles: ["admin"] },
+        { label: "Academic Terms", href: "/admin/academic-terms", icon: Calendar, roles: ["admin"] },
         { label: "Admissions Review", href: "/admin/admissions", icon: Users, roles: ["admin"] },
         { label: "Analytics", href: "/analytics/dashboard", icon: BarChart3, roles: ["admin"] },
         { label: "Content Generation", href: "/admin/content-generation", icon: Bot, roles: ["admin"] },
