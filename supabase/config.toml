@@ -34,3 +34,9 @@ verify_jwt = false
 
 [functions.generate-full-course]
 verify_jwt = false
+
+[functions.generate-video]
+verify_jwt = false
+
+[functions.ai-tutor-voice]
+verify_jwt = false
