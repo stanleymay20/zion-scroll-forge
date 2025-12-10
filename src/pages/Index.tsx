@@ -1,7 +1,7 @@
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
 import { FacultiesSection } from "@/components/FacultiesSection";
-import { ScrollCoinSection } from "@/components/ScrollCoinSection";
+import { ScrollGoldSection } from "@/components/ScrollGoldSection";
 import { PrayerSection } from "@/components/PrayerSection";
 
 const Index = () => {
@@ -12,7 +12,7 @@ const Index = () => {
         <HeroSection />
         <FacultiesSection />
         <PrayerSection />
-        <ScrollCoinSection />
+        <ScrollGoldSection />
       </main>
     </div>
   );
