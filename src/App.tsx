@@ -122,6 +122,7 @@ import MyCourses from "./pages/MyCourses";
 import QuizTaking from "./pages/QuizTaking";
 import AcademicCalendar from "./pages/AcademicCalendar";
 import ScrollLibrary from "./pages/ScrollLibrary";
+import ScrollLibraryBookReader from "./pages/ScrollLibraryBookReader";
 import AcademicTermAdmin from "./pages/AcademicTermAdmin";
 
 // Protected Route Component
@@ -369,6 +370,7 @@ const App = () => (
             <Route path="mobile-demo" element={<MobileFeaturesDemo />} />
             <Route path="academic-calendar" element={<AcademicCalendar />} />
             <Route path="scroll-library" element={<ScrollLibrary />} />
+            <Route path="scroll-library/book/:bookId" element={<ScrollLibraryBookReader />} />
             <Route path="admin/academic-terms" element={<AcademicTermAdmin />} />
           </Route>
           
