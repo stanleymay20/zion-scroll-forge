@@ -1,5 +1,16 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
+import { 
+  validateChatMessage, 
+  validateChatHistory, 
+  validateUUID, 
+  validateLength,
+  sanitizeString,
+  MAX_LENGTHS,
+  ValidationError,
+  createValidationErrorResponse,
+  extractAuthenticatedUser
+} from '../_shared/validation.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -46,23 +57,52 @@ const facultyPersonalities = {
   }
 };
 
+// Allowed faculty values
+const ALLOWED_FACULTIES = Object.keys(facultyPersonalities);
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { message, faculty, history, userId, conversationId } = await req.json();
-    
-    console.log('✝️ Christ-Lordship: ScrollIntel-G6 processing request', { faculty, userId });
-
     // Initialize Supabase client
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // Extract and validate authenticated user
+    const { user, error: authError } = await extractAuthenticatedUser(req, supabase, corsHeaders);
+    if (authError) return authError;
+
+    const body = await req.json();
+    const { message, faculty, history, userId, conversationId } = body;
+    
+    // ===== INPUT VALIDATION =====
+    // Validate message
+    const validatedMessage = validateChatMessage(message);
+    
+    // Validate faculty
+    const validatedFaculty = sanitizeString(faculty);
+    if (validatedFaculty && !ALLOWED_FACULTIES.includes(validatedFaculty) && validatedFaculty !== '') {
+      // Allow empty/unknown faculty but log it
+      console.warn('Unknown faculty requested:', validatedFaculty);
+    }
+    
+    // Validate history
+    const validatedHistory = validateChatHistory(history);
+    
+    // Validate UUIDs
+    validateUUID(userId, 'userId');
+    validateUUID(conversationId, 'conversationId');
+    
+    // Use authenticated user's ID if userId not provided or mismatched
+    const effectiveUserId = user.id;
+    
+    console.log('✝️ Christ-Lordship: ScrollIntel-G6 processing request', { faculty: validatedFaculty, userId: effectiveUserId });
+
     // Get faculty personality
-    const personality = facultyPersonalities[faculty as keyof typeof facultyPersonalities] || {
+    const personality = facultyPersonalities[validatedFaculty as keyof typeof facultyPersonalities] || {
       role: 'Christian Educator',
       voice: 'Encouraging and Christ-centered',
       traits: ['Biblical wisdom', 'Academic excellence', 'Spiritual formation'],
@@ -73,15 +113,15 @@ serve(async (req) => {
     const { data: learningPattern } = await supabase
       .from('learning_patterns')
       .select('*')
-      .eq('user_id', userId)
-      .eq('faculty', faculty)
+      .eq('user_id', effectiveUserId)
+      .eq('faculty', validatedFaculty)
       .maybeSingle();
 
     // Get recent spiritual assessments
     const { data: spiritualAssessment } = await supabase
       .from('spiritual_assessments')
       .select('*')
-      .eq('user_id', userId)
+      .eq('user_id', effectiveUserId)
       .order('created_at', { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -156,8 +196,8 @@ RESPONSE FORMAT:
     
     const messages = [
       { role: 'system', content: systemPrompt },
-      ...history,
-      { role: 'user', content: message }
+      ...validatedHistory,
+      { role: 'user', content: validatedMessage }
     ];
 
     const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
@@ -167,7 +207,7 @@ RESPONSE FORMAT:
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash', // Free during promo period
+        model: 'google/gemini-2.5-flash',
         messages,
         temperature: 0.7,
         max_tokens: 1000,
@@ -215,10 +255,10 @@ RESPONSE FORMAT:
     // Save conversation to database
     const conversationData = {
       id: conversationId,
-      user_id: userId,
-      faculty,
-      subject: message.substring(0, 100),
-      messages: [...history, { role: 'user', content: message }, { role: 'assistant', content: aiMessage }],
+      user_id: effectiveUserId,
+      faculty: validatedFaculty,
+      subject: validatedMessage.substring(0, 100),
+      messages: [...validatedHistory, { role: 'user', content: validatedMessage }, { role: 'assistant', content: aiMessage }],
       updated_at: new Date().toISOString()
     };
 
@@ -242,7 +282,7 @@ RESPONSE FORMAT:
     };
 
     let engagementDelta = 0;
-    const lowerMessage = message.toLowerCase();
+    const lowerMessage = validatedMessage.toLowerCase();
     
     if (analysisKeywords.confusion.some(k => lowerMessage.includes(k))) {
       engagementDelta -= 0.05;
@@ -272,8 +312,8 @@ RESPONSE FORMAT:
       await supabase
         .from('learning_patterns')
         .insert({
-          user_id: userId,
-          faculty,
+          user_id: effectiveUserId,
+          faculty: validatedFaculty,
           engagement_score: 0.5,
           comprehension_level: 'intermediate',
           learning_style: { visual: 0.5, auditory: 0.3, kinesthetic: 0.2 },
@@ -285,11 +325,11 @@ RESPONSE FORMAT:
     await supabase
       .from('scroll_analytics')
       .insert({
-        user_id: userId,
+        user_id: effectiveUserId,
         event_type: 'ai_tutor_interaction',
         event_payload: {
-          faculty,
-          message_length: message.length,
+          faculty: validatedFaculty,
+          message_length: validatedMessage.length,
           response_length: aiMessage.length,
           engagement_delta: engagementDelta
         }
@@ -310,6 +350,11 @@ RESPONSE FORMAT:
     );
 
   } catch (error) {
+    // Handle validation errors separately
+    if (error instanceof ValidationError) {
+      return createValidationErrorResponse(error, corsHeaders);
+    }
+    
     console.error('Error in ScrollIntel-G6:', error);
     return new Response(
       JSON.stringify({ 
