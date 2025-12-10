@@ -148,3 +148,6 @@ verify_jwt = false
 
 [functions.assignment-notifier]
 verify_jwt = false
+
+[functions.generate-materials]
+verify_jwt = true

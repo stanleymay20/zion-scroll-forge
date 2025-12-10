@@ -6,13 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Progress } from "@/components/ui/progress";
-import { Loader2, Sparkles, BookOpen, FileText, CheckCircle2 } from "lucide-react";
+import { Loader2, Sparkles, FileText, CheckCircle2, Volume2, Video, FileAudio } from "lucide-react";
 import { useFaculties } from "@/hooks/useFaculties";
 import { useGenerateContent, checkGenerationProgress } from "@/hooks/useContentGeneration";
 import { useInstitution } from "@/contexts/InstitutionContext";
 import { useQuery } from "@tanstack/react-query";
 import { checkUserRole } from "@/lib/scrollGovernance";
 import { toast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 console.info("✝️ Content Generation Admin — Christ governs all creation");
 
@@ -20,6 +21,8 @@ export default function ContentGenerationAdmin() {
   const [selectedFaculty, setSelectedFaculty] = useState<string>("all");
   const [courseCount, setCourseCount] = useState<number>(5);
   const [modulesPerCourse, setModulesPerCourse] = useState<number>(8);
+  const [isGeneratingMaterials, setIsGeneratingMaterials] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<string>("");
 
   const { activeInstitution } = useInstitution();
   const { data: faculties } = useFaculties();
@@ -63,6 +66,53 @@ export default function ContentGenerationAdmin() {
     }
 
     await generateMutation.mutateAsync(params);
+  };
+
+  // Fetch courses for material generation
+  const { data: courses } = useQuery({
+    queryKey: ["courses-for-materials", activeInstitution?.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('courses')
+        .select('id, title, faculty')
+        .eq('institution_id', activeInstitution?.id || '')
+        .order('title');
+      return data || [];
+    },
+    enabled: !!activeInstitution
+  });
+
+  const handleGenerateMaterials = async () => {
+    if (!selectedCourse) {
+      toast({
+        title: "Select a course",
+        description: "Please select a course to generate materials for",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsGeneratingMaterials(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('generate-materials', {
+        body: { course_id: selectedCourse, batch_generate: true }
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "✅ Material Generation Started",
+        description: `Generating comprehensive materials for ${data.modules_count} modules. This will take several minutes.`,
+      });
+    } catch (error: any) {
+      toast({
+        title: "Generation Failed",
+        description: error.message,
+        variant: "destructive"
+      });
+    } finally {
+      setIsGeneratingMaterials(false);
+    }
   };
 
   const isGenerating = progress && progress.progress < 100;
@@ -221,6 +271,87 @@ export default function ContentGenerationAdmin() {
                 <>
                   <Sparkles className="mr-2 h-4 w-4" />
                   Generate Content
+                </>
+              )}
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Material Generation Card */}
+        <Card className="border-amber-500/30">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5 text-amber-500" />
+              <Volume2 className="h-5 w-5 text-amber-500" />
+              <Video className="h-5 w-5 text-amber-500" />
+              Generate Full Learning Materials
+            </CardTitle>
+            <CardDescription>
+              Create comprehensive PDFs, audio lectures, and video scripts for each module
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div>
+              <Label htmlFor="material-course">Select Course</Label>
+              <Select value={selectedCourse} onValueChange={setSelectedCourse}>
+                <SelectTrigger id="material-course">
+                  <SelectValue placeholder="Choose a course..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {courses?.map((course) => (
+                    <SelectItem key={course.id} value={course.id}>
+                      {course.title} ({course.faculty})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="bg-amber-500/10 p-4 rounded-lg space-y-3">
+              <p className="text-sm font-medium">Materials Generated Per Module:</p>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-amber-500" />
+                  <span><strong>PDF Study Guide</strong> - Comprehensive 2000+ word guide with objectives, content, exercises</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-amber-500" />
+                  <span><strong>Lecture Notes</strong> - Detailed 3000+ word notes with examples and diagrams</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-amber-500" />
+                  <span><strong>Scripture Study</strong> - In-depth biblical analysis with Greek/Hebrew insights</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-amber-500" />
+                  <span><strong>Discussion Guide</strong> - Group activities, debate topics, and case studies</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Video className="h-4 w-4 text-amber-500" />
+                  <span><strong>Video Script</strong> - 15-minute lecture script with visual cues</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <FileAudio className="h-4 w-4 text-amber-500" />
+                  <span><strong>Audio Lecture</strong> - AI-generated spoken lecture (requires ElevenLabs)</span>
+                </li>
+              </ul>
+            </div>
+
+            <Button
+              onClick={handleGenerateMaterials}
+              disabled={isGeneratingMaterials || !selectedCourse}
+              className="w-full bg-amber-600 hover:bg-amber-700"
+              size="lg"
+            >
+              {isGeneratingMaterials ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Generating Materials...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  Generate All Materials for Course
                 </>
               )}
             </Button>
