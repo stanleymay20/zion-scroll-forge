@@ -1,7 +1,6 @@
 /**
  * Performance Optimization Components
  * Export all performance-related components and utilities
- * Note: PerformanceOptimizer is not exported to avoid circular dependency issues
  */
 
 export {
@@ -13,7 +12,7 @@ export {
   useThrottledCallback,
   useIntersectionObserver,
   memo,
-} from './PerformanceOptimizer';
+} from './utils';
 
 export {
   VirtualList,
