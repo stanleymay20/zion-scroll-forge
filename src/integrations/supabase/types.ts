@@ -580,6 +580,53 @@ export type Database = {
           },
         ]
       }
+      competency_matrices: {
+        Row: {
+          created_at: string | null
+          degree_level: Database["public"]["Enums"]["scroll_degree_level"]
+          description: string | null
+          estimated_duration_weeks: number | null
+          faculty_id: string | null
+          id: string
+          name: string
+          required_skills: Json
+          total_xp_required: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          degree_level: Database["public"]["Enums"]["scroll_degree_level"]
+          description?: string | null
+          estimated_duration_weeks?: number | null
+          faculty_id?: string | null
+          id?: string
+          name: string
+          required_skills?: Json
+          total_xp_required?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          degree_level?: Database["public"]["Enums"]["scroll_degree_level"]
+          description?: string | null
+          estimated_duration_weeks?: number | null
+          faculty_id?: string | null
+          id?: string
+          name?: string
+          required_skills?: Json
+          total_xp_required?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "competency_matrices_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conversation_members: {
         Row: {
           conversation_id: string
@@ -1001,6 +1048,146 @@ export type Database = {
           },
         ]
       }
+      credential_verifications: {
+        Row: {
+          access_token: string | null
+          accessed_at: string | null
+          blockchain_verification: string | null
+          created_at: string | null
+          credentials_requested: Json | null
+          expires_at: string | null
+          id: string
+          requester_email: string
+          requester_organization: string | null
+          user_id: string
+          verification_result: Json | null
+          verification_status: string | null
+          verification_type: string | null
+        }
+        Insert: {
+          access_token?: string | null
+          accessed_at?: string | null
+          blockchain_verification?: string | null
+          created_at?: string | null
+          credentials_requested?: Json | null
+          expires_at?: string | null
+          id?: string
+          requester_email: string
+          requester_organization?: string | null
+          user_id: string
+          verification_result?: Json | null
+          verification_status?: string | null
+          verification_type?: string | null
+        }
+        Update: {
+          access_token?: string | null
+          accessed_at?: string | null
+          blockchain_verification?: string | null
+          created_at?: string | null
+          credentials_requested?: Json | null
+          expires_at?: string | null
+          id?: string
+          requester_email?: string
+          requester_organization?: string | null
+          user_id?: string
+          verification_result?: Json | null
+          verification_status?: string | null
+          verification_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credential_verifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      degree_analytics: {
+        Row: {
+          assessments_completed: number | null
+          assessments_passed: number | null
+          average_score: number | null
+          completion_rate: number | null
+          created_at: string | null
+          engagement_score: number | null
+          faculty_id: string | null
+          id: string
+          intervention_flags: Json | null
+          mentorship_hours: number | null
+          metrics_type: string | null
+          period_end: string
+          period_start: string
+          predictive_success_score: number | null
+          prophetic_score_avg: number | null
+          scroll_alignment_avg: number | null
+          scrollgold_earned: number | null
+          skills_acquired: number | null
+          user_id: string | null
+          xp_earned: number | null
+        }
+        Insert: {
+          assessments_completed?: number | null
+          assessments_passed?: number | null
+          average_score?: number | null
+          completion_rate?: number | null
+          created_at?: string | null
+          engagement_score?: number | null
+          faculty_id?: string | null
+          id?: string
+          intervention_flags?: Json | null
+          mentorship_hours?: number | null
+          metrics_type?: string | null
+          period_end: string
+          period_start: string
+          predictive_success_score?: number | null
+          prophetic_score_avg?: number | null
+          scroll_alignment_avg?: number | null
+          scrollgold_earned?: number | null
+          skills_acquired?: number | null
+          user_id?: string | null
+          xp_earned?: number | null
+        }
+        Update: {
+          assessments_completed?: number | null
+          assessments_passed?: number | null
+          average_score?: number | null
+          completion_rate?: number | null
+          created_at?: string | null
+          engagement_score?: number | null
+          faculty_id?: string | null
+          id?: string
+          intervention_flags?: Json | null
+          mentorship_hours?: number | null
+          metrics_type?: string | null
+          period_end?: string
+          period_start?: string
+          predictive_success_score?: number | null
+          prophetic_score_avg?: number | null
+          scroll_alignment_avg?: number | null
+          scrollgold_earned?: number | null
+          skills_acquired?: number | null
+          user_id?: string | null
+          xp_earned?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "degree_analytics_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "degree_analytics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       degree_programs: {
         Row: {
           created_at: string | null
@@ -1030,6 +1217,91 @@ export type Database = {
           title?: string
         }
         Relationships: []
+      }
+      degree_progress: {
+        Row: {
+          competency_matrix_id: string | null
+          completed_at: string | null
+          completion_percentage: number | null
+          created_at: string | null
+          current_xp: number | null
+          degree_level: Database["public"]["Enums"]["scroll_degree_level"]
+          expected_completion_at: string | null
+          faculty_id: string | null
+          id: string
+          milestones_achieved: Json | null
+          prophetic_score: number | null
+          scroll_alignment_score: number | null
+          skills_completed: number | null
+          skills_required: number | null
+          started_at: string | null
+          target_xp: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          competency_matrix_id?: string | null
+          completed_at?: string | null
+          completion_percentage?: number | null
+          created_at?: string | null
+          current_xp?: number | null
+          degree_level: Database["public"]["Enums"]["scroll_degree_level"]
+          expected_completion_at?: string | null
+          faculty_id?: string | null
+          id?: string
+          milestones_achieved?: Json | null
+          prophetic_score?: number | null
+          scroll_alignment_score?: number | null
+          skills_completed?: number | null
+          skills_required?: number | null
+          started_at?: string | null
+          target_xp?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          competency_matrix_id?: string | null
+          completed_at?: string | null
+          completion_percentage?: number | null
+          created_at?: string | null
+          current_xp?: number | null
+          degree_level?: Database["public"]["Enums"]["scroll_degree_level"]
+          expected_completion_at?: string | null
+          faculty_id?: string | null
+          id?: string
+          milestones_achieved?: Json | null
+          prophetic_score?: number | null
+          scroll_alignment_score?: number | null
+          skills_completed?: number | null
+          skills_required?: number | null
+          started_at?: string | null
+          target_xp?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "degree_progress_competency_matrix_id_fkey"
+            columns: ["competency_matrix_id"]
+            isOneToOne: false
+            referencedRelation: "competency_matrices"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "degree_progress_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "degree_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
       }
       devotional_completions: {
         Row: {
@@ -1176,6 +1448,198 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      divine_assessment_attempts: {
+        Row: {
+          academic_score: number | null
+          ai_evaluation: Json | null
+          assessment_id: string
+          character_score: number | null
+          created_at: string | null
+          evaluator_notes: Json | null
+          graded_at: string | null
+          graded_by: string | null
+          id: string
+          passed: boolean | null
+          plagiarism_check: Json | null
+          prophetic_score: number | null
+          responses: Json | null
+          scroll_alignment_score: number | null
+          scrollgold_awarded: number | null
+          started_at: string | null
+          submitted_at: string | null
+          total_score: number | null
+          user_id: string
+          xp_awarded: number | null
+        }
+        Insert: {
+          academic_score?: number | null
+          ai_evaluation?: Json | null
+          assessment_id: string
+          character_score?: number | null
+          created_at?: string | null
+          evaluator_notes?: Json | null
+          graded_at?: string | null
+          graded_by?: string | null
+          id?: string
+          passed?: boolean | null
+          plagiarism_check?: Json | null
+          prophetic_score?: number | null
+          responses?: Json | null
+          scroll_alignment_score?: number | null
+          scrollgold_awarded?: number | null
+          started_at?: string | null
+          submitted_at?: string | null
+          total_score?: number | null
+          user_id: string
+          xp_awarded?: number | null
+        }
+        Update: {
+          academic_score?: number | null
+          ai_evaluation?: Json | null
+          assessment_id?: string
+          character_score?: number | null
+          created_at?: string | null
+          evaluator_notes?: Json | null
+          graded_at?: string | null
+          graded_by?: string | null
+          id?: string
+          passed?: boolean | null
+          plagiarism_check?: Json | null
+          prophetic_score?: number | null
+          responses?: Json | null
+          scroll_alignment_score?: number | null
+          scrollgold_awarded?: number | null
+          started_at?: string | null
+          submitted_at?: string | null
+          total_score?: number | null
+          user_id?: string
+          xp_awarded?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "divine_assessment_attempts_assessment_id_fkey"
+            columns: ["assessment_id"]
+            isOneToOne: false
+            referencedRelation: "divine_assessments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "divine_assessment_attempts_graded_by_fkey"
+            columns: ["graded_by"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "divine_assessment_attempts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      divine_assessments: {
+        Row: {
+          academic_weight: number | null
+          assessment_type: Database["public"]["Enums"]["assessment_type"]
+          character_weight: number | null
+          course_id: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          faculty_id: string | null
+          id: string
+          is_published: boolean | null
+          max_score: number | null
+          module_id: string | null
+          passing_score: number | null
+          prophetic_weight: number | null
+          rubric: Json
+          scrollgold_reward: number | null
+          skills_assessed: string[] | null
+          time_limit_minutes: number | null
+          title: string
+          updated_at: string | null
+          xp_reward: number | null
+        }
+        Insert: {
+          academic_weight?: number | null
+          assessment_type: Database["public"]["Enums"]["assessment_type"]
+          character_weight?: number | null
+          course_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          faculty_id?: string | null
+          id?: string
+          is_published?: boolean | null
+          max_score?: number | null
+          module_id?: string | null
+          passing_score?: number | null
+          prophetic_weight?: number | null
+          rubric?: Json
+          scrollgold_reward?: number | null
+          skills_assessed?: string[] | null
+          time_limit_minutes?: number | null
+          title: string
+          updated_at?: string | null
+          xp_reward?: number | null
+        }
+        Update: {
+          academic_weight?: number | null
+          assessment_type?: Database["public"]["Enums"]["assessment_type"]
+          character_weight?: number | null
+          course_id?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          faculty_id?: string | null
+          id?: string
+          is_published?: boolean | null
+          max_score?: number | null
+          module_id?: string | null
+          passing_score?: number | null
+          prophetic_weight?: number | null
+          rubric?: Json
+          scrollgold_reward?: number | null
+          skills_assessed?: string[] | null
+          time_limit_minutes?: number | null
+          title?: string
+          updated_at?: string | null
+          xp_reward?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "divine_assessments_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "divine_assessments_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "divine_assessments_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "divine_assessments_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -1803,6 +2267,87 @@ export type Database = {
           },
         ]
       }
+      learning_pathways: {
+        Row: {
+          ai_recommendations: Json | null
+          career_goals: Json | null
+          created_at: string | null
+          current_phase: string | null
+          degree_target:
+            | Database["public"]["Enums"]["scroll_degree_level"]
+            | null
+          description: string | null
+          faculty_id: string | null
+          id: string
+          is_active: boolean | null
+          name: string
+          phases: Json | null
+          prophetic_calling: string | null
+          recommended_courses: string[] | null
+          recommended_skills: string[] | null
+          spiritual_gifts: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          ai_recommendations?: Json | null
+          career_goals?: Json | null
+          created_at?: string | null
+          current_phase?: string | null
+          degree_target?:
+            | Database["public"]["Enums"]["scroll_degree_level"]
+            | null
+          description?: string | null
+          faculty_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          phases?: Json | null
+          prophetic_calling?: string | null
+          recommended_courses?: string[] | null
+          recommended_skills?: string[] | null
+          spiritual_gifts?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          ai_recommendations?: Json | null
+          career_goals?: Json | null
+          created_at?: string | null
+          current_phase?: string | null
+          degree_target?:
+            | Database["public"]["Enums"]["scroll_degree_level"]
+            | null
+          description?: string | null
+          faculty_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          phases?: Json | null
+          prophetic_calling?: string | null
+          recommended_courses?: string[] | null
+          recommended_skills?: string[] | null
+          spiritual_gifts?: Json | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "learning_pathways_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "learning_pathways_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       learning_patterns: {
         Row: {
           areas_for_growth: Json | null
@@ -2141,6 +2686,82 @@ export type Database = {
           },
         ]
       }
+      mentorship_relationships: {
+        Row: {
+          actual_end_date: string | null
+          created_at: string | null
+          expected_end_date: string | null
+          faculty_id: string | null
+          goals: Json | null
+          id: string
+          mentee_id: string
+          mentor_id: string
+          notes: string | null
+          start_date: string | null
+          status: string | null
+          success_metrics: Json | null
+          total_hours: number | null
+          total_sessions: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          actual_end_date?: string | null
+          created_at?: string | null
+          expected_end_date?: string | null
+          faculty_id?: string | null
+          goals?: Json | null
+          id?: string
+          mentee_id: string
+          mentor_id: string
+          notes?: string | null
+          start_date?: string | null
+          status?: string | null
+          success_metrics?: Json | null
+          total_hours?: number | null
+          total_sessions?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          actual_end_date?: string | null
+          created_at?: string | null
+          expected_end_date?: string | null
+          faculty_id?: string | null
+          goals?: Json | null
+          id?: string
+          mentee_id?: string
+          mentor_id?: string
+          notes?: string | null
+          start_date?: string | null
+          status?: string | null
+          success_metrics?: Json | null
+          total_hours?: number | null
+          total_sessions?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentorship_relationships_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "mentorship_relationships_mentee_id_fkey"
+            columns: ["mentee_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "mentorship_relationships_mentor_id_fkey"
+            columns: ["mentor_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       mentorship_requests: {
         Row: {
           accepted_at: string | null
@@ -2193,6 +2814,83 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      mentorship_sessions: {
+        Row: {
+          action_items: Json | null
+          breakthrough_notes: string | null
+          created_at: string | null
+          duration_minutes: number | null
+          ended_at: string | null
+          follow_up_date: string | null
+          follow_up_required: boolean | null
+          guidance_provided: string | null
+          id: string
+          mentee_rating: number | null
+          mentee_response: string | null
+          mentor_rating: number | null
+          prophetic_words: string | null
+          relationship_id: string
+          scheduled_at: string
+          session_type: Database["public"]["Enums"]["mentorship_session_type"]
+          spiritual_insights: string | null
+          started_at: string | null
+          topics_discussed: Json | null
+          updated_at: string | null
+        }
+        Insert: {
+          action_items?: Json | null
+          breakthrough_notes?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          ended_at?: string | null
+          follow_up_date?: string | null
+          follow_up_required?: boolean | null
+          guidance_provided?: string | null
+          id?: string
+          mentee_rating?: number | null
+          mentee_response?: string | null
+          mentor_rating?: number | null
+          prophetic_words?: string | null
+          relationship_id: string
+          scheduled_at: string
+          session_type: Database["public"]["Enums"]["mentorship_session_type"]
+          spiritual_insights?: string | null
+          started_at?: string | null
+          topics_discussed?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          action_items?: Json | null
+          breakthrough_notes?: string | null
+          created_at?: string | null
+          duration_minutes?: number | null
+          ended_at?: string | null
+          follow_up_date?: string | null
+          follow_up_required?: boolean | null
+          guidance_provided?: string | null
+          id?: string
+          mentee_rating?: number | null
+          mentee_response?: string | null
+          mentor_rating?: number | null
+          prophetic_words?: string | null
+          relationship_id?: string
+          scheduled_at?: string
+          session_type?: Database["public"]["Enums"]["mentorship_session_type"]
+          spiritual_insights?: string | null
+          started_at?: string | null
+          topics_discussed?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "mentorship_sessions_relationship_id_fkey"
+            columns: ["relationship_id"]
+            isOneToOne: false
+            referencedRelation: "mentorship_relationships"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -2658,6 +3356,81 @@ export type Database = {
             foreignKeyName: "profiles_id_fkey"
             columns: ["id"]
             isOneToOne: true
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      prophetic_assessments: {
+        Row: {
+          assessed_by: string | null
+          assessment_date: string | null
+          breakthrough_areas: string | null
+          calling_clarity_score: number | null
+          created_at: string | null
+          divine_assignments: Json | null
+          growth_areas: string | null
+          id: string
+          intercession_practice: Json | null
+          ministry_readiness_score: number | null
+          overall_score: number | null
+          prophetic_gifts_score: number | null
+          prophetic_words_received: string | null
+          recommendations: Json | null
+          spiritual_disciplines: Json | null
+          spiritual_maturity_score: number | null
+          user_id: string
+        }
+        Insert: {
+          assessed_by?: string | null
+          assessment_date?: string | null
+          breakthrough_areas?: string | null
+          calling_clarity_score?: number | null
+          created_at?: string | null
+          divine_assignments?: Json | null
+          growth_areas?: string | null
+          id?: string
+          intercession_practice?: Json | null
+          ministry_readiness_score?: number | null
+          overall_score?: number | null
+          prophetic_gifts_score?: number | null
+          prophetic_words_received?: string | null
+          recommendations?: Json | null
+          spiritual_disciplines?: Json | null
+          spiritual_maturity_score?: number | null
+          user_id: string
+        }
+        Update: {
+          assessed_by?: string | null
+          assessment_date?: string | null
+          breakthrough_areas?: string | null
+          calling_clarity_score?: number | null
+          created_at?: string | null
+          divine_assignments?: Json | null
+          growth_areas?: string | null
+          id?: string
+          intercession_practice?: Json | null
+          ministry_readiness_score?: number | null
+          overall_score?: number | null
+          prophetic_gifts_score?: number | null
+          prophetic_words_received?: string | null
+          recommendations?: Json | null
+          spiritual_disciplines?: Json | null
+          spiritual_maturity_score?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prophetic_assessments_assessed_by_fkey"
+            columns: ["assessed_by"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "prophetic_assessments_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
           },
@@ -3191,6 +3964,74 @@ export type Database = {
           },
         ]
       }
+      scroll_transcripts: {
+        Row: {
+          badges_earned: Json | null
+          courses_completed: Json | null
+          created_at: string | null
+          degrees_awarded: Json | null
+          generated_at: string | null
+          gpa_equivalent: number | null
+          heaven_ledger_entries: Json | null
+          id: string
+          prophetic_scores: Json | null
+          scroll_alignment_scores: Json | null
+          skills_mastered: Json | null
+          total_scrollgold: number | null
+          total_xp: number | null
+          transcript_type: string | null
+          user_id: string
+          valid_until: string | null
+          verification_hash: string | null
+        }
+        Insert: {
+          badges_earned?: Json | null
+          courses_completed?: Json | null
+          created_at?: string | null
+          degrees_awarded?: Json | null
+          generated_at?: string | null
+          gpa_equivalent?: number | null
+          heaven_ledger_entries?: Json | null
+          id?: string
+          prophetic_scores?: Json | null
+          scroll_alignment_scores?: Json | null
+          skills_mastered?: Json | null
+          total_scrollgold?: number | null
+          total_xp?: number | null
+          transcript_type?: string | null
+          user_id: string
+          valid_until?: string | null
+          verification_hash?: string | null
+        }
+        Update: {
+          badges_earned?: Json | null
+          courses_completed?: Json | null
+          created_at?: string | null
+          degrees_awarded?: Json | null
+          generated_at?: string | null
+          gpa_equivalent?: number | null
+          heaven_ledger_entries?: Json | null
+          id?: string
+          prophetic_scores?: Json | null
+          scroll_alignment_scores?: Json | null
+          skills_mastered?: Json | null
+          total_scrollgold?: number | null
+          total_xp?: number | null
+          transcript_type?: string | null
+          user_id?: string
+          valid_until?: string | null
+          verification_hash?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scroll_transcripts_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       scrollcoin_analytics_daily: {
         Row: {
           active_users: number | null
@@ -3286,6 +4127,66 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      skills_catalog: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          difficulty_level: number | null
+          faculty_id: string | null
+          id: string
+          name: string
+          parent_skill_id: string | null
+          prerequisites: Json | null
+          scrollgold_value: number | null
+          updated_at: string | null
+          xp_value: number | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          difficulty_level?: number | null
+          faculty_id?: string | null
+          id?: string
+          name: string
+          parent_skill_id?: string | null
+          prerequisites?: Json | null
+          scrollgold_value?: number | null
+          updated_at?: string | null
+          xp_value?: number | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          difficulty_level?: number | null
+          faculty_id?: string | null
+          id?: string
+          name?: string
+          parent_skill_id?: string | null
+          prerequisites?: Json | null
+          scrollgold_value?: number | null
+          updated_at?: string | null
+          xp_value?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "skills_catalog_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "skills_catalog_parent_skill_id_fkey"
+            columns: ["parent_skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills_catalog"
+            referencedColumns: ["id"]
           },
         ]
       }
@@ -3640,6 +4541,69 @@ export type Database = {
           },
         ]
       }
+      student_skills: {
+        Row: {
+          assessments_passed: number | null
+          created_at: string | null
+          evidence_portfolio: Json | null
+          id: string
+          last_assessed_at: string | null
+          proficiency_level:
+            | Database["public"]["Enums"]["skill_proficiency_level"]
+            | null
+          skill_id: string
+          updated_at: string | null
+          user_id: string
+          validation_sources: Json | null
+          xp_earned: number | null
+        }
+        Insert: {
+          assessments_passed?: number | null
+          created_at?: string | null
+          evidence_portfolio?: Json | null
+          id?: string
+          last_assessed_at?: string | null
+          proficiency_level?:
+            | Database["public"]["Enums"]["skill_proficiency_level"]
+            | null
+          skill_id: string
+          updated_at?: string | null
+          user_id: string
+          validation_sources?: Json | null
+          xp_earned?: number | null
+        }
+        Update: {
+          assessments_passed?: number | null
+          created_at?: string | null
+          evidence_portfolio?: Json | null
+          id?: string
+          last_assessed_at?: string | null
+          proficiency_level?:
+            | Database["public"]["Enums"]["skill_proficiency_level"]
+            | null
+          skill_id?: string
+          updated_at?: string | null
+          user_id?: string
+          validation_sources?: Json | null
+          xp_earned?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_skills_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills_catalog"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_skills_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       students: {
         Row: {
           address: string | null
@@ -3931,6 +4895,104 @@ export type Database = {
           },
           {
             foreignKeyName: "submissions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      supreme_degree_applications: {
+        Row: {
+          anointing_verification: Json | null
+          approved_at: string | null
+          awarded_at: string | null
+          created_at: string | null
+          degree_type: Database["public"]["Enums"]["scroll_degree_level"]
+          heaven_ledger_id: string | null
+          id: string
+          impact_metrics: Json | null
+          innovation_contributions: Json | null
+          kingdom_mark: string | null
+          research_contributions: Json | null
+          scroll_chain_hash: string | null
+          scroll_defense_date: string | null
+          scroll_defense_outcome: string | null
+          scroll_defense_panel: Json | null
+          scroll_fulfillment_evidence: Json
+          scroll_seal_id: string | null
+          scroll_witness_ids: string[] | null
+          scroll_year: string | null
+          scrollgold_valuation: number | null
+          status: string | null
+          submitted_at: string | null
+          thesis_abstract: string | null
+          thesis_document_url: string | null
+          thesis_title: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          anointing_verification?: Json | null
+          approved_at?: string | null
+          awarded_at?: string | null
+          created_at?: string | null
+          degree_type: Database["public"]["Enums"]["scroll_degree_level"]
+          heaven_ledger_id?: string | null
+          id?: string
+          impact_metrics?: Json | null
+          innovation_contributions?: Json | null
+          kingdom_mark?: string | null
+          research_contributions?: Json | null
+          scroll_chain_hash?: string | null
+          scroll_defense_date?: string | null
+          scroll_defense_outcome?: string | null
+          scroll_defense_panel?: Json | null
+          scroll_fulfillment_evidence?: Json
+          scroll_seal_id?: string | null
+          scroll_witness_ids?: string[] | null
+          scroll_year?: string | null
+          scrollgold_valuation?: number | null
+          status?: string | null
+          submitted_at?: string | null
+          thesis_abstract?: string | null
+          thesis_document_url?: string | null
+          thesis_title?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          anointing_verification?: Json | null
+          approved_at?: string | null
+          awarded_at?: string | null
+          created_at?: string | null
+          degree_type?: Database["public"]["Enums"]["scroll_degree_level"]
+          heaven_ledger_id?: string | null
+          id?: string
+          impact_metrics?: Json | null
+          innovation_contributions?: Json | null
+          kingdom_mark?: string | null
+          research_contributions?: Json | null
+          scroll_chain_hash?: string | null
+          scroll_defense_date?: string | null
+          scroll_defense_outcome?: string | null
+          scroll_defense_panel?: Json | null
+          scroll_fulfillment_evidence?: Json
+          scroll_seal_id?: string | null
+          scroll_witness_ids?: string[] | null
+          scroll_year?: string | null
+          scrollgold_valuation?: number | null
+          status?: string | null
+          submitted_at?: string | null
+          thesis_abstract?: string | null
+          thesis_document_url?: string | null
+          thesis_title?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supreme_degree_applications_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "leaderboard"
@@ -4611,6 +5673,41 @@ export type Database = {
     }
     Enums: {
       app_role: "student" | "faculty" | "admin" | "superadmin"
+      assessment_type:
+        | "academic"
+        | "prophetic"
+        | "divine"
+        | "practical"
+        | "collaborative"
+        | "scroll_defense"
+      mentorship_session_type:
+        | "initial_consultation"
+        | "progress_review"
+        | "spiritual_guidance"
+        | "academic_coaching"
+        | "career_counseling"
+        | "prophetic_activation"
+        | "scroll_alignment"
+      scroll_degree_level:
+        | "scroll_certificate"
+        | "scroll_diploma"
+        | "bachelor"
+        | "master"
+        | "doctorate"
+        | "dpt"
+        | "dshr"
+        | "dehsm"
+        | "sman"
+        | "dsgei"
+        | "sef"
+      skill_proficiency_level:
+        | "novice"
+        | "beginner"
+        | "intermediate"
+        | "advanced"
+        | "expert"
+        | "master"
+        | "prophet"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -4739,6 +5836,45 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["student", "faculty", "admin", "superadmin"],
+      assessment_type: [
+        "academic",
+        "prophetic",
+        "divine",
+        "practical",
+        "collaborative",
+        "scroll_defense",
+      ],
+      mentorship_session_type: [
+        "initial_consultation",
+        "progress_review",
+        "spiritual_guidance",
+        "academic_coaching",
+        "career_counseling",
+        "prophetic_activation",
+        "scroll_alignment",
+      ],
+      scroll_degree_level: [
+        "scroll_certificate",
+        "scroll_diploma",
+        "bachelor",
+        "master",
+        "doctorate",
+        "dpt",
+        "dshr",
+        "dehsm",
+        "sman",
+        "dsgei",
+        "sef",
+      ],
+      skill_proficiency_level: [
+        "novice",
+        "beginner",
+        "intermediate",
+        "advanced",
+        "expert",
+        "master",
+        "prophet",
+      ],
     },
   },
 } as const
