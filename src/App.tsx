@@ -125,6 +125,15 @@ import ScrollLibrary from "./pages/ScrollLibrary";
 import ScrollLibraryBookReader from "./pages/ScrollLibraryBookReader";
 import AcademicTermAdmin from "./pages/AcademicTermAdmin";
 
+// Academic Year Pages (SUYAS)
+import {
+  AcademicDashboard,
+  CreateAcademicYear,
+  CourseScheduling,
+  GraduationDashboard,
+  StudentAcademicTimeline
+} from "./pages/AcademicYear";
+
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
@@ -372,6 +381,14 @@ const App = () => (
             <Route path="scroll-library" element={<ScrollLibrary />} />
             <Route path="scroll-library/book/:bookId" element={<ScrollLibraryBookReader />} />
             <Route path="admin/academic-terms" element={<AcademicTermAdmin />} />
+            
+            {/* Academic Year Management (SUYAS) */}
+            <Route path="academic-year" element={<AcademicDashboard />} />
+            <Route path="academic-year/create" element={<CreateAcademicYear />} />
+            <Route path="academic-year/scheduling" element={<CourseScheduling />} />
+            <Route path="academic-year/graduation" element={<GraduationDashboard />} />
+            <Route path="academic-year/students" element={<StudentAcademicTimeline />} />
+            <Route path="academic-year/notifications" element={<AcademicDashboard />} />
           </Route>
           
           {/* Catch-all route for 404 */}
