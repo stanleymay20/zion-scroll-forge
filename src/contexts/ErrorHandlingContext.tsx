@@ -5,10 +5,8 @@
 
 import React, { createContext, useContext, useCallback, ReactNode } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { parseError, reportError, AppError, isRetryableError } from '@/lib/error-handler';
+import { parseError, reportError, AppError } from '@/lib/error-handler';
 import { retryWithBackoff } from '@/lib/retry-handler';
-import { OfflineIndicator } from '@/components/error/OfflineIndicator';
-import { LoadingOverlay } from '@/components/error/LoadingOverlay';
 
 interface ErrorHandlingContextValue {
   handleError: (error: any, context?: any) => AppError;
@@ -23,14 +21,10 @@ const ErrorHandlingContext = createContext<ErrorHandlingContextValue | undefined
 
 export interface ErrorHandlingProviderProps {
   children: ReactNode;
-  showOfflineIndicator?: boolean;
-  showLoadingOverlay?: boolean;
 }
 
 export const ErrorHandlingProvider: React.FC<ErrorHandlingProviderProps> = ({
-  children,
-  showOfflineIndicator = true,
-  showLoadingOverlay = true
+  children
 }) => {
   const { toast } = useToast();
   
@@ -138,8 +132,6 @@ export const ErrorHandlingProvider: React.FC<ErrorHandlingProviderProps> = ({
   
   return (
     <ErrorHandlingContext.Provider value={value}>
-      {showOfflineIndicator && <OfflineIndicator />}
-      {showLoadingOverlay && <LoadingOverlay />}
       {children}
     </ErrorHandlingContext.Provider>
   );
