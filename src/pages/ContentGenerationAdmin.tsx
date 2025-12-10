@@ -167,30 +167,43 @@ export default function ContentGenerationAdmin() {
               </div>
             </div>
 
-            <div className="bg-muted/50 p-4 rounded-lg space-y-2">
-              <p className="text-sm font-medium">What will be generated:</p>
+            <div className="bg-muted/50 p-4 rounded-lg space-y-3">
+              <p className="text-sm font-medium">8-Week Intensive Course Generation:</p>
               <ul className="text-sm text-muted-foreground space-y-1">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-primary" />
-                  <span>{courseCount} comprehensive courses</span>
+                  <span><strong>{courseCount} courses</strong> with 8 weeks of intensive content each</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-primary" />
-                  <span>{courseCount * modulesPerCourse} detailed learning modules</span>
+                  <span><strong>{courseCount * 8} comprehensive modules</strong> (2000+ words each)</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-primary" />
-                  <span>Quizzes and assessments for each module</span>
+                  <span><strong>{courseCount * 8 * 10} quiz questions</strong> (10 per module)</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-primary" />
-                  <span>Learning materials (PDFs, videos, infographics)</span>
+                  <span><strong>{courseCount * 8 * 4} learning materials</strong> (study guides, notes, scripture refs)</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="h-4 w-4 text-primary" />
-                  <span>Scripture integrations and spiritual applications</span>
+                  <span>Scripture memory verses, discussion questions, and ScrollCoin rewards</span>
                 </li>
               </ul>
+              <div className="mt-3 p-3 bg-primary/10 rounded-md">
+                <p className="text-xs font-medium text-primary">Week-by-Week Structure:</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-1 mt-2 text-xs text-muted-foreground">
+                  <span>W1: Foundations</span>
+                  <span>W2: Theology</span>
+                  <span>W3: Deep Dive</span>
+                  <span>W4: Application</span>
+                  <span>W5: Advanced</span>
+                  <span>W6: Integration</span>
+                  <span>W7: Ministry</span>
+                  <span>W8: Capstone</span>
+                </div>
+              </div>
             </div>
 
             <Button

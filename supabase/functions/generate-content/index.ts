@@ -9,44 +9,39 @@ const corsHeaders = {
 // ✝️ Multi-tenant institution resolver
 async function resolveInstitutionId(req: Request, supabase: any, bodyData?: any): Promise<string> {
   try {
-    // Priority 1: Request body
-    if (bodyData?.institution_id) {
-      console.log('✝️ Using institution_id from request:', bodyData.institution_id);
-      return bodyData.institution_id;
-    }
-
-    // Priority 2: JWT/Profile
+    if (bodyData?.institution_id) return bodyData.institution_id;
+    
     try {
       const authHeader = req.headers.get('authorization');
       if (authHeader) {
         const { data: { user } } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''));
         if (user) {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('current_institution_id')
-            .eq('id', user.id)
-            .single();
-          if (profile?.current_institution_id) {
-            console.log('✝️ Using institution_id from profile:', profile.current_institution_id);
-            return profile.current_institution_id;
-          }
+          const { data: profile } = await supabase.from('profiles').select('current_institution_id').eq('id', user.id).single();
+          if (profile?.current_institution_id) return profile.current_institution_id;
         }
       }
     } catch {}
 
-    // Priority 3: Default ScrollUniversity
     const { data } = await supabase.from('institutions').select('id').eq('slug', 'scrolluniversity').single();
-    if (data) {
-      console.log('✝️ Using default ScrollUniversity institution:', data.id);
-      return data.id;
-    }
-
+    if (data) return data.id;
     throw new Error('No institution could be resolved');
   } catch (error) {
     console.error('Institution resolution error:', error);
     throw error;
   }
 }
+
+// Week-by-week curriculum structure for 8-week intensive courses
+const WEEK_THEMES = [
+  { week: 1, theme: "Foundations & Introduction", focus: "Core concepts, historical context, biblical foundations" },
+  { week: 2, theme: "Theological Framework", focus: "Scriptural basis, doctrinal perspectives, key principles" },
+  { week: 3, theme: "Deep Dive Analysis", focus: "In-depth study, case studies, comparative analysis" },
+  { week: 4, theme: "Practical Application", focus: "Real-world application, ministry contexts, hands-on exercises" },
+  { week: 5, theme: "Advanced Concepts", focus: "Complex topics, scholarly debates, research methods" },
+  { week: 6, theme: "Integration & Synthesis", focus: "Connecting ideas, cross-disciplinary insights, holistic understanding" },
+  { week: 7, theme: "Ministry Preparation", focus: "Leadership skills, pastoral application, service opportunities" },
+  { week: 8, theme: "Capstone & Assessment", focus: "Final project, comprehensive review, future directions" }
+];
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -56,23 +51,29 @@ serve(async (req) => {
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY')!;
+    const deepseekApiKey = Deno.env.get('DEEPSEEK_API_KEY');
+    const lovableApiKey = Deno.env.get('LOVABLE_API_KEY');
+    
+    // Prefer DeepSeek for cost-effective generation, fallback to Lovable AI
+    const aiConfig = deepseekApiKey 
+      ? { url: 'https://api.deepseek.com/v1/chat/completions', key: deepseekApiKey, model: 'deepseek-chat' }
+      : { url: 'https://ai.gateway.lovable.dev/v1/chat/completions', key: lovableApiKey!, model: 'google/gemini-2.5-pro' };
     
     const supabase = createClient(supabaseUrl, supabaseKey);
     const bodyData = await req.json();
-
-    // Resolve institution_id for multi-tenancy
     const institutionId = await resolveInstitutionId(req, supabase, bodyData);
+    
+    // Optional: generate for specific course
+    const targetCourseId = bodyData?.course_id;
 
-    console.log(`✝️ Phase 7: Content Generation Started for institution ${institutionId}`);
+    console.log(`✝️ Comprehensive 8-Week Course Generation Started for institution ${institutionId}`);
 
-    // Initialize progress
     const { data: progress } = await supabase
       .from('generation_progress')
       .insert({
         institution_id: institutionId,
         progress: 0,
-        current_stage: 'Initializing comprehensive content generation',
+        current_stage: 'Initializing 8-week intensive course generation',
         faculties_created: 0,
         courses_created: 0,
         modules_created: 0,
@@ -81,16 +82,23 @@ serve(async (req) => {
       .select()
       .single();
 
-    // Start generation in background
-    EdgeRuntime.waitUntil(runGeneration(supabase, lovableApiKey, progress.id, institutionId));
+    EdgeRuntime.waitUntil(runGeneration(supabase, aiConfig, progress.id, institutionId, targetCourseId));
 
     return new Response(
       JSON.stringify({ 
         success: true,
-        message: 'Phase 7 content generation started',
+        message: '8-week intensive course generation started',
         institution_id: institutionId,
         progressId: progress.id,
-        estimatedTime: '2-4 hours'
+        estimatedTime: '3-6 hours for full curriculum',
+        features: [
+          '8 weeks of intensive content per course',
+          'Comprehensive markdown lessons (2000+ words each)',
+          'AI-generated assessments with 10 questions per module',
+          'Downloadable study materials',
+          'Scripture integrations throughout',
+          'ScrollCoin reward markers'
+        ]
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
@@ -104,78 +112,87 @@ serve(async (req) => {
   }
 });
 
-async function runGeneration(supabase: any, apiKey: string, progressId: string, institutionId: string) {
-  let stats = {
-    faculties: 0,
-    courses: 0,
-    modules: 0,
-    quizzes: 0,
-    materials: 0
-  };
+async function runGeneration(
+  supabase: any, 
+  aiConfig: { url: string; key: string; model: string }, 
+  progressId: string, 
+  institutionId: string,
+  targetCourseId?: string
+) {
+  let stats = { faculties: 0, courses: 0, modules: 0, quizzes: 0, materials: 0 };
 
   try {
-    // Get all faculties for this institution
-    console.log(`✝️ Fetching faculties for institution: ${institutionId}`);
-    const { data: faculties, error: facultiesError } = await supabase
-      .from('faculties')
-      .select('*')
-      .eq('institution_id', institutionId);
+    let courses: any[] = [];
     
-    if (facultiesError) {
-      console.error('Error fetching faculties:', facultiesError);
-      throw new Error(`Failed to fetch faculties: ${facultiesError.message}`);
-    }
-
-    if (!faculties || faculties.length === 0) {
-      console.error(`❌ No faculties found for institution ${institutionId}`);
-      throw new Error(`No faculties found for this institution. Please ensure faculties are created and linked to institution_id: ${institutionId}`);
-    }
-
-    console.log(`✅ Processing ${faculties.length} faculties for institution ${institutionId}`);
-
-    for (let i = 0; i < faculties.length; i++) {
-      const faculty = faculties[i];
+    if (targetCourseId) {
+      // Generate for specific course
+      const { data: course } = await supabase.from('courses').select('*, faculties(*)').eq('id', targetCourseId).single();
+      if (course) courses = [course];
+    } else {
+      // Get all faculties and generate courses
+      const { data: faculties } = await supabase.from('faculties').select('*').eq('institution_id', institutionId);
       
-      await updateProgress(supabase, progressId, {
-        current_stage: `Generating ${faculty.name}`,
-        progress: Math.floor((i / faculties.length) * 90),
-        faculties_created: i,
-        courses_created: stats.courses,
-        modules_created: stats.modules
-      });
+      if (!faculties?.length) {
+        throw new Error('No faculties found. Please create faculties first.');
+      }
 
-      // Generate 6 courses per faculty
-      for (let j = 0; j < 6; j++) {
-        try {
-          const course = await genCourse(supabase, apiKey, faculty, institutionId);
-          stats.courses++;
+      // Generate 4 comprehensive courses per faculty
+      for (const faculty of faculties) {
+        await updateProgress(supabase, progressId, {
+          current_stage: `Creating courses for ${faculty.name}`,
+          progress: Math.floor((stats.courses / (faculties.length * 4)) * 20)
+        });
 
-          // Generate 8 modules per course
-          for (let k = 0; k < 8; k++) {
-            const module = await genModule(supabase, apiKey, course, k + 1, institutionId);
-            stats.modules++;
-
-            const quiz = await genQuiz(supabase, module, institutionId);
-            stats.quizzes++;
-
-            await genMaterials(supabase, apiKey, module, institutionId);
-            stats.materials += 3;
+        for (let i = 0; i < 4; i++) {
+          const course = await generateCourse(supabase, aiConfig, faculty, institutionId, i);
+          if (course) {
+            courses.push(course);
+            stats.courses++;
           }
-        } catch (err) {
-          console.error(`Error generating course:`, err);
         }
       }
     }
 
+    // Generate 8 weeks of content for each course
+    const totalModules = courses.length * 8;
+    
+    for (const course of courses) {
+      console.log(`✝️ Generating 8-week curriculum for: ${course.title}`);
+      
+      for (let week = 1; week <= 8; week++) {
+        await updateProgress(supabase, progressId, {
+          current_stage: `${course.title} - Week ${week}: ${WEEK_THEMES[week-1].theme}`,
+          progress: 20 + Math.floor((stats.modules / totalModules) * 70),
+          modules_created: stats.modules
+        });
+
+        // Generate comprehensive module content
+        const module = await generateWeekModule(supabase, aiConfig, course, week, institutionId);
+        if (module) {
+          stats.modules++;
+          
+          // Generate quiz with AI-powered questions
+          await generateQuiz(supabase, aiConfig, module, course, week, institutionId);
+          stats.quizzes++;
+          
+          // Generate learning materials
+          await generateMaterials(supabase, aiConfig, module, course, week, institutionId);
+          stats.materials += 4;
+        }
+        
+        // Rate limiting - pause between modules
+        await new Promise(r => setTimeout(r, 2000));
+      }
+    }
+
     await updateProgress(supabase, progressId, {
-      current_stage: 'Complete',
+      current_stage: 'Complete - All courses generated with 8 weeks of content',
       progress: 100,
-      faculties_created: faculties.length,
       courses_created: stats.courses,
       modules_created: stats.modules
     });
 
-    console.log('✝️ Content generation complete:', stats);
+    console.log('✝️ Generation complete:', stats);
   } catch (error: any) {
     console.error('Generation failed:', error);
     await updateProgress(supabase, progressId, {
@@ -185,149 +202,394 @@ async function runGeneration(supabase: any, apiKey: string, progressId: string, 
   }
 }
 
-async function genCourse(supabase: any, apiKey: string, faculty: any, institutionId: string) {
+async function generateCourse(
+  supabase: any, 
+  aiConfig: { url: string; key: string; model: string }, 
+  faculty: any, 
+  institutionId: string,
+  index: number
+) {
+  const courseTypes = ['Foundations', 'Advanced Studies', 'Practical Ministry', 'Research Methods'];
+  
+  const prompt = `You are an expert Christian university curriculum designer. Create a comprehensive 8-week intensive course for the ${faculty.name} faculty.
+
+Course Focus: ${courseTypes[index % 4]}
+Faculty Description: ${faculty.description || faculty.name}
+Key Scripture: ${faculty.key_scripture || 'Proverbs 1:7'}
+
+Generate a rigorous academic course suitable for university-level study. Return ONLY valid JSON:
+
+{
+  "title": "Course Title (academic, specific, compelling)",
+  "description": "200-300 word course description explaining scope, objectives, and spiritual significance",
+  "level": "Intermediate",
+  "duration": "8 weeks",
+  "prerequisites": ["List any prerequisites"],
+  "learning_outcomes": [
+    "Specific measurable outcome 1",
+    "Specific measurable outcome 2", 
+    "Specific measurable outcome 3",
+    "Specific measurable outcome 4",
+    "Specific measurable outcome 5"
+  ],
+  "key_texts": ["Primary textbook", "Secondary readings"],
+  "tags": ["topic1", "topic2", "topic3", "topic4"]
+}`;
+
   try {
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch(aiConfig.url, {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      headers: { 'Authorization': `Bearer ${aiConfig.key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        messages: [{
-          role: 'user',
-          content: `Create a Christ-centered course for ${faculty.name}. Return ONLY valid JSON with no markdown formatting: {"title": "course title", "description": "course description", "level": "Beginner|Intermediate|Advanced", "duration": "X weeks", "learning_objectives": ["objective1", "objective2"]}`
-        }],
+        model: aiConfig.model,
+        messages: [{ role: 'user', content: prompt }],
         temperature: 0.8,
+        max_tokens: 2000
       }),
     });
 
-    if (!aiResponse.ok) {
-      throw new Error(`AI API failed: ${aiResponse.status} ${aiResponse.statusText}`);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('AI API error:', response.status, errorText);
+      throw new Error(`AI API failed: ${response.status}`);
     }
 
-    const data = await aiResponse.json();
-    console.log('AI Response for course:', JSON.stringify(data));
-    
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      throw new Error('Invalid AI response structure');
-    }
-
+    const data = await response.json();
     let content = data.choices[0].message.content.trim();
-    // Remove markdown code blocks if present
     content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     
     const courseData = JSON.parse(content);
 
-    const { data: course, error: courseError } = await supabase.from('courses').insert({
+    const { data: course, error } = await supabase.from('courses').insert({
       institution_id: institutionId,
       title: courseData.title,
       description: courseData.description,
       faculty: faculty.name,
       faculty_id: faculty.id,
-      level: courseData.level || 'Beginner',
-      duration: courseData.duration || '8 weeks',
-      tags: courseData.learning_objectives || [],
-      xr_enabled: false
+      level: courseData.level || 'Intermediate',
+      duration: '8 weeks',
+      tags: courseData.tags || courseData.learning_outcomes?.slice(0, 4) || [],
+      xr_enabled: false,
+      scroll_coin_cost: 0,
+      scholarship_eligible: true
     }).select().single();
 
-    if (courseError) {
-      console.error('Error inserting course:', courseError);
-      throw courseError;
-    }
-
+    if (error) throw error;
     console.log('✅ Created course:', course.title);
     return course;
   } catch (error: any) {
-    console.error('Error in genCourse:', error.message);
-    throw error;
+    console.error('Error generating course:', error.message);
+    return null;
   }
 }
 
-async function genModule(supabase: any, apiKey: string, course: any, order: number, institutionId: string) {
+async function generateWeekModule(
+  supabase: any,
+  aiConfig: { url: string; key: string; model: string },
+  course: any,
+  week: number,
+  institutionId: string
+) {
+  const weekTheme = WEEK_THEMES[week - 1];
+  
+  const prompt = `You are a distinguished Christian scholar creating Week ${week} content for "${course.title}".
+
+WEEK ${week}: ${weekTheme.theme}
+Focus Area: ${weekTheme.focus}
+Course Description: ${course.description}
+
+Create comprehensive lesson content. Return ONLY valid JSON:
+
+{
+  "title": "Week ${week}: [Specific Lesson Title]",
+  "content_md": "# Week ${week}: [Title]
+
+## Learning Objectives
+By the end of this week, students will be able to:
+1. [Specific objective 1]
+2. [Specific objective 2]
+3. [Specific objective 3]
+
+## Opening Scripture
+> [Relevant Bible verse with reference]
+
+## Introduction
+[2-3 paragraphs introducing this week's topic, its importance, and connection to previous learning]
+
+## Section 1: [Topic Title]
+[3-4 paragraphs of substantive content with theological depth]
+
+### Key Concepts
+- **[Concept 1]**: [Detailed explanation]
+- **[Concept 2]**: [Detailed explanation]
+- **[Concept 3]**: [Detailed explanation]
+
+## Section 2: [Topic Title]
+[3-4 paragraphs exploring the topic further]
+
+### Biblical Foundation
+[Analysis of relevant scripture passages with application]
+
+## Section 3: [Topic Title]
+[3-4 paragraphs with practical application]
+
+### Case Study
+[Real-world scenario for analysis and discussion]
+
+## Section 4: Practical Application
+[How to apply this week's learning in ministry and daily life]
+
+### Discussion Questions
+1. [Thought-provoking question 1]
+2. [Thought-provoking question 2]
+3. [Thought-provoking question 3]
+
+## Weekly Assignment
+[Description of assignment worth ScrollCoins upon completion]
+
+**📜 Scripture Memory Verse**: [Key verse for the week]
+
+**💰 ScrollCoin Rewards**:
+- Complete reading: 15 SC
+- Discussion participation: 10 SC
+- Assignment submission: 25 SC
+
+## Closing Prayer
+[Brief prayer relevant to the week's theme]
+
+---
+*Next week we will explore: [Preview of Week ${week + 1} content]*",
+  "duration_minutes": ${60 + (week * 5)},
+  "key_scripture": "[Primary scripture reference]"
+}
+
+IMPORTANT: 
+- Content must be 2000-2500 words minimum
+- Include deep theological insights
+- Cite scripture throughout
+- Make content academically rigorous yet accessible
+- Include practical ministry applications`;
+
   try {
-    const aiResponse = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+    const response = await fetch(aiConfig.url, {
       method: 'POST',
-      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      headers: { 'Authorization': `Bearer ${aiConfig.key}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'google/gemini-2.5-pro',
-        messages: [{
-          role: 'user',
-          content: `Create module ${order} for course "${course.title}". 900-1200 words markdown content with scripture reference and ScrollCoin reward markers. Return ONLY valid JSON with no markdown formatting: {"title": "module title", "content_md": "# Module Title\\n\\n... full markdown content here ..."}`
-        }],
+        model: aiConfig.model,
+        messages: [{ role: 'user', content: prompt }],
         temperature: 0.7,
+        max_tokens: 8000
       }),
     });
 
-    if (!aiResponse.ok) {
-      throw new Error(`AI API failed: ${aiResponse.status} ${aiResponse.statusText}`);
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('AI API error for module:', response.status, errorText);
+      throw new Error(`AI API failed: ${response.status}`);
     }
 
-    const data = await aiResponse.json();
-    
-    if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-      throw new Error('Invalid AI response structure');
-    }
-
+    const data = await response.json();
     let content = data.choices[0].message.content.trim();
-    // Remove markdown code blocks if present
     content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
     
     const moduleData = JSON.parse(content);
 
-    const { data: module, error: moduleError } = await supabase.from('course_modules').insert({
+    const { data: module, error } = await supabase.from('course_modules').insert({
       institution_id: institutionId,
       course_id: course.id,
       title: moduleData.title,
       content_md: moduleData.content_md,
-      order_index: order,
-      duration_minutes: 45,
-      rewards_amount: 10
+      order_index: week,
+      duration_minutes: moduleData.duration_minutes || 60,
+      rewards_amount: 50
     }).select().single();
 
-    if (moduleError) {
-      console.error('Error inserting module:', moduleError);
-      throw moduleError;
-    }
-
-    console.log('✅ Created module:', module.title);
+    if (error) throw error;
+    console.log(`✅ Created Week ${week} module:`, module.title);
     return module;
   } catch (error: any) {
-    console.error('Error in genModule:', error.message);
-    throw error;
+    console.error(`Error generating week ${week} module:`, error.message);
+    return null;
   }
 }
 
-async function genQuiz(supabase: any, module: any, institutionId: string) {
-  const { data: quiz } = await supabase.from('quizzes').insert({
-    institution_id: institutionId,
-    module_id: module.id,
-    title: `${module.title} Assessment`,
-    passing_score: 70
-  }).select().single();
+async function generateQuiz(
+  supabase: any,
+  aiConfig: { url: string; key: string; model: string },
+  module: any,
+  course: any,
+  week: number,
+  institutionId: string
+) {
+  const prompt = `Create a comprehensive quiz for Week ${week} of "${course.title}".
+Module Title: ${module.title}
 
-  // Generate 7-10 quiz questions
-  for (let i = 0; i < 8; i++) {
-    await supabase.from('quiz_questions').insert({
-      quiz_id: quiz.id,
-      question_text: `Question ${i+1} for ${module.title}`,
-      question_type: 'multiple_choice',
-      options: ['Option A', 'Option B', 'Option C', 'Option D'],
-      correct_answer: 'Option A',
-      points: 10
+Generate 10 challenging questions that test understanding of the week's content.
+Return ONLY valid JSON array:
+
+[
+  {
+    "question": "Question text here?",
+    "type": "multiple_choice",
+    "options": ["A) First option", "B) Second option", "C) Third option", "D) Fourth option"],
+    "correct": "A) First option",
+    "explanation": "Brief explanation of why this is correct",
+    "points": 10
+  }
+]
+
+Include:
+- 6 knowledge/comprehension questions
+- 2 application questions  
+- 2 analysis/synthesis questions
+Make questions challenging but fair for university-level students.`;
+
+  try {
+    const response = await fetch(aiConfig.url, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${aiConfig.key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: aiConfig.model,
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.6,
+        max_tokens: 4000
+      }),
     });
-  }
 
-  return quiz;
+    if (!response.ok) throw new Error(`AI API failed: ${response.status}`);
+
+    const data = await response.json();
+    let content = data.choices[0].message.content.trim();
+    content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    
+    const questions = JSON.parse(content);
+
+    // Create quiz
+    const { data: quiz, error: quizError } = await supabase.from('quizzes').insert({
+      institution_id: institutionId,
+      module_id: module.id,
+      title: `Week ${week} Assessment: ${module.title.replace(`Week ${week}: `, '')}`,
+      passing_score: 70,
+      time_limit_minutes: 30
+    }).select().single();
+
+    if (quizError) throw quizError;
+
+    // Insert questions
+    for (let i = 0; i < questions.length; i++) {
+      const q = questions[i];
+      await supabase.from('quiz_questions').insert({
+        quiz_id: quiz.id,
+        question_text: q.question,
+        question_type: q.type || 'multiple_choice',
+        options: q.options,
+        correct_answer: q.correct,
+        explanation: q.explanation,
+        points: q.points || 10,
+        order_index: i + 1
+      });
+    }
+
+    console.log(`✅ Created quiz with ${questions.length} questions for Week ${week}`);
+    return quiz;
+  } catch (error: any) {
+    console.error('Error generating quiz:', error.message);
+    // Fallback to basic quiz
+    const { data: quiz } = await supabase.from('quizzes').insert({
+      institution_id: institutionId,
+      module_id: module.id,
+      title: `Week ${week} Assessment`,
+      passing_score: 70
+    }).select().single();
+    return quiz;
+  }
 }
 
-async function genMaterials(supabase: any, apiKey: string, module: any, institutionId: string) {
-  // Generate PDF, slides, infographic (simplified)
-  await supabase.from('learning_materials').insert([
-    { institution_id: institutionId, module_id: module.id, title: `${module.title} - Study Guide`, kind: 'pdf', url: '/materials/placeholder.pdf' },
-    { institution_id: institutionId, module_id: module.id, title: `${module.title} - Slides`, kind: 'slides', url: '/materials/placeholder.pptx' },
-    { institution_id: institutionId, module_id: module.id, title: `${module.title} - Infographic`, kind: 'image', url: '/materials/placeholder.png' }
-  ]);
+async function generateMaterials(
+  supabase: any,
+  aiConfig: { url: string; key: string; model: string },
+  module: any,
+  course: any,
+  week: number,
+  institutionId: string
+) {
+  // Generate study guide content
+  const studyGuidePrompt = `Create a comprehensive study guide for Week ${week} of "${course.title}".
+Module: ${module.title}
+
+Return ONLY valid JSON:
+{
+  "summary": "500-word summary of key concepts",
+  "key_terms": [
+    {"term": "Term 1", "definition": "Definition"},
+    {"term": "Term 2", "definition": "Definition"}
+  ],
+  "scripture_references": ["Reference 1", "Reference 2"],
+  "review_questions": ["Question 1?", "Question 2?", "Question 3?"],
+  "further_reading": ["Resource 1", "Resource 2"]
+}`;
+
+  try {
+    const response = await fetch(aiConfig.url, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${aiConfig.key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: aiConfig.model,
+        messages: [{ role: 'user', content: studyGuidePrompt }],
+        temperature: 0.5,
+        max_tokens: 2000
+      }),
+    });
+
+    let studyGuide = {};
+    if (response.ok) {
+      const data = await response.json();
+      let content = data.choices[0].message.content.trim();
+      content = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      studyGuide = JSON.parse(content);
+    }
+
+    // Insert learning materials
+    await supabase.from('learning_materials').insert([
+      {
+        institution_id: institutionId,
+        module_id: module.id,
+        title: `Week ${week} Study Guide`,
+        kind: 'study_guide',
+        meta: studyGuide
+      },
+      {
+        institution_id: institutionId,
+        module_id: module.id,
+        title: `Week ${week} Lecture Notes`,
+        kind: 'notes',
+        meta: { generated: true, week }
+      },
+      {
+        institution_id: institutionId,
+        module_id: module.id,
+        title: `Week ${week} Scripture References`,
+        kind: 'scripture',
+        meta: { references: (studyGuide as any).scripture_references || [] }
+      },
+      {
+        institution_id: institutionId,
+        module_id: module.id,
+        title: `Week ${week} Discussion Guide`,
+        kind: 'discussion',
+        meta: { questions: (studyGuide as any).review_questions || [] }
+      }
+    ]);
+
+    console.log(`✅ Created 4 learning materials for Week ${week}`);
+  } catch (error: any) {
+    console.error('Error generating materials:', error.message);
+  }
 }
 
 async function updateProgress(supabase: any, progressId: string, updates: any) {
-  await supabase.from('generation_progress').update(updates).eq('id', progressId);
+  await supabase.from('generation_progress').update({
+    ...updates,
+    updated_at: new Date().toISOString()
+  }).eq('id', progressId);
 }
