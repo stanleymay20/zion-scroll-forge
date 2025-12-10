@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query";
 import { checkUserRole } from "@/lib/scrollGovernance";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { GenerateVideosButton } from "@/components/admin/GenerateVideosButton";
 
 console.info("✝️ Content Generation Admin — Christ governs all creation");
 
@@ -357,6 +358,9 @@ export default function ContentGenerationAdmin() {
             </Button>
           </CardContent>
         </Card>
+
+        {/* AI Video Generation Card */}
+        <GenerateVideosButton courseId={selectedCourse} />
 
         {/* Info Card */}
         <Card>
