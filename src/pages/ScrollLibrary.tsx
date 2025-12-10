@@ -5,14 +5,41 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
   Loader2, BookOpen, Search, Library, GraduationCap, 
   Star, FileText, Brain, Sparkles, Download, BookMarked,
-  Layers, ChevronRight
+  Layers, ChevronRight, Filter, BookText
 } from "lucide-react";
 import { useScrollBooks, useStudyPacks, useLibrarySearch, ScrollBook, StudyPack } from "@/hooks/useScrollLibrary";
 
 console.info("✝️ ScrollLibrary — Christ governs all knowledge and wisdom");
+
+const FACULTIES = [
+  "All Faculties",
+  "Divine Technology",
+  "Scroll Theology",
+  "Kingdom Economics",
+  "Prophetic Intelligence",
+  "ScrollMedicine",
+  "Scroll Law",
+  "Sacred Arts & Worship",
+  "Scroll Education & Leadership",
+  "Scroll Engineering & AI",
+  "ScrollMedia & Communication",
+  "Kingdom Architecture",
+  "Edenic Science",
+  "GeoProphetic Intelligence",
+  "Prophetic Law & Governance",
+  "Scroll AI",
+  "Scroll Culture & Arts",
+  "Scroll Economy",
+  "Health",
+  "Finance",
+  "Leadership",
+  "Prophetic Technology",
+  "Ethic Science",
+];
 
 function getLevelColor(level: string): string {
   switch (level) {
@@ -38,7 +65,7 @@ function BookCard({ book }: { book: ScrollBook }) {
             </div>
           )}
         </div>
-        <CardTitle className="text-lg mt-2 group-hover:text-primary transition-colors">
+        <CardTitle className="text-lg mt-2 group-hover:text-primary transition-colors line-clamp-2">
           {book.title}
         </CardTitle>
         {book.subtitle && (
@@ -52,6 +79,28 @@ function BookCard({ book }: { book: ScrollBook }) {
           <BookOpen className="h-4 w-4" />
           <span>{book.subject}</span>
         </div>
+        
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <GraduationCap className="h-4 w-4" />
+          <span>{book.faculty}</span>
+        </div>
+
+        {(book.chapters || book.pages) && (
+          <div className="flex items-center gap-4 text-xs text-muted-foreground">
+            {book.chapters && (
+              <span className="flex items-center gap-1">
+                <BookText className="h-3 w-3" />
+                {book.chapters} chapters
+              </span>
+            )}
+            {book.pages && (
+              <span className="flex items-center gap-1">
+                <FileText className="h-3 w-3" />
+                {book.pages} pages
+              </span>
+            )}
+          </div>
+        )}
         
         {book.theological_alignment && (
           <div className="space-y-1">
@@ -80,8 +129,9 @@ function StudyPackCard({ pack }: { pack: StudyPack }) {
           <div className="p-2 rounded-lg bg-primary/10">
             <Layers className="h-5 w-5 text-primary" />
           </div>
-          <div>
-            <CardTitle className="text-base">{pack.title}</CardTitle>
+          <div className="flex-1 min-w-0">
+            <CardTitle className="text-base line-clamp-1">{pack.title}</CardTitle>
+            <p className="text-xs text-muted-foreground">{pack.faculty}</p>
           </div>
         </div>
       </CardHeader>
@@ -119,11 +169,25 @@ function StudyPackCard({ pack }: { pack: StudyPack }) {
 
 export default function ScrollLibrary() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedFaculty, setSelectedFaculty] = useState("All Faculties");
   const { data: books, isLoading: booksLoading } = useScrollBooks();
   const { data: studyPacks, isLoading: packsLoading } = useStudyPacks();
   const { data: searchResults, isLoading: searchLoading } = useLibrarySearch(searchQuery);
 
   const isLoading = booksLoading || packsLoading;
+
+  // Filter books by faculty
+  const filteredBooks = books?.filter(book => 
+    selectedFaculty === "All Faculties" || book.faculty === selectedFaculty
+  ) || [];
+
+  // Filter study packs by faculty
+  const filteredStudyPacks = studyPacks?.filter(pack =>
+    selectedFaculty === "All Faculties" || pack.faculty === selectedFaculty
+  ) || [];
+
+  // Get unique faculties from books for stats
+  const uniqueFaculties = new Set(books?.map(b => b.faculty) || []);
 
   return (
     <div className="container mx-auto py-6 px-4 space-y-6">
@@ -138,38 +202,58 @@ export default function ScrollLibrary() {
         </p>
       </div>
 
-      {/* Search Bar */}
-      <div className="relative max-w-xl">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          placeholder="Search books, chapters, and study materials..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="pl-10"
-        />
-        {searchLoading && (
-          <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin" />
-        )}
+      {/* Search and Filter Bar */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <div className="relative flex-1 max-w-xl">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search books, chapters, and study materials..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-10"
+          />
+          {searchLoading && (
+            <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin" />
+          )}
+        </div>
+        
+        <Select value={selectedFaculty} onValueChange={setSelectedFaculty}>
+          <SelectTrigger className="w-full sm:w-[240px]">
+            <Filter className="h-4 w-4 mr-2" />
+            <SelectValue placeholder="Filter by Faculty" />
+          </SelectTrigger>
+          <SelectContent>
+            {FACULTIES.map((faculty) => (
+              <SelectItem key={faculty} value={faculty}>
+                {faculty}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Search Results */}
       {searchQuery.length >= 2 && searchResults && searchResults.length > 0 && (
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Search Results</CardTitle>
+            <CardTitle className="text-lg">Search Results ({searchResults.length})</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-2">
+            <div className="space-y-2 max-h-[300px] overflow-y-auto">
               {searchResults.map((result, idx) => (
                 <div 
                   key={idx}
                   className="flex items-center justify-between p-3 bg-muted/50 rounded-lg hover:bg-muted cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <BookOpen className="h-5 w-5 text-primary" />
+                    {result.content_type === 'book' ? (
+                      <BookOpen className="h-5 w-5 text-primary" />
+                    ) : (
+                      <Layers className="h-5 w-5 text-blue-500" />
+                    )}
                     <div>
                       <p className="font-medium">{result.title}</p>
-                      <p className="text-sm text-muted-foreground">{result.excerpt}</p>
+                      <p className="text-sm text-muted-foreground line-clamp-1">{result.excerpt}</p>
                     </div>
                   </div>
                   <Badge variant="outline">{result.content_type}</Badge>
@@ -212,11 +296,11 @@ export default function ScrollLibrary() {
           <CardContent className="pt-6">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-green-500/10">
-                <Sparkles className="h-5 w-5 text-green-500" />
+                <GraduationCap className="h-5 w-5 text-green-500" />
               </div>
               <div>
-                <p className="text-2xl font-bold">AI</p>
-                <p className="text-sm text-muted-foreground">Generated</p>
+                <p className="text-2xl font-bold">{uniqueFaculties.size}</p>
+                <p className="text-sm text-muted-foreground">Faculties</p>
               </div>
             </div>
           </CardContent>
@@ -241,11 +325,11 @@ export default function ScrollLibrary() {
         <TabsList>
           <TabsTrigger value="books" className="gap-2">
             <BookOpen className="h-4 w-4" />
-            Textbooks
+            Textbooks ({filteredBooks.length})
           </TabsTrigger>
           <TabsTrigger value="study-packs" className="gap-2">
             <Layers className="h-4 w-4" />
-            Study Packs
+            Study Packs ({filteredStudyPacks.length})
           </TabsTrigger>
           <TabsTrigger value="featured" className="gap-2">
             <Star className="h-4 w-4" />
@@ -258,9 +342,9 @@ export default function ScrollLibrary() {
             <div className="flex items-center justify-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
-          ) : books && books.length > 0 ? (
+          ) : filteredBooks.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {books.map((book) => (
+              {filteredBooks.map((book) => (
                 <BookCard key={book.id} book={book} />
               ))}
             </div>
@@ -268,9 +352,13 @@ export default function ScrollLibrary() {
             <Card>
               <CardContent className="py-12 text-center">
                 <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                <p className="text-muted-foreground">No textbooks available yet</p>
+                <p className="text-muted-foreground">
+                  {selectedFaculty !== "All Faculties" 
+                    ? `No textbooks available for ${selectedFaculty}` 
+                    : "No textbooks available yet"}
+                </p>
                 <p className="text-sm text-muted-foreground mt-2">
-                  AI-generated textbooks will appear here once created
+                  Try selecting a different faculty or check back later
                 </p>
               </CardContent>
             </Card>
@@ -282,9 +370,9 @@ export default function ScrollLibrary() {
             <div className="flex items-center justify-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
-          ) : studyPacks && studyPacks.length > 0 ? (
+          ) : filteredStudyPacks.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {studyPacks.map((pack) => (
+              {filteredStudyPacks.map((pack) => (
                 <StudyPackCard key={pack.id} pack={pack} />
               ))}
             </div>
@@ -292,7 +380,11 @@ export default function ScrollLibrary() {
             <Card>
               <CardContent className="py-12 text-center">
                 <Layers className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-                <p className="text-muted-foreground">No study packs available yet</p>
+                <p className="text-muted-foreground">
+                  {selectedFaculty !== "All Faculties"
+                    ? `No study packs available for ${selectedFaculty}`
+                    : "No study packs available yet"}
+                </p>
                 <p className="text-sm text-muted-foreground mt-2">
                   Study packs include flashcards, quizzes, and summaries for courses
                 </p>
@@ -318,7 +410,7 @@ export default function ScrollLibrary() {
                   <div className="flex items-center gap-3 mb-3">
                     <BookMarked className="h-6 w-6 text-primary" />
                     <div>
-                      <p className="font-semibold">Getting Started Guide</p>
+                      <p className="font-semibold">Foundations of Biblical Theology</p>
                       <p className="text-sm text-muted-foreground">Essential reading for new students</p>
                     </div>
                   </div>
@@ -330,12 +422,36 @@ export default function ScrollLibrary() {
                   <div className="flex items-center gap-3 mb-3">
                     <GraduationCap className="h-6 w-6 text-blue-500" />
                     <div>
-                      <p className="font-semibold">Degree Requirements</p>
-                      <p className="text-sm text-muted-foreground">Understand your academic path</p>
+                      <p className="font-semibold">Divine Algorithm: AI Ethics</p>
+                      <p className="text-sm text-muted-foreground">Christ-centered technology</p>
                     </div>
                   </div>
                   <Button size="sm" variant="outline" className="w-full">
                     View Guide
+                  </Button>
+                </div>
+                <div className="p-4 border rounded-lg bg-gradient-to-br from-green-500/5 to-green-500/10">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Brain className="h-6 w-6 text-green-500" />
+                    <div>
+                      <p className="font-semibold">Kingdom Economics</p>
+                      <p className="text-sm text-muted-foreground">Biblical wealth principles</p>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" className="w-full">
+                    Explore
+                  </Button>
+                </div>
+                <div className="p-4 border rounded-lg bg-gradient-to-br from-yellow-500/5 to-yellow-500/10">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Star className="h-6 w-6 text-yellow-500" />
+                    <div>
+                      <p className="font-semibold">Servant Leadership</p>
+                      <p className="text-sm text-muted-foreground">Leading like Christ</p>
+                    </div>
+                  </div>
+                  <Button size="sm" variant="outline" className="w-full">
+                    Learn More
                   </Button>
                 </div>
               </div>
@@ -356,7 +472,7 @@ export default function ScrollLibrary() {
               <p className="text-sm text-muted-foreground">
                 All textbooks and study materials are generated by our multi-agent AI system including 
                 ScrollAuthorGPT, ScrollProfessorGPT, ScrollScribeGPT, and validated by ScrollIntegritySeal 
-                for theological accuracy and academic excellence.
+                for theological accuracy and academic excellence. Currently featuring <strong>{books?.length || 0} textbooks</strong> across <strong>{uniqueFaculties.size} faculties</strong> with <strong>{studyPacks?.length || 0} study packs</strong>.
               </p>
             </div>
           </div>
