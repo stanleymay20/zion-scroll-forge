@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { useInstitution } from '@/contexts/InstitutionContext';
 import {
   Dialog,
   DialogContent,
@@ -52,6 +53,7 @@ export function CourseEnrollmentFlow({
   onSuccess 
 }: CourseEnrollmentFlowProps) {
   const { user } = useAuth();
+  const { activeInstitution } = useInstitution();
   const queryClient = useQueryClient();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('scrollcoin');
   const [enrollmentStep, setEnrollmentStep] = useState<'payment' | 'processing' | 'success' | 'error'>('payment');
@@ -63,12 +65,22 @@ export function CourseEnrollmentFlow({
     mutationFn: async () => {
       setEnrollmentStep('processing');
 
-      // Get user's current institution
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('current_institution_id')
-        .eq('id', user!.id)
-        .single();
+      // Get institution_id from context first, then fallback to profile
+      let institutionId = activeInstitution?.id;
+      
+      if (!institutionId) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('current_institution_id')
+          .eq('id', user!.id)
+          .single();
+        
+        institutionId = profile?.current_institution_id;
+      }
+
+      if (!institutionId) {
+        throw new Error('No institution selected. Please select an institution first.');
+      }
 
       // Create enrollment
       const { data: enrollment, error: enrollError } = await supabase
@@ -77,8 +89,7 @@ export function CourseEnrollmentFlow({
           user_id: user!.id,
           course_id: course.id,
           progress: 0,
-          institution_id: profile?.current_institution_id,
-          payment_method: paymentMethod,
+          institution_id: institutionId,
         })
         .select()
         .single();
