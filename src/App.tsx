@@ -1,12 +1,5 @@
 import React, { Suspense } from "react";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-// Force single React instance
-if (typeof window !== 'undefined') {
-  (window as any).__REACT__ = React;
-}
 import { AuthProvider } from "./contexts/AuthContext";
 import { InstitutionProvider } from "./contexts/InstitutionContext";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -180,11 +173,9 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <InstitutionProvider>
-        <TooltipProvider>
-          <Sonner />
-          <BrowserRouter>
-            <Suspense fallback={<LoadingFallback />}>
-            <Routes>
+        <BrowserRouter>
+          <Suspense fallback={<LoadingFallback />}>
+          <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
             
@@ -357,10 +348,9 @@ const App = () => (
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </TooltipProvider>
+          </Routes>
+        </Suspense>
+      </BrowserRouter>
       </InstitutionProvider>
     </AuthProvider>
   </QueryClientProvider>
