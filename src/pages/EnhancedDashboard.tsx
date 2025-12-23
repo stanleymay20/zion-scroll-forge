@@ -13,6 +13,8 @@ import { useAcknowledgeLordship } from "@/hooks/useSpiritual";
 import { useAuth } from "@/contexts/AuthContext";
 import { QuickActions } from "@/components/dashboard/QuickActions";
 import { PersonalizedContent } from "@/components/dashboard/PersonalizedContent";
+import { JourneyProgress } from "@/components/dashboard/JourneyProgress";
+import { StudentOnboarding } from "@/components/onboarding/StudentOnboarding";
 
 export default function EnhancedDashboard() {
   const { user } = useAuth();
@@ -139,6 +141,15 @@ export default function EnhancedDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column - Main Content */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Student Onboarding */}
+          <StudentOnboarding enrollmentCount={enrollments?.length || 0} />
+          
+          {/* Journey Progress */}
+          <JourneyProgress 
+            coursesCompleted={enrollments?.filter((e: any) => e.progress === 100).length || 0}
+            totalXP={Math.round(dashboardData?.balance || 0) * 10}
+          />
+          
           {/* Quick Actions */}
           <QuickActions />
 

@@ -72,9 +72,16 @@ const quickActions: QuickAction[] = [
     variant: "outline"
   },
   {
+    label: "Graduation",
+    href: "/graduation",
+    icon: GraduationCap,
+    description: "Claim your credentials",
+    variant: "secondary"
+  },
+  {
     label: "My Transcript",
     href: "/transcript",
-    icon: GraduationCap,
+    icon: FileText,
     description: "View academic progress",
     variant: "outline"
   },
