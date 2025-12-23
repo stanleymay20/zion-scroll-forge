@@ -33,6 +33,7 @@ import ForgeSessions from "@/pages/ForgeSessions";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
 import CourseLearn from "./pages/CourseLearn";
+import CourseLearningPage from "./pages/CourseLearningPage";
 import ModuleDetail from "./pages/ModuleDetail";
 import QuizPage from "./pages/QuizPage";
 import AITutors from "./pages/AITutors";
@@ -257,7 +258,8 @@ const App = () => (
               <Route path="settings/users" element={<SettingsPage />} />
               <Route path="courses" element={<Courses />} />
               <Route path="courses/:courseId" element={<CourseDetail />} />
-              <Route path="courses/:courseId/learn" element={<CourseLearn />} />
+              <Route path="courses/:courseId/learn" element={<CourseLearningPage />} />
+              <Route path="courses/:courseId/learn-old" element={<CourseLearn />} />
               
               {/* Admissions Routes removed - not implemented */}
               <Route path="courses/:courseId/modules/:moduleId" element={<ModuleDetail />} />
