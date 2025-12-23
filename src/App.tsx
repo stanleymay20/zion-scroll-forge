@@ -124,6 +124,7 @@ import AcademicCalendar from "./pages/AcademicCalendar";
 import ScrollLibrary from "./pages/ScrollLibrary";
 import ScrollLibraryBookReader from "./pages/ScrollLibraryBookReader";
 import AcademicTermAdmin from "./pages/AcademicTermAdmin";
+import StudentGraduation from "./pages/StudentGraduation";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -371,6 +372,7 @@ const App = () => (
             <Route path="academic-calendar" element={<AcademicCalendar />} />
             <Route path="scroll-library" element={<ScrollLibrary />} />
             <Route path="scroll-library/book/:bookId" element={<ScrollLibraryBookReader />} />
+            <Route path="graduation" element={<StudentGraduation />} />
             <Route path="admin/academic-terms" element={<AcademicTermAdmin />} />
           </Route>
           
