@@ -3586,6 +3586,58 @@ export type Database = {
           },
         ]
       }
+      module_completions: {
+        Row: {
+          completed_at: string
+          course_id: string | null
+          created_at: string
+          id: string
+          module_id: string
+          user_id: string
+          xp_awarded: number | null
+        }
+        Insert: {
+          completed_at?: string
+          course_id?: string | null
+          created_at?: string
+          id?: string
+          module_id: string
+          user_id: string
+          xp_awarded?: number | null
+        }
+        Update: {
+          completed_at?: string
+          course_id?: string | null
+          created_at?: string
+          id?: string
+          module_id?: string
+          user_id?: string
+          xp_awarded?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "module_completions_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "module_completions_module_id_fkey"
+            columns: ["module_id"]
+            isOneToOne: false
+            referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "module_completions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       module_notes: {
         Row: {
           application_notes: string | null
