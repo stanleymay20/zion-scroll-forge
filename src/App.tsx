@@ -376,6 +376,8 @@ const App = () => (
             <Route path="scroll-library/book/:bookId" element={<ScrollLibraryBookReader />} />
             <Route path="graduation" element={<StudentGraduation />} />
             <Route path="admin/academic-terms" element={<AcademicTermAdmin />} />
+            <Route path="admin/suyas" element={<SUYASAdmin />} />
+            <Route path="trust" element={<TrustCenter />} />
           </Route>
           
           {/* Catch-all route for 404 */}
