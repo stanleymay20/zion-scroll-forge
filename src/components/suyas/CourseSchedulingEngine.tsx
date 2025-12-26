@@ -142,9 +142,21 @@ const useCreateSession = () => {
   
   return useMutation({
     mutationFn: async (session: Partial<ClassSession>) => {
+      const insertData = {
+        title: session.title || 'Untitled Session',
+        scheduled_date: session.scheduled_date || new Date().toISOString().split('T')[0],
+        start_time: session.start_time || '09:00',
+        end_time: session.end_time || '10:00',
+        course_id: session.course_id,
+        is_virtual: session.is_virtual ?? false,
+        room_location: session.room_location,
+        meeting_url: session.meeting_url,
+        status: session.status || 'scheduled'
+      };
+      
       const { data, error } = await supabase
         .from('class_sessions')
-        .insert(session)
+        .insert([insertData])
         .select()
         .single();
       
