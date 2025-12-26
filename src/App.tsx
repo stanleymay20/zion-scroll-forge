@@ -126,6 +126,8 @@ import ScrollLibrary from "./pages/ScrollLibrary";
 import ScrollLibraryBookReader from "./pages/ScrollLibraryBookReader";
 import AcademicTermAdmin from "./pages/AcademicTermAdmin";
 import StudentGraduation from "./pages/StudentGraduation";
+import SUYASAdmin from "./pages/SUYASAdmin";
+import TrustCenter from "./pages/TrustCenter";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
