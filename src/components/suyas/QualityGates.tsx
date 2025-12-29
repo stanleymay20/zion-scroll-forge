@@ -1,6 +1,7 @@
 /**
  * Quality Gates Component
  * Blocks placeholder content ("Concept 1-1", "Example 2-1", "TBD") from publishing
+ * Enforces score >= 90 for publish eligibility
  */
 
 import React, { useState } from 'react';
@@ -11,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Progress } from "@/components/ui/progress";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Table,
   TableBody,
@@ -30,11 +30,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { 
   Shield, 
   AlertTriangle, 
@@ -43,31 +44,22 @@ import {
   Plus,
   Play,
   Loader2,
-  Search,
   FileText,
   BookOpen,
   GraduationCap,
-  Ban
+  Ban,
+  Lock,
+  Unlock,
+  History,
+  AlertCircle
 } from "lucide-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
+import { format } from "date-fns";
 
 console.info("✝️ SUYAS Quality Gates — Ensuring excellence in all content");
-
-// Default blocked patterns
-const DEFAULT_BLOCKED_PATTERNS = [
-  { pattern: "Concept \\d+-\\d+", description: "Placeholder concept numbering" },
-  { pattern: "Example \\d+-\\d+", description: "Placeholder example numbering" },
-  { pattern: "TBD", description: "To Be Determined markers" },
-  { pattern: "TODO", description: "TODO markers" },
-  { pattern: "FIXME", description: "FIXME markers" },
-  { pattern: "Lorem ipsum", description: "Placeholder Latin text" },
-  { pattern: "placeholder", description: "Generic placeholder text" },
-  { pattern: "\\[.*\\]", description: "Bracketed placeholder instructions" },
-  { pattern: "Coming soon", description: "Coming soon markers" },
-  { pattern: "Under construction", description: "Under construction markers" },
-];
 
 interface QualityRule {
   id: string;
@@ -87,23 +79,127 @@ interface ScanResult {
   severity: 'error' | 'warning' | 'info';
 }
 
+interface QualityScan {
+  id: string;
+  quality_score: number;
+  error_count: number;
+  warning_count: number;
+  info_count: number;
+  issues: ScanResult[];
+  publish_blocked: boolean;
+  scanned_at: string;
+}
+
+// Fetch quality rules from database
+const useQualityRules = () => {
+  return useQuery({
+    queryKey: ['suyas-quality-rules'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('suyas_quality_rules')
+        .select('*')
+        .order('created_at', { ascending: true });
+      
+      if (error) throw error;
+      return data as QualityRule[];
+    }
+  });
+};
+
+// Fetch recent quality scans
+const useRecentScans = () => {
+  return useQuery({
+    queryKey: ['suyas-quality-scans'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('suyas_quality_scans')
+        .select('*')
+        .order('scanned_at', { ascending: false })
+        .limit(10);
+      
+      if (error) throw error;
+      return (data || []).map(scan => ({
+        id: scan.id,
+        quality_score: scan.quality_score,
+        error_count: scan.error_count,
+        warning_count: scan.warning_count,
+        info_count: scan.info_count,
+        issues: (Array.isArray(scan.issues) ? scan.issues : []) as ScanResult[],
+        publish_blocked: scan.publish_blocked,
+        scanned_at: scan.scanned_at
+      }));
+    }
+  });
+};
+
+const PUBLISH_THRESHOLD = 90;
+
 export default function QualityGates() {
-  const [rules, setRules] = useState<QualityRule[]>(
-    DEFAULT_BLOCKED_PATTERNS.map((p, i) => ({
-      id: `rule-${i}`,
-      pattern: p.pattern,
-      description: p.description,
-      is_active: true,
-      severity: 'error' as const,
-      created_at: new Date().toISOString()
-    }))
-  );
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
+  
+  const { data: rules, isLoading: rulesLoading } = useQualityRules();
+  const { data: recentScans } = useRecentScans();
   
   const [scanResults, setScanResults] = useState<ScanResult[]>([]);
   const [isScanning, setIsScanning] = useState(false);
   const [lastScanTime, setLastScanTime] = useState<Date | null>(null);
+  const [qualityScore, setQualityScore] = useState<number>(100);
   const [addRuleOpen, setAddRuleOpen] = useState(false);
   const [newRule, setNewRule] = useState({ pattern: '', description: '', severity: 'error' as const });
+
+  // Toggle rule active status
+  const toggleRuleMutation = useMutation({
+    mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
+      const { error } = await supabase
+        .from('suyas_quality_rules')
+        .update({ is_active, updated_at: new Date().toISOString() })
+        .eq('id', id);
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['suyas-quality-rules'] });
+    }
+  });
+
+  // Add new rule
+  const addRuleMutation = useMutation({
+    mutationFn: async (rule: { pattern: string; description: string; severity: 'error' | 'warning' | 'info' }) => {
+      const { error } = await supabase
+        .from('suyas_quality_rules')
+        .insert([{
+          pattern: rule.pattern,
+          description: rule.description,
+          severity: rule.severity,
+          created_by: user?.id
+        }]);
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['suyas-quality-rules'] });
+      setNewRule({ pattern: '', description: '', severity: 'error' });
+      setAddRuleOpen(false);
+      toast.success('Quality rule added');
+    }
+  });
+
+  // Delete rule
+  const deleteRuleMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
+        .from('suyas_quality_rules')
+        .delete()
+        .eq('id', id);
+      
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['suyas-quality-rules'] });
+      toast.success('Rule removed');
+    }
+  });
 
   // Run quality scan across content tables
   const runQualityScan = async () => {
@@ -112,7 +208,13 @@ export default function QualityGates() {
     
     try {
       const results: ScanResult[] = [];
-      const activeRules = rules.filter(r => r.is_active);
+      const activeRules = rules?.filter(r => r.is_active) || [];
+
+      if (activeRules.length === 0) {
+        toast.error('No active quality rules to scan');
+        setIsScanning(false);
+        return;
+      }
 
       // Scan courses
       const { data: courses } = await supabase
@@ -121,26 +223,30 @@ export default function QualityGates() {
       
       courses?.forEach(course => {
         activeRules.forEach(rule => {
-          const regex = new RegExp(rule.pattern, 'gi');
-          if (regex.test(course.title || '')) {
-            results.push({
-              table: 'courses',
-              column: 'title',
-              record_id: course.id,
-              matched_pattern: rule.pattern,
-              content_preview: course.title?.substring(0, 100) || '',
-              severity: rule.severity
-            });
-          }
-          if (regex.test(course.description || '')) {
-            results.push({
-              table: 'courses',
-              column: 'description',
-              record_id: course.id,
-              matched_pattern: rule.pattern,
-              content_preview: course.description?.substring(0, 100) || '',
-              severity: rule.severity
-            });
+          try {
+            const regex = new RegExp(rule.pattern, 'gi');
+            if (regex.test(course.title || '')) {
+              results.push({
+                table: 'courses',
+                column: 'title',
+                record_id: course.id,
+                matched_pattern: rule.pattern,
+                content_preview: course.title?.substring(0, 100) || '',
+                severity: rule.severity as 'error' | 'warning' | 'info'
+              });
+            }
+            if (regex.test(course.description || '')) {
+              results.push({
+                table: 'courses',
+                column: 'description',
+                record_id: course.id,
+                matched_pattern: rule.pattern,
+                content_preview: course.description?.substring(0, 100) || '',
+                severity: rule.severity as 'error' | 'warning' | 'info'
+              });
+            }
+          } catch (e) {
+            console.warn(`Invalid regex pattern: ${rule.pattern}`);
           }
         });
       });
@@ -152,26 +258,30 @@ export default function QualityGates() {
       
       modules?.forEach(mod => {
         activeRules.forEach(rule => {
-          const regex = new RegExp(rule.pattern, 'gi');
-          if (regex.test(mod.title || '')) {
-            results.push({
-              table: 'course_modules',
-              column: 'title',
-              record_id: mod.id,
-              matched_pattern: rule.pattern,
-              content_preview: mod.title?.substring(0, 100) || '',
-              severity: rule.severity
-            });
-          }
-          if (regex.test(mod.content_md || '')) {
-            results.push({
-              table: 'course_modules',
-              column: 'content_md',
-              record_id: mod.id,
-              matched_pattern: rule.pattern,
-              content_preview: mod.content_md?.substring(0, 100) || '',
-              severity: rule.severity
-            });
+          try {
+            const regex = new RegExp(rule.pattern, 'gi');
+            if (regex.test(mod.title || '')) {
+              results.push({
+                table: 'course_modules',
+                column: 'title',
+                record_id: mod.id,
+                matched_pattern: rule.pattern,
+                content_preview: mod.title?.substring(0, 100) || '',
+                severity: rule.severity as 'error' | 'warning' | 'info'
+              });
+            }
+            if (regex.test(mod.content_md || '')) {
+              results.push({
+                table: 'course_modules',
+                column: 'content_md',
+                record_id: mod.id,
+                matched_pattern: rule.pattern,
+                content_preview: mod.content_md?.substring(0, 100) || '',
+                severity: rule.severity as 'error' | 'warning' | 'info'
+              });
+            }
+          } catch (e) {
+            console.warn(`Invalid regex pattern: ${rule.pattern}`);
           }
         });
       });
@@ -183,37 +293,67 @@ export default function QualityGates() {
       
       assignments?.forEach(assignment => {
         activeRules.forEach(rule => {
-          const regex = new RegExp(rule.pattern, 'gi');
-          if (regex.test(assignment.title || '')) {
-            results.push({
-              table: 'assignments',
-              column: 'title',
-              record_id: assignment.id,
-              matched_pattern: rule.pattern,
-              content_preview: assignment.title?.substring(0, 100) || '',
-              severity: rule.severity
-            });
-          }
-          if (regex.test(assignment.description || '')) {
-            results.push({
-              table: 'assignments',
-              column: 'description',
-              record_id: assignment.id,
-              matched_pattern: rule.pattern,
-              content_preview: assignment.description?.substring(0, 100) || '',
-              severity: rule.severity
-            });
+          try {
+            const regex = new RegExp(rule.pattern, 'gi');
+            if (regex.test(assignment.title || '')) {
+              results.push({
+                table: 'assignments',
+                column: 'title',
+                record_id: assignment.id,
+                matched_pattern: rule.pattern,
+                content_preview: assignment.title?.substring(0, 100) || '',
+                severity: rule.severity as 'error' | 'warning' | 'info'
+              });
+            }
+            if (regex.test(assignment.description || '')) {
+              results.push({
+                table: 'assignments',
+                column: 'description',
+                record_id: assignment.id,
+                matched_pattern: rule.pattern,
+                content_preview: assignment.description?.substring(0, 100) || '',
+                severity: rule.severity as 'error' | 'warning' | 'info'
+              });
+            }
+          } catch (e) {
+            console.warn(`Invalid regex pattern: ${rule.pattern}`);
           }
         });
       });
 
+      const errorCount = results.filter(r => r.severity === 'error').length;
+      const warningCount = results.filter(r => r.severity === 'warning').length;
+      const infoCount = results.filter(r => r.severity === 'info').length;
+      const score = Math.max(0, 100 - (errorCount * 5) - (warningCount * 2) - (infoCount * 1));
+      const publishBlocked = score < PUBLISH_THRESHOLD;
+
+      // Persist scan result
+      await supabase
+        .from('suyas_quality_scans')
+        .insert([{
+          scanned_by: user?.id,
+          quality_score: score,
+          error_count: errorCount,
+          warning_count: warningCount,
+          info_count: infoCount,
+          issues: results as unknown as Record<string, unknown>[],
+          tables_scanned: ['courses', 'course_modules', 'assignments'],
+          rules_applied: activeRules.map(r => ({ pattern: r.pattern, severity: r.severity })),
+          publish_blocked: publishBlocked
+        }]);
+
       setScanResults(results);
+      setQualityScore(score);
       setLastScanTime(new Date());
       
+      queryClient.invalidateQueries({ queryKey: ['suyas-quality-scans'] });
+
       if (results.length === 0) {
         toast.success('Quality scan complete — no issues found!');
+      } else if (publishBlocked) {
+        toast.error(`Quality score ${score}% — Publishing BLOCKED (minimum ${PUBLISH_THRESHOLD}% required)`);
       } else {
-        toast.warning(`Quality scan found ${results.length} issue(s)`);
+        toast.warning(`Quality scan found ${results.length} issue(s) — Score: ${score}%`);
       }
     } catch (error) {
       console.error('Scan error:', error);
@@ -223,38 +363,18 @@ export default function QualityGates() {
     }
   };
 
-  const toggleRule = (ruleId: string) => {
-    setRules(prev => prev.map(r => 
-      r.id === ruleId ? { ...r, is_active: !r.is_active } : r
-    ));
-  };
-
-  const addNewRule = () => {
-    if (!newRule.pattern || !newRule.description) return;
-    
-    setRules(prev => [...prev, {
-      id: `rule-${Date.now()}`,
-      pattern: newRule.pattern,
-      description: newRule.description,
-      severity: newRule.severity,
-      is_active: true,
-      created_at: new Date().toISOString()
-    }]);
-    
-    setNewRule({ pattern: '', description: '', severity: 'error' });
-    setAddRuleOpen(false);
-    toast.success('Quality rule added');
-  };
-
-  const removeRule = (ruleId: string) => {
-    setRules(prev => prev.filter(r => r.id !== ruleId));
-    toast.success('Rule removed');
-  };
-
   const errorCount = scanResults.filter(r => r.severity === 'error').length;
   const warningCount = scanResults.filter(r => r.severity === 'warning').length;
-  const activeRulesCount = rules.filter(r => r.is_active).length;
-  const qualityScore = scanResults.length === 0 ? 100 : Math.max(0, 100 - (errorCount * 5) - (warningCount * 2));
+  const activeRulesCount = rules?.filter(r => r.is_active).length || 0;
+  const publishBlocked = qualityScore < PUBLISH_THRESHOLD;
+
+  if (rulesLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -280,44 +400,88 @@ export default function QualityGates() {
         </Button>
       </div>
 
-      {/* Quality Score */}
-      <Card className={qualityScore >= 90 ? "border-green-500/50" : qualityScore >= 70 ? "border-amber-500/50" : "border-destructive/50"}>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg">Quality Score</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center gap-4">
-            <div className="flex-1">
-              <Progress value={qualityScore} className="h-3" />
+      {/* Quality Score + Publish Status */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <Card className={qualityScore >= PUBLISH_THRESHOLD ? "border-green-500/50" : "border-destructive/50"}>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center gap-2">
+              Quality Score
+              {publishBlocked ? (
+                <Lock className="h-4 w-4 text-destructive" />
+              ) : (
+                <Unlock className="h-4 w-4 text-green-500" />
+              )}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <Progress value={qualityScore} className="h-3" />
+              </div>
+              <span className={`text-3xl font-bold ${
+                qualityScore >= PUBLISH_THRESHOLD ? 'text-green-500' : 'text-destructive'
+              }`}>
+                {qualityScore}%
+              </span>
             </div>
-            <span className={`text-3xl font-bold ${
-              qualityScore >= 90 ? 'text-green-500' : 
-              qualityScore >= 70 ? 'text-amber-500' : 'text-destructive'
-            }`}>
-              {qualityScore}%
-            </span>
-          </div>
-          <div className="flex gap-4 mt-4 text-sm">
-            <div className="flex items-center gap-2">
-              <XCircle className="h-4 w-4 text-destructive" />
-              <span>{errorCount} Errors</span>
+            <div className="flex gap-4 mt-4 text-sm">
+              <div className="flex items-center gap-2">
+                <XCircle className="h-4 w-4 text-destructive" />
+                <span>{errorCount} Errors</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4 text-amber-500" />
+                <span>{warningCount} Warnings</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4 text-green-500" />
+                <span>{activeRulesCount} Active Rules</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-500" />
-              <span>{warningCount} Warnings</span>
+            {lastScanTime && (
+              <p className="text-xs text-muted-foreground mt-2">
+                Last scan: {lastScanTime.toLocaleString()}
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Publish Status */}
+        <Card className={publishBlocked ? "border-destructive bg-destructive/5" : "border-green-500/50 bg-green-500/5"}>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-4">
+              {publishBlocked ? (
+                <>
+                  <div className="h-16 w-16 rounded-full bg-destructive/10 flex items-center justify-center">
+                    <Lock className="h-8 w-8 text-destructive" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-destructive">PUBLISHING BLOCKED</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Quality score must be ≥{PUBLISH_THRESHOLD}% to publish content.
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Fix {errorCount} error(s) and {warningCount} warning(s) to proceed.
+                    </p>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="h-16 w-16 rounded-full bg-green-500/10 flex items-center justify-center">
+                    <Unlock className="h-8 w-8 text-green-500" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-green-500">READY TO PUBLISH</h3>
+                    <p className="text-sm text-muted-foreground">
+                      Content meets quality standards and can be published.
+                    </p>
+                  </div>
+                </>
+              )}
             </div>
-            <div className="flex items-center gap-2">
-              <CheckCircle2 className="h-4 w-4 text-green-500" />
-              <span>{activeRulesCount} Active Rules</span>
-            </div>
-          </div>
-          {lastScanTime && (
-            <p className="text-xs text-muted-foreground mt-2">
-              Last scan: {lastScanTime.toLocaleString()}
-            </p>
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Scan Results */}
       {scanResults.length > 0 && (
@@ -347,8 +511,10 @@ export default function QualityGates() {
                     <TableCell>
                       {result.severity === 'error' ? (
                         <Badge variant="destructive">Error</Badge>
+                      ) : result.severity === 'warning' ? (
+                        <Badge className="bg-amber-500">Warning</Badge>
                       ) : (
-                        <Badge variant="secondary">Warning</Badge>
+                        <Badge variant="secondary">Info</Badge>
                       )}
                     </TableCell>
                     <TableCell>
@@ -368,6 +534,49 @@ export default function QualityGates() {
                 ))}
               </TableBody>
             </Table>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Recent Scans History */}
+      {recentScans && recentScans.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <History className="h-5 w-5" />
+              Scan History
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {recentScans.slice(0, 5).map((scan) => (
+                <div key={scan.id} className="flex items-center justify-between p-3 border rounded-lg">
+                  <div className="flex items-center gap-3">
+                    {scan.publish_blocked ? (
+                      <Lock className="h-4 w-4 text-destructive" />
+                    ) : (
+                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    )}
+                    <div>
+                      <p className="text-sm font-medium">
+                        Score: {scan.quality_score}%
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {scan.error_count} errors, {scan.warning_count} warnings
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <Badge variant={scan.publish_blocked ? "destructive" : "secondary"}>
+                      {scan.publish_blocked ? "Blocked" : "Passed"}
+                    </Badge>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      {format(new Date(scan.scanned_at), 'MMM d, h:mm a')}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
       )}
@@ -413,10 +622,26 @@ export default function QualityGates() {
                       onChange={(e) => setNewRule({ ...newRule, description: e.target.value })}
                     />
                   </div>
+                  <div className="space-y-2">
+                    <Label>Severity</Label>
+                    <Select 
+                      value={newRule.severity} 
+                      onValueChange={(v) => setNewRule({ ...newRule, severity: v as 'error' | 'warning' | 'info' })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="error">Error (-5 points)</SelectItem>
+                        <SelectItem value="warning">Warning (-2 points)</SelectItem>
+                        <SelectItem value="info">Info (-1 point)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
                 <DialogFooter>
                   <Button variant="outline" onClick={() => setAddRuleOpen(false)}>Cancel</Button>
-                  <Button onClick={addNewRule}>Add Rule</Button>
+                  <Button onClick={() => addRuleMutation.mutate(newRule)}>Add Rule</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
@@ -424,7 +649,7 @@ export default function QualityGates() {
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {rules.map(rule => (
+            {rules?.map(rule => (
               <div 
                 key={rule.id} 
                 className="flex items-center justify-between p-3 border rounded-lg"
@@ -432,12 +657,20 @@ export default function QualityGates() {
                 <div className="flex items-center gap-3">
                   <Switch
                     checked={rule.is_active}
-                    onCheckedChange={() => toggleRule(rule.id)}
+                    onCheckedChange={(checked) => toggleRuleMutation.mutate({ id: rule.id, is_active: checked })}
                   />
                   <div>
-                    <code className="text-sm bg-muted px-2 py-1 rounded">
-                      {rule.pattern}
-                    </code>
+                    <div className="flex items-center gap-2">
+                      <code className="text-sm bg-muted px-2 py-1 rounded">
+                        {rule.pattern}
+                      </code>
+                      <Badge variant={
+                        rule.severity === 'error' ? 'destructive' : 
+                        rule.severity === 'warning' ? 'secondary' : 'outline'
+                      }>
+                        {rule.severity}
+                      </Badge>
+                    </div>
                     <p className="text-sm text-muted-foreground mt-1">
                       {rule.description}
                     </p>
@@ -446,7 +679,7 @@ export default function QualityGates() {
                 <Button 
                   variant="ghost" 
                   size="icon"
-                  onClick={() => removeRule(rule.id)}
+                  onClick={() => deleteRuleMutation.mutate(rule.id)}
                 >
                   <Ban className="h-4 w-4 text-muted-foreground" />
                 </Button>
