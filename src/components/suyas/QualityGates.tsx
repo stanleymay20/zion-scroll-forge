@@ -124,7 +124,7 @@ const useRecentScans = () => {
         error_count: scan.error_count,
         warning_count: scan.warning_count,
         info_count: scan.info_count,
-        issues: (Array.isArray(scan.issues) ? scan.issues : []) as ScanResult[],
+        issues: (Array.isArray(scan.issues) ? scan.issues : []) as unknown as ScanResult[],
         publish_blocked: scan.publish_blocked,
         scanned_at: scan.scanned_at
       }));
@@ -146,7 +146,7 @@ export default function QualityGates() {
   const [lastScanTime, setLastScanTime] = useState<Date | null>(null);
   const [qualityScore, setQualityScore] = useState<number>(100);
   const [addRuleOpen, setAddRuleOpen] = useState(false);
-  const [newRule, setNewRule] = useState({ pattern: '', description: '', severity: 'error' as const });
+  const [newRule, setNewRule] = useState<{ pattern: string; description: string; severity: 'error' | 'warning' | 'info' }>({ pattern: '', description: '', severity: 'error' });
 
   // Toggle rule active status
   const toggleRuleMutation = useMutation({
@@ -336,7 +336,7 @@ export default function QualityGates() {
           error_count: errorCount,
           warning_count: warningCount,
           info_count: infoCount,
-          issues: results as unknown as Record<string, unknown>[],
+          issues: JSON.parse(JSON.stringify(results)),
           tables_scanned: ['courses', 'course_modules', 'assignments'],
           rules_applied: activeRules.map(r => ({ pattern: r.pattern, severity: r.severity })),
           publish_blocked: publishBlocked
@@ -626,7 +626,7 @@ export default function QualityGates() {
                     <Label>Severity</Label>
                     <Select 
                       value={newRule.severity} 
-                      onValueChange={(v) => setNewRule({ ...newRule, severity: v as 'error' | 'warning' | 'info' })}
+                      onValueChange={(v: string) => setNewRule({ ...newRule, severity: v as 'error' | 'warning' | 'info' })}
                     >
                       <SelectTrigger>
                         <SelectValue />
