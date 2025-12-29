@@ -1,6 +1,6 @@
 /**
  * SUYAS - Audit Trail Viewer
- * Full audit trail for changes to dates, grades, enrollment, holds
+ * Full audit trail using suyas_audit_logs table (append-only, immutable)
  * Role-based access control visibility
  */
 
@@ -24,7 +24,8 @@ import {
   Clock,
   ChevronRight,
   Download,
-  AlertCircle
+  AlertCircle,
+  Loader2
 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { useQuery } from "@tanstack/react-query";
@@ -32,121 +33,176 @@ import { supabase } from "@/integrations/supabase/client";
 
 console.info("✝️ SUYAS Audit Trail — Maintaining accountability and transparency");
 
-type AuditEventType = 
-  | 'enrollment_change' 
+type AuditActionType = 
+  | 'status_change' 
   | 'grade_update' 
   | 'hold_placed' 
   | 'hold_removed'
-  | 'status_change'
-  | 'date_modification'
-  | 'permission_change'
-  | 'course_update'
-  | 'assessment_submission';
+  | 'schedule_modified'
+  | 'admin_override'
+  | 'enrollment_change'
+  | 'quality_scan';
 
-interface AuditEvent {
+type AuditEntityType = 
+  | 'enrollment'
+  | 'student'
+  | 'course'
+  | 'assignment'
+  | 'grade'
+  | 'hold'
+  | 'schedule'
+  | 'quality';
+
+interface AuditLog {
   id: string;
-  event_type: AuditEventType;
-  entity_type: string;
+  user_id: string | null;
+  action_type: AuditActionType;
+  entity_type: AuditEntityType;
   entity_id: string;
-  user_id: string;
-  user_email: string;
-  changes: {
-    field: string;
-    old_value: string | null;
-    new_value: string | null;
-  }[];
-  metadata: Record<string, unknown>;
-  ip_address?: string;
+  old_value: Record<string, unknown> | null;
+  new_value: Record<string, unknown> | null;
+  reason: string | null;
+  ip_address: string | null;
+  user_agent: string | null;
   created_at: string;
 }
 
-const eventTypeConfig: Record<AuditEventType, { label: string; icon: React.ReactNode; color: string }> = {
-  enrollment_change: { label: 'Enrollment', icon: <GraduationCap className="h-4 w-4" />, color: 'bg-blue-500' },
+const actionTypeConfig: Record<AuditActionType, { label: string; icon: React.ReactNode; color: string }> = {
+  status_change: { label: 'Status Change', icon: <User className="h-4 w-4" />, color: 'bg-purple-500' },
   grade_update: { label: 'Grade Update', icon: <FileText className="h-4 w-4" />, color: 'bg-green-500' },
   hold_placed: { label: 'Hold Placed', icon: <AlertCircle className="h-4 w-4" />, color: 'bg-red-500' },
   hold_removed: { label: 'Hold Removed', icon: <Shield className="h-4 w-4" />, color: 'bg-emerald-500' },
-  status_change: { label: 'Status Change', icon: <User className="h-4 w-4" />, color: 'bg-purple-500' },
-  date_modification: { label: 'Date Changed', icon: <Calendar className="h-4 w-4" />, color: 'bg-amber-500' },
-  permission_change: { label: 'Permission', icon: <Shield className="h-4 w-4" />, color: 'bg-orange-500' },
-  course_update: { label: 'Course Update', icon: <FileText className="h-4 w-4" />, color: 'bg-cyan-500' },
-  assessment_submission: { label: 'Assessment', icon: <FileText className="h-4 w-4" />, color: 'bg-indigo-500' }
+  schedule_modified: { label: 'Schedule Changed', icon: <Calendar className="h-4 w-4" />, color: 'bg-amber-500' },
+  admin_override: { label: 'Admin Override', icon: <Shield className="h-4 w-4" />, color: 'bg-orange-500' },
+  enrollment_change: { label: 'Enrollment', icon: <GraduationCap className="h-4 w-4" />, color: 'bg-blue-500' },
+  quality_scan: { label: 'Quality Scan', icon: <Shield className="h-4 w-4" />, color: 'bg-cyan-500' }
 };
 
-// Fetch audit events from scroll_analytics (using it as audit log)
-const useAuditEvents = (filters: { eventType?: AuditEventType; dateRange?: string }) => {
+// Fetch audit logs from the new suyas_audit_logs table
+const useAuditLogs = (filters: { actionType?: AuditActionType; dateRange?: string }) => {
   return useQuery({
-    queryKey: ['audit-events', filters],
+    queryKey: ['suyas-audit-logs', filters],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('scroll_analytics')
-        .select(`
-          id,
-          user_id,
-          event_type,
-          event_payload,
-          created_at
-        `)
+      let query = supabase
+        .from('suyas_audit_logs')
+        .select('*')
         .order('created_at', { ascending: false })
         .limit(100);
       
-      if (error) throw error;
+      if (filters.actionType) {
+        query = query.eq('action_type', filters.actionType);
+      }
+
+      // Apply date filter
+      if (filters.dateRange && filters.dateRange !== 'all') {
+        const now = new Date();
+        let startDate: Date;
+        
+        switch (filters.dateRange) {
+          case '24h':
+            startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+            break;
+          case '7d':
+            startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+            break;
+          case '30d':
+            startDate = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+            break;
+          default:
+            startDate = new Date(0);
+        }
+        
+        query = query.gte('created_at', startDate.toISOString());
+      }
       
-      // Transform to AuditEvent format
-      return (data || []).map(event => ({
-        id: event.id,
-        event_type: (event.event_type || 'status_change') as AuditEventType,
-        entity_type: 'user',
-        entity_id: event.user_id || '',
-        user_id: event.user_id || '',
-        user_email: 'System',
-        changes: [],
-        metadata: event.event_payload || {},
-        created_at: event.created_at
-      })) as AuditEvent[];
+      const { data, error } = await query;
+      
+      if (error) throw error;
+      return (data || []) as AuditLog[];
     }
   });
 };
 
 export default function AuditTrailViewer() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [eventTypeFilter, setEventTypeFilter] = useState<AuditEventType | 'all'>('all');
+  const [actionTypeFilter, setActionTypeFilter] = useState<AuditActionType | 'all'>('all');
   const [dateRangeFilter, setDateRangeFilter] = useState<string>('7d');
-  const [selectedEvent, setSelectedEvent] = useState<AuditEvent | null>(null);
+  const [selectedLog, setSelectedLog] = useState<AuditLog | null>(null);
 
-  const { data: events, isLoading } = useAuditEvents({
-    eventType: eventTypeFilter === 'all' ? undefined : eventTypeFilter,
+  const { data: logs, isLoading } = useAuditLogs({
+    actionType: actionTypeFilter === 'all' ? undefined : actionTypeFilter,
     dateRange: dateRangeFilter
   });
 
-  const filteredEvents = events?.filter(event => {
-    const matchesSearch = event.user_email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         event.entity_id.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = eventTypeFilter === 'all' || event.event_type === eventTypeFilter;
+  const filteredLogs = logs?.filter(log => {
+    const matchesSearch = 
+      log.entity_id.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      log.action_type.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      log.reason?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesType = actionTypeFilter === 'all' || log.action_type === actionTypeFilter;
     return matchesSearch && matchesType;
   }) || [];
 
-  const eventCounts = events?.reduce((acc, event) => {
-    acc[event.event_type] = (acc[event.event_type] || 0) + 1;
+  const logCounts = logs?.reduce((acc, log) => {
+    acc[log.action_type] = (acc[log.action_type] || 0) + 1;
     return acc;
-  }, {} as Record<AuditEventType, number>) || {};
+  }, {} as Record<AuditActionType, number>) || {};
+
+  const exportLogs = () => {
+    const csv = [
+      ['ID', 'Action Type', 'Entity Type', 'Entity ID', 'Reason', 'Created At'].join(','),
+      ...filteredLogs.map(log => [
+        log.id,
+        log.action_type,
+        log.entity_type,
+        log.entity_id,
+        log.reason || '',
+        log.created_at
+      ].join(','))
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `audit-trail-${format(new Date(), 'yyyy-MM-dd')}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="space-y-6">
-      {/* Event Type Summary */}
-      <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-2">
-        {Object.entries(eventTypeConfig).map(([type, config]) => (
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <History className="h-6 w-6 text-primary" />
+            Audit Trail
+          </h2>
+          <p className="text-muted-foreground">
+            Immutable record of all system changes (append-only)
+          </p>
+        </div>
+        <Badge variant="outline" className="text-xs">
+          {filteredLogs.length} records
+        </Badge>
+      </div>
+
+      {/* Action Type Summary */}
+      <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-8 gap-2">
+        {Object.entries(actionTypeConfig).map(([type, config]) => (
           <Card 
             key={type} 
             className={`cursor-pointer transition-all hover:shadow-md ${
-              eventTypeFilter === type ? 'ring-2 ring-primary' : ''
+              actionTypeFilter === type ? 'ring-2 ring-primary' : ''
             }`}
-            onClick={() => setEventTypeFilter(type as AuditEventType)}
+            onClick={() => setActionTypeFilter(type as AuditActionType)}
           >
             <CardContent className="p-3 text-center">
               <div className={`${config.color} w-8 h-8 rounded-full flex items-center justify-center mx-auto mb-1 text-white`}>
                 {config.icon}
               </div>
-              <p className="text-lg font-bold">{eventCounts[type as AuditEventType] || 0}</p>
+              <p className="text-lg font-bold">{logCounts[type as AuditActionType] || 0}</p>
               <p className="text-[10px] text-muted-foreground truncate">{config.label}</p>
             </CardContent>
           </Card>
@@ -154,22 +210,22 @@ export default function AuditTrailViewer() {
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Event List */}
+        {/* Log List */}
         <Card className="lg:col-span-2">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="flex items-center gap-2">
                   <History className="h-5 w-5" />
-                  Audit Trail
+                  Audit Logs
                 </CardTitle>
                 <CardDescription>
-                  Complete history of system changes
+                  Complete, immutable history of system changes
                 </CardDescription>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={exportLogs}>
                 <Download className="h-4 w-4 mr-2" />
-                Export
+                Export CSV
               </Button>
             </div>
           </CardHeader>
@@ -179,20 +235,20 @@ export default function AuditTrailViewer() {
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search by user or entity..."
+                  placeholder="Search by entity or reason..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10"
                 />
               </div>
-              <Select value={eventTypeFilter} onValueChange={(v) => setEventTypeFilter(v as AuditEventType | 'all')}>
+              <Select value={actionTypeFilter} onValueChange={(v) => setActionTypeFilter(v as AuditActionType | 'all')}>
                 <SelectTrigger className="w-[150px]">
                   <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Event type" />
+                  <SelectValue placeholder="Action type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All Events</SelectItem>
-                  {Object.entries(eventTypeConfig).map(([type, config]) => (
+                  <SelectItem value="all">All Actions</SelectItem>
+                  {Object.entries(actionTypeConfig).map(([type, config]) => (
                     <SelectItem key={type} value={type}>{config.label}</SelectItem>
                   ))}
                 </SelectContent>
@@ -211,27 +267,29 @@ export default function AuditTrailViewer() {
               </Select>
             </div>
 
-            {/* Event List */}
+            {/* Log List */}
             <ScrollArea className="h-[500px]">
               <div className="space-y-2">
                 {isLoading ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    Loading audit events...
+                  <div className="flex items-center justify-center py-8">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
                   </div>
-                ) : filteredEvents.length === 0 ? (
+                ) : filteredLogs.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
-                    No audit events found
+                    <History className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                    <p>No audit logs found</p>
+                    <p className="text-sm">System changes will appear here</p>
                   </div>
                 ) : (
-                  filteredEvents.map((event) => {
-                    const config = eventTypeConfig[event.event_type] || eventTypeConfig.status_change;
+                  filteredLogs.map((log) => {
+                    const config = actionTypeConfig[log.action_type] || actionTypeConfig.status_change;
                     return (
                       <div
-                        key={event.id}
+                        key={log.id}
                         className={`p-3 rounded-lg border cursor-pointer transition-all hover:bg-muted/50 ${
-                          selectedEvent?.id === event.id ? 'ring-2 ring-primary bg-muted/50' : ''
+                          selectedLog?.id === log.id ? 'ring-2 ring-primary bg-muted/50' : ''
                         }`}
-                        onClick={() => setSelectedEvent(event)}
+                        onClick={() => setSelectedLog(log)}
                       >
                         <div className="flex items-start gap-3">
                           <div className={`${config.color} p-2 rounded-full text-white flex-shrink-0`}>
@@ -243,15 +301,17 @@ export default function AuditTrailViewer() {
                                 {config.label}
                               </Badge>
                               <span className="text-xs text-muted-foreground">
-                                {formatDistanceToNow(new Date(event.created_at), { addSuffix: true })}
+                                {formatDistanceToNow(new Date(log.created_at), { addSuffix: true })}
                               </span>
                             </div>
-                            <p className="text-sm font-medium mt-1 truncate">
-                              {event.user_email}
+                            <p className="text-sm font-medium mt-1">
+                              {log.entity_type}: {log.entity_id.slice(0, 8)}...
                             </p>
-                            <p className="text-xs text-muted-foreground truncate">
-                              Entity: {event.entity_type} / {event.entity_id.slice(0, 8)}...
-                            </p>
+                            {log.reason && (
+                              <p className="text-xs text-muted-foreground truncate">
+                                {log.reason}
+                              </p>
+                            )}
                           </div>
                           <ChevronRight className="h-4 w-4 text-muted-foreground flex-shrink-0" />
                         </div>
@@ -264,87 +324,87 @@ export default function AuditTrailViewer() {
           </CardContent>
         </Card>
 
-        {/* Event Details */}
+        {/* Log Details */}
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
-              Event Details
+              Log Details
             </CardTitle>
           </CardHeader>
           <CardContent>
-            {selectedEvent ? (
+            {selectedLog ? (
               <div className="space-y-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">Event Type</p>
-                  <Badge className={eventTypeConfig[selectedEvent.event_type]?.color || 'bg-gray-500'}>
-                    {eventTypeConfig[selectedEvent.event_type]?.label || selectedEvent.event_type}
+                  <p className="text-sm text-muted-foreground">Action Type</p>
+                  <Badge className={actionTypeConfig[selectedLog.action_type]?.color || 'bg-gray-500'}>
+                    {actionTypeConfig[selectedLog.action_type]?.label || selectedLog.action_type}
                   </Badge>
                 </div>
                 
                 <div>
                   <p className="text-sm text-muted-foreground">Timestamp</p>
                   <p className="font-medium">
-                    {format(new Date(selectedEvent.created_at), 'PPpp')}
+                    {format(new Date(selectedLog.created_at), 'PPpp')}
                   </p>
                 </div>
                 
                 <div>
-                  <p className="text-sm text-muted-foreground">Performed By</p>
-                  <p className="font-medium">{selectedEvent.user_email}</p>
-                  <p className="text-xs text-muted-foreground">ID: {selectedEvent.user_id}</p>
+                  <p className="text-sm text-muted-foreground">User ID</p>
+                  <p className="font-mono text-sm">{selectedLog.user_id || 'System'}</p>
                 </div>
                 
                 <div>
                   <p className="text-sm text-muted-foreground">Entity</p>
-                  <p className="font-medium">{selectedEvent.entity_type}</p>
+                  <p className="font-medium">{selectedLog.entity_type}</p>
                   <p className="text-xs text-muted-foreground font-mono">
-                    {selectedEvent.entity_id}
+                    {selectedLog.entity_id}
                   </p>
                 </div>
                 
-                {selectedEvent.changes.length > 0 && (
+                {selectedLog.reason && (
                   <div>
-                    <p className="text-sm text-muted-foreground mb-2">Changes</p>
-                    <div className="space-y-2">
-                      {selectedEvent.changes.map((change, idx) => (
-                        <div key={idx} className="p-2 bg-muted rounded text-sm">
-                          <p className="font-medium">{change.field}</p>
-                          <div className="flex items-center gap-2 text-xs">
-                            <span className="text-red-500 line-through">
-                              {change.old_value || '(empty)'}
-                            </span>
-                            <span>→</span>
-                            <span className="text-green-500">
-                              {change.new_value || '(empty)'}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                    <p className="text-sm text-muted-foreground">Reason</p>
+                    <p className="text-sm">{selectedLog.reason}</p>
                   </div>
                 )}
                 
-                {Object.keys(selectedEvent.metadata).length > 0 && (
+                {selectedLog.old_value && (
                   <div>
-                    <p className="text-sm text-muted-foreground mb-2">Metadata</p>
-                    <pre className="p-2 bg-muted rounded text-xs overflow-auto max-h-40">
-                      {JSON.stringify(selectedEvent.metadata, null, 2)}
+                    <p className="text-sm text-muted-foreground mb-2">Old Value</p>
+                    <pre className="p-2 bg-muted rounded text-xs overflow-auto max-h-32">
+                      {JSON.stringify(selectedLog.old_value, null, 2)}
                     </pre>
                   </div>
                 )}
                 
-                {selectedEvent.ip_address && (
+                {selectedLog.new_value && (
                   <div>
-                    <p className="text-sm text-muted-foreground">IP Address</p>
-                    <p className="font-mono text-sm">{selectedEvent.ip_address}</p>
+                    <p className="text-sm text-muted-foreground mb-2">New Value</p>
+                    <pre className="p-2 bg-muted rounded text-xs overflow-auto max-h-32">
+                      {JSON.stringify(selectedLog.new_value, null, 2)}
+                    </pre>
                   </div>
                 )}
+                
+                {selectedLog.ip_address && (
+                  <div>
+                    <p className="text-sm text-muted-foreground">IP Address</p>
+                    <p className="font-mono text-sm">{selectedLog.ip_address}</p>
+                  </div>
+                )}
+
+                <div className="pt-4 border-t">
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Shield className="h-3 w-3" />
+                    This record is immutable and cannot be modified or deleted.
+                  </p>
+                </div>
               </div>
             ) : (
               <div className="text-center py-12 text-muted-foreground">
                 <History className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                <p>Select an event to view details</p>
+                <p>Select a log to view details</p>
               </div>
             )}
           </CardContent>

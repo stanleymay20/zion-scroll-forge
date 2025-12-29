@@ -5270,6 +5270,82 @@ export type Database = {
           },
         ]
       }
+      student_holds: {
+        Row: {
+          blocks_graduation: boolean
+          blocks_registration: boolean
+          blocks_transcript: boolean
+          created_at: string
+          hold_type: string
+          id: string
+          is_active: boolean
+          notes: string | null
+          placed_at: string
+          placed_by: string | null
+          reason: string
+          removed_at: string | null
+          removed_by: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          blocks_graduation?: boolean
+          blocks_registration?: boolean
+          blocks_transcript?: boolean
+          created_at?: string
+          hold_type: string
+          id?: string
+          is_active?: boolean
+          notes?: string | null
+          placed_at?: string
+          placed_by?: string | null
+          reason: string
+          removed_at?: string | null
+          removed_by?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          blocks_graduation?: boolean
+          blocks_registration?: boolean
+          blocks_transcript?: boolean
+          created_at?: string
+          hold_type?: string
+          id?: string
+          is_active?: boolean
+          notes?: string | null
+          placed_at?: string
+          placed_by?: string | null
+          reason?: string
+          removed_at?: string | null
+          removed_by?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_holds_placed_by_fkey"
+            columns: ["placed_by"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "student_holds_removed_by_fkey"
+            columns: ["removed_by"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "student_holds_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       student_learning_profiles: {
         Row: {
           created_at: string | null
@@ -5884,6 +5960,147 @@ export type Database = {
           {
             foreignKeyName: "supreme_degree_applications_user_id_fkey"
             columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      suyas_audit_logs: {
+        Row: {
+          action_type: string
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          ip_address: string | null
+          new_value: Json | null
+          old_value: Json | null
+          reason: string | null
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          ip_address?: string | null
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          ip_address?: string | null
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "suyas_audit_logs_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      suyas_quality_rules: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string
+          id: string
+          is_active: boolean
+          pattern: string
+          severity: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description: string
+          id?: string
+          is_active?: boolean
+          pattern: string
+          severity?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string
+          id?: string
+          is_active?: boolean
+          pattern?: string
+          severity?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "suyas_quality_rules_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      suyas_quality_scans: {
+        Row: {
+          error_count: number
+          id: string
+          info_count: number
+          issues: Json
+          publish_blocked: boolean
+          quality_score: number
+          rules_applied: Json
+          scanned_at: string
+          scanned_by: string | null
+          tables_scanned: string[]
+          warning_count: number
+        }
+        Insert: {
+          error_count?: number
+          id?: string
+          info_count?: number
+          issues?: Json
+          publish_blocked?: boolean
+          quality_score: number
+          rules_applied?: Json
+          scanned_at?: string
+          scanned_by?: string | null
+          tables_scanned?: string[]
+          warning_count?: number
+        }
+        Update: {
+          error_count?: number
+          id?: string
+          info_count?: number
+          issues?: Json
+          publish_blocked?: boolean
+          quality_score?: number
+          rules_applied?: Json
+          scanned_at?: string
+          scanned_by?: string | null
+          tables_scanned?: string[]
+          warning_count?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "suyas_quality_scans_scanned_by_fkey"
+            columns: ["scanned_by"]
             isOneToOne: false
             referencedRelation: "leaderboard"
             referencedColumns: ["user_id"]
