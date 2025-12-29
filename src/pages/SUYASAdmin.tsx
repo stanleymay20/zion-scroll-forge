@@ -1,12 +1,12 @@
 /**
  * SUYAS Admin - Scroll University Year Automation System
- * Full academic lifecycle management
+ * Full academic lifecycle management with real-time database queries
  */
 
 import React from "react";
 import { Helmet } from "react-helmet";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { 
   Calendar, 
   Clock, 
@@ -14,7 +14,8 @@ import {
   Briefcase, 
   FileCheck, 
   Shield,
-  GraduationCap
+  GraduationCap,
+  Loader2
 } from "lucide-react";
 import AcademicYearBuilder from "@/components/suyas/AcademicYearBuilder";
 import CourseSchedulingEngine from "@/components/suyas/CourseSchedulingEngine";
@@ -23,10 +24,13 @@ import FacultyWorkloadManager from "@/components/suyas/FacultyWorkloadManager";
 import DeadlineOrchestrator from "@/components/suyas/DeadlineOrchestrator";
 import AuditTrailViewer from "@/components/suyas/AuditTrailViewer";
 import QualityGates from "@/components/suyas/QualityGates";
+import { useSUYASStats } from "@/hooks/useSUYASStats";
 
 console.info("✝️ SUYAS Admin — Managing the seasons of education with excellence");
 
 export default function SUYASAdmin() {
+  const { data: stats, isLoading } = useSUYASStats();
+
   return (
     <>
       <Helmet>
@@ -47,15 +51,21 @@ export default function SUYASAdmin() {
           </p>
         </div>
 
-        {/* Quick Stats */}
+        {/* Quick Stats - Real Data from Database */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <Card>
             <CardContent className="pt-4">
               <div className="flex items-center gap-3">
                 <Calendar className="h-8 w-8 text-primary" />
                 <div>
-                  <p className="text-2xl font-bold">2025-26</p>
-                  <p className="text-xs text-muted-foreground">Active Year</p>
+                  {isLoading ? (
+                    <Loader2 className="h-6 w-6 animate-spin" />
+                  ) : (
+                    <>
+                      <p className="text-2xl font-bold">{stats?.activeYear || '—'}</p>
+                      <p className="text-xs text-muted-foreground">Active Year</p>
+                    </>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -65,8 +75,14 @@ export default function SUYASAdmin() {
               <div className="flex items-center gap-3">
                 <Users className="h-8 w-8 text-green-500" />
                 <div>
-                  <p className="text-2xl font-bold">1,247</p>
-                  <p className="text-xs text-muted-foreground">Active Students</p>
+                  {isLoading ? (
+                    <Loader2 className="h-6 w-6 animate-spin" />
+                  ) : (
+                    <>
+                      <p className="text-2xl font-bold">{stats?.activeStudents ?? '—'}</p>
+                      <p className="text-xs text-muted-foreground">Active Students</p>
+                    </>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -76,8 +92,14 @@ export default function SUYASAdmin() {
               <div className="flex items-center gap-3">
                 <Clock className="h-8 w-8 text-amber-500" />
                 <div>
-                  <p className="text-2xl font-bold">42</p>
-                  <p className="text-xs text-muted-foreground">Pending Deadlines</p>
+                  {isLoading ? (
+                    <Loader2 className="h-6 w-6 animate-spin" />
+                  ) : (
+                    <>
+                      <p className="text-2xl font-bold">{stats?.pendingDeadlines ?? '—'}</p>
+                      <p className="text-xs text-muted-foreground">Pending Deadlines</p>
+                    </>
+                  )}
                 </div>
               </div>
             </CardContent>
@@ -87,8 +109,14 @@ export default function SUYASAdmin() {
               <div className="flex items-center gap-3">
                 <Shield className="h-8 w-8 text-blue-500" />
                 <div>
-                  <p className="text-2xl font-bold">98%</p>
-                  <p className="text-xs text-muted-foreground">Quality Score</p>
+                  {isLoading ? (
+                    <Loader2 className="h-6 w-6 animate-spin" />
+                  ) : (
+                    <>
+                      <p className="text-2xl font-bold">{stats?.qualityScore ?? '—'}%</p>
+                      <p className="text-xs text-muted-foreground">Quality Score</p>
+                    </>
+                  )}
                 </div>
               </div>
             </CardContent>

@@ -62,6 +62,75 @@ export type Database = {
           },
         ]
       }
+      academic_deadlines: {
+        Row: {
+          academic_year_id: string | null
+          audience: string | null
+          created_at: string | null
+          created_by: string | null
+          deadline_type: string
+          description: string | null
+          due_at: string
+          id: string
+          is_published: boolean | null
+          metadata: Json | null
+          reminder_days_before: number[] | null
+          reminder_sent: boolean | null
+          term_id: string | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          academic_year_id?: string | null
+          audience?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          deadline_type: string
+          description?: string | null
+          due_at: string
+          id?: string
+          is_published?: boolean | null
+          metadata?: Json | null
+          reminder_days_before?: number[] | null
+          reminder_sent?: boolean | null
+          term_id?: string | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          academic_year_id?: string | null
+          audience?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          deadline_type?: string
+          description?: string | null
+          due_at?: string
+          id?: string
+          is_published?: boolean | null
+          metadata?: Json | null
+          reminder_days_before?: number[] | null
+          reminder_sent?: boolean | null
+          term_id?: string | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "academic_deadlines_academic_year_id_fkey"
+            columns: ["academic_year_id"]
+            isOneToOne: false
+            referencedRelation: "academic_years"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "academic_deadlines_term_id_fkey"
+            columns: ["term_id"]
+            isOneToOne: false
+            referencedRelation: "semesters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       academic_events: {
         Row: {
           academic_year_id: string | null
@@ -206,34 +275,40 @@ export type Database = {
       academic_years: {
         Row: {
           created_at: string | null
+          created_by: string | null
           end_date: string
           id: string
           institution_id: string | null
           is_active: boolean | null
           name: string
           start_date: string
+          status: string | null
           updated_at: string | null
           year_type: string | null
         }
         Insert: {
           created_at?: string | null
+          created_by?: string | null
           end_date: string
           id?: string
           institution_id?: string | null
           is_active?: boolean | null
           name: string
           start_date: string
+          status?: string | null
           updated_at?: string | null
           year_type?: string | null
         }
         Update: {
           created_at?: string | null
+          created_by?: string | null
           end_date?: string
           id?: string
           institution_id?: string | null
           is_active?: boolean | null
           name?: string
           start_date?: string
+          status?: string | null
           updated_at?: string | null
           year_type?: string | null
         }
@@ -2049,6 +2124,79 @@ export type Database = {
           },
         ]
       }
+      enrollment_records: {
+        Row: {
+          course_id: string | null
+          course_offering_id: string | null
+          created_at: string | null
+          credits_earned: number | null
+          dropped_at: string | null
+          enrolled_at: string | null
+          grade: string | null
+          grade_points: number | null
+          id: string
+          notes: string | null
+          status: string
+          term_id: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          course_id?: string | null
+          course_offering_id?: string | null
+          created_at?: string | null
+          credits_earned?: number | null
+          dropped_at?: string | null
+          enrolled_at?: string | null
+          grade?: string | null
+          grade_points?: number | null
+          id?: string
+          notes?: string | null
+          status?: string
+          term_id?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          course_id?: string | null
+          course_offering_id?: string | null
+          created_at?: string | null
+          credits_earned?: number | null
+          dropped_at?: string | null
+          enrolled_at?: string | null
+          grade?: string | null
+          grade_points?: number | null
+          id?: string
+          notes?: string | null
+          status?: string
+          term_id?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enrollment_records_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enrollment_records_course_offering_id_fkey"
+            columns: ["course_offering_id"]
+            isOneToOne: false
+            referencedRelation: "course_offerings"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "enrollment_records_term_id_fkey"
+            columns: ["term_id"]
+            isOneToOne: false
+            referencedRelation: "semesters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       enrollments: {
         Row: {
           course_id: string | null
@@ -2367,6 +2515,68 @@ export type Database = {
           },
         ]
       }
+      faculty_workloads: {
+        Row: {
+          assigned_courses: number | null
+          assigned_hours: number | null
+          assigned_students: number | null
+          created_at: string | null
+          faculty_id: string
+          id: string
+          max_courses: number | null
+          max_hours: number | null
+          max_students: number | null
+          notes: string | null
+          overload_approved: boolean | null
+          overload_approved_at: string | null
+          overload_approved_by: string | null
+          term_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_courses?: number | null
+          assigned_hours?: number | null
+          assigned_students?: number | null
+          created_at?: string | null
+          faculty_id: string
+          id?: string
+          max_courses?: number | null
+          max_hours?: number | null
+          max_students?: number | null
+          notes?: string | null
+          overload_approved?: boolean | null
+          overload_approved_at?: string | null
+          overload_approved_by?: string | null
+          term_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_courses?: number | null
+          assigned_hours?: number | null
+          assigned_students?: number | null
+          created_at?: string | null
+          faculty_id?: string
+          id?: string
+          max_courses?: number | null
+          max_hours?: number | null
+          max_students?: number | null
+          notes?: string | null
+          overload_approved?: boolean | null
+          overload_approved_at?: string | null
+          overload_approved_by?: string | null
+          term_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "faculty_workloads_term_id_fkey"
+            columns: ["term_id"]
+            isOneToOne: false
+            referencedRelation: "semesters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       fellowship_rooms: {
         Row: {
           created_at: string | null
@@ -2587,6 +2797,68 @@ export type Database = {
             columns: ["degree_program_id"]
             isOneToOne: false
             referencedRelation: "degree_programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      graduation_requirements: {
+        Row: {
+          capstone_required: boolean | null
+          created_at: string | null
+          degree_level: string
+          elective_credits: number | null
+          faculty_id: string | null
+          id: string
+          is_active: boolean | null
+          min_credits: number | null
+          min_gpa: number | null
+          program_id: string | null
+          required_courses: string[] | null
+          requirement_name: string
+          rules_json: Json | null
+          spiritual_formation_required: boolean | null
+          updated_at: string | null
+        }
+        Insert: {
+          capstone_required?: boolean | null
+          created_at?: string | null
+          degree_level: string
+          elective_credits?: number | null
+          faculty_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          min_credits?: number | null
+          min_gpa?: number | null
+          program_id?: string | null
+          required_courses?: string[] | null
+          requirement_name: string
+          rules_json?: Json | null
+          spiritual_formation_required?: boolean | null
+          updated_at?: string | null
+        }
+        Update: {
+          capstone_required?: boolean | null
+          created_at?: string | null
+          degree_level?: string
+          elective_credits?: number | null
+          faculty_id?: string | null
+          id?: string
+          is_active?: boolean | null
+          min_credits?: number | null
+          min_gpa?: number | null
+          program_id?: string | null
+          required_courses?: string[] | null
+          requirement_name?: string
+          rules_json?: Json | null
+          spiritual_formation_required?: boolean | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "graduation_requirements_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
             referencedColumns: ["id"]
           },
         ]
@@ -4013,45 +4285,60 @@ export type Database = {
       profiles: {
         Row: {
           academic_profile: Json | null
+          admitted_at: string | null
           avatar_url: string | null
           created_at: string | null
           current_institution_id: string | null
           email: string | null
+          enrolled_at: string | null
           full_name: string | null
+          graduated_at: string | null
           id: string
+          lifecycle_status: string | null
           role: string | null
           scrollcoin_balance: number | null
           scrollcoins: number | null
           spiritual_profile: Json | null
           updated_at: string | null
+          withdrawn_at: string | null
         }
         Insert: {
           academic_profile?: Json | null
+          admitted_at?: string | null
           avatar_url?: string | null
           created_at?: string | null
           current_institution_id?: string | null
           email?: string | null
+          enrolled_at?: string | null
           full_name?: string | null
+          graduated_at?: string | null
           id: string
+          lifecycle_status?: string | null
           role?: string | null
           scrollcoin_balance?: number | null
           scrollcoins?: number | null
           spiritual_profile?: Json | null
           updated_at?: string | null
+          withdrawn_at?: string | null
         }
         Update: {
           academic_profile?: Json | null
+          admitted_at?: string | null
           avatar_url?: string | null
           created_at?: string | null
           current_institution_id?: string | null
           email?: string | null
+          enrolled_at?: string | null
           full_name?: string | null
+          graduated_at?: string | null
           id?: string
+          lifecycle_status?: string | null
           role?: string | null
           scrollcoin_balance?: number | null
           scrollcoins?: number | null
           spiritual_profile?: Json | null
           updated_at?: string | null
+          withdrawn_at?: string | null
         }
         Relationships: [
           {
@@ -4318,6 +4605,53 @@ export type Database = {
             columns: ["module_id"]
             isOneToOne: false
             referencedRelation: "course_modules"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      registration_windows: {
+        Row: {
+          audience: string
+          close_at: string
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          open_at: string
+          priority_order: number | null
+          rules_json: Json | null
+          term_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          audience?: string
+          close_at: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          open_at: string
+          priority_order?: number | null
+          rules_json?: Json | null
+          term_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          audience?: string
+          close_at?: string
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          open_at?: string
+          priority_order?: number | null
+          rules_json?: Json | null
+          term_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "registration_windows_term_id_fkey"
+            columns: ["term_id"]
+            isOneToOne: false
+            referencedRelation: "semesters"
             referencedColumns: ["id"]
           },
         ]
@@ -4851,9 +5185,11 @@ export type Database = {
           is_active: boolean | null
           name: string
           registration_end: string | null
+          registration_open: boolean | null
           registration_start: string | null
           semester_order: number | null
           start_date: string
+          term_type: string | null
           updated_at: string | null
           withdrawal_deadline: string | null
         }
@@ -4868,9 +5204,11 @@ export type Database = {
           is_active?: boolean | null
           name: string
           registration_end?: string | null
+          registration_open?: boolean | null
           registration_start?: string | null
           semester_order?: number | null
           start_date: string
+          term_type?: string | null
           updated_at?: string | null
           withdrawal_deadline?: string | null
         }
@@ -4885,9 +5223,11 @@ export type Database = {
           is_active?: boolean | null
           name?: string
           registration_end?: string | null
+          registration_open?: boolean | null
           registration_start?: string | null
           semester_order?: number | null
           start_date?: string
+          term_type?: string | null
           updated_at?: string | null
           withdrawal_deadline?: string | null
         }
@@ -5285,6 +5625,9 @@ export type Database = {
           reason: string
           removed_at: string | null
           removed_by: string | null
+          resolution_notes: string | null
+          resolved_at: string | null
+          resolved_by: string | null
           updated_at: string
           user_id: string
         }
@@ -5302,6 +5645,9 @@ export type Database = {
           reason: string
           removed_at?: string | null
           removed_by?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
           updated_at?: string
           user_id: string
         }
@@ -5319,6 +5665,9 @@ export type Database = {
           reason?: string
           removed_at?: string | null
           removed_by?: string | null
+          resolution_notes?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
           updated_at?: string
           user_id?: string
         }
@@ -6778,6 +7127,7 @@ export type Database = {
       }
     }
     Functions: {
+      archive_academic_year: { Args: { p_year_id: string }; Returns: boolean }
       award_by_rule: {
         Args: {
           p_event: string
@@ -6796,6 +7146,18 @@ export type Database = {
         }
         Returns: undefined
       }
+      check_graduation_eligibility: {
+        Args: { p_user_id: string }
+        Returns: {
+          credits_completed: number
+          credits_required: number
+          eligible: boolean
+          gpa: number
+          has_holds: boolean
+          min_gpa: number
+          missing_requirements: string[]
+        }[]
+      }
       create_notification: {
         Args: {
           p_body: string
@@ -6809,6 +7171,25 @@ export type Database = {
         Returns: string
       }
       decrement_post_likes: { Args: { post_id: string }; Returns: undefined }
+      detect_schedule_conflicts: {
+        Args: {
+          p_course_id: string
+          p_day_of_week: string
+          p_end_time: string
+          p_exclude_session_id?: string
+          p_semester_id?: string
+          p_start_time: string
+        }
+        Returns: {
+          conflict_day: string
+          conflict_end: string
+          conflict_start: string
+          conflict_type: string
+          course_title: string
+          session_id: string
+          session_title: string
+        }[]
+      }
       earn_scrollcoin: {
         Args: { p_amount: number; p_desc: string; p_user_id: string }
         Returns: undefined
@@ -6821,6 +7202,22 @@ export type Database = {
         Returns: boolean
       }
       increment_post_likes: { Args: { post_id: string }; Returns: undefined }
+      is_registration_open: {
+        Args: { p_term_id: string; p_user_id: string }
+        Returns: boolean
+      }
+      log_suyas_action: {
+        Args: {
+          p_action_type: string
+          p_entity_id: string
+          p_entity_type: string
+          p_new_value?: Json
+          p_old_value?: Json
+          p_reason?: string
+        }
+        Returns: string
+      }
+      publish_academic_year: { Args: { p_year_id: string }; Returns: boolean }
       spend_scrollcoin: {
         Args: { p_amount: number; p_desc: string; p_user_id: string }
         Returns: undefined
@@ -6828,6 +7225,10 @@ export type Database = {
       track_common_question: {
         Args: { p_category: string; p_question: string }
         Returns: undefined
+      }
+      transition_student_status: {
+        Args: { p_new_status: string; p_reason?: string; p_user_id: string }
+        Returns: boolean
       }
       user_has_institution_access: {
         Args: { p_institution_id: string; p_user_id: string }
