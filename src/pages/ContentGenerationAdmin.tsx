@@ -15,6 +15,7 @@ import { checkUserRole } from "@/lib/scrollGovernance";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { GenerateVideosButton } from "@/components/admin/GenerateVideosButton";
+import { BulkContentSeeding } from "@/components/admin/BulkContentSeeding";
 
 console.info("✝️ Content Generation Admin — Christ governs all creation");
 
@@ -358,6 +359,9 @@ export default function ContentGenerationAdmin() {
             </Button>
           </CardContent>
         </Card>
+
+        {/* Bulk Content Seeding */}
+        <BulkContentSeeding />
 
         {/* AI Video Generation Card */}
         <GenerateVideosButton courseId={selectedCourse} />
