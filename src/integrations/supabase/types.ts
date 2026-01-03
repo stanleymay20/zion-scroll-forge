@@ -1624,6 +1624,61 @@ export type Database = {
           },
         ]
       }
+      degree_course_requirements: {
+        Row: {
+          course_id: string
+          created_at: string
+          credits: number
+          degree_id: string
+          id: string
+          is_required: boolean
+          prerequisite_course_id: string | null
+          semester_recommended: number | null
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          credits?: number
+          degree_id: string
+          id?: string
+          is_required?: boolean
+          prerequisite_course_id?: string | null
+          semester_recommended?: number | null
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          credits?: number
+          degree_id?: string
+          id?: string
+          is_required?: boolean
+          prerequisite_course_id?: string | null
+          semester_recommended?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "degree_course_requirements_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "degree_course_requirements_degree_id_fkey"
+            columns: ["degree_id"]
+            isOneToOne: false
+            referencedRelation: "degree_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "degree_course_requirements_prerequisite_course_id_fkey"
+            columns: ["prerequisite_course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       degree_prerequisites: {
         Row: {
           alternative_path: string | null
@@ -1668,36 +1723,62 @@ export type Database = {
       }
       degree_programs: {
         Row: {
+          career_paths: string[] | null
           created_at: string | null
           description: string | null
           duration: string | null
           faculty: string | null
           id: string
+          institution_id: string | null
+          is_active: boolean | null
           level: string | null
+          min_gpa: number | null
           scroll_level: string | null
+          spiritual_requirements: Json | null
           title: string
+          total_credits: number | null
         }
         Insert: {
+          career_paths?: string[] | null
           created_at?: string | null
           description?: string | null
           duration?: string | null
           faculty?: string | null
           id?: string
+          institution_id?: string | null
+          is_active?: boolean | null
           level?: string | null
+          min_gpa?: number | null
           scroll_level?: string | null
+          spiritual_requirements?: Json | null
           title: string
+          total_credits?: number | null
         }
         Update: {
+          career_paths?: string[] | null
           created_at?: string | null
           description?: string | null
           duration?: string | null
           faculty?: string | null
           id?: string
+          institution_id?: string | null
+          is_active?: boolean | null
           level?: string | null
+          min_gpa?: number | null
           scroll_level?: string | null
+          spiritual_requirements?: Json | null
           title?: string
+          total_credits?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "degree_programs_institution_id_fkey"
+            columns: ["institution_id"]
+            isOneToOne: false
+            referencedRelation: "institutions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       degree_progress: {
         Row: {
@@ -5561,6 +5642,66 @@ export type Database = {
           },
           {
             foreignKeyName: "student_applications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      student_degree_enrollments: {
+        Row: {
+          actual_graduation: string | null
+          created_at: string
+          credits_completed: number
+          credits_required: number
+          degree_id: string
+          enrolled_at: string
+          expected_graduation: string | null
+          gpa: number | null
+          id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          actual_graduation?: string | null
+          created_at?: string
+          credits_completed?: number
+          credits_required?: number
+          degree_id: string
+          enrolled_at?: string
+          expected_graduation?: string | null
+          gpa?: number | null
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          actual_graduation?: string | null
+          created_at?: string
+          credits_completed?: number
+          credits_required?: number
+          degree_id?: string
+          enrolled_at?: string
+          expected_graduation?: string | null
+          gpa?: number | null
+          id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "student_degree_enrollments_degree_id_fkey"
+            columns: ["degree_id"]
+            isOneToOne: false
+            referencedRelation: "degree_programs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "student_degree_enrollments_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "leaderboard"
