@@ -7,7 +7,6 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import {
   Table,
   TableBody,
@@ -31,21 +30,19 @@ import {
   Filter,
   CheckSquare,
   AlertCircle,
-  TrendingUp,
-  TrendingDown,
-  Minus,
 } from 'lucide-react';
 import facultyService from '@/services/facultyService';
-// Simple gradebook entry type matching service
+
+// Simple gradebook entry type matching v_course_gradebook view
 interface SimpleGradebookEntry {
-  assignment_id: string;
-  assignment_title: string;
   course_id: string;
-  feedback: string;
-  graded_at: string;
-  score: number;
-  student_user_id: string;
-  total_points: number;
+  course_title: string;
+  user_id: string;
+  student_name: string;
+  student_email: string;
+  progress: number;
+  grade: string;
+  points_earned: number;
 }
 
 interface GradebookProps {
@@ -91,9 +88,18 @@ const Gradebook: React.FC<GradebookProps> = ({ courseId }) => {
       const term = searchTerm.toLowerCase();
       filtered = filtered.filter(
         (entry) =>
-          entry.student_user_id.toLowerCase().includes(term) ||
-          entry.assignment_title.toLowerCase().includes(term)
+          entry.student_name?.toLowerCase().includes(term) ||
+          entry.student_email?.toLowerCase().includes(term)
       );
+    }
+
+    // Status filter
+    if (statusFilter !== 'all') {
+      if (statusFilter === 'at_risk') {
+        filtered = filtered.filter((e) => e.progress < 50);
+      } else if (statusFilter === 'excelling') {
+        filtered = filtered.filter((e) => e.progress >= 80);
+      }
     }
 
     setFilteredGradebook(filtered);
@@ -101,7 +107,7 @@ const Gradebook: React.FC<GradebookProps> = ({ courseId }) => {
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedStudents(new Set(filteredGradebook.map((e) => e.student_user_id)));
+      setSelectedStudents(new Set(filteredGradebook.map((e) => e.user_id)));
     } else {
       setSelectedStudents(new Set());
     }
@@ -121,9 +127,7 @@ const Gradebook: React.FC<GradebookProps> = ({ courseId }) => {
     if (!bulkAction || selectedStudents.size === 0) return;
 
     try {
-      // Implementation would depend on the specific bulk action
       console.log('Bulk action:', bulkAction, 'for students:', Array.from(selectedStudents));
-      // await facultyService.bulkGrade(courseId, request);
       await loadGradebook();
       setSelectedStudents(new Set());
       setBulkAction('');
@@ -148,11 +152,10 @@ const Gradebook: React.FC<GradebookProps> = ({ courseId }) => {
     }
   };
 
-  const getScoreColor = (score: number, total: number) => {
-    const pct = total > 0 ? (score / total) * 100 : 0;
-    if (pct >= 90) return 'text-green-600';
-    if (pct >= 80) return 'text-blue-600';
-    if (pct >= 70) return 'text-yellow-600';
+  const getProgressColor = (progress: number) => {
+    if (progress >= 80) return 'text-green-600';
+    if (progress >= 60) return 'text-blue-600';
+    if (progress >= 40) return 'text-yellow-600';
     return 'text-red-600';
   };
 
@@ -217,10 +220,8 @@ const Gradebook: React.FC<GradebookProps> = ({ courseId }) => {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Students</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="at_risk">At Risk</SelectItem>
-                <SelectItem value="excelling">Excelling</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
+                <SelectItem value="at_risk">At Risk (&lt;50%)</SelectItem>
+                <SelectItem value="excelling">Excelling (≥80%)</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -268,40 +269,40 @@ const Gradebook: React.FC<GradebookProps> = ({ courseId }) => {
                       onCheckedChange={handleSelectAll}
                     />
                   </TableHead>
-                  <TableHead>Student ID</TableHead>
-                  <TableHead>Assignment</TableHead>
-                  <TableHead className="text-right">Score</TableHead>
-                  <TableHead className="text-right">Total</TableHead>
-                  <TableHead className="text-right">Percentage</TableHead>
-                  <TableHead className="text-right">Graded At</TableHead>
+                  <TableHead>Student Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead className="text-right">Progress</TableHead>
+                  <TableHead className="text-right">Grade</TableHead>
+                  <TableHead className="text-right">Points</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredGradebook.map((entry, idx) => (
-                  <TableRow key={`${entry.student_user_id}-${entry.assignment_id}-${idx}`}>
+                  <TableRow key={`${entry.user_id}-${idx}`}>
                     <TableCell>
                       <Checkbox
-                        checked={selectedStudents.has(entry.student_user_id)}
+                        checked={selectedStudents.has(entry.user_id)}
                         onCheckedChange={(checked) =>
-                          handleSelectStudent(entry.student_user_id, checked as boolean)
+                          handleSelectStudent(entry.user_id, checked as boolean)
                         }
                       />
                     </TableCell>
                     <TableCell>
-                      <div className="font-mono text-sm">{entry.student_user_id?.slice(0, 8)}</div>
+                      <div className="font-medium">{entry.student_name || 'Unknown'}</div>
                     </TableCell>
-                    <TableCell>{entry.assignment_title}</TableCell>
-                    <TableCell className="text-right font-medium">{entry.score ?? '-'}</TableCell>
-                    <TableCell className="text-right">{entry.total_points ?? '-'}</TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {entry.student_email || '-'}
+                    </TableCell>
                     <TableCell className="text-right">
-                      {entry.score != null && entry.total_points ? (
-                        <span className={getScoreColor(entry.score, entry.total_points)}>
-                          {((entry.score / entry.total_points) * 100).toFixed(1)}%
-                        </span>
-                      ) : '-'}
+                      <span className={getProgressColor(entry.progress)}>
+                        {entry.progress}%
+                      </span>
                     </TableCell>
-                    <TableCell className="text-right text-sm text-muted-foreground">
-                      {entry.graded_at ? new Date(entry.graded_at).toLocaleDateString() : 'Not graded'}
+                    <TableCell className="text-right font-medium">
+                      {entry.grade || 'N/A'}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      {entry.points_earned || 0}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -322,7 +323,7 @@ const Gradebook: React.FC<GradebookProps> = ({ courseId }) => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Total Entries</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Students</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{gradebook.length}</div>
@@ -331,24 +332,26 @@ const Gradebook: React.FC<GradebookProps> = ({ courseId }) => {
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Average Score</CardTitle>
+            <CardTitle className="text-sm font-medium">Average Progress</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
               {gradebook.length > 0 
-                ? (gradebook.reduce((sum, e) => sum + (e.score || 0), 0) / gradebook.length).toFixed(1)
-                : 0}
+                ? (gradebook.reduce((sum, e) => sum + (e.progress || 0), 0) / gradebook.length).toFixed(1)
+                : 0}%
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium">Unique Students</CardTitle>
+            <CardTitle className="text-sm font-medium">Average Points</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {new Set(gradebook.map(e => e.student_user_id)).size}
+              {gradebook.length > 0 
+                ? (gradebook.reduce((sum, e) => sum + (e.points_earned || 0), 0) / gradebook.length).toFixed(1)
+                : 0}
             </div>
           </CardContent>
         </Card>

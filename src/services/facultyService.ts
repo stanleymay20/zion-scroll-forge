@@ -22,16 +22,16 @@ import type {
   ResourceCategory,
 } from '@/types/faculty';
 
-// Simple gradebook entry for internal use
+// Simple gradebook entry for internal use - matches v_course_gradebook view
 interface SimpleGradebookEntry {
-  assignment_id: string;
-  assignment_title: string;
   course_id: string;
-  feedback: string;
-  graded_at: string;
-  score: number;
-  student_user_id: string;
-  total_points: number;
+  course_title: string;
+  user_id: string;
+  student_name: string;
+  student_email: string;
+  progress: number;
+  grade: string;
+  points_earned: number;
 }
 
 class FacultyService {
@@ -237,7 +237,7 @@ class FacultyService {
   async exportGradebook(courseId: string, format: 'csv' | 'excel'): Promise<Blob> {
     const gradebook = await this.getGradebook(courseId);
     const csv = gradebook.map((entry) => 
-      `${entry.student_user_id},${entry.assignment_title},${entry.score}`
+      `${entry.user_id},${entry.student_name},${entry.grade},${entry.points_earned}`
     ).join('\n');
     
     return new Blob([csv], { type: 'text/csv' });

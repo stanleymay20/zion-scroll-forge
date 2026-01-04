@@ -160,14 +160,14 @@ export const generateGraduationCertificate = underChrist(async (studentId: strin
     .eq('id', studentId)
     .single();
 
-  const { data: gpa } = await supabase
+  const { data: gpaData } = await supabase
     .from('student_gpa')
     .select('gpa')
-    .eq('student_id', studentId)
+    .eq('user_id', studentId)
     .maybeSingle();
 
-  const honors = (gpa?.gpa || 0) >= 90 ? 'First Class Honors' : 
-                 (gpa?.gpa || 0) >= 80 ? 'Second Class Honors' : 'Merit';
+  const honors = (gpaData?.gpa || 0) >= 90 ? 'First Class Honors' : 
+                 (gpaData?.gpa || 0) >= 80 ? 'Second Class Honors' : 'Merit';
 
   // Generate certificate via existing function
   const { data: cert } = await supabase.functions.invoke('generate-certificate', {
