@@ -4309,18 +4309,23 @@ export type Database = {
           academic_profile: Json | null
           admitted_at: string | null
           avatar_url: string | null
+          courses_completed: number | null
           created_at: string | null
           current_institution_id: string | null
+          current_streak: number | null
+          display_on_leaderboard: boolean | null
           email: string | null
           enrolled_at: string | null
           full_name: string | null
           graduated_at: string | null
           id: string
           lifecycle_status: string | null
+          longest_streak: number | null
           role: string | null
           scrollcoin_balance: number | null
           scrollcoins: number | null
           spiritual_profile: Json | null
+          total_xp: number | null
           updated_at: string | null
           withdrawn_at: string | null
         }
@@ -4328,18 +4333,23 @@ export type Database = {
           academic_profile?: Json | null
           admitted_at?: string | null
           avatar_url?: string | null
+          courses_completed?: number | null
           created_at?: string | null
           current_institution_id?: string | null
+          current_streak?: number | null
+          display_on_leaderboard?: boolean | null
           email?: string | null
           enrolled_at?: string | null
           full_name?: string | null
           graduated_at?: string | null
           id: string
           lifecycle_status?: string | null
+          longest_streak?: number | null
           role?: string | null
           scrollcoin_balance?: number | null
           scrollcoins?: number | null
           spiritual_profile?: Json | null
+          total_xp?: number | null
           updated_at?: string | null
           withdrawn_at?: string | null
         }
@@ -4347,18 +4357,23 @@ export type Database = {
           academic_profile?: Json | null
           admitted_at?: string | null
           avatar_url?: string | null
+          courses_completed?: number | null
           created_at?: string | null
           current_institution_id?: string | null
+          current_streak?: number | null
+          display_on_leaderboard?: boolean | null
           email?: string | null
           enrolled_at?: string | null
           full_name?: string | null
           graduated_at?: string | null
           id?: string
           lifecycle_status?: string | null
+          longest_streak?: number | null
           role?: string | null
           scrollcoin_balance?: number | null
           scrollcoins?: number | null
           spiritual_profile?: Json | null
+          total_xp?: number | null
           updated_at?: string | null
           withdrawn_at?: string | null
         }
@@ -6823,12 +6838,36 @@ export type Database = {
       leaderboard: {
         Row: {
           avatar_url: string | null
+          badges_earned: number | null
           courses_completed: number | null
-          full_name: string | null
-          rank: number | null
-          scrollcoins: number | null
+          current_streak: number | null
+          display_name: string | null
+          longest_streak: number | null
+          total_scrollcoins: number | null
           total_xp: number | null
           user_id: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          badges_earned?: never
+          courses_completed?: never
+          current_streak?: never
+          display_name?: string | null
+          longest_streak?: never
+          total_scrollcoins?: never
+          total_xp?: never
+          user_id?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          badges_earned?: never
+          courses_completed?: never
+          current_streak?: never
+          display_name?: string | null
+          longest_streak?: never
+          total_scrollcoins?: never
+          total_xp?: never
+          user_id?: string | null
         }
         Relationships: []
       }
