@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, FileText, Printer } from 'lucide-react';
 import { toast } from 'sonner';
+import DOMPurify from 'dompurify';
 
 interface LectureNotesProps {
   lectureId: string;
@@ -102,7 +103,7 @@ export function LectureNotes({ lectureId, title, content }: LectureNotesProps) {
             {typeof notesContent === 'string' ? (
               <div 
                 className="whitespace-pre-wrap"
-                dangerouslySetInnerHTML={{ __html: notesContent }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(notesContent) }}
               />
             ) : (
               <>

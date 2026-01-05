@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import DOMPurify from 'dompurify';
 import { useAuth } from '@/contexts/AuthContext';
 import { PostWithAuthor, PostType } from '@/types/community';
 import { Card } from '@/components/ui/card';
@@ -145,9 +146,10 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onUpdate, onDelete }) 
   };
 
   const renderContent = () => {
-    let content = post.content;
+    // First sanitize the raw content to prevent XSS
+    let content = DOMPurify.sanitize(post.content, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
 
-    // Highlight hashtags
+    // Highlight hashtags (safe since content is now sanitized)
     content = content.replace(/#(\w+)/g, '<span class="text-blue-600 font-medium cursor-pointer hover:underline">#$1</span>');
 
     // Highlight mentions

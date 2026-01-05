@@ -324,7 +324,9 @@ const App = () => (
             <Route path="profile" element={<ProfilePage />} />
             <Route path="profile/:userId" element={<StudentProfile />} />
             <Route path="degrees" element={<DegreePrograms />} />
+            <Route path="degree-programs" element={<DegreePrograms />} />
             <Route path="degrees/:id" element={<DegreeProgramDetail />} />
+            <Route path="degree-programs/:id" element={<DegreeProgramDetail />} />
             <Route path="xr-classrooms" element={<XRClassroomsPage />} />
             <Route path="virtual-labs" element={<VirtualLabsPage />} />
             <Route path="settings" element={<SettingsPage />} />
