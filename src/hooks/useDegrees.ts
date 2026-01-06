@@ -9,8 +9,9 @@ export async function getDegreePrograms() {
   const { data, error } = await (supabase as any)
     .from("degree_programs")
     .select("*")
-    .eq("status", "active")
-    .order("level", { ascending: true });
+    .eq("is_active", true)
+    .order("faculty", { ascending: true })
+    .order("scroll_level", { ascending: true });
   
   if (error) throw error;
   return data;

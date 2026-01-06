@@ -36,34 +36,21 @@ export interface DegreeEnrollment {
 
 // Fetchers
 export async function getDegreePrograms() {
+  // First get basic degree programs 
   const { data, error } = await supabase
     .from("degree_programs")
-    .select(`
-      *,
-      degree_course_requirements(
-        id,
-        is_required,
-        credits,
-        semester_recommended,
-        courses(id, title, description, level, faculty)
-      )
-    `)
-    .order("title");
+    .select("*")
+    .eq("is_active", true)
+    .order("faculty")
+    .order("scroll_level");
 
   if (error) throw error;
   
-  // Transform to include course count and enrollment status
+  // Return simplified data without expensive nested queries
   return (data || []).map(program => ({
     ...program,
-    title: program.title,
-    total_credits: (program.degree_course_requirements as any[])?.reduce(
-      (sum: number, r: any) => sum + (r.credits || 3), 0
-    ) || 120,
-    courses: (program.degree_course_requirements as any[])?.map((r: any) => ({
-      ...r.courses,
-      is_required: r.is_required,
-      credits: r.credits
-    })) || []
+    total_credits: program.total_credits || 120,
+    courses: []
   }));
 }
 
