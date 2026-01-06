@@ -291,6 +291,7 @@ const App = () => (
               <Route path="admin/super" element={<SuperAdmin />} />
               <Route path="apply" element={<Apply />} />
               <Route path="courses-catalog" element={<CourseCatalog />} />
+              <Route path="course-catalog" element={<CourseCatalog />} />
               <Route path="courses-detail/:courseId" element={<CourseDetailPage />} />
               <Route path="my-courses" element={<MyCourses />} />
               <Route path="quiz-taking/:quizId" element={<QuizTaking />} />
