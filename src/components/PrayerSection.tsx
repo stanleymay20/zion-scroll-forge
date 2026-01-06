@@ -71,24 +71,24 @@ const recentPrayerRequests = [
 
 export const PrayerSection = () => {
   return (
-    <section id="prayer" className="py-24 px-4 bg-background">
+    <section id="prayer" className="py-12 sm:py-24 px-3 sm:px-4 bg-background">
       <div className="container mx-auto max-w-7xl">
-        <div className="text-center mb-16">
-          <div className="flex items-center justify-center mb-4">
-            <Heart className="w-8 h-8 text-accent mr-3" />
-            <h2 className="text-4xl md:text-5xl font-serif font-bold text-primary">
+        <div className="text-center mb-10 sm:mb-16">
+          <div className="flex items-center justify-center mb-4 gap-2 sm:gap-3">
+            <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-accent hidden xs:block" />
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-serif font-bold text-primary">
               Prayer Integration Center
             </h2>
-            <Heart className="w-8 h-8 text-accent ml-3" />
+            <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-accent hidden xs:block" />
           </div>
-          <p className="text-lg text-muted-foreground font-sans max-w-3xl mx-auto">
+          <p className="text-sm sm:text-lg text-muted-foreground font-sans max-w-3xl mx-auto px-2">
             Comprehensive spiritual formation through AI-enhanced prayer coordination, prophetic intelligence, 
             and divine scorecard tracking for kingdom advancement.
           </p>
         </div>
 
         {/* Prayer Dashboard */}
-        <div className="bg-card/80 backdrop-blur rounded-2xl p-8 mb-12 border border-border scroll-shadow">
+        <div className="bg-card/80 backdrop-blur rounded-xl sm:rounded-2xl p-4 sm:p-8 mb-8 sm:mb-12 border border-border scroll-shadow">
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Today's Spiritual Check-in */}
             <div className="lg:col-span-1">
@@ -172,24 +172,24 @@ export const PrayerSection = () => {
         </div>
 
         {/* Prayer Features Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
           {prayerFeatures.map((feature, index) => (
             <Card key={index} className="bg-card/80 backdrop-blur border-primary/10 hover:border-primary/20 transition-all duration-300 scroll-shadow">
-              <CardHeader className="pb-3">
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-2">
-                  <feature.icon className="w-5 h-5 text-primary" />
+              <CardHeader className="p-3 sm:p-6 pb-2 sm:pb-3">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                  <feature.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                 </div>
-                <CardTitle className="text-lg font-serif text-primary">{feature.title}</CardTitle>
+                <CardTitle className="text-sm sm:text-lg font-serif text-primary">{feature.title}</CardTitle>
               </CardHeader>
-              <CardContent className="pt-0">
-                <p className="text-sm text-muted-foreground font-sans mb-3">
+              <CardContent className="p-3 sm:p-6 pt-0">
+                <p className="text-xs sm:text-sm text-muted-foreground font-sans mb-2 sm:mb-3 line-clamp-2 sm:line-clamp-none">
                   {feature.description}
                 </p>
-                <div className="space-y-2">
-                  <Badge variant="outline" className="w-full justify-center border-accent/30 text-accent">
+                <div className="space-y-1 sm:space-y-2">
+                  <Badge variant="outline" className="w-full justify-center border-accent/30 text-accent text-xs">
                     {feature.status}
                   </Badge>
-                  <p className="text-xs text-muted-foreground font-sans text-center">
+                  <p className="text-[10px] sm:text-xs text-muted-foreground font-sans text-center">
                     {feature.participants}
                   </p>
                 </div>
@@ -199,28 +199,28 @@ export const PrayerSection = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="text-center bg-primary/5 rounded-2xl p-8 border border-primary/20">
-          <div className="flex items-center justify-center mb-4">
-            <Zap className="w-6 h-6 text-divine-gold mr-2" />
-            <h3 className="text-2xl font-serif font-bold text-primary">
+        <div className="text-center bg-primary/5 rounded-xl sm:rounded-2xl p-4 sm:p-8 border border-primary/20">
+          <div className="flex items-center justify-center mb-3 sm:mb-4 gap-2">
+            <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-divine-gold hidden xs:block" />
+            <h3 className="text-lg sm:text-2xl font-serif font-bold text-primary">
               Join the Global Prayer Network
             </h3>
-            <Zap className="w-6 h-6 text-divine-gold ml-2" />
+            <Zap className="w-5 h-5 sm:w-6 sm:h-6 text-divine-gold hidden xs:block" />
           </div>
-          <p className="text-muted-foreground font-sans mb-6 max-w-2xl mx-auto">
+          <p className="text-xs sm:text-base text-muted-foreground font-sans mb-4 sm:mb-6 max-w-2xl mx-auto px-2">
             Connect with scroll sons worldwide for comprehensive intercession coverage. 
             Your prayers are coordinated with prophetic intelligence for maximum kingdom impact.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild variant="divine" size="lg" className="font-sans">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+            <Button asChild variant="divine" size="lg" className="font-sans text-sm sm:text-base">
               <AuthAwareLink to="/prayer-requests">
-                <Heart className="w-5 h-5 mr-2" />
+                <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 Start Praying Now
               </AuthAwareLink>
             </Button>
-            <Button asChild variant="outline" size="lg" className="font-sans">
+            <Button asChild variant="outline" size="lg" className="font-sans text-sm sm:text-base">
               <AuthAwareLink to="/daily-devotion">
-                <CheckCircle className="w-5 h-5 mr-2" />
+                <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                 View Prayer Guide
               </AuthAwareLink>
             </Button>

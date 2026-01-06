@@ -13,6 +13,9 @@ export default {
       },
     },
     extend: {
+      screens: {
+        'xs': '375px',
+      },
       fontFamily: {
         serif: ['Crimson Text', 'serif'],
         sans: ['Inter', 'sans-serif'],
