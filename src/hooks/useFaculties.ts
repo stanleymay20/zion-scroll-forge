@@ -24,7 +24,7 @@ function useOptionalInstitution() {
 export async function getFaculties(institutionId?: string) {
   let query: any = supabase
     .from("faculties" as any)
-    .select("*")
+    .select("*, ai_tutors(*)")
     .order("name");
   
   if (institutionId) {
@@ -33,7 +33,25 @@ export async function getFaculties(institutionId?: string) {
   
   const { data, error } = await query;
   if (error) throw error;
-  return data;
+  
+  if (!data) return [];
+  
+  // Fetch course counts for each faculty using faculty_id
+  const facultiesWithCounts = await Promise.all(
+    data.map(async (faculty: any) => {
+      const { count: courseCount } = await supabase
+        .from("courses" as any)
+        .select("*", { count: "exact", head: true })
+        .eq("faculty_id", faculty.id);
+      
+      return {
+        ...faculty,
+        courseCount: courseCount || 0
+      };
+    })
+  );
+  
+  return facultiesWithCounts;
 }
 
 export async function getFaculty(facultyId: string) {
