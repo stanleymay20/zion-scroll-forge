@@ -6,11 +6,11 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Coins, TrendingUp, Gift, Award } from "lucide-react";
-import { Link } from "react-router-dom";
+import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
 
 export const ScrollGoldSection = () => {
   return (
-    <section className="py-20 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20">
+    <section id="scrollcoin" className="py-20 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-amber-900 dark:text-amber-100">
@@ -73,12 +73,12 @@ export const ScrollGoldSection = () => {
         </div>
 
         <div className="text-center">
-          <Link to="/scrollgold-wallet">
+          <AuthAwareLink to="/scrollgold-wallet">
             <Button size="lg" className="bg-amber-600 hover:bg-amber-700 text-white">
               <Coins className="h-5 w-5 mr-2" />
               Explore ScrollGold
             </Button>
-          </Link>
+          </AuthAwareLink>
         </div>
       </div>
     </section>

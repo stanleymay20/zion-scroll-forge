@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
 import { 
   Heart,
   Users,
@@ -114,8 +115,8 @@ export const PrayerSection = () => {
                         94%
                       </Badge>
                     </div>
-                    <Button variant="sacred" size="sm" className="w-full font-sans">
-                      Complete Check-in
+                    <Button asChild variant="sacred" size="sm" className="w-full font-sans">
+                      <AuthAwareLink to="/prayer-journal">Complete Check-in</AuthAwareLink>
                     </Button>
                   </div>
                 </CardContent>
@@ -211,13 +212,17 @@ export const PrayerSection = () => {
             Your prayers are coordinated with prophetic intelligence for maximum kingdom impact.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="divine" size="lg" className="font-sans">
-              <Heart className="w-5 h-5 mr-2" />
-              Start Praying Now
+            <Button asChild variant="divine" size="lg" className="font-sans">
+              <AuthAwareLink to="/prayer-requests">
+                <Heart className="w-5 h-5 mr-2" />
+                Start Praying Now
+              </AuthAwareLink>
             </Button>
-            <Button variant="outline" size="lg" className="font-sans">
-              <CheckCircle className="w-5 h-5 mr-2" />
-              View Prayer Guide
+            <Button asChild variant="outline" size="lg" className="font-sans">
+              <AuthAwareLink to="/daily-devotion">
+                <CheckCircle className="w-5 h-5 mr-2" />
+                View Prayer Guide
+              </AuthAwareLink>
             </Button>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
 import { useFacultyStats } from "@/hooks/useFaculties";
 import { Crown, Loader2, School } from "lucide-react";
 
@@ -45,18 +45,18 @@ export const FacultiesSection = () => {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-4 line-clamp-3">{faculty.description}</p>
-                <Link to={`/courses?faculty=${encodeURIComponent(faculty.name)}`}>
+                <AuthAwareLink to={`/courses?faculty=${encodeURIComponent(faculty.name)}`}>
                   <Button size="sm" variant="outline">Browse Courses</Button>
-                </Link>
+                </AuthAwareLink>
               </CardContent>
             </Card>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <Link to="/courses">
+          <AuthAwareLink to="/courses">
             <Button size="lg"><School className="w-5 h-5 mr-2" />View All Courses</Button>
-          </Link>
+          </AuthAwareLink>
         </div>
       </div>
     </section>
