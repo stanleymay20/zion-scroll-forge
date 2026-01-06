@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
 import { Link } from "react-router-dom";
 import { BookOpen, Crown, Heart, Star } from "lucide-react";
 
@@ -41,13 +42,13 @@ export const HeroSection = () => {
         </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <Link to="/courses">
-            <Button variant="divine" size="lg" className="text-lg px-8 py-6 font-sans">
-              <BookOpen className="w-5 h-5 mr-2" />
-              Explore 10,000+ Courses
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <AuthAwareLink to="/courses">
+              <Button variant="divine" size="lg" className="text-lg px-8 py-6 font-sans">
+                <BookOpen className="w-5 h-5 mr-2" />
+                Explore 10,000+ Courses
+              </Button>
+            </AuthAwareLink>
           <Link to="/auth?tab=signup&redirect=/spiritual-formation">
             <Button variant="sacred" size="lg" className="text-lg px-8 py-6 font-sans">
               <Heart className="w-5 h-5 mr-2" />

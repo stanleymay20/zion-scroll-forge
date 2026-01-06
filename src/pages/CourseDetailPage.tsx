@@ -23,7 +23,7 @@ export default function CourseDetailPage() {
         .select(`
           *,
           faculties(name, description),
-          course_modules(id, title, order_index, duration_minutes)
+          course_modules(id, title, order_index, duration_minutes, learning_materials(kind, url, title))
         `)
         .eq("id", courseId)
         .single();
@@ -111,6 +111,10 @@ export default function CourseDetailPage() {
     );
   }
 
+  const previewVideoUrl =
+    course.preview_video_url ||
+    course.course_modules?.flatMap((m: any) => m.learning_materials || []).find((mat: any) => (mat.kind || '').toLowerCase() === 'video' && mat.url)?.url;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -151,9 +155,9 @@ export default function CourseDetailPage() {
             </div>
 
             <div className="relative aspect-video bg-muted rounded-lg overflow-hidden">
-              {course.preview_video_url ? (
+              {previewVideoUrl ? (
                 <video
-                  src={course.preview_video_url}
+                  src={previewVideoUrl}
                   controls
                   className="w-full h-full object-cover"
                 />

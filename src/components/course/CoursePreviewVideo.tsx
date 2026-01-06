@@ -96,6 +96,13 @@ export function CoursePreviewVideo({
     );
   }
 
+  const mimeType = (() => {
+    const url = (videoUrl || '').toLowerCase();
+    if (url.includes('.webm')) return 'video/webm';
+    if (url.includes('.m3u8')) return 'application/x-mpegURL';
+    return 'video/mp4';
+  })();
+
   return (
     <Card>
       <CardContent className="p-0">
@@ -109,7 +116,7 @@ export function CoursePreviewVideo({
             onPlaying={handleVideoPlaying}
             onEnded={() => setIsPlaying(false)}
           >
-            <source src={videoUrl} type="video/mp4" />
+            <source src={videoUrl} type={mimeType} />
             Your browser does not support the video tag.
           </video>
 
