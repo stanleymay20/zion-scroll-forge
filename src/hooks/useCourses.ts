@@ -51,13 +51,38 @@ export const useEnrollInCourse = () => {
         .eq('id', user!.id)
         .single();
       
+      let institutionId = profile?.current_institution_id;
+
+      // If user has no institution, get the default ScrollUniversity institution
+      if (!institutionId) {
+        const { data: defaultInst } = await supabase
+          .from('institutions')
+          .select('id')
+          .eq('slug', 'scrolluniversity')
+          .single();
+        
+        institutionId = defaultInst?.id;
+
+        // Update profile with default institution
+        if (institutionId) {
+          await supabase
+            .from('profiles' as any)
+            .update({ current_institution_id: institutionId } as any)
+            .eq('id', user!.id);
+        }
+      }
+
+      if (!institutionId) {
+        throw new Error('No institution available for enrollment');
+      }
+
       const { error } = await supabase
         .from('enrollments' as any)
         .insert({
           user_id: user!.id,
           course_id: courseId,
           progress: 0,
-          institution_id: profile?.current_institution_id
+          institution_id: institutionId
         });
 
       if (error) throw error;

@@ -70,6 +70,31 @@ export function CourseEnrollmentFlow({
         .eq('id', user!.id)
         .single();
 
+      let institutionId = profile?.current_institution_id;
+
+      // If user has no institution, get the default ScrollUniversity institution
+      if (!institutionId) {
+        const { data: defaultInst } = await supabase
+          .from('institutions')
+          .select('id')
+          .eq('slug', 'scrolluniversity')
+          .single();
+        
+        institutionId = defaultInst?.id;
+
+        // Update profile with default institution
+        if (institutionId) {
+          await supabase
+            .from('profiles')
+            .update({ current_institution_id: institutionId })
+            .eq('id', user!.id);
+        }
+      }
+
+      if (!institutionId) {
+        throw new Error('No institution available. Please contact support.');
+      }
+
       // Create enrollment
       const { data: enrollment, error: enrollError } = await supabase
         .from('enrollments')
@@ -77,8 +102,7 @@ export function CourseEnrollmentFlow({
           user_id: user!.id,
           course_id: course.id,
           progress: 0,
-          institution_id: profile?.current_institution_id,
-          payment_method: paymentMethod,
+          institution_id: institutionId,
         })
         .select()
         .single();
