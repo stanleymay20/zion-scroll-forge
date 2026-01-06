@@ -1,8 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useInstitution } from "@/contexts/InstitutionContext";
+import { useContext } from "react";
+import React from "react";
 
 console.info("✝️ ScrollUniversity Faculty Hooks — Christ governs all learning");
+
+// Import the context directly for optional access
+const InstitutionContext = React.createContext<{
+  activeInstitution: { id: string } | null;
+} | undefined>(undefined);
+
+// Helper to safely get institution from context
+function useOptionalInstitution() {
+  try {
+    // Dynamic import to avoid circular dependencies
+    const { useInstitution } = require("@/contexts/InstitutionContext");
+    return useInstitution();
+  } catch {
+    return { activeInstitution: null };
+  }
+}
 
 export async function getFaculties(institutionId?: string) {
   let query: any = supabase
@@ -60,14 +77,17 @@ export async function getFacultyStats(institutionId?: string) {
   return stats;
 }
 
-export const useFaculties = () => {
-  const { activeInstitution } = useInstitution();
+// Hook that works with or without institution context
+export const useFaculties = (requireInstitution = false) => {
+  const { activeInstitution } = useOptionalInstitution();
+  const institutionId = activeInstitution?.id;
   
   return useQuery({ 
-    queryKey: ["faculties", activeInstitution?.id], 
-    queryFn: () => getFaculties(activeInstitution?.id),
+    queryKey: ["faculties", institutionId], 
+    queryFn: () => getFaculties(institutionId),
     staleTime: 5 * 60 * 1000,
-    enabled: !!activeInstitution,
+    // Only require institution if explicitly requested
+    enabled: requireInstitution ? !!institutionId : true,
   });
 };
 
@@ -79,13 +99,15 @@ export const useFaculty = (facultyId: string) =>
     staleTime: 5 * 60 * 1000,
   });
 
-export const useFacultyStats = () => {
-  const { activeInstitution } = useInstitution();
+export const useFacultyStats = (requireInstitution = false) => {
+  const { activeInstitution } = useOptionalInstitution();
+  const institutionId = activeInstitution?.id;
   
   return useQuery({ 
-    queryKey: ["faculty-stats", activeInstitution?.id], 
-    queryFn: () => getFacultyStats(activeInstitution?.id),
+    queryKey: ["faculty-stats", institutionId], 
+    queryFn: () => getFacultyStats(institutionId),
     staleTime: 5 * 60 * 1000,
-    enabled: !!activeInstitution,
+    // Only require institution if explicitly requested
+    enabled: requireInstitution ? !!institutionId : true,
   });
 };
