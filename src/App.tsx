@@ -12,6 +12,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 import { useRealtimeSubscriptions } from "@/hooks/useRealtime";
 import { MainLayout } from "./components/layout/MainLayout";
+import { PublicLayout } from "./components/layout/PublicLayout";
 import { MobileAppInstallPrompt } from "@/components/mobile";
 import { PWAInstallPrompt, OfflineIndicator, PWAUpdatePrompt } from "@/components/pwa";
 import { Loader2 } from "lucide-react";
@@ -222,6 +223,38 @@ const App = () => (
             {/* Public Badge Profile */}
             <Route path="/badges/public/:userId" element={<PublicBadgeProfile />} />
             
+            {/* Public Browsing Routes (no auth required) */}
+            <Route path="/courses" element={<PublicLayout />}>
+              <Route index element={<Courses />} />
+            </Route>
+            <Route path="/course-catalog" element={<PublicLayout />}>
+              <Route index element={<CourseCatalog />} />
+            </Route>
+            <Route path="/courses-catalog" element={<PublicLayout />}>
+              <Route index element={<CourseCatalog />} />
+            </Route>
+            <Route path="/faculties" element={<PublicLayout />}>
+              <Route index element={<FacultyGallery />} />
+            </Route>
+            <Route path="/faculties/:facultyId" element={<PublicLayout />}>
+              <Route index element={<FacultyDetail />} />
+            </Route>
+            <Route path="/degrees" element={<PublicLayout />}>
+              <Route index element={<DegreePrograms />} />
+            </Route>
+            <Route path="/degree-programs" element={<PublicLayout />}>
+              <Route index element={<DegreePrograms />} />
+            </Route>
+            <Route path="/degrees/:id" element={<PublicLayout />}>
+              <Route index element={<DegreeProgramDetail />} />
+            </Route>
+            <Route path="/degree-programs/:id" element={<PublicLayout />}>
+              <Route index element={<DegreeProgramDetail />} />
+            </Route>
+            <Route path="/trust" element={<PublicLayout />}>
+              <Route index element={<TrustCenter />} />
+            </Route>
+            
             {/* Authentication Routes */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/login" element={<Login />} />
@@ -258,7 +291,6 @@ const App = () => (
               <Route path="settings/api" element={<SettingsPage />} />
               <Route path="settings/integrations" element={<SettingsPage />} />
               <Route path="settings/users" element={<SettingsPage />} />
-              <Route path="courses" element={<Courses />} />
               <Route path="courses/:courseId" element={<CourseDetail />} />
               <Route path="courses/:courseId/learn" element={<CourseLearningPage />} />
               <Route path="courses/:courseId/learn-old" element={<CourseLearn />} />
@@ -290,9 +322,8 @@ const App = () => (
               <Route path="admin/institutions" element={<InstitutionsAdmin />} />
               <Route path="admin/super" element={<SuperAdmin />} />
               <Route path="apply" element={<Apply />} />
-              <Route path="courses-catalog" element={<CourseCatalog />} />
-              <Route path="course-catalog" element={<CourseCatalog />} />
               <Route path="courses-detail/:courseId" element={<CourseDetailPage />} />
+              <Route path="my-courses" element={<MyCourses />} />
               <Route path="my-courses" element={<MyCourses />} />
               <Route path="quiz-taking/:quizId" element={<QuizTaking />} />
               <Route path="faculty" element={<FacultyDashboard />} />
@@ -324,10 +355,6 @@ const App = () => (
             {/* Dynamic pages */}
             <Route path="profile" element={<ProfilePage />} />
             <Route path="profile/:userId" element={<StudentProfile />} />
-            <Route path="degrees" element={<DegreePrograms />} />
-            <Route path="degree-programs" element={<DegreePrograms />} />
-            <Route path="degrees/:id" element={<DegreeProgramDetail />} />
-            <Route path="degree-programs/:id" element={<DegreeProgramDetail />} />
             <Route path="xr-classrooms" element={<XRClassroomsPage />} />
             <Route path="virtual-labs" element={<VirtualLabsPage />} />
             <Route path="settings" element={<SettingsPage />} />
@@ -364,9 +391,7 @@ const App = () => (
             <Route path="marketplace" element={<ComingSoonPage title="Marketplace" />} />
             <Route path="badges" element={<ScrollBadgeGallery />} />
             <Route path="my-badges" element={<ScrollBadgeGallery />} />
-              <Route path="faculties" element={<FacultyGallery />} />
               <Route path="faculties/compare" element={<FacultyComparison />} />
-              <Route path="faculties/:facultyId" element={<FacultyDetail />} />
               <Route path="learning-profile" element={<LearningProfileOnboarding />} />
               <Route path="personalized-dashboard" element={<PersonalizedDashboard />} />
               <Route path="learning-goals" element={<LearningGoals />} />
@@ -382,7 +407,6 @@ const App = () => (
             <Route path="graduation" element={<StudentGraduation />} />
             <Route path="admin/academic-terms" element={<AcademicTermAdmin />} />
             <Route path="admin/suyas" element={<SUYASAdmin />} />
-            <Route path="trust" element={<TrustCenter />} />
           </Route>
           
           {/* Catch-all route for 404 */}
