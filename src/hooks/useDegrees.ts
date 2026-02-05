@@ -10,6 +10,7 @@ export async function getDegreePrograms() {
     .from("degree_programs")
     .select("*")
     .eq("is_active", true)
+    .eq("program_status", "active_public")
     .order("faculty", { ascending: true })
     .order("scroll_level", { ascending: true });
   
