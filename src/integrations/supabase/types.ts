@@ -1745,6 +1745,7 @@ export type Database = {
           is_active: boolean | null
           level: string | null
           min_gpa: number | null
+          program_status: string | null
           scroll_level: string | null
           spiritual_requirements: Json | null
           title: string
@@ -1761,6 +1762,7 @@ export type Database = {
           is_active?: boolean | null
           level?: string | null
           min_gpa?: number | null
+          program_status?: string | null
           scroll_level?: string | null
           spiritual_requirements?: Json | null
           title: string
@@ -1777,6 +1779,7 @@ export type Database = {
           is_active?: boolean | null
           level?: string | null
           min_gpa?: number | null
+          program_status?: string | null
           scroll_level?: string | null
           spiritual_requirements?: Json | null
           title?: string
@@ -7137,6 +7140,10 @@ export type Database = {
         | "practical"
         | "collaborative"
         | "scroll_defense"
+      degree_program_status:
+        | "active_public"
+        | "pilot_private"
+        | "internal_development"
       mentorship_session_type:
         | "initial_consultation"
         | "progress_review"
@@ -7300,6 +7307,11 @@ export const Constants = {
         "practical",
         "collaborative",
         "scroll_defense",
+      ],
+      degree_program_status: [
+        "active_public",
+        "pilot_private",
+        "internal_development",
       ],
       mentorship_session_type: [
         "initial_consultation",

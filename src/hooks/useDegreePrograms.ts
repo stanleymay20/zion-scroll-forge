@@ -36,11 +36,12 @@ export interface DegreeEnrollment {
 
 // Fetchers
 export async function getDegreePrograms() {
-  // First get basic degree programs 
+  // First get basic degree programs - only show active_public to regular users
   const { data, error } = await supabase
     .from("degree_programs")
     .select("*")
     .eq("is_active", true)
+    .eq("program_status", "active_public")
     .order("faculty")
     .order("scroll_level");
 
