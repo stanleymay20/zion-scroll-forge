@@ -129,6 +129,7 @@ import AcademicTermAdmin from "./pages/AcademicTermAdmin";
 import StudentGraduation from "./pages/StudentGraduation";
 import SUYASAdmin from "./pages/SUYASAdmin";
 import TrustCenter from "./pages/TrustCenter";
+import AcademicIntegrity from "./pages/AcademicIntegrity";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -253,6 +254,9 @@ const App = () => (
             </Route>
             <Route path="/trust" element={<PublicLayout />}>
               <Route index element={<TrustCenter />} />
+            </Route>
+            <Route path="/academic-integrity" element={<PublicLayout />}>
+              <Route index element={<AcademicIntegrity />} />
             </Route>
             
             {/* Authentication Routes */}
