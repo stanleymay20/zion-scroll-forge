@@ -999,6 +999,45 @@ export type Database = {
           },
         ]
       }
+      completion_seals: {
+        Row: {
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          revocation_reason: string | null
+          revoked_at: string | null
+          seal_status: string
+          updated_at: string | null
+          verification_criteria: Json
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          revocation_reason?: string | null
+          revoked_at?: string | null
+          seal_status?: string
+          updated_at?: string | null
+          verification_criteria: Json
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          revocation_reason?: string | null
+          revoked_at?: string | null
+          seal_status?: string
+          updated_at?: string | null
+          verification_criteria?: Json
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       conversation_members: {
         Row: {
           conversation_id: string
@@ -1149,45 +1188,66 @@ export type Database = {
       course_modules: {
         Row: {
           content: Json | null
+          content_char_count: number | null
           content_md: string | null
           course_id: string | null
           created_at: string | null
           duration_minutes: number | null
+          has_audio_script: boolean | null
+          has_study_guide: boolean | null
+          has_video_script: boolean | null
           id: string
           institution_id: string
           material_url: string | null
           order_index: number | null
+          quality_verified: boolean | null
           quiz_data: Json | null
           rewards_amount: number | null
           title: string
+          verified_at: string | null
+          verified_by: string | null
         }
         Insert: {
           content?: Json | null
+          content_char_count?: number | null
           content_md?: string | null
           course_id?: string | null
           created_at?: string | null
           duration_minutes?: number | null
+          has_audio_script?: boolean | null
+          has_study_guide?: boolean | null
+          has_video_script?: boolean | null
           id?: string
           institution_id: string
           material_url?: string | null
           order_index?: number | null
+          quality_verified?: boolean | null
           quiz_data?: Json | null
           rewards_amount?: number | null
           title: string
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Update: {
           content?: Json | null
+          content_char_count?: number | null
           content_md?: string | null
           course_id?: string | null
           created_at?: string | null
           duration_minutes?: number | null
+          has_audio_script?: boolean | null
+          has_study_guide?: boolean | null
+          has_video_script?: boolean | null
           id?: string
           institution_id?: string
           material_url?: string | null
           order_index?: number | null
+          quality_verified?: boolean | null
           quiz_data?: Json | null
           rewards_amount?: number | null
           title?: string
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Relationships: [
           {
@@ -1349,13 +1409,18 @@ export type Database = {
       courses: {
         Row: {
           created_at: string | null
+          credit_hours: number | null
           description: string | null
           duration: string | null
           faculty: string | null
           faculty_id: string | null
           id: string
           institution_id: string
+          learning_outcomes: Json | null
           level: string | null
+          locked_at: string | null
+          locked_baseline: boolean | null
+          locked_by: string | null
           preview_video_url: string | null
           price: number | null
           price_cents: number | null
@@ -1370,13 +1435,18 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          credit_hours?: number | null
           description?: string | null
           duration?: string | null
           faculty?: string | null
           faculty_id?: string | null
           id?: string
           institution_id: string
+          learning_outcomes?: Json | null
           level?: string | null
+          locked_at?: string | null
+          locked_baseline?: boolean | null
+          locked_by?: string | null
           preview_video_url?: string | null
           price?: number | null
           price_cents?: number | null
@@ -1391,13 +1461,18 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          credit_hours?: number | null
           description?: string | null
           duration?: string | null
           faculty?: string | null
           faculty_id?: string | null
           id?: string
           institution_id?: string
+          learning_outcomes?: Json | null
           level?: string | null
+          locked_at?: string | null
+          locked_baseline?: boolean | null
+          locked_by?: string | null
           preview_video_url?: string | null
           price?: number | null
           price_cents?: number | null
@@ -1737,13 +1812,20 @@ export type Database = {
         Row: {
           career_paths: string[] | null
           created_at: string | null
+          credit_hour_equivalence: Json | null
           description: string | null
           duration: string | null
           faculty: string | null
+          governance_version: string | null
           id: string
           institution_id: string | null
+          instructor_of_record_placeholder: string | null
           is_active: boolean | null
           level: string | null
+          lock_reason: string | null
+          locked_at: string | null
+          locked_baseline: boolean | null
+          locked_by: string | null
           min_gpa: number | null
           program_status: string | null
           scroll_level: string | null
@@ -1754,13 +1836,20 @@ export type Database = {
         Insert: {
           career_paths?: string[] | null
           created_at?: string | null
+          credit_hour_equivalence?: Json | null
           description?: string | null
           duration?: string | null
           faculty?: string | null
+          governance_version?: string | null
           id?: string
           institution_id?: string | null
+          instructor_of_record_placeholder?: string | null
           is_active?: boolean | null
           level?: string | null
+          lock_reason?: string | null
+          locked_at?: string | null
+          locked_baseline?: boolean | null
+          locked_by?: string | null
           min_gpa?: number | null
           program_status?: string | null
           scroll_level?: string | null
@@ -1771,13 +1860,20 @@ export type Database = {
         Update: {
           career_paths?: string[] | null
           created_at?: string | null
+          credit_hour_equivalence?: Json | null
           description?: string | null
           duration?: string | null
           faculty?: string | null
+          governance_version?: string | null
           id?: string
           institution_id?: string | null
+          instructor_of_record_placeholder?: string | null
           is_active?: boolean | null
           level?: string | null
+          lock_reason?: string | null
+          locked_at?: string | null
+          locked_baseline?: boolean | null
+          locked_by?: string | null
           min_gpa?: number | null
           program_status?: string | null
           scroll_level?: string | null
@@ -4503,6 +4599,45 @@ export type Database = {
           },
         ]
       }
+      quality_audit_logs: {
+        Row: {
+          action_type: string
+          created_at: string | null
+          entity_id: string
+          entity_type: string
+          id: string
+          metadata: Json | null
+          new_value: Json | null
+          old_value: Json | null
+          reason: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action_type: string
+          created_at?: string | null
+          entity_id: string
+          entity_type: string
+          id?: string
+          metadata?: Json | null
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action_type?: string
+          created_at?: string | null
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          metadata?: Json | null
+          new_value?: Json | null
+          old_value?: Json | null
+          reason?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       quiz_questions: {
         Row: {
           answer: string | null
@@ -7054,6 +7189,7 @@ export type Database = {
           missing_requirements: string[]
         }[]
       }
+      check_seal_criteria: { Args: { p_course_id: string }; Returns: Json }
       create_notification: {
         Args: {
           p_body: string
@@ -7102,6 +7238,18 @@ export type Database = {
         Args: { p_term_id: string; p_user_id: string }
         Returns: boolean
       }
+      log_quality_action: {
+        Args: {
+          p_action_type: string
+          p_entity_id: string
+          p_entity_type: string
+          p_metadata?: Json
+          p_new_value?: Json
+          p_old_value?: Json
+          p_reason?: string
+        }
+        Returns: string
+      }
       log_suyas_action: {
         Args: {
           p_action_type: string
@@ -7125,6 +7273,10 @@ export type Database = {
       transition_student_status: {
         Args: { p_new_status: string; p_reason?: string; p_user_id: string }
         Returns: boolean
+      }
+      update_completion_seal: {
+        Args: { p_entity_id: string; p_entity_type: string }
+        Returns: Json
       }
       user_has_institution_access: {
         Args: { p_institution_id: string; p_user_id: string }
