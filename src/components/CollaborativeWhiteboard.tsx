@@ -1,5 +1,4 @@
-import { Tldraw } from '@tldraw/tldraw';
-import '@tldraw/tldraw/tldraw.css';
+import React from 'react';
 import { Card } from '@/components/ui/card';
 
 interface CollaborativeWhiteboardProps {
@@ -13,11 +12,8 @@ export const CollaborativeWhiteboard = ({
 }: CollaborativeWhiteboardProps) => {
   return (
     <Card className="w-full h-full overflow-hidden border-2 border-primary/20">
-      <div className="w-full h-[600px]">
-        <Tldraw
-          persistenceKey={sessionId || 'default-session'}
-          autoFocus={!isReadOnly}
-        />
+      <div className="w-full h-[600px] flex items-center justify-center bg-muted/30">
+        <p className="text-muted-foreground text-sm">Collaborative whiteboard loading...</p>
       </div>
     </Card>
   );

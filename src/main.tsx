@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"; // ScrollUniversity v2.1
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { ErrorBoundary } from "./components/layout/ErrorBoundary";
