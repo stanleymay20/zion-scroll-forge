@@ -21,9 +21,22 @@ export interface SealCriteria {
   has_study_guide: { required: number; actual: number; passed: boolean };
 }
 
+export interface DiplomaSealCriteria {
+  content_rich_modules: { required: number; actual: number; passed: boolean; threshold_chars: number };
+  knowledge_checks: { required: number; actual: number; passed: boolean };
+  applied_projects: { required: number; actual: number; passed: boolean };
+  synthesis_assessments: { required: number; actual: number; passed: boolean };
+  total_assessments: { required: number; actual: number; passed: boolean };
+  modules_with_media: { required: number; actual: number; passed: boolean };
+  has_study_guide: { required: number; actual: number; passed: boolean };
+}
+
+export type SealTier = 'ScrollCertificateSeal' | 'ScrollDiplomaSeal';
+
 export interface SealResult {
   passed: boolean;
-  criteria: SealCriteria;
+  seal_tier?: SealTier;
+  criteria: SealCriteria | DiplomaSealCriteria;
   checked_at: string;
 }
 
@@ -466,6 +479,54 @@ export async function verifyProgramSeals(programId: string): Promise<{
   return { total: courseIds.length, verified, pending, revoked };
 }
 
+// ============================================
+// DIPLOMA-SPECIFIC QUALITY GATES
+// ============================================
+
+/**
+ * Check if a Diploma course meets the stricter seal criteria
+ */
+export async function checkDiplomaSealCriteria(courseId: string): Promise<SealResult | null> {
+  const { data, error } = await supabase.rpc('check_diploma_seal_criteria', {
+    p_course_id: courseId
+  });
+  
+  if (error) {
+    console.error("Failed to check diploma seal criteria:", error);
+    return null;
+  }
+  
+  if (data && typeof data === 'object') {
+    return data as unknown as SealResult;
+  }
+  
+  return null;
+}
+
+/**
+ * Update Diploma completion seal for an entity
+ */
+export async function updateDiplomaCompletionSeal(
+  entityType: 'diploma_course' | 'diploma_program',
+  entityId: string
+): Promise<{ seal_id: string; seal_tier: string; status: string; criteria: SealResult } | null> {
+  const { data, error } = await supabase.rpc('update_diploma_completion_seal', {
+    p_entity_type: entityType,
+    p_entity_id: entityId
+  });
+  
+  if (error) {
+    console.error("Failed to update diploma completion seal:", error);
+    return null;
+  }
+  
+  if (data && typeof data === 'object') {
+    return data as unknown as { seal_id: string; seal_tier: string; status: string; criteria: SealResult };
+  }
+  
+  return null;
+}
+
 export default {
   checkCourseSealCriteria,
   updateCompletionSeal,
@@ -479,5 +540,7 @@ export default {
   getAuditLogs,
   canModifyContent,
   requestAdminOverride,
-  verifyProgramSeals
+  verifyProgramSeals,
+  checkDiplomaSealCriteria,
+  updateDiplomaCompletionSeal
 };

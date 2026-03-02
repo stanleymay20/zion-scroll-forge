@@ -246,13 +246,13 @@ export async function subscribeToPushNotifications(): Promise<PushSubscription |
     const registration = await navigator.serviceWorker.ready;
     
     // Check if already subscribed
-    let subscription = await registration.pushManager.getSubscription();
+    let subscription = await (registration as any).pushManager.getSubscription();
     
     if (!subscription) {
       // Subscribe to push notifications
       const vapidKey = import.meta.env.VITE_VAPID_PUBLIC_KEY || '';
       const appServerKey = urlBase64ToUint8Array(vapidKey) as BufferSource;
-      subscription = await registration.pushManager.subscribe({
+      subscription = await (registration as any).pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: appServerKey
       });
@@ -277,7 +277,7 @@ export async function unsubscribeFromPushNotifications(): Promise<boolean> {
 
   try {
     const registration = await navigator.serviceWorker.ready;
-    const subscription = await registration.pushManager.getSubscription();
+    const subscription = await (registration as any).pushManager.getSubscription();
     
     if (subscription) {
       const success = await subscription.unsubscribe();
