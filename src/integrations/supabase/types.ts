@@ -1417,10 +1417,12 @@ export type Database = {
           id: string
           institution_id: string
           learning_outcomes: Json | null
+          learning_progression: Json | null
           level: string | null
           locked_at: string | null
           locked_baseline: boolean | null
           locked_by: string | null
+          prerequisite_courses: Json | null
           preview_video_url: string | null
           price: number | null
           price_cents: number | null
@@ -1443,10 +1445,12 @@ export type Database = {
           id?: string
           institution_id: string
           learning_outcomes?: Json | null
+          learning_progression?: Json | null
           level?: string | null
           locked_at?: string | null
           locked_baseline?: boolean | null
           locked_by?: string | null
+          prerequisite_courses?: Json | null
           preview_video_url?: string | null
           price?: number | null
           price_cents?: number | null
@@ -1469,10 +1473,12 @@ export type Database = {
           id?: string
           institution_id?: string
           learning_outcomes?: Json | null
+          learning_progression?: Json | null
           level?: string | null
           locked_at?: string | null
           locked_baseline?: boolean | null
           locked_by?: string | null
+          prerequisite_courses?: Json | null
           preview_video_url?: string | null
           price?: number | null
           price_cents?: number | null
@@ -7177,6 +7183,10 @@ export type Database = {
         }
         Returns: undefined
       }
+      check_diploma_seal_criteria: {
+        Args: { p_course_id: string }
+        Returns: Json
+      }
       check_graduation_eligibility: {
         Args: { p_user_id: string }
         Returns: {
@@ -7275,6 +7285,10 @@ export type Database = {
         Returns: boolean
       }
       update_completion_seal: {
+        Args: { p_entity_id: string; p_entity_type: string }
+        Returns: Json
+      }
+      update_diploma_completion_seal: {
         Args: { p_entity_id: string; p_entity_type: string }
         Returns: Json
       }
