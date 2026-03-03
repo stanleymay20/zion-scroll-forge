@@ -1,112 +1,139 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Menu, X, BookOpen, GraduationCap, Heart, Shield } from "lucide-react";
+import { useState, useEffect } from "react";
 import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 
 export const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { label: "Faculties", href: "#faculties", icon: GraduationCap },
+    { label: "Courses", href: "/courses", isRoute: true, icon: BookOpen },
+    { label: "Degrees", href: "/degrees", isRoute: true, icon: Shield },
+    { label: "Prayer", href: "#prayer", icon: Heart },
+  ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
-      <div className="container mx-auto px-3 sm:px-4 h-14 sm:h-16 flex items-center justify-between">
-        {/* Logo - shrinks on mobile */}
-        <Link to="/" className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0 min-w-0">
-          <img src={scrollLogo} alt="ScrollUniversity logo" className="h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0" />
-          <div className="hidden xs:block min-w-0">
-            <p className="text-base sm:text-xl font-serif font-semibold text-primary truncate">ScrollUniversity</p>
-            <p className="text-[10px] sm:text-xs text-muted-foreground font-sans hidden sm:block">Veritas et Sapientia</p>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-background/95 backdrop-blur-lg shadow-sm border-b border-border/50"
+          : "bg-transparent"
+      }`}
+    >
+      <div className="container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
+          <img
+            src={scrollLogo}
+            alt="ScrollUniversity"
+            className="h-9 w-9 transition-transform duration-300 group-hover:scale-105"
+          />
+          <div className="hidden xs:block">
+            <p className="text-lg font-serif font-bold text-primary leading-none">
+              ScrollUniversity
+            </p>
+            <p className="text-[10px] text-muted-foreground font-sans tracking-widest uppercase mt-0.5">
+              Veritas et Sapientia
+            </p>
           </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center space-x-6">
-          <a href="#faculties" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Faculties
-          </a>
-          <AuthAwareLink to="/courses" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Courses
-          </AuthAwareLink>
-          <a href="#prayer" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            Prayer Center
-          </a>
-          <a href="#scrollcoin" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            ScrollCoin
-          </a>
+        <nav className="hidden lg:flex items-center gap-1">
+          {navLinks.map((link) =>
+            link.isRoute ? (
+              <AuthAwareLink
+                key={link.label}
+                to={link.href}
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors rounded-lg hover:bg-primary/5"
+              >
+                {link.label}
+              </AuthAwareLink>
+            ) : (
+              <a
+                key={link.label}
+                href={link.href}
+                className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors rounded-lg hover:bg-primary/5"
+              >
+                {link.label}
+              </a>
+            )
+          )}
         </nav>
 
-        {/* Desktop Auth Buttons */}
-        <div className="hidden sm:flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+        {/* Desktop Auth */}
+        <div className="hidden sm:flex items-center gap-3">
           <Link to="/auth">
-            <Button variant="ghost" size="sm" className="font-sans text-xs sm:text-sm px-2 sm:px-3">
+            <Button variant="ghost" size="sm" className="font-sans text-sm">
               Sign In
             </Button>
           </Link>
           <Link to="/auth?tab=signup&redirect=/apply">
-            <Button variant="divine" size="sm" className="font-sans text-xs sm:text-sm px-2 sm:px-4 whitespace-nowrap">
-              Begin Journey
+            <Button size="sm" className="font-sans text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
+              Get Started
             </Button>
           </Link>
         </div>
 
         {/* Mobile Menu Button */}
-        <button 
+        <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="sm:hidden p-2 text-foreground hover:bg-accent rounded-md"
+          className="sm:hidden p-2.5 text-foreground hover:bg-accent/50 rounded-lg transition-colors touch-target"
           aria-label="Toggle menu"
         >
           {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="sm:hidden bg-background border-t border-border">
-          <nav className="container mx-auto px-4 py-4 space-y-3">
-            <a 
-              href="#faculties" 
-              className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Faculties
-            </a>
-            <AuthAwareLink 
-              to="/courses" 
-              className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Courses
-            </AuthAwareLink>
-            <a 
-              href="#prayer" 
-              className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Prayer Center
-            </a>
-            <a 
-              href="#scrollcoin" 
-              className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              ScrollCoin
-            </a>
-            <div className="flex flex-col space-y-2 pt-3 border-t border-border">
-              <Link to="/auth" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="ghost" size="sm" className="w-full font-sans">
+      {/* Mobile Menu — slide down */}
+      <div
+        className={`sm:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileMenuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="bg-background/98 backdrop-blur-lg border-t border-border/50">
+          <nav className="container mx-auto px-4 py-4 space-y-1">
+            {navLinks.map((link) => {
+              const El = link.isRoute ? AuthAwareLink : "a";
+              const props = link.isRoute
+                ? { to: link.href, onClick: () => setMobileMenuOpen(false) }
+                : { href: link.href, onClick: () => setMobileMenuOpen(false) };
+              return (
+                <El
+                  key={link.label}
+                  {...(props as any)}
+                  className="flex items-center gap-3 text-sm font-medium text-muted-foreground hover:text-primary py-3 px-3 rounded-lg hover:bg-primary/5 transition-colors touch-target"
+                >
+                  <link.icon className="h-4 w-4" />
+                  {link.label}
+                </El>
+              );
+            })}
+            <div className="flex gap-2 pt-3 mt-2 border-t border-border/50">
+              <Link to="/auth" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="outline" size="sm" className="w-full font-sans">
                   Sign In
                 </Button>
               </Link>
-              <Link to="/auth?tab=signup&redirect=/apply" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="divine" size="sm" className="w-full font-sans">
-                  Begin Journey
+              <Link to="/auth?tab=signup&redirect=/apply" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                <Button size="sm" className="w-full font-sans">
+                  Get Started
                 </Button>
               </Link>
             </div>
           </nav>
         </div>
-      )}
+      </div>
     </header>
   );
 };

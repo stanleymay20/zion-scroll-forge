@@ -3,6 +3,7 @@ import { HeroSection } from "@/components/HeroSection";
 import { FacultiesSection } from "@/components/FacultiesSection";
 import { ScrollGoldSection } from "@/components/ScrollGoldSection";
 import { PrayerSection } from "@/components/PrayerSection";
+import { Footer } from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -14,6 +15,7 @@ const Index = () => {
         <PrayerSection />
         <ScrollGoldSection />
       </main>
+      <Footer />
     </div>
   );
 };

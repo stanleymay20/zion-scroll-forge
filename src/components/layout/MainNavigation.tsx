@@ -1,13 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { 
-  Home, FileText, Bot, Zap, Settings, Activity, 
-  ChevronDown, ChevronRight, BarChart3, Code, Workflow,
-  GitBranch, Database, Monitor, Users, Cpu, BookOpen,
-  GraduationCap, Heart, Coins, MessageSquare, Trophy,
-  Calendar, Video, Briefcase, Shield, Bell, Library
+  Home, FileText, Bot, Settings, Activity,
+  ChevronDown, ChevronRight, BarChart3, Monitor, Users,
+  BookOpen, GraduationCap, Heart, Coins, MessageSquare, Trophy,
+  Calendar, Video, Shield, Library
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -19,20 +17,11 @@ import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 
 interface NavSection {
   title: string;
-  items: NavItem[];
+  items: { label: string; href: string; icon?: any; badge?: string; roles?: string[] }[];
   icon?: any;
-  roles?: string[]; // Roles that can see this section
+  roles?: string[];
 }
 
-interface NavItem {
-  label: string;
-  href: string;
-  icon?: any;
-  badge?: string;
-  roles?: string[]; // Roles that can see this item
-}
-
-// Navigation sections based on user roles
 const getNavigationSections = (userRoles: string[]): NavSection[] => {
   const allSections: NavSection[] = [
     {
@@ -58,7 +47,7 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       ]
     },
     {
-      title: "Spiritual Formation",
+      title: "Spiritual Life",
       icon: Heart,
       items: [
         { label: "Daily Devotion", href: "/daily-devotion", icon: Heart },
@@ -79,12 +68,11 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       ]
     },
     {
-      title: "ScrollGold Economy",
+      title: "ScrollGold",
       icon: Coins,
       items: [
         { label: "My Wallet", href: "/scrollgold-wallet", icon: Coins },
-        { label: "Earn ScrollGold", href: "/scrollgold", icon: Trophy },
-        { label: "Redemption Store", href: "/redemption-store", icon: Briefcase },
+        { label: "Redemption Store", href: "/redemption-store", icon: Trophy },
         { label: "Leaderboard", href: "/scrollgold-leaderboard", icon: Trophy },
       ]
     },
@@ -94,142 +82,122 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       items: [
         { label: "Transcript", href: "/transcript", icon: FileText },
         { label: "Degree Audit", href: "/degree-audit", icon: GraduationCap },
-        { label: "Academic Calendar", href: "/academic-calendar", icon: Calendar },
         { label: "Achievements", href: "/achievements", icon: Trophy },
         { label: "Scholarships", href: "/scholarships", icon: Coins },
       ]
     },
     {
-      title: "Faculty Tools",
+      title: "Faculty",
       icon: Users,
       roles: ["faculty", "admin"],
       items: [
         { label: "Faculty Dashboard", href: "/faculty", icon: Home, roles: ["faculty", "admin"] },
         { label: "Course Management", href: "/faculty/admin", icon: BookOpen, roles: ["faculty", "admin"] },
         { label: "Gradebook", href: "/faculty/gradebook", icon: FileText, roles: ["faculty", "admin"] },
-        { label: "Faculty Analytics", href: "/faculty-analytics", icon: BarChart3, roles: ["faculty", "admin"] },
+        { label: "Analytics", href: "/faculty-analytics", icon: BarChart3, roles: ["faculty", "admin"] },
       ]
     },
     {
-      title: "Administration",
+      title: "Admin",
       icon: Shield,
       roles: ["admin"],
       items: [
         { label: "Admin Dashboard", href: "/admin", icon: Shield, roles: ["admin"] },
         { label: "Academic Terms", href: "/admin/academic-terms", icon: Calendar, roles: ["admin"] },
-        { label: "Admissions Review", href: "/admin/admissions", icon: Users, roles: ["admin"] },
+        { label: "Admissions", href: "/admin/admissions", icon: Users, roles: ["admin"] },
         { label: "Analytics", href: "/analytics/dashboard", icon: BarChart3, roles: ["admin"] },
-        { label: "Content Generation", href: "/admin/content-generation", icon: Bot, roles: ["admin"] },
+        { label: "Content Gen", href: "/admin/content-generation", icon: Bot, roles: ["admin"] },
         { label: "Institutions", href: "/admin/institutions", icon: Monitor, roles: ["admin"] },
         { label: "System Status", href: "/system-status", icon: Activity, roles: ["admin"] },
       ]
     },
   ];
 
-  // Filter sections and items based on user roles (check if ANY role matches)
-  const hasAnyRole = (requiredRoles: string[] | undefined) => {
-    if (!requiredRoles) return true;
-    return requiredRoles.some(role => userRoles.includes(role));
-  };
+  const hasAnyRole = (required?: string[]) => !required || required.some(r => userRoles.includes(r));
 
   return allSections
-    .filter(section => hasAnyRole(section.roles))
-    .map(section => ({
-      ...section,
-      items: section.items.filter(item => hasAnyRole(item.roles))
-    }))
-    .filter(section => section.items.length > 0);
+    .filter(s => hasAnyRole(s.roles))
+    .map(s => ({ ...s, items: s.items.filter(i => hasAnyRole(i.roles)) }))
+    .filter(s => s.items.length > 0);
 };
 
 export const MainNavigation = () => {
   const location = useLocation();
-  const { user } = useAuth();
-  const { roles, loading: rolesLoading } = useUserRoles();
-  const [expandedSections, setExpandedSections] = useState<string[]>(["Overview", "Learning"]);
+  const { roles } = useUserRoles();
+  const [expandedSections, setExpandedSections] = useState<string[]>(["Overview"]);
 
-  // Get navigation sections based on user's actual roles from the database
   const navigationSections = getNavigationSections(roles);
 
-  const toggleSection = (sectionTitle: string) => {
-    setExpandedSections(prev => 
-      prev.includes(sectionTitle)
-        ? prev.filter(s => s !== sectionTitle)
-        : [...prev, sectionTitle]
+  const toggleSection = (title: string) => {
+    setExpandedSections(prev =>
+      prev.includes(title) ? prev.filter(s => s !== title) : [...prev, title]
     );
   };
 
-  const isActive = (href: string) => {
-    return location.pathname === href || location.pathname.startsWith(href + "/");
-  };
+  const isActive = (href: string) =>
+    location.pathname === href || location.pathname.startsWith(href + "/");
+
+  // Auto-expand section containing active route
+  const activeSection = navigationSections.find(s => s.items.some(i => isActive(i.href)));
+  if (activeSection && !expandedSections.includes(activeSection.title)) {
+    setExpandedSections(prev => [...prev, activeSection.title]);
+  }
 
   return (
-    <div className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-background border-r border-border flex-col z-40">
-      {/* Logo Header */}
-      <div className="p-4 border-b border-border">
-        <Link to="/dashboard" className="flex items-center space-x-3">
-          <img src={scrollLogo} alt="ScrollUniversity" className="h-10 w-10" />
+    <div className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-sidebar border-r border-sidebar-border flex-col z-40">
+      {/* Logo */}
+      <div className="p-4 border-b border-sidebar-border">
+        <Link to="/dashboard" className="flex items-center gap-2.5 group">
+          <img src={scrollLogo} alt="ScrollUniversity" className="h-9 w-9 transition-transform group-hover:scale-105" />
           <div>
-            <h1 className="text-lg font-serif font-bold text-primary">ScrollUniversity</h1>
-            <p className="text-xs text-muted-foreground font-sans">Veritas et Sapientia</p>
+            <h1 className="text-base font-serif font-bold text-sidebar-primary leading-none">ScrollUniversity</h1>
+            <p className="text-[10px] text-sidebar-foreground/50 font-sans tracking-widest uppercase mt-0.5">Veritas et Sapientia</p>
           </div>
         </Link>
       </div>
 
-      {/* User Profile & Notifications */}
-      <div className="p-4 border-b border-border flex items-center justify-between">
+      {/* User & Notifications */}
+      <div className="px-4 py-3 border-b border-sidebar-border flex items-center justify-between">
         <UserProfileDropdown />
         <NotificationBell />
       </div>
 
-      {/* Navigation */}
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-2">
+      {/* Nav */}
+      <ScrollArea className="flex-1 py-2">
+        <div className="px-3 space-y-0.5">
           {navigationSections.map((section) => (
-            <div key={section.title} className="space-y-1">
-              <Button
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "w-full justify-between text-sm font-medium",
-                  "hover:bg-accent hover:text-accent-foreground"
-                )}
+            <div key={section.title}>
+              <button
                 onClick={() => toggleSection(section.title)}
+                className="w-full flex items-center justify-between px-3 py-2 text-xs font-sans font-semibold text-sidebar-foreground/60 uppercase tracking-wider hover:text-sidebar-foreground rounded-lg transition-colors"
               >
-                <div className="flex items-center space-x-2">
-                  {section.icon && <section.icon className="h-4 w-4" />}
-                  <span>{section.title}</span>
-                </div>
-                {expandedSections.includes(section.title) ? (
-                  <ChevronDown className="h-4 w-4" />
-                ) : (
-                  <ChevronRight className="h-4 w-4" />
-                )}
-              </Button>
+                <span>{section.title}</span>
+                {expandedSections.includes(section.title)
+                  ? <ChevronDown className="h-3.5 w-3.5" />
+                  : <ChevronRight className="h-3.5 w-3.5" />
+                }
+              </button>
 
               {expandedSections.includes(section.title) && (
-                <div className="ml-4 space-y-1">
+                <div className="space-y-0.5 mt-0.5 mb-2">
                   {section.items.map((item) => (
                     <Link key={item.href} to={item.href}>
-                      <Button
-                        variant="ghost"
-                        size="sm"
+                      <div
                         className={cn(
-                          "w-full justify-start text-sm",
-                          isActive(item.href) 
-                            ? "bg-accent text-accent-foreground" 
-                            : "hover:bg-accent/50"
+                          "flex items-center gap-2.5 px-3 py-2 text-sm font-sans rounded-lg transition-all duration-150",
+                          isActive(item.href)
+                            ? "bg-sidebar-accent text-sidebar-primary font-medium"
+                            : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                         )}
                       >
-                        <div className="flex items-center space-x-2">
-                          {item.icon && <item.icon className="h-4 w-4" />}
-                          <span>{item.label}</span>
-                        </div>
+                        {item.icon && <item.icon className="h-4 w-4 flex-shrink-0" />}
+                        <span className="truncate">{item.label}</span>
                         {item.badge && (
-                          <span className="ml-auto text-xs bg-primary text-primary-foreground px-1.5 py-0.5 rounded">
+                          <span className="ml-auto text-[10px] bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
                             {item.badge}
                           </span>
                         )}
-                      </Button>
+                      </div>
                     </Link>
                   ))}
                 </div>
@@ -239,22 +207,20 @@ export const MainNavigation = () => {
         </div>
       </ScrollArea>
 
-      {/* Bottom Quick Actions */}
-      <div className="p-4 border-t border-border">
-        <div className="space-y-2">
-          <Link to="/ai-tutors">
-            <Button size="sm" className="w-full">
-              <Bot className="h-4 w-4 mr-2" />
-              Start AI Session
-            </Button>
-          </Link>
-          <Link to="/settings">
-            <Button variant="outline" size="sm" className="w-full">
-              <Settings className="h-4 w-4 mr-2" />
-              Settings
-            </Button>
-          </Link>
-        </div>
+      {/* Bottom */}
+      <div className="p-3 border-t border-sidebar-border space-y-1.5">
+        <Link to="/ai-tutors">
+          <Button size="sm" className="w-full font-sans text-xs">
+            <Bot className="h-3.5 w-3.5 mr-2" />
+            Start AI Session
+          </Button>
+        </Link>
+        <Link to="/settings">
+          <Button variant="ghost" size="sm" className="w-full font-sans text-xs text-sidebar-foreground/60">
+            <Settings className="h-3.5 w-3.5 mr-2" />
+            Settings
+          </Button>
+        </Link>
       </div>
     </div>
   );
