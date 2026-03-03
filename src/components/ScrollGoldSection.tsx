@@ -1,82 +1,76 @@
 /**
- * ScrollGold Section Component
- * Landing page section showcasing the ScrollGold economy
+ * ScrollGold Section — Landing page economy showcase
  */
 
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Coins, TrendingUp, Gift, Award } from "lucide-react";
+import { Coins, TrendingUp, Gift, Award, ArrowRight } from "lucide-react";
 import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
+
+const features = [
+  {
+    icon: Coins,
+    title: "Earn Gold",
+    desc: "Complete courses, pass quizzes, and engage with the community to earn ScrollGold.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Track Progress",
+    desc: "Monitor your earnings and learning milestones in real-time.",
+  },
+  {
+    icon: Gift,
+    title: "Redeem Rewards",
+    desc: "Unlock premium courses, certificates, and exclusive resources.",
+  },
+  {
+    icon: Award,
+    title: "Earn Badges",
+    desc: "Earn verified credentials and badges for your achievements.",
+  },
+];
 
 export const ScrollGoldSection = () => {
   return (
-    <section id="scrollcoin" className="py-12 sm:py-20 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-950/20 dark:to-yellow-950/20">
-      <div className="container mx-auto px-3 sm:px-4">
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 text-amber-900 dark:text-amber-100">
-            ScrollGold Economy
-          </h2>
-          <p className="text-sm sm:text-lg text-amber-700 dark:text-amber-300 max-w-2xl mx-auto px-2">
+    <section id="scrollcoin" className="py-16 sm:py-24 bg-secondary/40">
+      <div className="container mx-auto px-4 max-w-5xl">
+        {/* Header */}
+        <div className="text-center mb-10 sm:mb-14">
+          <p className="text-xs font-sans font-semibold tracking-[0.2em] uppercase text-accent mb-3">
+            Reward System
+          </p>
+          <h2 className="text-primary mb-4">ScrollGold Economy</h2>
+          <p className="text-sm sm:text-base text-muted-foreground font-sans max-w-lg mx-auto">
             Earn rewards for your learning journey. ScrollGold is the divine currency 
             of knowledge and spiritual growth.
           </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-8 sm:mb-12">
-          <Card className="border-amber-200 dark:border-amber-800 bg-white/80 dark:bg-amber-950/30">
-            <CardContent className="pt-4 sm:pt-6 text-center">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 dark:bg-amber-900 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <Coins className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600" />
+        {/* Feature Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 mb-10 sm:mb-14">
+          {features.map((feature, i) => (
+            <div
+              key={feature.title}
+              className="animate-fade-up bg-card rounded-xl border border-border/60 p-4 sm:p-5 text-center card-hover"
+              style={{ animationDelay: `${i * 0.08}s` }}
+            >
+              <div className="w-10 h-10 bg-accent/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                <feature.icon className="h-5 w-5 text-accent" />
               </div>
-              <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Earn Gold</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                Complete courses, pass quizzes, and engage with the community
+              <h3 className="font-serif font-semibold text-sm mb-1.5 text-primary">{feature.title}</h3>
+              <p className="text-xs text-muted-foreground font-sans leading-relaxed">
+                {feature.desc}
               </p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-amber-200 dark:border-amber-800 bg-white/80 dark:bg-amber-950/30">
-            <CardContent className="pt-4 sm:pt-6 text-center">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 dark:bg-amber-900 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600" />
-              </div>
-              <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Track Progress</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                Monitor your earnings and spending in real-time
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-amber-200 dark:border-amber-800 bg-white/80 dark:bg-amber-950/30">
-            <CardContent className="pt-4 sm:pt-6 text-center">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 dark:bg-amber-900 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <Gift className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600" />
-              </div>
-              <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Redeem Rewards</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                Unlock premium courses, certificates, and resources
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="border-amber-200 dark:border-amber-800 bg-white/80 dark:bg-amber-950/30">
-            <CardContent className="pt-4 sm:pt-6 text-center">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 dark:bg-amber-900 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
-                <Award className="h-5 w-5 sm:h-6 sm:w-6 text-amber-600" />
-              </div>
-              <h3 className="font-semibold mb-1 sm:mb-2 text-sm sm:text-base">Achieve Badges</h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                Earn blockchain-verified credentials and badges
-              </p>
-            </CardContent>
-          </Card>
+            </div>
+          ))}
         </div>
 
+        {/* CTA */}
         <div className="text-center">
           <AuthAwareLink to="/scrollgold-wallet">
-            <Button size="lg" className="bg-amber-600 hover:bg-amber-700 text-white">
-              <Coins className="h-5 w-5 mr-2" />
+            <Button size="lg" className="font-sans bg-accent hover:bg-accent/90 text-accent-foreground shadow-md">
+              <Coins className="h-4 w-4 mr-2" />
               Explore ScrollGold
+              <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           </AuthAwareLink>
         </div>
@@ -85,5 +79,4 @@ export const ScrollGoldSection = () => {
   );
 };
 
-// Re-export for backwards compatibility
 export const ScrollCoinSection = ScrollGoldSection;
