@@ -212,7 +212,7 @@ export default function Dashboard() {
           <Card className="border-primary/20 bg-gradient-to-br from-primary/5 to-accent/5 animate-fade-up animate-fade-up-delay-4">
             <CardContent className="pt-5 pb-4">
               <div className="flex items-center gap-2 mb-2">
-                <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                <div className="h-2 w-2 rounded-full bg-success animate-pulse" />
                 <span className="text-xs font-medium text-muted-foreground">ScrollMentor AI — Online</span>
               </div>
               <p className="text-xs text-muted-foreground mb-3">
