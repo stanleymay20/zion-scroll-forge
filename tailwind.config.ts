@@ -17,8 +17,8 @@ export default {
         'xs': '375px',
       },
       fontFamily: {
-        serif: ['Crimson Text', 'serif'],
-        sans: ['Inter', 'sans-serif'],
+        serif: ['Playfair Display', 'Crimson Text', 'serif'],
+        sans: ['DM Sans', 'Inter', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
