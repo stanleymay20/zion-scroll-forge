@@ -17,8 +17,8 @@ export default {
         'xs': '375px',
       },
       fontFamily: {
-        serif: ['Crimson Text', 'serif'],
-        sans: ['Inter', 'sans-serif'],
+        serif: ['Playfair Display', 'Crimson Text', 'serif'],
+        sans: ['DM Sans', 'Inter', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -71,6 +71,14 @@ export default {
           "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
         },
       },
       borderRadius: {
