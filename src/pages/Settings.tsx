@@ -12,8 +12,7 @@ import { StorageManager } from '@/components/pwa';
 import { User, Bell, Palette, Building2, Shield, Lock, Globe, Accessibility, HardDrive } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useEffect, useState } from 'react';
-
-console.info('✝️ Settings — Christ is Lord over preferences');
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function SettingsPage() {
   const [userEmail, setUserEmail] = useState<string>();
@@ -26,86 +25,49 @@ export default function SettingsPage() {
     });
   }, []);
 
+  const tabs = [
+    { value: "profile", label: "Profile", icon: User },
+    { value: "notifications", label: "Notifications", icon: Bell },
+    { value: "privacy", label: "Privacy", icon: Shield },
+    { value: "security", label: "Security", icon: Lock },
+    { value: "language", label: "Language", icon: Globe },
+    { value: "theme", label: "Theme", icon: Palette },
+    { value: "accessibility", label: "Accessibility", icon: Accessibility },
+    { value: "institution", label: "Institution", icon: Building2 },
+    { value: "storage", label: "Storage", icon: HardDrive },
+  ];
+
   return (
     <PageTemplate
       title="Settings"
       description="Manage your account preferences and settings"
     >
       <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:grid-cols-9 mb-6 md:mb-8 gap-1">
-          <TabsTrigger value="profile" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-            <User className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Profile</span>
-          </TabsTrigger>
-          <TabsTrigger value="notifications" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-            <Bell className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Notifications</span>
-          </TabsTrigger>
-          <TabsTrigger value="privacy" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-            <Shield className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Privacy</span>
-          </TabsTrigger>
-          <TabsTrigger value="security" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-            <Lock className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Security</span>
-          </TabsTrigger>
-          <TabsTrigger value="language" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-            <Globe className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Language</span>
-          </TabsTrigger>
-          <TabsTrigger value="theme" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-            <Palette className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Theme</span>
-          </TabsTrigger>
-          <TabsTrigger value="accessibility" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-            <Accessibility className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Accessibility</span>
-          </TabsTrigger>
-          <TabsTrigger value="institution" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-            <Building2 className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Institution</span>
-          </TabsTrigger>
-          <TabsTrigger value="storage" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
-            <HardDrive className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">Storage</span>
-          </TabsTrigger>
-        </TabsList>
+        <ScrollArea className="w-full mb-6">
+          <TabsList className="inline-flex w-max gap-1 p-1">
+            {tabs.map(tab => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className="flex items-center gap-1.5 text-xs sm:text-sm px-3 whitespace-nowrap"
+              >
+                <tab.icon className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{tab.label}</span>
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
 
-        <TabsContent value="profile">
-          <ProfileSettings userEmail={userEmail} userId={userId} />
-        </TabsContent>
-
-        <TabsContent value="notifications">
-          <NotificationSettings />
-        </TabsContent>
-
-        <TabsContent value="privacy">
-          <PrivacySettings />
-        </TabsContent>
-
-        <TabsContent value="security">
-          <SecuritySettings />
-        </TabsContent>
-
-        <TabsContent value="language">
-          <LanguageSettings />
-        </TabsContent>
-
-        <TabsContent value="theme">
-          <ThemeSettings />
-        </TabsContent>
-
-        <TabsContent value="accessibility">
-          <AccessibilitySettings />
-        </TabsContent>
-
-        <TabsContent value="institution">
-          <InstitutionSwitch />
-        </TabsContent>
-
-        <TabsContent value="storage">
-          <StorageManager />
-        </TabsContent>
+        <TabsContent value="profile"><ProfileSettings userEmail={userEmail} userId={userId} /></TabsContent>
+        <TabsContent value="notifications"><NotificationSettings /></TabsContent>
+        <TabsContent value="privacy"><PrivacySettings /></TabsContent>
+        <TabsContent value="security"><SecuritySettings /></TabsContent>
+        <TabsContent value="language"><LanguageSettings /></TabsContent>
+        <TabsContent value="theme"><ThemeSettings /></TabsContent>
+        <TabsContent value="accessibility"><AccessibilitySettings /></TabsContent>
+        <TabsContent value="institution"><InstitutionSwitch /></TabsContent>
+        <TabsContent value="storage"><StorageManager /></TabsContent>
       </Tabs>
     </PageTemplate>
   );

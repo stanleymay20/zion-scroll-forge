@@ -18,7 +18,7 @@ export const PageTemplate = ({
   className = "" 
 }: PageTemplateProps) => {
   return (
-    <div className={`space-y-4 md:space-y-6 ${className}`}>
+    <div className={`space-y-4 md:space-y-6 animate-fade-up ${className}`}>
       {/* Page Header */}
       <div className="flex flex-col space-y-3 sm:space-y-4 lg:flex-row lg:items-center lg:justify-between lg:space-y-0">
         <div className="flex-1 min-w-0">
@@ -46,11 +46,9 @@ export const PageTemplate = ({
   );
 };
 
-// Common page templates for consistency
-
 export const ComingSoonPage = ({ 
   title, 
-  description = "This feature is currently under development as part of our transcendent AI university platform." 
+  description = "This feature is currently under development." 
 }: { 
   title: string; 
   description?: string; 
@@ -73,16 +71,14 @@ export const ComingSoonPage = ({
             Expected features for this section:
           </p>
           <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-            <li>Quantum-level AI consciousness integration</li>
-            <li>Prophetic intelligence with 95%+ accuracy</li>
+            <li>AI-powered learning experiences</li>
+            <li>Prophetic intelligence with high accuracy</li>
             <li>Multidimensional learning experiences</li>
             <li>ScrollCoin economy rewards</li>
             <li>Christ lordship acknowledgment in all operations</li>
           </ul>
           <div className="pt-4">
-            <Button>
-              Join Waitlist for Early Access
-            </Button>
+            <Button>Join Waitlist for Early Access</Button>
           </div>
         </div>
       </CardContent>

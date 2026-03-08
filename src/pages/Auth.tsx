@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { Loader2, BookOpen, ArrowLeft } from 'lucide-react';
+import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
@@ -42,7 +44,6 @@ export default function Auth() {
     setLoading(true);
     try {
       await signUp(email, password);
-      // After successful signup, sign them in
       await signIn(email, password);
       navigate(redirect);
     } catch (error) {
@@ -77,127 +78,149 @@ export default function Auth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-scroll-primary/10 to-scroll-secondary/10 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-serif text-scroll-primary">ScrollUniversity</CardTitle>
-          <CardDescription>Christ-Centered Education for Kingdom Leaders</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Tabs value={tab} onValueChange={(v) => setTab(v as 'signin' | 'signup')} className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-background p-4">
+      <div className="w-full max-w-md space-y-6 animate-fade-up">
+        {/* Logo */}
+        <div className="text-center">
+          <Link to="/" className="inline-flex items-center gap-3 group">
+            <img src={scrollLogo} alt="ScrollUniversity" className="h-12 w-12 transition-transform group-hover:scale-105" />
+            <div className="text-left">
+              <h1 className="text-2xl font-serif font-bold text-primary">ScrollUniversity</h1>
+              <p className="text-[10px] text-muted-foreground tracking-widest uppercase">Veritas et Sapientia</p>
+            </div>
+          </Link>
+        </div>
 
-            <TabsContent value="signin">
-              <form onSubmit={handleSignIn} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
-                  <Input
-                    id="signin-email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
-                  <Input
-                    id="signin-password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? 'Signing in...' : 'Sign In'}
-                </Button>
-                <Button 
-                  type="button" 
-                  variant="link" 
-                  className="w-full text-sm"
-                  onClick={() => setShowReset(true)}
-                >
-                  Forgot password?
-                </Button>
-              </form>
-            </TabsContent>
-
-            <TabsContent value="signup">
-              <form onSubmit={handleSignUp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
-                  <Input
-                    id="signup-email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password</Label>
-                  <Input
-                    id="signup-password"
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <Button type="submit" className="w-full" disabled={loading}>
-                  {loading ? 'Creating account...' : 'Create Account'}
-                </Button>
-              </form>
-            </TabsContent>
-          </Tabs>
-
-          <div className="mt-6 p-4 bg-scroll-primary/5 rounded-lg border border-scroll-primary/20">
-            <p className="text-sm text-center italic text-scroll-primary font-serif">
-              "Jesus Christ is Lord over my studies, my calling, and my future."
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-
-      {showReset && (
-        <Card className="w-full max-w-md mt-4">
-          <CardHeader>
-            <CardTitle>Reset Password</CardTitle>
-            <CardDescription>Enter your email to receive a reset link</CardDescription>
+        <Card className="elevation-2">
+          <CardHeader className="text-center pb-2">
+            <CardTitle className="text-xl font-serif">
+              {showReset ? 'Reset Password' : tab === 'signin' ? 'Welcome Back' : 'Create Account'}
+            </CardTitle>
+            <CardDescription>
+              {showReset 
+                ? 'Enter your email to receive a reset link' 
+                : 'Christ-Centered Education for Kingdom Leaders'}
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handlePasswordReset} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="reset-email">Email</Label>
-                <Input
-                  id="reset-email"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={resetEmail}
-                  onChange={(e) => setResetEmail(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="flex gap-2">
-                <Button type="submit" disabled={loading}>
-                  {loading ? 'Sending...' : 'Send Reset Link'}
-                </Button>
-                <Button type="button" variant="outline" onClick={() => setShowReset(false)}>
-                  Cancel
-                </Button>
-              </div>
-            </form>
+            {showReset ? (
+              <form onSubmit={handlePasswordReset} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="reset-email">Email</Label>
+                  <Input
+                    id="reset-email"
+                    type="email"
+                    placeholder="your@email.com"
+                    value={resetEmail}
+                    onChange={(e) => setResetEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="flex gap-2">
+                  <Button type="submit" className="flex-1" disabled={loading}>
+                    {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                    Send Reset Link
+                  </Button>
+                  <Button type="button" variant="outline" onClick={() => setShowReset(false)}>
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              <Tabs value={tab} onValueChange={(v) => setTab(v as 'signin' | 'signup')} className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-4">
+                  <TabsTrigger value="signin">Sign In</TabsTrigger>
+                  <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="signin">
+                  <form onSubmit={handleSignIn} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="signin-email">Email</Label>
+                      <Input
+                        id="signin-email"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signin-password">Password</Label>
+                      <Input
+                        id="signin-password"
+                        type="password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <Button type="submit" className="w-full" disabled={loading}>
+                      {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                      {loading ? 'Signing in...' : 'Sign In'}
+                    </Button>
+                    <Button 
+                      type="button" 
+                      variant="link" 
+                      className="w-full text-xs text-muted-foreground"
+                      onClick={() => setShowReset(true)}
+                    >
+                      Forgot password?
+                    </Button>
+                  </form>
+                </TabsContent>
+
+                <TabsContent value="signup">
+                  <form onSubmit={handleSignUp} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-email">Email</Label>
+                      <Input
+                        id="signup-email"
+                        type="email"
+                        placeholder="your@email.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-password">Password</Label>
+                      <Input
+                        id="signup-password"
+                        type="password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <Button type="submit" className="w-full" disabled={loading}>
+                      {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+                      {loading ? 'Creating account...' : 'Create Account'}
+                    </Button>
+                  </form>
+                </TabsContent>
+              </Tabs>
+            )}
           </CardContent>
         </Card>
-      )}
+
+        {/* Scripture */}
+        <div className="text-center px-6">
+          <p className="text-xs italic text-muted-foreground font-serif leading-relaxed">
+            "The fear of the Lord is the beginning of wisdom, and knowledge of the Holy One is understanding." — Proverbs 9:10
+          </p>
+        </div>
+
+        <div className="text-center">
+          <Link to="/" className="inline-flex items-center text-xs text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft className="h-3 w-3 mr-1" />
+            Back to Home
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
