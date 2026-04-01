@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Mail, AlertCircle, CheckCircle2, RefreshCw } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function VerifyEmail() {
   const [searchParams] = useSearchParams();
@@ -39,23 +40,19 @@ export default function VerifyEmail() {
     setError('');
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/supabase/verify-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token, type })
+      const verificationType = type === 'recovery' || type === 'email_change' ? type : 'signup';
+      const { error } = await supabase.auth.verifyOtp({
+        token_hash: token,
+        type: verificationType,
       });
 
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(data.error || 'Email verification failed');
-      }
+      if (error) throw error;
 
       setSuccess(true);
       
       // Redirect to login after 3 seconds
       setTimeout(() => {
-        navigate('/auth/login?verified=true');
+        navigate('/auth?verified=true');
       }, 3000);
     } catch (err: any) {
       setError(err.message || 'Failed to verify email. The link may have expired.');
@@ -75,17 +72,15 @@ export default function VerifyEmail() {
     setResendSuccess(false);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/supabase/resend-verification`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/verify-email`,
+        },
       });
 
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to resend verification email');
-      }
+      if (error) throw error;
 
       setResendSuccess(true);
     } catch (err: any) {
@@ -97,11 +92,11 @@ export default function VerifyEmail() {
 
   if (verifying) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-scroll-primary/10 via-background to-scroll-secondary/10 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/20 p-4">
         <Card className="w-full max-w-md shadow-xl">
           <CardContent className="pt-6">
             <div className="flex flex-col items-center justify-center space-y-4">
-              <Loader2 className="h-12 w-12 animate-spin text-scroll-primary" />
+              <Loader2 className="h-12 w-12 animate-spin text-primary" />
               <div className="text-center">
                 <h3 className="text-lg font-semibold">Verifying your email...</h3>
                 <p className="text-sm text-muted-foreground mt-1">
@@ -117,13 +112,13 @@ export default function VerifyEmail() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-scroll-primary/10 via-background to-scroll-secondary/10 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/20 p-4">
         <Card className="w-full max-w-md shadow-xl">
           <CardHeader className="text-center space-y-2">
-            <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-2">
-              <CheckCircle2 className="h-8 w-8 text-green-600" />
+            <div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
+              <CheckCircle2 className="h-8 w-8 text-success" />
             </div>
-            <CardTitle className="text-3xl font-serif text-scroll-primary">
+            <CardTitle className="text-3xl font-serif text-primary">
               Email Verified!
             </CardTitle>
             <CardDescription className="text-base">
@@ -132,17 +127,17 @@ export default function VerifyEmail() {
           </CardHeader>
 
           <CardContent className="space-y-6">
-            <Alert className="bg-green-50 border-green-200">
-              <CheckCircle2 className="h-4 w-4 text-green-600" />
-              <AlertDescription className="text-green-800">
+            <Alert className="border-success/30 bg-success/10">
+              <CheckCircle2 className="h-4 w-4 text-success" />
+              <AlertDescription>
                 <strong>Success!</strong>
                 <br />
                 Your account is now active. Redirecting you to sign in...
               </AlertDescription>
             </Alert>
 
-            <div className="p-4 bg-scroll-primary/5 rounded-lg border border-scroll-primary/20">
-              <p className="text-sm text-center italic text-scroll-primary font-serif">
+            <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+              <p className="text-center font-serif text-sm italic text-primary">
                 "I have no greater joy than to hear that my children are walking in the truth." - 3 John 1:4
               </p>
             </div>
@@ -150,8 +145,8 @@ export default function VerifyEmail() {
 
           <CardFooter>
             <Button
-              onClick={() => navigate('/auth/login?verified=true')}
-              className="w-full bg-scroll-primary hover:bg-scroll-primary/90"
+              onClick={() => navigate('/auth?verified=true')}
+              className="w-full"
             >
               Continue to Sign In
             </Button>
@@ -162,13 +157,13 @@ export default function VerifyEmail() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-scroll-primary/10 via-background to-scroll-secondary/10 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/20 p-4">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center space-y-2">
-          <div className="mx-auto w-16 h-16 bg-scroll-primary/10 rounded-full flex items-center justify-center mb-2">
-            <Mail className="h-8 w-8 text-scroll-primary" />
+          <div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
+            <Mail className="h-8 w-8 text-primary" />
           </div>
-          <CardTitle className="text-3xl font-serif text-scroll-primary">
+          <CardTitle className="text-3xl font-serif text-primary">
             Verify Your Email
           </CardTitle>
           <CardDescription className="text-base">
@@ -185,18 +180,18 @@ export default function VerifyEmail() {
           )}
 
           {resendSuccess && (
-            <Alert className="bg-green-50 border-green-200">
-              <CheckCircle2 className="h-4 w-4 text-green-600" />
-              <AlertDescription className="text-green-800">
+            <Alert className="border-success/30 bg-success/10">
+              <CheckCircle2 className="h-4 w-4 text-success" />
+              <AlertDescription>
                 Verification email sent! Check your inbox.
               </AlertDescription>
             </Alert>
           )}
 
           <div className="space-y-4">
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-2">What to do next:</h4>
-              <ol className="text-sm text-blue-800 space-y-1 list-decimal list-inside">
+            <div className="rounded-lg border border-info/20 bg-info/10 p-4">
+              <h4 className="mb-2 font-medium text-foreground">What to do next:</h4>
+              <ol className="list-inside list-decimal space-y-1 text-sm text-foreground/80">
                 <li>Check your email inbox (and spam folder)</li>
                 <li>Click the verification link in the email</li>
                 <li>You'll be redirected back to sign in</li>
@@ -228,8 +223,8 @@ export default function VerifyEmail() {
               </Button>
             </div>
 
-            <div className="p-4 bg-scroll-primary/5 rounded-lg border border-scroll-primary/20">
-              <p className="text-sm text-center italic text-scroll-primary font-serif">
+            <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+              <p className="text-center font-serif text-sm italic text-primary">
                 "But let all who take refuge in you rejoice; let them ever sing for joy." - Psalm 5:11
               </p>
             </div>
@@ -238,8 +233,8 @@ export default function VerifyEmail() {
 
         <CardFooter className="flex flex-col space-y-2">
           <Link
-            to="/auth/login"
-            className="text-sm text-center text-scroll-primary hover:underline font-medium"
+            to="/auth"
+            className="text-center text-sm font-medium text-primary hover:underline"
           >
             Back to Sign In
           </Link>
@@ -247,7 +242,7 @@ export default function VerifyEmail() {
             Need help?{' '}
             <Link
               to="/help"
-              className="text-scroll-primary hover:underline font-medium"
+              className="font-medium text-primary hover:underline"
             >
               Contact Support
             </Link>

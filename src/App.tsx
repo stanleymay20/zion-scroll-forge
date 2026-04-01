@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -24,112 +24,115 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import VerifyEmail from "./pages/auth/VerifyEmail";
 import OAuthCallback from "./pages/auth/OAuthCallback";
-import Dashboard from "@/pages/Dashboard";
-import EnhancedDashboard from "@/pages/EnhancedDashboard";
-import ForgeDashboard from "@/pages/ForgeDashboard";
-import FunctionalDashboard from "@/pages/FunctionalDashboard";
-import ScrollSpecs from "@/pages/ScrollSpecs";
-import Agents from "@/pages/Agents";
-import ForgeSessions from "@/pages/ForgeSessions";
-import Courses from "./pages/Courses";
-import CourseDetail from "./pages/CourseDetail";
-import CourseLearn from "./pages/CourseLearn";
-import CourseLearningPage from "./pages/CourseLearningPage";
-import ModuleDetail from "./pages/ModuleDetail";
-import QuizPage from "./pages/QuizPage";
-import AITutors from "./pages/AITutors";
-import AITutorChat from "./pages/AITutorChat";
-import AITutorOfficeHours from "./pages/AITutorOfficeHours";
-import AITutorAnalytics from "./pages/AITutorAnalytics";
-import TutorProfile from "./pages/TutorProfile";
-import AvatarCustomization from "./pages/AvatarCustomization";
-import ContentGeneration from "./pages/ContentGeneration";
-import Community from "./pages/Community";
-import { UserProfilePage } from "./components/community";
-import Assessments from "./pages/Assessments";
-import ScrollCoin from "./pages/ScrollCoin";
-import Wallet from "./pages/Wallet";
-import SpiritualFormation from "./pages/SpiritualFormation";
-import PrayerRequests from "./pages/PrayerRequests";
-import Analytics from "./pages/Analytics";
-import Transcript from "./pages/Transcript";
-import StudyGroups from "./pages/StudyGroups";
-import StudyGroupChat from "./pages/StudyGroupChat";
-import Achievements from "./pages/Achievements";
-import AdminDashboard from "./pages/AdminDashboard";
-import Apply from "./pages/Apply";
-import FacultyDashboard from "./pages/FacultyDashboard";
-import Gradebook from "./pages/Gradebook";
-import FacultyGradebookIndex from "./pages/FacultyGradebookIndex";
-import AlumniPortal from "./pages/AlumniPortal";
-import ProfilePage from "./pages/Profile";
-import DegreesPage from "./pages/Degrees";
-import SettingsPage from "./pages/Settings";
 import { ComingSoonPage } from "./components/layout/PageTemplate";
-import FacultyGallery from "./pages/FacultyGallery";
-import FacultyDetail from "./pages/FacultyDetail";
-import FacultyComparison from "./pages/FacultyComparison";
-import GenerationHistory from "./pages/admin/GenerationHistory";
-import ContentGenerationAdmin from "./pages/ContentGenerationAdmin";
-import LearningProfileOnboarding from "./pages/LearningProfileOnboarding";
-import PersonalizedDashboard from "./pages/PersonalizedDashboard";
-import LearningGoals from "./pages/LearningGoals";
-import SkillsAssessment from "./pages/SkillsAssessment";
-import NotFound from "./pages/NotFound";
-import PrayerJournal from "./pages/PrayerJournal";
-import Events from "./pages/Events";
-import EventDetail from "./pages/EventDetail";
-import DegreePrograms from "./pages/DegreePrograms";
-import DegreeProgramDetail from "./pages/DegreeProgramDetail";
-import BillingDashboard from "./pages/BillingDashboard";
-import ScrollGoldWallet from "./pages/ScrollGoldWallet";
-import ScrollGoldLeaderboard from "./pages/ScrollGoldLeaderboard";
-import AITutorsCatalog from "./pages/AITutorsCatalog";
-import TutorSession from "./pages/TutorSession";
-import AITutorInterface from "./pages/AITutorInterface";
-import VirtualLabsPage from "./pages/VirtualLabsPage";
-import XRClassroomsPage from "./pages/XRClassroomsPage";
-import AdmissionsReview from "./pages/AdmissionsReview";
-import AnalyticsDashboard from "./pages/AnalyticsDashboard";
-import CourseAnalyticsPage from "./pages/CourseAnalyticsPage";
-import NotificationsPage from "./pages/NotificationsPage";
-import NotificationSettings from "./pages/NotificationSettings";
-import GenerationMonitor from "./pages/GenerationMonitor";
-import InstitutionsAdmin from "./pages/InstitutionsAdmin";
-import SystemStatus from "./pages/SystemStatus";
-import InstitutionOnboarding from "./pages/InstitutionOnboarding";
-import FacultyAnalytics from "./pages/FacultyAnalytics";
-import Faculties from "./pages/Faculties";
-import SuperAdmin from "./pages/SuperAdmin";
-import FacultyAdmin from "./pages/FacultyAdmin";
-import CommunityFeed from "./pages/CommunityFeed";
-import DailyDevotion from "./pages/DailyDevotion";
-import ScriptureMemory from "./pages/ScriptureMemory";
-import Testimonies from "./pages/Testimonies";
-import FellowshipRooms from "./pages/FellowshipRooms";
-import SpiritualMentor from "./pages/SpiritualMentor";
-import Messaging from "./pages/Messaging";
-import RedemptionStore from "./pages/RedemptionStore";
-import AssignmentUpload from "./pages/AssignmentUpload";
-import DegreeAudit from "./pages/DegreeAudit";
-import ScholarshipsPage from "./pages/ScholarshipsPage";
-import RealTimeMessaging from "./pages/RealTimeMessaging";
-import { ScrollBadgeGallery } from "./pages/ScrollBadgeGallery";
-import { PublicBadgeProfile } from "./pages/PublicBadgeProfile";
-import StudentProfile from "./pages/StudentProfile";
-import MobileFeaturesDemo from "./pages/MobileFeaturesDemo";
-import CourseCatalog from "./pages/CourseCatalog";
-import CourseDetailPage from "./pages/CourseDetailPage";
-import MyCourses from "./pages/MyCourses";
-import QuizTaking from "./pages/QuizTaking";
-import AcademicCalendar from "./pages/AcademicCalendar";
-import ScrollLibrary from "./pages/ScrollLibrary";
-import ScrollLibraryBookReader from "./pages/ScrollLibraryBookReader";
-import AcademicTermAdmin from "./pages/AcademicTermAdmin";
-import StudentGraduation from "./pages/StudentGraduation";
-import SUYASAdmin from "./pages/SUYASAdmin";
-import TrustCenter from "./pages/TrustCenter";
-import AcademicIntegrity from "./pages/AcademicIntegrity";
+
+const Dashboard = lazy(() => import("@/pages/Dashboard"));
+const EnhancedDashboard = lazy(() => import("@/pages/EnhancedDashboard"));
+const ForgeDashboard = lazy(() => import("@/pages/ForgeDashboard"));
+const ScrollSpecs = lazy(() => import("@/pages/ScrollSpecs"));
+const Agents = lazy(() => import("@/pages/Agents"));
+const ForgeSessions = lazy(() => import("@/pages/ForgeSessions"));
+const Courses = lazy(() => import("./pages/Courses"));
+const CourseDetail = lazy(() => import("./pages/CourseDetail"));
+const CourseLearn = lazy(() => import("./pages/CourseLearn"));
+const CourseLearningPage = lazy(() => import("./pages/CourseLearningPage"));
+const ModuleDetail = lazy(() => import("./pages/ModuleDetail"));
+const QuizPage = lazy(() => import("./pages/QuizPage"));
+const AITutors = lazy(() => import("./pages/AITutors"));
+const AITutorChat = lazy(() => import("./pages/AITutorChat"));
+const AITutorOfficeHours = lazy(() => import("./pages/AITutorOfficeHours"));
+const AITutorAnalytics = lazy(() => import("./pages/AITutorAnalytics"));
+const TutorProfile = lazy(() => import("./pages/TutorProfile"));
+const AvatarCustomization = lazy(() => import("./pages/AvatarCustomization"));
+const ContentGeneration = lazy(() => import("./pages/ContentGeneration"));
+const Community = lazy(() => import("./pages/Community"));
+const UserProfilePage = lazy(async () => ({
+  default: (await import("./components/community")).UserProfilePage,
+}));
+const Assessments = lazy(() => import("./pages/Assessments"));
+const ScrollCoin = lazy(() => import("./pages/ScrollCoin"));
+const Wallet = lazy(() => import("./pages/Wallet"));
+const SpiritualFormation = lazy(() => import("./pages/SpiritualFormation"));
+const PrayerRequests = lazy(() => import("./pages/PrayerRequests"));
+const Analytics = lazy(() => import("./pages/Analytics"));
+const Transcript = lazy(() => import("./pages/Transcript"));
+const StudyGroups = lazy(() => import("./pages/StudyGroups"));
+const StudyGroupChat = lazy(() => import("./pages/StudyGroupChat"));
+const Achievements = lazy(() => import("./pages/Achievements"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const Apply = lazy(() => import("./pages/Apply"));
+const FacultyDashboard = lazy(() => import("./pages/FacultyDashboard"));
+const Gradebook = lazy(() => import("./pages/Gradebook"));
+const FacultyGradebookIndex = lazy(() => import("./pages/FacultyGradebookIndex"));
+const AlumniPortal = lazy(() => import("./pages/AlumniPortal"));
+const ProfilePage = lazy(() => import("./pages/Profile"));
+const SettingsPage = lazy(() => import("./pages/Settings"));
+const FacultyGallery = lazy(() => import("./pages/FacultyGallery"));
+const FacultyDetail = lazy(() => import("./pages/FacultyDetail"));
+const FacultyComparison = lazy(() => import("./pages/FacultyComparison"));
+const GenerationHistory = lazy(() => import("./pages/admin/GenerationHistory"));
+const ContentGenerationAdmin = lazy(() => import("./pages/ContentGenerationAdmin"));
+const LearningProfileOnboarding = lazy(() => import("./pages/LearningProfileOnboarding"));
+const PersonalizedDashboard = lazy(() => import("./pages/PersonalizedDashboard"));
+const LearningGoals = lazy(() => import("./pages/LearningGoals"));
+const SkillsAssessment = lazy(() => import("./pages/SkillsAssessment"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const PrayerJournal = lazy(() => import("./pages/PrayerJournal"));
+const Events = lazy(() => import("./pages/Events"));
+const EventDetail = lazy(() => import("./pages/EventDetail"));
+const DegreePrograms = lazy(() => import("./pages/DegreePrograms"));
+const DegreeProgramDetail = lazy(() => import("./pages/DegreeProgramDetail"));
+const BillingDashboard = lazy(() => import("./pages/BillingDashboard"));
+const ScrollGoldWallet = lazy(() => import("./pages/ScrollGoldWallet"));
+const ScrollGoldLeaderboard = lazy(() => import("./pages/ScrollGoldLeaderboard"));
+const AITutorsCatalog = lazy(() => import("./pages/AITutorsCatalog"));
+const TutorSession = lazy(() => import("./pages/TutorSession"));
+const AITutorInterface = lazy(() => import("./pages/AITutorInterface"));
+const VirtualLabsPage = lazy(() => import("./pages/VirtualLabsPage"));
+const XRClassroomsPage = lazy(() => import("./pages/XRClassroomsPage"));
+const AdmissionsReview = lazy(() => import("./pages/AdmissionsReview"));
+const AnalyticsDashboard = lazy(() => import("./pages/AnalyticsDashboard"));
+const CourseAnalyticsPage = lazy(() => import("./pages/CourseAnalyticsPage"));
+const NotificationsPage = lazy(() => import("./pages/NotificationsPage"));
+const NotificationSettings = lazy(() => import("./pages/NotificationSettings"));
+const GenerationMonitor = lazy(() => import("./pages/GenerationMonitor"));
+const InstitutionsAdmin = lazy(() => import("./pages/InstitutionsAdmin"));
+const SystemStatus = lazy(() => import("./pages/SystemStatus"));
+const InstitutionOnboarding = lazy(() => import("./pages/InstitutionOnboarding"));
+const FacultyAnalytics = lazy(() => import("./pages/FacultyAnalytics"));
+const SuperAdmin = lazy(() => import("./pages/SuperAdmin"));
+const FacultyAdmin = lazy(() => import("./pages/FacultyAdmin"));
+const CommunityFeed = lazy(() => import("./pages/CommunityFeed"));
+const DailyDevotion = lazy(() => import("./pages/DailyDevotion"));
+const ScriptureMemory = lazy(() => import("./pages/ScriptureMemory"));
+const Testimonies = lazy(() => import("./pages/Testimonies"));
+const FellowshipRooms = lazy(() => import("./pages/FellowshipRooms"));
+const SpiritualMentor = lazy(() => import("./pages/SpiritualMentor"));
+const RedemptionStore = lazy(() => import("./pages/RedemptionStore"));
+const AssignmentUpload = lazy(() => import("./pages/AssignmentUpload"));
+const DegreeAudit = lazy(() => import("./pages/DegreeAudit"));
+const ScholarshipsPage = lazy(() => import("./pages/ScholarshipsPage"));
+const RealTimeMessaging = lazy(() => import("./pages/RealTimeMessaging"));
+const ScrollBadgeGallery = lazy(async () => ({
+  default: (await import("./pages/ScrollBadgeGallery")).ScrollBadgeGallery,
+}));
+const PublicBadgeProfile = lazy(async () => ({
+  default: (await import("./pages/PublicBadgeProfile")).PublicBadgeProfile,
+}));
+const StudentProfile = lazy(() => import("./pages/StudentProfile"));
+const MobileFeaturesDemo = lazy(() => import("./pages/MobileFeaturesDemo"));
+const CourseCatalog = lazy(() => import("./pages/CourseCatalog"));
+const CourseDetailPage = lazy(() => import("./pages/CourseDetailPage"));
+const MyCourses = lazy(() => import("./pages/MyCourses"));
+const QuizTaking = lazy(() => import("./pages/QuizTaking"));
+const AcademicCalendar = lazy(() => import("./pages/AcademicCalendar"));
+const ScrollLibrary = lazy(() => import("./pages/ScrollLibrary"));
+const ScrollLibraryBookReader = lazy(() => import("./pages/ScrollLibraryBookReader"));
+const AcademicTermAdmin = lazy(() => import("./pages/AcademicTermAdmin"));
+const StudentGraduation = lazy(() => import("./pages/StudentGraduation"));
+const SUYASAdmin = lazy(() => import("./pages/SUYASAdmin"));
+const TrustCenter = lazy(() => import("./pages/TrustCenter"));
+const AcademicIntegrity = lazy(() => import("./pages/AcademicIntegrity"));
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -139,8 +142,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-scroll-primary mx-auto"></div>
-          <p className="mt-4 text-scroll-primary">Loading ScrollUniversity...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-primary">Loading ScrollUniversity...</p>
         </div>
       </div>
     );
@@ -327,7 +330,6 @@ const App = () => (
               <Route path="admin/super" element={<SuperAdmin />} />
               <Route path="apply" element={<Apply />} />
               <Route path="courses-detail/:courseId" element={<CourseDetailPage />} />
-              <Route path="my-courses" element={<MyCourses />} />
               <Route path="my-courses" element={<MyCourses />} />
               <Route path="quiz-taking/:quizId" element={<QuizTaking />} />
               <Route path="faculty" element={<FacultyDashboard />} />

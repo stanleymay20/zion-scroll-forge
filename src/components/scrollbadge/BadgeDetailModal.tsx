@@ -36,6 +36,7 @@ import { format } from 'date-fns';
 import { BadgeSharing } from './BadgeSharing';
 import { BadgeVerification } from './BadgeVerification';
 import { toast } from 'sonner';
+import { buildPublicBadgeUrl } from '@/lib/scrollbadge';
 
 interface BadgeDetailModalProps {
   badge: ScrollBadge;
@@ -80,29 +81,8 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
   };
 
   const handleToggleVisibility = async () => {
-    try {
-      setIsUpdatingVisibility(true);
-      const response = await fetch(`/api/scrollbadge/${badge.id}/visibility`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({ isPublic: !badge.isPublic })
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update visibility');
-      }
-
-      toast.success(`Badge is now ${!badge.isPublic ? 'public' : 'private'}`);
-      onBadgeUpdated?.();
-    } catch (error) {
-      console.error('Error updating visibility:', error);
-      toast.error('Failed to update badge visibility');
-    } finally {
-      setIsUpdatingVisibility(false);
-    }
+    await navigator.clipboard.writeText(buildPublicBadgeUrl(badge.userId));
+    toast.success('Public badge link copied to clipboard');
   };
 
   const handleCopyTokenId = () => {
@@ -236,19 +216,10 @@ export const BadgeDetailModal: React.FC<BadgeDetailModalProps> = ({
                         variant="outline"
                         size="sm"
                         onClick={handleToggleVisibility}
-                        disabled={isUpdatingVisibility}
+                        disabled={isUpdatingVisibility || !badge.isPublic}
                       >
-                        {badge.isPublic ? (
-                          <>
-                            <EyeOff className="h-4 w-4 mr-2" />
-                            Make Private
-                          </>
-                        ) : (
-                          <>
-                            <Eye className="h-4 w-4 mr-2" />
-                            Make Public
-                          </>
-                        )}
+                        <Share2 className="h-4 w-4 mr-2" />
+                        {badge.isPublic ? 'Copy Share Link' : 'Sharing Unavailable'}
                       </Button>
                       <Button variant="outline" size="sm" onClick={handleDownloadBadge}>
                         <Download className="h-4 w-4 mr-2" />

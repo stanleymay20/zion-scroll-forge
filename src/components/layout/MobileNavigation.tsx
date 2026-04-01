@@ -7,7 +7,6 @@ import {
   Users, Coins, GraduationCap, MessageSquare, Trophy, Shield
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/contexts/AuthContext";
 import { useUserRoles } from "@/hooks/useUserRoles";
 import { UserProfileDropdown } from "./UserProfileDropdown";
 import { NotificationBell } from "@/components/NotificationBell";

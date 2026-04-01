@@ -129,7 +129,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/dashboard`,
+          emailRedirectTo: `${window.location.origin}/auth/verify-email`,
         },
       });
 
@@ -137,7 +137,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       toast({
         title: 'Account created successfully',
-        description: 'Welcome to ScrollUniversity! You can now sign in.',
+        description: 'Check your email to verify your account before signing in.',
       });
     } catch (error: any) {
       toast({

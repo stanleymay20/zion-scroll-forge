@@ -14,6 +14,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Shield, CheckCircle, XCircle, AlertTriangle, ExternalLink, Loader2 } from 'lucide-react';
 import { ScrollBadge, BadgeVerificationResult } from '@/types/scrollbadge';
 import { toast } from 'sonner';
+import { buildPublicBadgeUrl } from '@/lib/scrollbadge';
 
 interface BadgeVerificationProps {
   badge: ScrollBadge;
@@ -29,24 +30,40 @@ export const BadgeVerification: React.FC<BadgeVerificationProps> = ({ badge }) =
   const handleVerifyBadge = async () => {
     try {
       setVerifying(true);
-      const response = await fetch('/api/scrollbadge/verify', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          tokenId: badge.tokenId
-        })
-      });
+      const discrepancies: string[] = [];
 
-      if (!response.ok) {
-        throw new Error('Verification failed');
-      }
+      if (badge.isRevoked) discrepancies.push('Credential has been revoked.');
+      if (!badge.blockchainTxHash) discrepancies.push('No blockchain transaction hash is available yet.');
+      if (!badge.courseName) discrepancies.push('Course metadata is incomplete.');
 
-      const data = await response.json();
-      setVerificationResult(data.data);
-      
-      if (data.data.isValid) {
+      const result: BadgeVerificationResult = {
+        isValid: discrepancies.length === 0,
+        badge,
+        verifiedAt: new Date().toISOString(),
+        discrepancies: discrepancies.length > 0 ? discrepancies : undefined,
+        blockchainData: badge.blockchainTxHash
+          ? {
+              tokenId: badge.tokenId,
+              owner: badge.ownerAddress || badge.userId,
+              tokenURI: badge.metadataUri || badge.ipfsHash || '',
+              isRevoked: badge.isRevoked,
+              metadata: {
+                courseId: badge.courseId,
+                courseName: badge.courseName,
+                studentId: badge.userId,
+                studentName: badge.studentName,
+                completionDate: new Date(badge.completionDate).getTime(),
+                grade: badge.grade,
+                credentialType: badge.credentialType,
+                ipfsHash: badge.ipfsHash,
+              },
+            }
+          : undefined,
+      };
+
+      setVerificationResult(result);
+
+      if (result.isValid) {
         toast.success('Badge verified successfully');
       } else {
         toast.error('Badge verification failed');
@@ -67,25 +84,22 @@ export const BadgeVerification: React.FC<BadgeVerificationProps> = ({ badge }) =
 
     try {
       setVerifying(true);
-      const response = await fetch('/api/scrollbadge/verify/employer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          tokenId: badge.tokenId,
-          employerName,
-          employerEmail,
-          verificationPurpose
-        })
-      });
+      const subject = encodeURIComponent(`Credential verification request for ${badge.studentName}`);
+      const body = encodeURIComponent(
+        [
+          `Hello ${employerName},`,
+          '',
+          `${badge.studentName} has shared a ScrollBadge credential for verification.`,
+          `Credential: ${badge.courseName}`,
+          `Type: ${badge.credentialType.replace(/_/g, ' ')}`,
+          `Grade: ${badge.grade}%`,
+          `Purpose: ${verificationPurpose}`,
+          `Public profile: ${buildPublicBadgeUrl(badge.userId)}`,
+        ].join('\n')
+      );
 
-      if (!response.ok) {
-        throw new Error('Employer verification failed');
-      }
-
-      const data = await response.json();
-      toast.success('Verification request sent to employer');
+      window.location.href = `mailto:${encodeURIComponent(employerEmail)}?subject=${subject}&body=${body}`;
+      toast.success('Verification email draft opened');
       
       // Clear form
       setEmployerEmail('');
@@ -250,16 +264,13 @@ export const BadgeVerification: React.FC<BadgeVerificationProps> = ({ badge }) =
                   <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   Sending...
                 </>
-              ) : (
-                'Request Verification'
-              )}
+              ) : 'Compose Verification Email'}
             </Button>
           </div>
 
           <Alert>
             <AlertDescription className="text-xs">
-              A verification email will be sent to the employer with a secure link to verify this credential.
-              The verification will be valid for 30 days.
+              We will open a pre-filled verification email draft that includes the credential details and public profile link.
             </AlertDescription>
           </Alert>
         </CardContent>
