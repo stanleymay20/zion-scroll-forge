@@ -11,9 +11,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Share2, Linkedin, Twitter, Facebook, Mail, Link, Copy, CheckCircle } from 'lucide-react';
+import { Share2, Linkedin, Twitter, Facebook, Mail, Copy, CheckCircle } from 'lucide-react';
 import { ScrollBadge, SharePlatform } from '@/types/scrollbadge';
 import { toast } from 'sonner';
+import { buildPublicBadgeUrl } from '@/lib/scrollbadge';
 
 interface BadgeSharingProps {
   badge: ScrollBadge;
@@ -21,13 +22,10 @@ interface BadgeSharingProps {
 
 export const BadgeSharing: React.FC<BadgeSharingProps> = ({ badge }) => {
   const [customMessage, setCustomMessage] = useState('');
-  const [shareUrl, setShareUrl] = useState('');
   const [copied, setCopied] = useState(false);
 
   const generateShareUrl = (): string => {
-    // Generate public badge profile URL
-    const baseUrl = window.location.origin;
-    return `${baseUrl}/badges/public/${badge.tokenId}`;
+    return buildPublicBadgeUrl(badge.userId);
   };
 
   const getDefaultMessage = (): string => {
@@ -58,20 +56,6 @@ export const BadgeSharing: React.FC<BadgeSharingProps> = ({ badge }) => {
 
       if (shareLink) {
         window.open(shareLink, '_blank', 'width=600,height=400');
-        
-        // Track share event
-        await fetch('/api/scrollbadge/share', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          body: JSON.stringify({
-            tokenId: badge.tokenId,
-            platform,
-            message
-          })
-        });
 
         toast.success(`Badge shared on ${platform}`);
       }

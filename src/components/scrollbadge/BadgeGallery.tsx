@@ -7,16 +7,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Award, Search, Filter, Grid, List, TrendingUp } from 'lucide-react';
+import { Award, Search, Grid, List } from 'lucide-react';
 import { ScrollBadge, BadgeCredentialType, BadgeFilter } from '@/types/scrollbadge';
 import { BadgeCard } from './BadgeCard';
 import { BadgeDetailModal } from './BadgeDetailModal';
 import { BadgeFilters } from './BadgeFilters';
 import { BadgeStats } from './BadgeStats';
+import { fetchUserScrollBadges } from '@/lib/scrollbadge';
 
 interface BadgeGalleryProps {
   userId: string;
@@ -46,20 +46,11 @@ export const BadgeGallery: React.FC<BadgeGalleryProps> = ({ userId, isOwnProfile
   const fetchBadges = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/scrollbadge/user/${userId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to fetch badges');
-      }
-
-      const data = await response.json();
-      setBadges(data.data || []);
+      const data = await fetchUserScrollBadges(userId);
+      setBadges(data);
     } catch (error) {
       console.error('Error fetching badges:', error);
+      setBadges([]);
     } finally {
       setLoading(false);
     }
@@ -118,18 +109,6 @@ export const BadgeGallery: React.FC<BadgeGalleryProps> = ({ userId, isOwnProfile
   const handleClearFilters = () => {
     setFilters({});
     setSearchQuery('');
-  };
-
-  const getCredentialTypeColor = (type: BadgeCredentialType): string => {
-    const colors: Record<BadgeCredentialType, string> = {
-      [BadgeCredentialType.COURSE_COMPLETION]: 'bg-blue-500',
-      [BadgeCredentialType.SKILL_MASTERY]: 'bg-purple-500',
-      [BadgeCredentialType.DEGREE_COMPLETION]: 'bg-gold-500',
-      [BadgeCredentialType.CERTIFICATE]: 'bg-green-500',
-      [BadgeCredentialType.SPECIALIZATION]: 'bg-indigo-500',
-      [BadgeCredentialType.ACHIEVEMENT]: 'bg-orange-500'
-    };
-    return colors[type] || 'bg-gray-500';
   };
 
   if (loading) {
@@ -193,7 +172,7 @@ export const BadgeGallery: React.FC<BadgeGalleryProps> = ({ userId, isOwnProfile
                   className="pl-10"
                 />
               </div>
-              <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
+              <Select value={sortBy} onValueChange={(value) => setSortBy(value as 'completionDate' | 'grade')}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
@@ -202,7 +181,7 @@ export const BadgeGallery: React.FC<BadgeGalleryProps> = ({ userId, isOwnProfile
                   <SelectItem value="grade">Grade</SelectItem>
                 </SelectContent>
               </Select>
-              <Select value={sortOrder} onValueChange={(value: any) => setSortOrder(value)}>
+              <Select value={sortOrder} onValueChange={(value) => setSortOrder(value as 'asc' | 'desc')}>
                 <SelectTrigger className="w-[120px]">
                   <SelectValue placeholder="Order" />
                 </SelectTrigger>

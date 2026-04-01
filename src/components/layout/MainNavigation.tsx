@@ -5,11 +5,10 @@ import {
   Home, FileText, Bot, Settings, Activity,
   ChevronDown, ChevronRight, BarChart3, Monitor, Users,
   BookOpen, GraduationCap, Heart, Coins, MessageSquare, Trophy,
-  Calendar, Video, Shield, Library
+  Calendar, Video, Shield, Library, type LucideIcon
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/contexts/AuthContext";
 import { useUserRoles } from "@/hooks/useUserRoles";
 import { UserProfileDropdown } from "./UserProfileDropdown";
 import { NotificationBell } from "@/components/NotificationBell";
@@ -17,8 +16,8 @@ import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 
 interface NavSection {
   title: string;
-  items: { label: string; href: string; icon?: any; badge?: string; roles?: string[] }[];
-  icon?: any;
+  items: { label: string; href: string; icon?: LucideIcon; badge?: string; roles?: string[] }[];
+  icon?: LucideIcon;
   roles?: string[];
 }
 
@@ -126,7 +125,7 @@ export const MainNavigation = () => {
   const { roles } = useUserRoles();
   const [expandedSections, setExpandedSections] = useState<string[]>(["Overview"]);
 
-  const navigationSections = getNavigationSections(roles);
+  const navigationSections = useMemo(() => getNavigationSections(roles), [roles]);
 
   const toggleSection = (title: string) => {
     setExpandedSections(prev =>
@@ -137,11 +136,17 @@ export const MainNavigation = () => {
   const isActive = (href: string) =>
     location.pathname === href || location.pathname.startsWith(href + "/");
 
-  // Auto-expand section containing active route
-  const activeSection = navigationSections.find(s => s.items.some(i => isActive(i.href)));
-  if (activeSection && !expandedSections.includes(activeSection.title)) {
-    setExpandedSections(prev => [...prev, activeSection.title]);
-  }
+  const activeSectionTitle = navigationSections.find(section =>
+    section.items.some(item => isActive(item.href))
+  )?.title;
+
+  useEffect(() => {
+    if (!activeSectionTitle) return;
+
+    setExpandedSections(prev =>
+      prev.includes(activeSectionTitle) ? prev : [...prev, activeSectionTitle]
+    );
+  }, [activeSectionTitle]);
 
   return (
     <div className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-sidebar border-r border-sidebar-border flex-col z-40">

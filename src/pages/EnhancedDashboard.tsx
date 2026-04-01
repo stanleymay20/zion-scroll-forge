@@ -37,7 +37,7 @@ export default function EnhancedDashboard() {
     return (
       <PageTemplate title="Loading..." description="">
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-scroll-primary mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 text-muted-foreground">Loading your dashboard...</p>
         </div>
       </PageTemplate>
@@ -50,30 +50,34 @@ export default function EnhancedDashboard() {
       value: String(dashboardData.courses_enrolled), 
       change: `${enrollments?.length ?? 0} active`, 
       icon: Book,
-      color: "text-blue-500"
+      color: "text-primary"
     },
     { 
       label: "ScrollCoins Balance", 
       value: String(Math.round(dashboardData.balance)), 
       change: "Live balance", 
       icon: Coins,
-      color: "text-yellow-500"
+      color: "text-accent"
     },
     { 
       label: "Prayer Requests", 
       value: String(dashboardData.total_prayers), 
       change: `${dashboardData.prayers_answered} answered`, 
       icon: Heart,
-      color: "text-red-500"
+      color: "text-destructive"
     },
     { 
       label: "Avg Progress", 
       value: `${Math.round(dashboardData.avg_progress ?? 0)}%`, 
       change: "Across all courses", 
       icon: TrendingUp,
-      color: "text-green-500"
+      color: "text-success"
     },
   ];
+
+  const completedCourses = (enrollments ?? []).filter(
+    (enrollment: { progress: number }) => enrollment.progress === 100
+  ).length;
 
   return (
     <PageTemplate 
@@ -146,7 +150,7 @@ export default function EnhancedDashboard() {
           
           {/* Journey Progress */}
           <JourneyProgress 
-            coursesCompleted={enrollments?.filter((e: any) => e.progress === 100).length || 0}
+            coursesCompleted={completedCourses}
             totalXP={Math.round(dashboardData?.balance || 0) * 10}
           />
           
@@ -167,7 +171,7 @@ export default function EnhancedDashboard() {
             <CardContent>
               <div className="space-y-4">
                 {enrollments && enrollments.length > 0 ? (
-                  enrollments.slice(0, 5).map((enrollment: any) => (
+                  enrollments.slice(0, 5).map((enrollment: { id: string; progress: number; updated_at?: string | null; courses?: { title?: string | null } | null }) => (
                     <div key={enrollment.id} className="flex items-start space-x-3 text-sm">
                       <div className="h-2 w-2 rounded-full bg-primary mt-2" />
                       <div className="flex-1">

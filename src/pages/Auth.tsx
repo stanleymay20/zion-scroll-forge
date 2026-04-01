@@ -4,16 +4,18 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, BookOpen, ArrowLeft } from 'lucide-react';
+import { Loader2, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
-  const initialTab = (searchParams.get('tab') === 'signup' ? 'signup' : 'signin') as 'signin' | 'signup';
+  const verified = searchParams.get('verified') === 'true';
+  const initialTab = (verified || searchParams.get('tab') !== 'signup' ? 'signin' : 'signup') as 'signin' | 'signup';
   const redirect = searchParams.get('redirect') || '/dashboard';
   
   const [tab, setTab] = useState<'signin' | 'signup'>(initialTab);
@@ -44,8 +46,7 @@ export default function Auth() {
     setLoading(true);
     try {
       await signUp(email, password);
-      await signIn(email, password);
-      navigate(redirect);
+      navigate(`/auth/verify-email?email=${encodeURIComponent(email)}`);
     } catch (error) {
       console.error('Sign up error:', error);
     } finally {
@@ -58,7 +59,7 @@ export default function Auth() {
     setLoading(true);
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
-        redirectTo: `${window.location.origin}/auth?reset=true`,
+        redirectTo: `${window.location.origin}/auth/reset-password`,
       });
       if (error) throw error;
       toast({
@@ -103,6 +104,15 @@ export default function Auth() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {verified && (
+              <Alert className="mb-4 border-success/30 bg-success/10 text-success-foreground">
+                <CheckCircle2 className="h-4 w-4 text-success" />
+                <AlertDescription className="text-foreground">
+                  Your email has been verified. You can sign in now.
+                </AlertDescription>
+              </Alert>
+            )}
+
             {showReset ? (
               <form onSubmit={handlePasswordReset} className="space-y-4">
                 <div className="space-y-2">

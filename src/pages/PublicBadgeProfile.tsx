@@ -6,19 +6,19 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import { Award, ExternalLink, Share2, Shield, TrendingUp } from 'lucide-react';
-import { BadgeProfileData } from '@/types/scrollbadge';
 import { BadgeGallery } from '@/components/scrollbadge/BadgeGallery';
 import { toast } from 'sonner';
+import { fetchBadgeProfile, type PublicBadgeProfileData } from '@/lib/scrollbadge';
 
 export const PublicBadgeProfile: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
-  const [profile, setProfile] = useState<BadgeProfileData | null>(null);
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState<PublicBadgeProfileData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,19 +33,8 @@ export const PublicBadgeProfile: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      const response = await fetch(`/api/scrollbadge/profile/${userId}`);
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          setError('Profile not found');
-        } else {
-          setError('Failed to load profile');
-        }
-        return;
-      }
-
-      const data = await response.json();
-      setProfile(data.data);
+      const data = await fetchBadgeProfile(userId!);
+      setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
       setError('Failed to load profile');
@@ -87,7 +76,7 @@ export const PublicBadgeProfile: React.FC = () => {
                 <p className="text-muted-foreground mb-6">
                   {error || 'The badge profile you are looking for does not exist or is private.'}
                 </p>
-                <Button onClick={() => window.location.href = '/'}>
+                <Button onClick={() => navigate('/')}>
                   Return Home
                 </Button>
               </div>
@@ -107,7 +96,7 @@ export const PublicBadgeProfile: React.FC = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
               {/* Avatar */}
               <Avatar className="h-24 w-24">
-                <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${profile.userName}`} />
+                <AvatarImage src={profile.avatarUrl ?? `https://api.dicebear.com/7.x/initials/svg?seed=${profile.userName}`} />
                 <AvatarFallback>
                   {profile.userName.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
@@ -127,7 +116,7 @@ export const PublicBadgeProfile: React.FC = () => {
                     <span className="text-muted-foreground">Total Badges</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Shield className="h-5 w-5 text-green-600" />
+                    <Shield className="h-5 w-5 text-success" />
                     <span className="font-semibold">{profile.publicBadges}</span>
                     <span className="text-muted-foreground">Public Badges</span>
                   </div>
@@ -154,9 +143,9 @@ export const PublicBadgeProfile: React.FC = () => {
                 Achievements
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {profile.achievements.map((achievement, index) => (
+                {profile.achievements.map((achievement) => (
                   <div
-                    key={index}
+                    key={`${achievement.type}-${achievement.name}`}
                     className="flex items-center gap-3 p-3 rounded-lg border bg-card"
                   >
                     <div className="p-2 rounded-lg bg-primary/10">
@@ -185,7 +174,7 @@ export const PublicBadgeProfile: React.FC = () => {
               <p className="mb-2">
                 All badges are verified on the blockchain and can be independently verified.
               </p>
-              <Button variant="link" className="text-primary">
+              <Button variant="link" className="text-primary" onClick={() => navigate('/trust')}>
                 <ExternalLink className="h-4 w-4 mr-2" />
                 Learn more about ScrollBadge verification
               </Button>
