@@ -108,6 +108,7 @@ export default function CommunityFeed() {
               </Card>
             ))}
           </div>
+        ) : (
           posts?.map((post: any) => (
             <Card key={post.id}>
               <CardHeader>
