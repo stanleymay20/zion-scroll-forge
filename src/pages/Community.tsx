@@ -43,14 +43,14 @@ export const Community: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Community</h1>
-              <p className="text-gray-600 mt-1">
+              <h1 className="text-3xl font-serif font-bold text-foreground">Community</h1>
+              <p className="text-muted-foreground mt-1">
                 Connect, share, and grow together in faith and learning
               </p>
             </div>
@@ -133,7 +133,7 @@ export const Community: React.FC = () => {
             {/* Trending Topics */}
             <Card className="p-6">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-blue-600" />
+                <TrendingUp className="w-5 h-5 text-primary" />
                 Trending Topics
               </h3>
               <TrendingTopics onHashtagClick={handleHashtagClick} />
@@ -142,18 +142,18 @@ export const Community: React.FC = () => {
             {/* Suggested Users */}
             <Card className="p-6">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Users className="w-5 h-5 text-blue-600" />
+                <Users className="w-5 h-5 text-primary" />
                 Suggested Connections
               </h3>
               <SuggestedUsers />
             </Card>
 
             {/* Community Guidelines */}
-            <Card className="p-6 bg-blue-50 border-blue-200">
-              <h3 className="text-lg font-semibold mb-2 text-blue-900">
+            <Card className="p-6 bg-accent/5 border-accent/20">
+              <h3 className="text-lg font-semibold mb-2 text-foreground">
                 Community Guidelines
               </h3>
-              <ul className="text-sm text-blue-800 space-y-2">
+              <ul className="text-sm text-muted-foreground space-y-2">
                 <li>• Be respectful and kind to all members</li>
                 <li>• Share content that edifies and encourages</li>
                 <li>• Maintain theological integrity</li>
