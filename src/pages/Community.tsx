@@ -142,7 +142,7 @@ export const Community: React.FC = () => {
             {/* Suggested Users */}
             <Card className="p-6">
               <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Users className="w-5 h-5 text-blue-600" />
+                <Users className="w-5 h-5 text-primary" />
                 Suggested Connections
               </h3>
               <SuggestedUsers />
