@@ -149,11 +149,11 @@ export const Community: React.FC = () => {
             </Card>
 
             {/* Community Guidelines */}
-            <Card className="p-6 bg-blue-50 border-blue-200">
-              <h3 className="text-lg font-semibold mb-2 text-blue-900">
+            <Card className="p-6 bg-accent/5 border-accent/20">
+              <h3 className="text-lg font-semibold mb-2 text-foreground">
                 Community Guidelines
               </h3>
-              <ul className="text-sm text-blue-800 space-y-2">
+              <ul className="text-sm text-muted-foreground space-y-2">
                 <li>• Be respectful and kind to all members</li>
                 <li>• Share content that edifies and encourages</li>
                 <li>• Maintain theological integrity</li>
