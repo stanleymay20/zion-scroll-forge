@@ -133,6 +133,8 @@ const StudentGraduation = lazy(() => import("./pages/StudentGraduation"));
 const SUYASAdmin = lazy(() => import("./pages/SUYASAdmin"));
 const TrustCenter = lazy(() => import("./pages/TrustCenter"));
 const AcademicIntegrity = lazy(() => import("./pages/AcademicIntegrity"));
+const TermsOfService = lazy(() => import("./pages/legal/TermsOfService"));
+const PrivacyPolicy = lazy(() => import("./pages/legal/PrivacyPolicy"));
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
