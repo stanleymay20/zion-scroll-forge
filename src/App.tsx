@@ -133,6 +133,8 @@ const StudentGraduation = lazy(() => import("./pages/StudentGraduation"));
 const SUYASAdmin = lazy(() => import("./pages/SUYASAdmin"));
 const TrustCenter = lazy(() => import("./pages/TrustCenter"));
 const AcademicIntegrity = lazy(() => import("./pages/AcademicIntegrity"));
+const TermsOfService = lazy(() => import("./pages/legal/TermsOfService"));
+const PrivacyPolicy = lazy(() => import("./pages/legal/PrivacyPolicy"));
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -261,6 +263,10 @@ const App = () => (
             <Route path="/academic-integrity" element={<PublicLayout />}>
               <Route index element={<AcademicIntegrity />} />
             </Route>
+            
+            {/* Legal Pages */}
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
             
             {/* Authentication Routes */}
             <Route path="/auth" element={<Auth />} />
