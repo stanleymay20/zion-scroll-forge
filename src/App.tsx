@@ -264,6 +264,10 @@ const App = () => (
               <Route index element={<AcademicIntegrity />} />
             </Route>
             
+            {/* Legal Pages */}
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            
             {/* Authentication Routes */}
             <Route path="/auth" element={<Auth />} />
             <Route path="/auth/login" element={<Login />} />

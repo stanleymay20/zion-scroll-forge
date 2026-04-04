@@ -26,8 +26,8 @@ const footerLinks = [
     links: [
       { label: "Academic Integrity", href: "/academic-integrity" },
       { label: "Trust Center", href: "/trust" },
-      { label: "Apply", href: "/apply" },
-      { label: "Alumni Portal", href: "/alumni" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Privacy Policy", href: "/privacy" },
     ],
   },
 ];
