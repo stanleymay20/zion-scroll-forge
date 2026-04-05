@@ -1,9 +1,9 @@
 /**
  * CourseLearningPage - Complete course learning experience
- * Combines curriculum browsing with rich module content display
+ * Auto-awards certificates on course completion
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -12,19 +12,17 @@ import { PageTemplate } from '@/components/layout/PageTemplate';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
 import { 
-  ArrowLeft, 
-  BookOpen, 
-  List, 
-  Loader2, 
-  AlertCircle,
-  MessageSquare,
-  GraduationCap
+  ArrowLeft, BookOpen, List, Loader2, AlertCircle,
+  MessageSquare, GraduationCap, Award, Trophy
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ModuleLearningContent } from '@/components/learning/ModuleLearningContent';
 import { CourseCurriculumBrowser } from '@/components/learning/CourseCurriculumBrowser';
 import { AITutorAvatar } from '@/components/AITutorAvatar';
+import confetti from 'canvas-confetti';
 
 export default function CourseLearningPage() {
   const { courseId } = useParams();
@@ -33,6 +31,7 @@ export default function CourseLearningPage() {
   const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState<'learn' | 'curriculum' | 'tutor'>('learn');
   const [currentModuleId, setCurrentModuleId] = useState<string | null>(null);
+  const [certificateAwarded, setCertificateAwarded] = useState(false);
 
   // Fetch course with modules
   const { data: courseData, isLoading, error } = useQuery({
@@ -40,13 +39,9 @@ export default function CourseLearningPage() {
     queryFn: async () => {
       const { data: course, error: courseError } = await supabase
         .from('courses')
-        .select(`
-          *,
-          course_modules (*)
-        `)
+        .select('*, course_modules (*)')
         .eq('id', courseId!)
         .single();
-      
       if (courseError) throw courseError;
       return course;
     },
@@ -63,14 +58,13 @@ export default function CourseLearningPage() {
         .eq('course_id', courseId!)
         .eq('user_id', user!.id)
         .maybeSingle();
-      
       if (error) throw error;
       return data;
     },
     enabled: !!courseId && !!user
   });
 
-  // Fetch module completions - using RPC or direct query with type assertion
+  // Fetch module completions
   const { data: moduleCompletions = [] } = useQuery({
     queryKey: ['module-completions', courseId, user?.id],
     queryFn: async () => {
@@ -78,14 +72,28 @@ export default function CourseLearningPage() {
         .from('module_completions' as any)
         .select('module_id')
         .eq('user_id', user!.id);
-      
       if (error) return [];
       return (data as any[])?.map(mc => mc.module_id) || [];
     },
     enabled: !!user
   });
 
-  // Fetch AI tutor for this faculty
+  // Check existing certificate
+  const { data: existingCert } = useQuery({
+    queryKey: ['course-certificate', courseId, user?.id],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('course_certificates')
+        .select('id')
+        .eq('course_id', courseId!)
+        .eq('user_id', user!.id)
+        .maybeSingle();
+      return data;
+    },
+    enabled: !!courseId && !!user
+  });
+
+  // Fetch AI tutor
   const { data: aiTutor } = useQuery({
     queryKey: ['ai-tutor-faculty', courseData?.faculty],
     queryFn: async () => {
@@ -105,7 +113,6 @@ export default function CourseLearningPage() {
   // Set initial module
   useEffect(() => {
     if (sortedModules.length > 0 && !currentModuleId) {
-      // Find first incomplete module or start from beginning
       const firstIncomplete = sortedModules.find((m: any) => !moduleCompletions.includes(m.id));
       setCurrentModuleId(firstIncomplete?.id || sortedModules[0].id);
     }
@@ -114,10 +121,43 @@ export default function CourseLearningPage() {
   const currentModule = sortedModules.find((m: any) => m.id === currentModuleId);
   const currentModuleIndex = sortedModules.findIndex((m: any) => m.id === currentModuleId);
 
+  // Auto-award certificate when course is 100% complete
+  const awardCertificate = useCallback(async () => {
+    if (!user?.id || !courseId || certificateAwarded || existingCert) return;
+    
+    try {
+      setCertificateAwarded(true);
+      const { data, error } = await supabase.functions.invoke('generate-certificate', {
+        body: { userId: user.id, courseId, type: 'course' }
+      });
+      
+      if (error) throw error;
+      
+      confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+      toast.success('🎓 Course Completed! Certificate awarded!', {
+        duration: 6000,
+        action: {
+          label: 'View Certificate',
+          onClick: () => {
+            if (data?.html) {
+              const win = window.open();
+              if (win) win.document.write(data.html);
+            }
+          }
+        }
+      });
+      
+      queryClient.invalidateQueries({ queryKey: ['course-certificate'] });
+      queryClient.invalidateQueries({ queryKey: ['graduation-eligibility'] });
+    } catch (err) {
+      console.error('Certificate generation failed:', err);
+      setCertificateAwarded(false);
+    }
+  }, [user?.id, courseId, certificateAwarded, existingCert, queryClient]);
+
   // Complete module mutation
   const completeModuleMutation = useMutation({
     mutationFn: async (moduleId: string) => {
-      // Check if already completed
       const { data: existing } = await supabase
         .from('module_completions' as any)
         .select('id')
@@ -125,15 +165,11 @@ export default function CourseLearningPage() {
         .eq('user_id', user!.id)
         .maybeSingle();
       
-      if (existing) return existing;
+      if (existing) return { existing: true };
 
       const { data, error } = await supabase
         .from('module_completions' as any)
-        .insert({
-          module_id: moduleId,
-          user_id: user!.id,
-          course_id: courseId
-        })
+        .insert({ module_id: moduleId, user_id: user!.id, course_id: courseId })
         .select()
         .single();
       
@@ -150,17 +186,23 @@ export default function CourseLearningPage() {
           .eq('id', enrollment.id);
       }
 
-      return data;
+      return { data, progress: newProgress };
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
       queryClient.invalidateQueries({ queryKey: ['module-completions'] });
       queryClient.invalidateQueries({ queryKey: ['enrollment-learning'] });
-      toast.success('Module completed! 🎉');
+      
+      if (!result?.existing) {
+        toast.success('Module completed! 🎉');
+        
+        // Check if course is now 100% complete
+        const newCount = moduleCompletions.length + 1;
+        if (newCount >= sortedModules.length && sortedModules.length > 0) {
+          setTimeout(() => awardCertificate(), 1000);
+        }
+      }
     },
-    onError: (error) => {
-      console.error('Failed to complete module:', error);
-      toast.error('Failed to mark module as complete');
-    }
+    onError: () => toast.error('Failed to mark module as complete')
   });
 
   const handleModuleComplete = () => {
@@ -174,9 +216,8 @@ export default function CourseLearningPage() {
       setCurrentModuleId(sortedModules[currentModuleIndex + 1].id);
       setActiveTab('learn');
     } else {
-      // Course completed
-      toast.success('Congratulations! You completed the course! 🎓');
-      navigate(`/graduation?courseId=${courseId}`);
+      // All modules done — navigate to graduation
+      navigate('/graduation');
     }
   };
 
@@ -213,12 +254,9 @@ export default function CourseLearningPage() {
       <PageTemplate title="Course Not Found" description="">
         <div className="text-center py-12">
           <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
-          <p className="text-lg text-muted-foreground mb-4">
-            Failed to load course content
-          </p>
+          <p className="text-lg text-muted-foreground mb-4">Failed to load course content</p>
           <Button onClick={() => navigate('/courses')}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Courses
+            <ArrowLeft className="h-4 w-4 mr-2" /> Back to Courses
           </Button>
         </div>
       </PageTemplate>
@@ -234,97 +272,110 @@ export default function CourseLearningPage() {
             You need to enroll in this course to access the content
           </p>
           <Button onClick={() => navigate(`/courses/${courseId}`)}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Go to Course Details
+            <ArrowLeft className="h-4 w-4 mr-2" /> Go to Course Details
           </Button>
         </div>
       </PageTemplate>
     );
   }
 
-  console.info('✝️ ScrollUniversity: Course learning page loaded — Christ is Lord over all learning');
-
   return (
-    <PageTemplate
-      title={courseData.title}
-      description={`${courseData.faculty} • ${sortedModules.length} Modules`}
-      actions={
-        <Button variant="outline" onClick={() => navigate(`/courses/${courseId}`)}>
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Course Overview
-        </Button>
-      }
-    >
-      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full">
-        <TabsList className="grid w-full grid-cols-3 mb-6">
-          <TabsTrigger value="learn" className="flex items-center gap-2">
-            <BookOpen className="h-4 w-4" />
-            <span className="hidden sm:inline">Learn</span>
-          </TabsTrigger>
-          <TabsTrigger value="curriculum" className="flex items-center gap-2">
-            <List className="h-4 w-4" />
-            <span className="hidden sm:inline">Curriculum</span>
-          </TabsTrigger>
-          <TabsTrigger value="tutor" className="flex items-center gap-2">
-            <MessageSquare className="h-4 w-4" />
-            <span className="hidden sm:inline">AI Tutor</span>
-          </TabsTrigger>
-        </TabsList>
+    <div className="min-h-screen pb-24 md:pb-8">
+      {/* Sticky Progress Header */}
+      <div className="sticky top-0 z-30 bg-background/95 backdrop-blur-sm border-b border-border px-4 py-3">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between gap-3">
+            <Button variant="ghost" size="icon" onClick={() => navigate(`/courses/${courseId}`)} className="shrink-0">
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div className="flex-1 min-w-0">
+              <h1 className="text-sm font-semibold text-foreground truncate">{courseData.title}</h1>
+              <div className="flex items-center gap-2 mt-1">
+                <Progress value={overallProgress} className="h-1.5 flex-1" />
+                <span className="text-xs text-muted-foreground whitespace-nowrap">{overallProgress}%</span>
+              </div>
+            </div>
+            {existingCert && (
+              <Badge variant="secondary" className="bg-accent/10 text-accent shrink-0">
+                <Award className="h-3 w-3 mr-1" /> Certified
+              </Badge>
+            )}
+          </div>
+        </div>
+      </div>
 
-        <TabsContent value="learn">
-          {currentModule ? (
-            <ModuleLearningContent
-              module={currentModule}
-              courseTitle={courseData.title}
-              totalModules={sortedModules.length}
-              onComplete={handleModuleComplete}
-              onNext={handleNextModule}
-              onPrevious={handlePreviousModule}
-              isCompleted={moduleCompletions.includes(currentModuleId!)}
-              isFirst={currentModuleIndex === 0}
-              isLast={currentModuleIndex === sortedModules.length - 1}
+      <div className="max-w-7xl mx-auto px-4 pt-4">
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-4">
+            <TabsTrigger value="learn" className="flex items-center gap-1.5 text-xs sm:text-sm">
+              <BookOpen className="h-4 w-4" />
+              <span>Learn</span>
+            </TabsTrigger>
+            <TabsTrigger value="curriculum" className="flex items-center gap-1.5 text-xs sm:text-sm">
+              <List className="h-4 w-4" />
+              <span>Modules</span>
+            </TabsTrigger>
+            <TabsTrigger value="tutor" className="flex items-center gap-1.5 text-xs sm:text-sm">
+              <MessageSquare className="h-4 w-4" />
+              <span>AI Tutor</span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="learn">
+            {currentModule ? (
+              <ModuleLearningContent
+                module={currentModule}
+                courseTitle={courseData.title}
+                totalModules={sortedModules.length}
+                onComplete={handleModuleComplete}
+                onNext={handleNextModule}
+                onPrevious={handlePreviousModule}
+                isCompleted={moduleCompletions.includes(currentModuleId!)}
+                isFirst={currentModuleIndex === 0}
+                isLast={currentModuleIndex === sortedModules.length - 1}
+              />
+            ) : (
+              <Card>
+                <CardContent className="py-12 text-center">
+                  <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-muted-foreground">No modules available yet</p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="curriculum">
+            <CourseCurriculumBrowser
+              course={courseData}
+              modules={sortedModules}
+              currentModuleId={currentModuleId || undefined}
+              completedModuleIds={moduleCompletions}
+              overallProgress={overallProgress}
+              onModuleSelect={handleModuleSelect}
             />
-          ) : (
-            <Card>
-              <CardContent className="py-12 text-center">
-                <BookOpen className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-muted-foreground">No modules available yet</p>
-              </CardContent>
-            </Card>
-          )}
-        </TabsContent>
+          </TabsContent>
 
-        <TabsContent value="curriculum">
-          <CourseCurriculumBrowser
-            course={courseData}
-            modules={sortedModules}
-            currentModuleId={currentModuleId || undefined}
-            completedModuleIds={moduleCompletions}
-            overallProgress={overallProgress}
-            onModuleSelect={handleModuleSelect}
-          />
-        </TabsContent>
-
-        <TabsContent value="tutor">
-          {aiTutor ? (
-            <AITutorAvatar
-              tutorId={aiTutor.id}
-              tutorName={aiTutor.name}
-              tutorSpecialty={aiTutor.specialty}
-              tutorAvatar={aiTutor.avatar_image_url}
-              moduleId={currentModuleId || undefined}
-              moduleContent={currentModule?.content_md}
-            />
-          ) : (
-            <Card>
-              <CardContent className="py-12 text-center">
-                <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-muted-foreground">AI Tutor coming soon</p>
-              </CardContent>
-            </Card>
-          )}
-        </TabsContent>
-      </Tabs>
-    </PageTemplate>
+          <TabsContent value="tutor">
+            {aiTutor ? (
+              <AITutorAvatar
+                tutorId={aiTutor.id}
+                tutorName={aiTutor.name}
+                tutorSpecialty={aiTutor.specialty}
+                tutorAvatar={aiTutor.avatar_image_url}
+                moduleId={currentModuleId || undefined}
+                moduleContent={currentModule?.content_md}
+              />
+            ) : (
+              <Card>
+                <CardContent className="py-12 text-center">
+                  <MessageSquare className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                  <p className="text-muted-foreground">AI Tutor coming soon</p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
   );
 }
