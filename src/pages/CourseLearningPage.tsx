@@ -22,6 +22,7 @@ import { toast } from 'sonner';
 import { ModuleLearningContent } from '@/components/learning/ModuleLearningContent';
 import { CourseCurriculumBrowser } from '@/components/learning/CourseCurriculumBrowser';
 import { AITutorAvatar } from '@/components/AITutorAvatar';
+import { LiveAvatarLecture } from '@/components/learning/LiveAvatarLecture';
 import confetti from 'canvas-confetti';
 
 export default function CourseLearningPage() {
