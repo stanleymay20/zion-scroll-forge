@@ -360,6 +360,18 @@ export default function CourseLearningPage() {
             />
           </TabsContent>
 
+          <TabsContent value="avatar">
+            <LiveAvatarLecture
+              tutorName={aiTutor?.name || 'Professor Noelle'}
+              tutorSpecialty={aiTutor?.specialty || 'General Studies'}
+              tutorAvatar={aiTutor?.avatar_image_url}
+              tutorId={aiTutor?.id}
+              moduleId={currentModuleId || undefined}
+              moduleContent={currentModule?.content_md}
+              moduleTitle={currentModule?.title}
+            />
+          </TabsContent>
+
           <TabsContent value="tutor">
             {aiTutor ? (
               <AITutorAvatar
