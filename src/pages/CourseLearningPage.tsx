@@ -30,7 +30,7 @@ export default function CourseLearningPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState<'learn' | 'curriculum' | 'tutor'>('learn');
+  const [activeTab, setActiveTab] = useState<'learn' | 'curriculum' | 'tutor' | 'avatar'>('learn');
   const [currentModuleId, setCurrentModuleId] = useState<string | null>(null);
   const [certificateAwarded, setCertificateAwarded] = useState(false);
 
@@ -307,18 +307,22 @@ export default function CourseLearningPage() {
 
       <div className="max-w-7xl mx-auto px-4 pt-4">
         <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-4">
+          <TabsList className="grid w-full grid-cols-4 mb-4">
             <TabsTrigger value="learn" className="flex items-center gap-1.5 text-xs sm:text-sm">
               <BookOpen className="h-4 w-4" />
-              <span>Learn</span>
+              <span className="hidden sm:inline">Learn</span>
             </TabsTrigger>
             <TabsTrigger value="curriculum" className="flex items-center gap-1.5 text-xs sm:text-sm">
               <List className="h-4 w-4" />
-              <span>Modules</span>
+              <span className="hidden sm:inline">Modules</span>
+            </TabsTrigger>
+            <TabsTrigger value="avatar" className="flex items-center gap-1.5 text-xs sm:text-sm">
+              <Video className="h-4 w-4" />
+              <span className="hidden sm:inline">Live Avatar</span>
             </TabsTrigger>
             <TabsTrigger value="tutor" className="flex items-center gap-1.5 text-xs sm:text-sm">
               <MessageSquare className="h-4 w-4" />
-              <span>AI Tutor</span>
+              <span className="hidden sm:inline">AI Tutor</span>
             </TabsTrigger>
           </TabsList>
 
