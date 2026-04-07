@@ -16,7 +16,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { 
   ArrowLeft, BookOpen, List, Loader2, AlertCircle,
-  MessageSquare, GraduationCap, Award, Trophy
+  MessageSquare, GraduationCap, Award, Trophy, Video
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ModuleLearningContent } from '@/components/learning/ModuleLearningContent';
