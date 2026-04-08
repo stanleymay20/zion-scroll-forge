@@ -10,15 +10,24 @@ import "./index.css";
 // Mark app initialization start
 performanceMonitor.mark('app-init-start');
 
-// Register service worker for PWA functionality
-if (import.meta.env.PROD) {
+// Guard: never register service workers in iframes or preview hosts
+const isInIframe = (() => {
+  try { return window.self !== window.top; } catch { return true; }
+})();
+const isPreviewHost =
+  window.location.hostname.includes('id-preview--') ||
+  window.location.hostname.includes('lovableproject.com') ||
+  window.location.hostname.includes('lovable.app');
+
+if (isPreviewHost || isInIframe) {
+  // Unregister any existing service workers that may cause blank screens
+  navigator.serviceWorker?.getRegistrations().then((regs) => {
+    regs.forEach((r) => r.unregister());
+  });
+} else if (import.meta.env.PROD) {
   registerServiceWorker({
-    onSuccess: () => {
-      console.log('Service Worker registered successfully');
-    },
-    onUpdate: () => {
-      console.log('New service worker available');
-    }
+    onSuccess: () => console.log('Service Worker registered successfully'),
+    onUpdate: () => console.log('New service worker available'),
   });
 }
 
