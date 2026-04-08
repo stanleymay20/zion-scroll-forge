@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Mail, AlertCircle, CheckCircle2, ArrowLeft } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -25,20 +26,13 @@ export default function ForgotPassword() {
     setLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/supabase/password-reset/request`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
       });
 
-      const data = await response.json();
-
-      if (!data.success) {
-        throw new Error(data.error || 'Failed to send reset email');
-      }
+      if (resetError) throw resetError;
 
       setSuccess(true);
-      setEmail('');
     } catch (err: any) {
       setError(err.message || 'Failed to send reset email. Please try again.');
     } finally {
@@ -47,13 +41,13 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-scroll-primary/10 via-background to-scroll-secondary/10 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="text-center space-y-2">
-          <div className="mx-auto w-16 h-16 bg-scroll-primary/10 rounded-full flex items-center justify-center mb-2">
-            <Mail className="h-8 w-8 text-scroll-primary" />
+          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+            <Mail className="h-8 w-8 text-primary" />
           </div>
-          <CardTitle className="text-3xl font-serif text-scroll-primary">
+          <CardTitle className="text-3xl font-serif text-primary">
             Reset Password
           </CardTitle>
           <CardDescription className="text-base">
@@ -69,24 +63,19 @@ export default function ForgotPassword() {
             </Alert>
           )}
 
-          {success && (
-            <Alert className="bg-green-50 border-green-200">
-              <CheckCircle2 className="h-4 w-4 text-green-600" />
-              <AlertDescription className="text-green-800">
+          {success ? (
+            <Alert className="border-success/30 bg-success/10">
+              <CheckCircle2 className="h-4 w-4 text-success" />
+              <AlertDescription>
                 <strong>Check your email!</strong>
                 <br />
-                We've sent password reset instructions to <strong>{email}</strong>.
-                The link will expire in 1 hour.
+                We've sent password reset instructions to your email address. The link will expire in 1 hour.
               </AlertDescription>
             </Alert>
-          )}
-
-          {!success && (
+          ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium">
-                  Email Address
-                </Label>
+                <Label htmlFor="email" className="text-sm font-medium">Email Address</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -103,11 +92,7 @@ export default function ForgotPassword() {
                 </div>
               </div>
 
-              <Button
-                type="submit"
-                className="w-full bg-scroll-primary hover:bg-scroll-primary/90"
-                disabled={loading}
-              >
+              <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -124,9 +109,9 @@ export default function ForgotPassword() {
           )}
 
           <div className="space-y-4">
-            <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-              <h4 className="font-medium text-blue-900 mb-2">What happens next?</h4>
-              <ul className="text-sm text-blue-800 space-y-1">
+            <div className="p-4 bg-accent/50 border border-border rounded-lg">
+              <h4 className="font-medium text-foreground mb-2">What happens next?</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
                 <li>• Check your email inbox (and spam folder)</li>
                 <li>• Click the reset link in the email</li>
                 <li>• Create a new secure password</li>
@@ -134,8 +119,8 @@ export default function ForgotPassword() {
               </ul>
             </div>
 
-            <div className="p-4 bg-scroll-primary/5 rounded-lg border border-scroll-primary/20">
-              <p className="text-sm text-center italic text-scroll-primary font-serif">
+            <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+              <p className="text-sm text-center italic text-primary font-serif">
                 "The Lord is close to the brokenhearted and saves those who are crushed in spirit." - Psalm 34:18
               </p>
             </div>
@@ -144,18 +129,15 @@ export default function ForgotPassword() {
 
         <CardFooter className="flex flex-col space-y-2">
           <Link
-            to="/auth/login"
-            className="flex items-center justify-center text-sm text-scroll-primary hover:underline font-medium"
+            to="/auth"
+            className="flex items-center justify-center text-sm text-primary hover:underline font-medium"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Sign In
           </Link>
           <div className="text-sm text-center text-muted-foreground">
             Don't have an account?{' '}
-            <Link
-              to="/auth/register"
-              className="text-scroll-primary hover:underline font-medium"
-            >
+            <Link to="/auth/register" className="text-primary hover:underline font-medium">
               Create one now
             </Link>
           </div>
