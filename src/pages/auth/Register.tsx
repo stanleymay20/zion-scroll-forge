@@ -11,9 +11,9 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Mail, Lock, User, AlertCircle, Chrome, CheckCircle2 } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+import { Loader2, Mail, Lock, User, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
+import { supabase } from '@/integrations/supabase/client';
 
 interface FormData {
   firstName: string;
@@ -61,7 +61,6 @@ export default function Register() {
   const handleInputChange = (field: keyof FormData, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
-    // Clear validation error for this field
     if (validationErrors[field]) {
       setValidationErrors(prev => {
         const newErrors = { ...prev };
@@ -70,7 +69,6 @@ export default function Register() {
       });
     }
 
-    // Update password strength
     if (field === 'password' && typeof value === 'string') {
       setPasswordStrength(validatePassword(value));
     }
@@ -79,13 +77,8 @@ export default function Register() {
   const validateForm = (): boolean => {
     const errors: Record<string, string> = {};
 
-    if (!formData.firstName.trim()) {
-      errors.firstName = 'First name is required';
-    }
-
-    if (!formData.lastName.trim()) {
-      errors.lastName = 'Last name is required';
-    }
+    if (!formData.firstName.trim()) errors.firstName = 'First name is required';
+    if (!formData.lastName.trim()) errors.lastName = 'Last name is required';
 
     if (!formData.email.trim()) {
       errors.email = 'Email is required';
@@ -123,65 +116,33 @@ export default function Register() {
     e.preventDefault();
     setError('');
 
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setLoading(true);
 
     try {
-      // Call backend registration endpoint
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/supabase/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          username: formData.username
-        })
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/verify-email`,
+          data: {
+            first_name: formData.firstName,
+            last_name: formData.lastName,
+            username: formData.username,
+            full_name: `${formData.firstName} ${formData.lastName}`,
+          }
+        }
       });
 
-      const data = await response.json();
+      if (signUpError) throw signUpError;
 
-      if (!data.success) {
-        throw new Error(data.error || 'Registration failed');
-      }
-
-      // Navigate to email verification page
       navigate('/auth/verify-email', {
         state: { email: formData.email }
       });
     } catch (err: any) {
       setError(err.message || 'Failed to create account. Please try again.');
     } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSocialAuth = async (provider: 'google' | 'microsoft') => {
-    setError('');
-    setLoading(true);
-
-    try {
-      const redirectUrl = `${window.location.origin}/auth/callback?redirect=/dashboard`;
-      
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/supabase/social/${provider}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ redirectTo: redirectUrl })
-      });
-
-      const data = await response.json();
-      
-      if (data.success && data.data.url) {
-        window.location.href = data.data.url;
-      } else {
-        throw new Error('Failed to initiate social authentication');
-      }
-    } catch (err: any) {
-      setError(err.message || 'Social authentication failed');
       setLoading(false);
     }
   };
@@ -203,13 +164,13 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-scroll-primary/10 via-background to-scroll-secondary/10 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background to-secondary/10 p-4">
       <Card className="w-full max-w-2xl shadow-xl">
         <CardHeader className="text-center space-y-2">
-          <div className="mx-auto w-16 h-16 bg-scroll-primary/10 rounded-full flex items-center justify-center mb-2">
+          <div className="mx-auto w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-2">
             <span className="text-3xl">📜</span>
           </div>
-          <CardTitle className="text-3xl font-serif text-scroll-primary">
+          <CardTitle className="text-3xl font-serif text-primary">
             Join ScrollUniversity
           </CardTitle>
           <CardDescription className="text-base">
@@ -226,11 +187,9 @@ export default function Register() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-sm font-medium">
-                  First Name *
-                </Label>
+                <Label htmlFor="firstName" className="text-sm font-medium">First Name *</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -245,14 +204,12 @@ export default function Register() {
                   />
                 </div>
                 {validationErrors.firstName && (
-                  <p className="text-sm text-red-500">{validationErrors.firstName}</p>
+                  <p className="text-sm text-destructive">{validationErrors.firstName}</p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="lastName" className="text-sm font-medium">
-                  Last Name *
-                </Label>
+                <Label htmlFor="lastName" className="text-sm font-medium">Last Name *</Label>
                 <div className="relative">
                   <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -267,15 +224,13 @@ export default function Register() {
                   />
                 </div>
                 {validationErrors.lastName && (
-                  <p className="text-sm text-red-500">{validationErrors.lastName}</p>
+                  <p className="text-sm text-destructive">{validationErrors.lastName}</p>
                 )}
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium">
-                Email Address *
-              </Label>
+              <Label htmlFor="email" className="text-sm font-medium">Email Address *</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -290,14 +245,12 @@ export default function Register() {
                 />
               </div>
               {validationErrors.email && (
-                <p className="text-sm text-red-500">{validationErrors.email}</p>
+                <p className="text-sm text-destructive">{validationErrors.email}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="username" className="text-sm font-medium">
-                Username *
-              </Label>
+              <Label htmlFor="username" className="text-sm font-medium">Username *</Label>
               <div className="relative">
                 <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -312,14 +265,12 @@ export default function Register() {
                 />
               </div>
               {validationErrors.username && (
-                <p className="text-sm text-red-500">{validationErrors.username}</p>
+                <p className="text-sm text-destructive">{validationErrors.username}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium">
-                Password *
-              </Label>
+              <Label htmlFor="password" className="text-sm font-medium">Password *</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -336,7 +287,7 @@ export default function Register() {
               {formData.password && (
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="flex-1 h-2 bg-muted rounded-full overflow-hidden">
                       <div className={`h-full transition-all ${getPasswordStrengthColor()} ${getPasswordStrengthWidth()}`} />
                     </div>
                     <span className="text-xs text-muted-foreground capitalize">{passwordStrength}</span>
@@ -347,14 +298,12 @@ export default function Register() {
                 </div>
               )}
               {validationErrors.password && (
-                <p className="text-sm text-red-500">{validationErrors.password}</p>
+                <p className="text-sm text-destructive">{validationErrors.password}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="text-sm font-medium">
-                Confirm Password *
-              </Label>
+              <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password *</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -369,7 +318,7 @@ export default function Register() {
                 />
               </div>
               {validationErrors.confirmPassword && (
-                <p className="text-sm text-red-500">{validationErrors.confirmPassword}</p>
+                <p className="text-sm text-destructive">{validationErrors.confirmPassword}</p>
               )}
             </div>
 
@@ -386,23 +335,23 @@ export default function Register() {
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
                   I agree to the{' '}
-                  <Link to="/terms" className="text-scroll-primary hover:underline" target="_blank">
+                  <Link to="/terms" className="text-primary hover:underline" target="_blank">
                     Terms of Service
                   </Link>
                   {' '}and{' '}
-                  <Link to="/privacy" className="text-scroll-primary hover:underline" target="_blank">
+                  <Link to="/privacy" className="text-primary hover:underline" target="_blank">
                     Privacy Policy
                   </Link>
                 </label>
                 {validationErrors.agreeToTerms && (
-                  <p className="text-sm text-red-500">{validationErrors.agreeToTerms}</p>
+                  <p className="text-sm text-destructive">{validationErrors.agreeToTerms}</p>
                 )}
               </div>
             </div>
 
             <Button
               type="submit"
-              className="w-full bg-scroll-primary hover:bg-scroll-primary/90"
+              className="w-full"
               disabled={loading}
             >
               {loading ? (
@@ -419,47 +368,8 @@ export default function Register() {
             </Button>
           </form>
 
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <Separator />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">
-                Or continue with
-              </span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleSocialAuth('google')}
-              disabled={loading}
-              className="w-full"
-            >
-              <Chrome className="mr-2 h-4 w-4" />
-              Google
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleSocialAuth('microsoft')}
-              disabled={loading}
-              className="w-full"
-            >
-              <svg className="mr-2 h-4 w-4" viewBox="0 0 23 23" fill="currentColor">
-                <path d="M0 0h11v11H0z" fill="#f25022" />
-                <path d="M12 0h11v11H12z" fill="#00a4ef" />
-                <path d="M0 12h11v11H0z" fill="#7fba00" />
-                <path d="M12 12h11v11H12z" fill="#ffb900" />
-              </svg>
-              Microsoft
-            </Button>
-          </div>
-
-          <div className="p-4 bg-scroll-primary/5 rounded-lg border border-scroll-primary/20">
-            <p className="text-sm text-center italic text-scroll-primary font-serif">
+          <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+            <p className="text-sm text-center italic text-primary font-serif">
               "Train up a child in the way he should go; even when he is old he will not depart from it." - Proverbs 22:6
             </p>
           </div>
@@ -469,8 +379,8 @@ export default function Register() {
           <div className="text-sm text-center text-muted-foreground">
             Already have an account?{' '}
             <Link
-              to="/auth/login"
-              className="text-scroll-primary hover:underline font-medium"
+              to="/auth"
+              className="text-primary hover:underline font-medium"
             >
               Sign in
             </Link>
