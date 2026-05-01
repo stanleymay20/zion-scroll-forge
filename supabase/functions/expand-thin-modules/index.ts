@@ -71,20 +71,17 @@ Deno.serve(async (req) => {
         });
 
         if (aiRes.status === 429) {
-          results.push({ id: mod.id, status: "rate_limited" });
-          break; // stop early on rate limit
+          return { id: mod.id, status: "rate_limited" };
         }
         if (!aiRes.ok) {
           const errText = await aiRes.text();
-          results.push({ id: mod.id, status: "ai_error", error: errText.slice(0, 200) });
-          continue;
+          return { id: mod.id, status: "ai_error", error: errText.slice(0, 200) };
         }
 
         const data = await aiRes.json();
         const newContent: string = data?.choices?.[0]?.message?.content ?? "";
         if (!newContent || newContent.length < MIN_CHARS) {
-          results.push({ id: mod.id, status: "too_short", chars: newContent.length });
-          continue;
+          return { id: mod.id, status: "too_short", chars: newContent.length };
         }
 
         const { error: updateErr } = await supabase
@@ -96,14 +93,21 @@ Deno.serve(async (req) => {
           .eq("id", mod.id);
 
         if (updateErr) {
-          results.push({ id: mod.id, status: "update_failed", error: updateErr.message });
-          continue;
+          return { id: mod.id, status: "update_failed", error: updateErr.message };
         }
 
-        results.push({ id: mod.id, status: "expanded", chars: newContent.length });
+        return { id: mod.id, status: "expanded", chars: newContent.length };
       } catch (e) {
-        results.push({ id: mod.id, status: "exception", error: (e as Error).message });
+        return { id: mod.id, status: "exception", error: (e as Error).message };
       }
+    }
+
+    // Run with concurrency limit
+    for (let i = 0; i < thinModules.length; i += CONCURRENCY) {
+      const batch = thinModules.slice(i, i + CONCURRENCY);
+      const batchResults = await Promise.all(batch.map(processOne));
+      results.push(...(batchResults as any[]));
+      if (batchResults.some((r: any) => r.status === "rate_limited")) break;
     }
 
     return json({
