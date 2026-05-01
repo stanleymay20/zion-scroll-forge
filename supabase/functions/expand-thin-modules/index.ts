@@ -41,9 +41,11 @@ Deno.serve(async (req) => {
       return json({ success: true, message: "No thin modules found", processed: 0 });
     }
 
+    // Process in parallel for speed (capped at 5 concurrent to respect rate limits)
+    const CONCURRENCY = 5;
     const results: Array<{ id: string; status: string; chars?: number; error?: string }> = [];
 
-    for (const mod of thinModules) {
+    async function processOne(mod: any) {
       try {
         const courseTitle = (mod.courses as any)?.title ?? "";
         const faculty = (mod.courses as any)?.faculty ?? "";
