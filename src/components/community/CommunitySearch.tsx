@@ -10,7 +10,16 @@ import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Search, Loader2, FileText, User } from 'lucide-react';
-import { debounce } from 'lodash';
+// Lightweight debounce (avoids lodash dependency)
+function debounce<T extends (...args: any[]) => any>(fn: T, wait: number) {
+  let t: ReturnType<typeof setTimeout> | null = null;
+  const debounced = (...args: Parameters<T>) => {
+    if (t) clearTimeout(t);
+    t = setTimeout(() => fn(...args), wait);
+  };
+  (debounced as any).cancel = () => { if (t) clearTimeout(t); };
+  return debounced as T & { cancel: () => void };
+}
 
 export const CommunitySearch: React.FC = () => {
   const navigate = useNavigate();
