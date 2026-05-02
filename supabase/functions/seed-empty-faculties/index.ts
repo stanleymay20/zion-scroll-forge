@@ -217,6 +217,35 @@ The "answer" must be the exact option text.`;
   } catch { return []; }
 }
 
+function templateCatalog(faculty: any) {
+  const code = (faculty.faculty_code || "FAC").replace(/[^A-Z0-9]/gi, "").toUpperCase().slice(0, 8);
+  const themes = [
+    { suffix: "Foundations", desc: "introductory principles, history, and scriptural grounding" },
+    { suffix: "Methods & Practice", desc: "core methods, tools, and applied case studies" },
+    { suffix: "Ethics & Stewardship", desc: "ethical frameworks, accountability, and kingdom stewardship" },
+    { suffix: "Field Engagement", desc: "real-world engagement, fieldwork, and community impact" },
+    { suffix: "Integration & Capstone", desc: "synthesis, capstone project, and prophetic outlook" },
+  ];
+  return {
+    courses: themes.map((t, i) => ({
+      title: `${code}${100 + (i + 1) * 10}: ${faculty.name} — ${t.suffix}`,
+      description: `An undergraduate course in ${faculty.name} covering ${t.desc}. Students engage rigorous scholarship integrated with the faculty's mission and scriptural foundations.`,
+      level: "ScrollBachelor",
+      learning_outcomes: [
+        `Demonstrate mastery of core ${t.suffix.toLowerCase()} concepts in ${faculty.name}.`,
+        `Apply scriptural and scholarly frameworks to real cases.`,
+        `Produce a culminating artifact that integrates theory and practice.`,
+      ],
+      tags: [faculty.name, t.suffix],
+      modules: [
+        { title: `Module 1: Orienting ${t.suffix} in ${faculty.name}` },
+        { title: `Module 2: Core Concepts and Scriptural Foundations` },
+        { title: `Module 3: Applied Practice and Synthesis` },
+      ],
+    })),
+  };
+}
+
 function json(data: unknown, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
