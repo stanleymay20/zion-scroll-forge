@@ -70,7 +70,7 @@ Deno.serve(async (req) => {
               faculty: faculty.name,
               faculty_id: faculty.id,
               institution_id: faculty.institution_id,
-              level: courseSpec.level || "Undergraduate",
+              level: "ScrollBachelor",
               duration: "12 weeks",
               credit_hours: 3,
               learning_outcomes: courseSpec.learning_outcomes ?? [],
