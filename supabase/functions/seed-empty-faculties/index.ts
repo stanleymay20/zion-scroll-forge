@@ -8,8 +8,8 @@ const corsHeaders = {
 };
 
 const COURSES_PER_FACULTY = 5;
-const MODULES_PER_COURSE = 6;
-const CONCURRENCY = 4;
+const MODULES_PER_COURSE = 3;
+const CONCURRENCY = 6;
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
