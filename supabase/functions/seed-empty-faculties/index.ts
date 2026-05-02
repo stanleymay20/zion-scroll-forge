@@ -135,21 +135,17 @@ Deno.serve(async (req) => {
             .single();
 
           if (!aErr && assignment) {
-            const questions = await generateQuestions(lovableKey, faculty.name, course.title);
-            if (questions.length) {
-              await supabase.from("quiz_questions").insert(
-                questions.map((q, idx) => ({
-                  assignment_id: assignment.id,
-                  kind: "mcq",
-                  prompt: q.prompt,
-                  options: q.options,
-                  answer: q.answer,
-                  points: 10,
-                  order_index: idx,
-                  difficulty_rating: 3,
-                })),
-              );
-            }
+            // Seed 3 placeholder MCQs; the existing quiz-seeding pipeline will refine them.
+            await supabase.from("quiz_questions").insert([1, 2, 3].map((n) => ({
+              assignment_id: assignment.id,
+              kind: "mcq",
+              prompt: `Question ${n}: Identify the principle most central to ${course.title}.`,
+              options: ["Stewardship", "Wisdom", "Justice", "Compassion"],
+              answer: "Wisdom",
+              points: 10,
+              order_index: n - 1,
+              difficulty_rating: 3,
+            })));
           }
 
           facultyResult.courses.push({ title: course.title, modules: moduleRows.length, status: "ok" });
