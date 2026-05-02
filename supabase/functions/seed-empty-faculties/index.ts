@@ -51,12 +51,13 @@ Deno.serve(async (req) => {
 
     for (const faculty of empty) {
       try {
-        // 1) Generate course catalog outline via AI
-        const outline = await generateCatalog(lovableKey, faculty);
-        if (!outline?.courses?.length) {
-          results.push({ faculty: faculty.name, status: "no_outline" });
-          continue;
+        // Try AI catalog; fall back to deterministic template on credit/AI failure
+        let outline: any = null;
+        try { outline = await generateCatalog(lovableKey, faculty); } catch (e) {
+          console.warn(`AI catalog failed for ${faculty.name}, using template:`, (e as Error).message);
         }
+        if (!outline?.courses?.length) outline = templateCatalog(faculty);
+
 
         const facultyResult = { faculty: faculty.name, courses: [] as any[] };
 
