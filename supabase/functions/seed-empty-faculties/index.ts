@@ -203,11 +203,9 @@ Make titles distinctive, rigorous, and faith-integrated. No filler.`;
   try { return JSON.parse(raw); } catch { return null; }
 }
 
-async function expandModule(key: string, faculty: any, courseTitle: string, moduleTitle: string) {
-  const sys = "You are a senior curriculum designer. Write rigorous Markdown module content (2000-2800 words) with ## sections, scriptural and scholarly grounding, key terms, and a synthesis section. No placeholders, no AI mentions.";
-  const user = `Faculty: ${faculty.name}\nCourse: ${courseTitle}\nModule: ${moduleTitle}\n\nWrite the complete module body in Markdown only.`;
-  const content = await aiCall(key, sys, user, false);
-  return content || `# ${moduleTitle}\n\n_Content pending expansion._`;
+async function expandModule(_key: string, faculty: any, courseTitle: string, moduleTitle: string) {
+  // Lightweight seed; expand-thin-modules will flesh out to 2000+ chars later.
+  return `# ${moduleTitle}\n\nThis module is part of **${courseTitle}** in the Faculty of **${faculty.name}**.\n\n## Overview\n\nFoundational chapter covering core principles, scriptural grounding, and applied practice. Detailed expansion is queued.\n\n## Learning Goals\n\n- Articulate the central concepts of this module.\n- Connect the material to broader course themes and scriptural foundations.\n- Apply the framework in a guided exercise.\n\n## Key Terms\n\nTerms will be elaborated in the full expansion pass.\n\n## Synthesis & Reflection\n\nReflect on how this material informs your calling and field of service.`;
 }
 
 async function generateQuestions(key: string, facultyName: string, courseTitle: string) {
