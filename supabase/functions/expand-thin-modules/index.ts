@@ -32,7 +32,7 @@ Deno.serve(async (req) => {
     const { data: thinModules, error: queryError } = await supabase
       .from("course_modules")
       .select("id, course_id, title, content_md, content_char_count, courses(title, faculty)")
-      .or("content_char_count.lt.500,content_char_count.is.null")
+      .or("content_char_count.lt.2000,content_char_count.is.null")
       .limit(limit);
 
     if (queryError) throw queryError;
