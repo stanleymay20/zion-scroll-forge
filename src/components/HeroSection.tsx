@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
 import { Link } from "react-router-dom";
-import { BookOpen, Heart, Star, Crown, Shield, ArrowRight } from "lucide-react";
+import { BookOpen, Heart, Star, Crown, Shield, ArrowRight, GraduationCap } from "lucide-react";
 
 export const HeroSection = () => {
   return (
@@ -42,19 +42,19 @@ export const HeroSection = () => {
 
         {/* CTA Buttons */}
         <div className="animate-fade-up animate-fade-up-delay-3 flex flex-col sm:flex-row gap-3 justify-center mb-16">
-          <AuthAwareLink to="/courses">
-            <Button size="lg" className="text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 font-sans w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground shadow-md hover:shadow-lg transition-all group">
-              <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
-              Explore Courses
+          <Link to="/auth?tab=signup&redirect=/apply">
+            <Button size="lg" className="text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 font-sans w-full sm:w-auto bg-accent hover:bg-accent/90 text-accent-foreground shadow-md hover:shadow-lg transition-all group">
+              <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              Apply to ScrollUniversity
               <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5" />
             </Button>
-          </AuthAwareLink>
-          <Link to="/auth?tab=signup&redirect=/spiritual-formation">
-            <Button variant="outline" size="lg" className="text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 font-sans w-full sm:w-auto border-primary/20 hover:bg-primary/5 hover:border-primary/40 transition-all">
-              <Heart className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-accent" />
-              Begin Spiritual Formation
-            </Button>
           </Link>
+          <AuthAwareLink to="/courses">
+            <Button variant="outline" size="lg" className="text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 font-sans w-full sm:w-auto border-primary/20 hover:bg-primary/5 hover:border-primary/40 transition-all">
+              <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
+              Explore Courses
+            </Button>
+          </AuthAwareLink>
         </div>
 
         {/* Feature Cards */}
