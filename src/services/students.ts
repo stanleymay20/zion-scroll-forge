@@ -89,11 +89,11 @@ export const getPendingApplications = underChrist(async () => {
 });
 
 export const approveApplication = underChrist(async (studentId: string) => {
-  // Generate admission letter
-  const { data } = await supabase.functions.invoke('generate-admission-letter', {
-    body: { studentId }
+  // Controlled launch: cohort-onboard handles cap, lifecycle, enrollment, letter, notification
+  const { data, error } = await supabase.functions.invoke('cohort-onboard', {
+    body: { student_id: studentId }
   });
-
+  if (error) throw error;
   return data;
 });
 
