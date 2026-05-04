@@ -60,6 +60,7 @@ const StudyGroups = lazy(() => import("./pages/StudyGroups"));
 const StudyGroupChat = lazy(() => import("./pages/StudyGroupChat"));
 const Achievements = lazy(() => import("./pages/Achievements"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const LaunchOps = lazy(() => import("./pages/LaunchOps"));
 const Apply = lazy(() => import("./pages/Apply"));
 const FacultyDashboard = lazy(() => import("./pages/FacultyDashboard"));
 const Gradebook = lazy(() => import("./pages/Gradebook"));
@@ -334,6 +335,7 @@ const App = () => (
               <Route path="admin/content-generation" element={<ContentGenerationAdmin />} />
               <Route path="admin/institutions" element={<InstitutionsAdmin />} />
               <Route path="admin/super" element={<SuperAdmin />} />
+              <Route path="admin/launch-ops" element={<LaunchOps />} />
               <Route path="apply" element={<Apply />} />
               <Route path="courses-detail/:courseId" element={<CourseDetailPage />} />
               <Route path="my-courses" element={<MyCourses />} />

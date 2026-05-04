@@ -3242,6 +3242,33 @@ export type Database = {
           },
         ]
       }
+      launch_settings: {
+        Row: {
+          cohort_cap: number
+          cohort_label: string
+          id: string
+          is_open: boolean
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          cohort_cap?: number
+          cohort_label?: string
+          id?: string
+          is_open?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          cohort_cap?: number
+          cohort_label?: string
+          id?: string
+          is_open?: boolean
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
       learning_analytics_daily: {
         Row: {
           avg_score: number | null
@@ -6023,8 +6050,10 @@ export type Database = {
           address: string | null
           admission_letter_url: string | null
           application_status: string | null
+          cohort_number: number | null
           country: string | null
           created_at: string | null
+          degree_program_id: string | null
           dob: string | null
           email: string | null
           full_name: string | null
@@ -6038,8 +6067,10 @@ export type Database = {
           address?: string | null
           admission_letter_url?: string | null
           application_status?: string | null
+          cohort_number?: number | null
           country?: string | null
           created_at?: string | null
+          degree_program_id?: string | null
           dob?: string | null
           email?: string | null
           full_name?: string | null
@@ -6053,8 +6084,10 @@ export type Database = {
           address?: string | null
           admission_letter_url?: string | null
           application_status?: string | null
+          cohort_number?: number | null
           country?: string | null
           created_at?: string | null
+          degree_program_id?: string | null
           dob?: string | null
           email?: string | null
           full_name?: string | null
@@ -6064,7 +6097,15 @@ export type Database = {
           photo_url?: string | null
           user_id?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "students_degree_program_id_fkey"
+            columns: ["degree_program_id"]
+            isOneToOne: false
+            referencedRelation: "degree_programs"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       study_group_members: {
         Row: {
@@ -7183,6 +7224,7 @@ export type Database = {
         }
         Returns: undefined
       }
+      beta_cohort_status: { Args: never; Returns: Json }
       check_diploma_seal_criteria: {
         Args: { p_course_id: string }
         Returns: Json
@@ -7248,6 +7290,7 @@ export type Database = {
         Args: { p_term_id: string; p_user_id: string }
         Returns: boolean
       }
+      launch_ops_metrics: { Args: never; Returns: Json }
       log_quality_action: {
         Args: {
           p_action_type: string
