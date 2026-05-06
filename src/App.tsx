@@ -187,23 +187,16 @@ const PublicAppShell = ({ children }: { children: React.ReactNode }) => (
   </TooltipProvider>
 );
 
-const ProtectedAppShell = ({ children }: { children: React.ReactNode }) => (
+const ProtectedAppProviders = ({ children }: { children: React.ReactNode }) => (
   <ErrorHandlingProvider>
     <AuthProvider>
       <InstitutionProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <MobileViewportConfig />
-          <BrowserRouter>
-            <RealtimeProvider>
-              <PWAInstallPrompt />
-              <PWAUpdatePrompt />
-              <MobileAppInstallPrompt />
-              <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
-            </RealtimeProvider>
-          </BrowserRouter>
-        </TooltipProvider>
+        <RealtimeProvider>
+          <PWAInstallPrompt />
+          <PWAUpdatePrompt />
+          <MobileAppInstallPrompt />
+          {children}
+        </RealtimeProvider>
       </InstitutionProvider>
     </AuthProvider>
   </ErrorHandlingProvider>
@@ -303,11 +296,11 @@ const App = () => (
             <Route
               path="/"
               element={
-                <ProtectedAppShell>
+                <ProtectedAppProviders>
                   <ProtectedRoute>
                     <MainLayout />
                   </ProtectedRoute>
-                </ProtectedAppShell>
+                </ProtectedAppProviders>
               }
             >
               <Route path="dashboard" element={<EnhancedDashboard />} />
