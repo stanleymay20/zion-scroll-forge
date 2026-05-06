@@ -176,6 +176,39 @@ const RealtimeProvider = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const PublicAppShell = ({ children }: { children: React.ReactNode }) => (
+  <TooltipProvider>
+    <Toaster />
+    <Sonner />
+    <MobileViewportConfig />
+    <BrowserRouter>
+      <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
+    </BrowserRouter>
+  </TooltipProvider>
+);
+
+const ProtectedAppShell = ({ children }: { children: React.ReactNode }) => (
+  <ErrorHandlingProvider>
+    <AuthProvider>
+      <InstitutionProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <MobileViewportConfig />
+          <BrowserRouter>
+            <RealtimeProvider>
+              <PWAInstallPrompt />
+              <PWAUpdatePrompt />
+              <MobileAppInstallPrompt />
+              <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
+            </RealtimeProvider>
+          </BrowserRouter>
+        </TooltipProvider>
+      </InstitutionProvider>
+    </AuthProvider>
+  </ErrorHandlingProvider>
+);
+
 // Mobile viewport configuration
 const MobileViewportConfig = () => {
   useEffect(() => {
@@ -210,20 +243,8 @@ const MobileViewportConfig = () => {
 const App = () => (
   <ErrorBoundary>
     <QueryClientProvider client={queryClient}>
-      <ErrorHandlingProvider>
-        <AuthProvider>
-          <InstitutionProvider>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <MobileViewportConfig />
-              <BrowserRouter>
-                <RealtimeProvider>
-                  <PWAInstallPrompt />
-                  <PWAUpdatePrompt />
-                  <MobileAppInstallPrompt />
-                <Suspense fallback={<LoadingFallback />}>
-                <Routes>
+      <PublicAppShell>
+        <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
             
@@ -277,9 +298,18 @@ const App = () => (
             <Route path="/auth/reset-password" element={<ResetPassword />} />
             <Route path="/auth/verify-email" element={<VerifyEmail />} />
             <Route path="/auth/callback" element={<OAuthCallback />} />
-            
+
             {/* Protected Routes with Main Layout */}
-            <Route path="/" element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
+            <Route
+              path="/"
+              element={
+                <ProtectedAppShell>
+                  <ProtectedRoute>
+                    <MainLayout />
+                  </ProtectedRoute>
+                </ProtectedAppShell>
+              }
+            >
               <Route path="dashboard" element={<EnhancedDashboard />} />
               <Route path="specs" element={<ScrollSpecs />} />
               <Route path="specs/new" element={<ScrollSpecs />} />
@@ -425,15 +455,9 @@ const App = () => (
           
           {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </RealtimeProvider>
-        </BrowserRouter>
-      </TooltipProvider>
-      </InstitutionProvider>
-    </AuthProvider>
-    </ErrorHandlingProvider>
-  </QueryClientProvider>
+        </Routes>
+      </PublicAppShell>
+    </QueryClientProvider>
   </ErrorBoundary>
 );
 
