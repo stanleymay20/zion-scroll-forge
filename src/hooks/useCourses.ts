@@ -5,9 +5,17 @@ import { useInstitution } from '@/contexts/InstitutionContext';
 import { useToast } from '@/hooks/use-toast';
 import { underChrist } from '@/lib/lordship';
 
+const useOptionalInstitution = () => {
+  try {
+    return useInstitution();
+  } catch {
+    return { activeInstitution: null };
+  }
+};
+
 export const useUserEnrollments = () => {
   const { user } = useAuth();
-  const { activeInstitution } = useInstitution();
+  const { activeInstitution } = useOptionalInstitution();
 
   return useQuery({
     queryKey: ['enrollments', user?.id, activeInstitution?.id],
