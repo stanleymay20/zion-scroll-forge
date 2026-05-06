@@ -177,14 +177,18 @@ const RealtimeProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 const PublicAppShell = ({ children }: { children: React.ReactNode }) => (
-  <TooltipProvider>
-    <Toaster />
-    <Sonner />
-    <MobileViewportConfig />
-    <BrowserRouter>
-      <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
-    </BrowserRouter>
-  </TooltipProvider>
+  <ErrorHandlingProvider>
+    <AuthProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <MobileViewportConfig />
+        <BrowserRouter>
+          <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
+        </BrowserRouter>
+      </TooltipProvider>
+    </AuthProvider>
+  </ErrorHandlingProvider>
 );
 
 const ProtectedAppProviders = ({ children }: { children: React.ReactNode }) => (
