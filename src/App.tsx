@@ -244,6 +244,8 @@ const App = () => (
         <Routes>
             {/* Public Landing Page */}
             <Route path="/" element={<Index />} />
+            <Route path="/index" element={<Navigate to="/" replace />} />
+            <Route path="/index.html" element={<Navigate to="/" replace />} />
             
             {/* Public Badge Profile */}
             <Route path="/badges/public/:userId" element={<PublicBadgeProfile />} />
