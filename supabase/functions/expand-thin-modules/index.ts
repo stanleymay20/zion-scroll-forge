@@ -123,19 +123,38 @@ Deno.serve(async (req) => {
       }
     }
 
-    // Run with concurrency limit
-    for (let i = 0; i < thinModules.length; i += CONCURRENCY) {
-      const batch = thinModules.slice(i, i + CONCURRENCY);
-      const batchResults = await Promise.all(batch.map(processOne));
-      results.push(...(batchResults as any[]));
-      if (batchResults.some((r: any) => r.status === "rate_limited")) break;
+    // Run in BACKGROUND so HTTP returns immediately (DeepSeek can take 60s+ per call)
+    const runBackground = async () => {
+      for (let i = 0; i < thinModules.length; i += CONCURRENCY) {
+        const batch = thinModules.slice(i, i + CONCURRENCY);
+        const batchResults = await Promise.all(batch.map(processOne));
+        results.push(...(batchResults as any[]));
+        const expanded = batchResults.filter((r: any) => r.status === "expanded").length;
+        const failed = batchResults.filter((r: any) => r.status !== "expanded").length;
+        console.log(`[expand-thin-modules] batch ${i / CONCURRENCY + 1}: +${expanded} expanded, ${failed} other`);
+        if (batchResults.every((r: any) => r.status === "rate_limited" || r.status === "ai_error")) break;
+      }
+      console.log(`[expand-thin-modules] DONE: ${results.filter(r => r.status === "expanded").length}/${results.length} expanded`);
+    };
+
+    // @ts-ignore - EdgeRuntime is available in Supabase Edge Functions
+    if (typeof EdgeRuntime !== "undefined" && EdgeRuntime.waitUntil) {
+      // @ts-ignore
+      EdgeRuntime.waitUntil(runBackground());
+      return json({
+        success: true,
+        queued: thinModules.length,
+        message: `Background expansion started for ${thinModules.length} modules. Check logs for progress.`,
+      });
     }
 
+    // Fallback: run synchronously
+    await runBackground();
     return json({
       success: true,
       processed: results.length,
       expanded: results.filter((r) => r.status === "expanded").length,
-      results,
+      results: results.slice(0, 20),
     });
   } catch (err) {
     console.error("expand-thin-modules error:", err);
