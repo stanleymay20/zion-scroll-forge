@@ -1515,6 +1515,39 @@ export type Database = {
           },
         ]
       }
+      credential_verification_log: {
+        Row: {
+          credential_token: string
+          credential_type: string | null
+          id: string
+          outcome: string
+          verified_at: string
+          verified_subject: string | null
+          verifier_ip: string | null
+          verifier_org: string | null
+        }
+        Insert: {
+          credential_token: string
+          credential_type?: string | null
+          id?: string
+          outcome: string
+          verified_at?: string
+          verified_subject?: string | null
+          verifier_ip?: string | null
+          verifier_org?: string | null
+        }
+        Update: {
+          credential_token?: string
+          credential_type?: string | null
+          id?: string
+          outcome?: string
+          verified_at?: string
+          verified_subject?: string | null
+          verifier_ip?: string | null
+          verifier_org?: string | null
+        }
+        Relationships: []
+      }
       credential_verifications: {
         Row: {
           access_token: string | null
