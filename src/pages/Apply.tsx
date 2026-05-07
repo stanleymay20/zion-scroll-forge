@@ -32,6 +32,7 @@ export default function Apply() {
     country: '',
     address: '',
     degree_program_id: '',
+    motivation_statement: '',
   });
 
   const [files, setFiles] = useState<{ id?: File; transcript?: File }>({});
@@ -42,15 +43,12 @@ export default function Apply() {
       toast.error('Please select a program');
       return;
     }
+    if ((formData.motivation_statement?.trim().length ?? 0) < 80) {
+      toast.error('Motivation statement must be at least 80 characters');
+      return;
+    }
     try {
       const student: any = await createApplication.mutateAsync(formData as any);
-      // attach program selection
-      if (student?.id) {
-        await supabase
-          .from('students')
-          .update({ degree_program_id: formData.degree_program_id })
-          .eq('id', student.id);
-      }
       if (files.id) {
         await uploadDocument.mutateAsync({ studentId: student.id, docType: 'ID Card', file: files.id });
       }
