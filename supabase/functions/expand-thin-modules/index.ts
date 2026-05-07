@@ -22,12 +22,14 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
     const lovableKey = Deno.env.get("LOVABLE_API_KEY");
-    if (!lovableKey) {
-      return json({ error: "LOVABLE_API_KEY not configured" }, 500);
+    const deepseekKey = Deno.env.get("DEEPSEEK_API_KEY");
+    if (!lovableKey && !deepseekKey) {
+      return json({ error: "No AI provider configured" }, 500);
     }
 
     const body = await req.json().catch(() => ({}));
     const limit = Math.min(Number(body.limit) || BATCH_LIMIT_DEFAULT, 50);
+    const forceProvider: "lovable" | "deepseek" | undefined = body.provider;
 
     const { data: thinModules, error: queryError } = await supabase
       .from("course_modules")
@@ -45,58 +47,77 @@ Deno.serve(async (req) => {
     const CONCURRENCY = 5;
     const results: Array<{ id: string; status: string; chars?: number; error?: string }> = [];
 
+    const SYSTEM_PROMPT =
+      "You are a senior endowed-chair professor designing the definitive university-grade chapter for a faith-integrated, MIT/Harvard-tier institution. Write 2500-3500 words of rigorous, citation-grounded academic prose in clean Markdown. Include: an orientation, 6-8 themed sections with ## headings, primary-source quotations, named scholarly references (real authors, real works), worked examples or case studies, scripture engaged exegetically (not as decoration), key terms, discussion questions, further reading, and a synthesis. No placeholders. No filler. No mentions of being an AI. No first-person.";
+
+    async function callLovable(prompt: string) {
+      const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${lovableKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-pro",
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, { role: "user", content: prompt }],
+        }),
+      });
+      return res;
+    }
+
+    async function callDeepSeek(prompt: string) {
+      const res = await fetch("https://api.deepseek.com/chat/completions", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${deepseekKey}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "deepseek-chat",
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, { role: "user", content: prompt }],
+          max_tokens: 8000,
+        }),
+      });
+      return res;
+    }
+
     async function processOne(mod: any) {
       try {
         const courseTitle = (mod.courses as any)?.title ?? "";
         const faculty = (mod.courses as any)?.faculty ?? "";
         const prompt = buildPrompt(courseTitle, faculty, mod.title, mod.content_md ?? "");
 
-        const aiRes = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${lovableKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "google/gemini-2.5-pro",
-            messages: [
-              {
-                role: "system",
-                content:
-                  "You are a senior endowed-chair professor designing the definitive university-grade chapter for a faith-integrated, MIT/Harvard-tier institution. Write 2500-3500 words of rigorous, citation-grounded academic prose in clean Markdown. Include: an orientation, 6-8 themed sections with ## headings, primary-source quotations, named scholarly references (real authors, real works), worked examples or case studies, scripture engaged exegetically (not as decoration), key terms, discussion questions, further reading, and a synthesis. No placeholders. No filler. No mentions of being an AI. No first-person.",
-              },
-              { role: "user", content: prompt },
-            ],
-          }),
-        });
+        let aiRes: Response | null = null;
+        let usedProvider = "";
 
-        if (aiRes.status === 429) {
-          return { id: mod.id, status: "rate_limited" };
+        // Try Lovable first unless deepseek explicitly requested
+        if (lovableKey && forceProvider !== "deepseek") {
+          aiRes = await callLovable(prompt);
+          usedProvider = "lovable";
+          if (aiRes.status === 402 && deepseekKey) {
+            // Out of credits — fall back to DeepSeek
+            aiRes = await callDeepSeek(prompt);
+            usedProvider = "deepseek";
+          }
+        } else if (deepseekKey) {
+          aiRes = await callDeepSeek(prompt);
+          usedProvider = "deepseek";
         }
+
+        if (!aiRes) return { id: mod.id, status: "no_provider" };
+        if (aiRes.status === 429) return { id: mod.id, status: "rate_limited", provider: usedProvider };
         if (!aiRes.ok) {
           const errText = await aiRes.text();
-          return { id: mod.id, status: "ai_error", error: errText.slice(0, 200) };
+          return { id: mod.id, status: "ai_error", provider: usedProvider, error: errText.slice(0, 200) };
         }
 
         const data = await aiRes.json();
         const newContent: string = data?.choices?.[0]?.message?.content ?? "";
         if (!newContent || newContent.length < MIN_CHARS) {
-          return { id: mod.id, status: "too_short", chars: newContent.length };
+          return { id: mod.id, status: "too_short", provider: usedProvider, chars: newContent.length };
         }
 
         const { error: updateErr } = await supabase
           .from("course_modules")
-          .update({
-            content_md: newContent,
-            content_char_count: newContent.length,
-          })
+          .update({ content_md: newContent, content_char_count: newContent.length })
           .eq("id", mod.id);
 
-        if (updateErr) {
-          return { id: mod.id, status: "update_failed", error: updateErr.message };
-        }
-
-        return { id: mod.id, status: "expanded", chars: newContent.length };
+        if (updateErr) return { id: mod.id, status: "update_failed", error: updateErr.message };
+        return { id: mod.id, status: "expanded", provider: usedProvider, chars: newContent.length };
       } catch (e) {
         return { id: mod.id, status: "exception", error: (e as Error).message };
       }
