@@ -136,6 +136,10 @@ const TrustCenter = lazy(() => import("./pages/TrustCenter"));
 const AcademicIntegrity = lazy(() => import("./pages/AcademicIntegrity"));
 const TermsOfService = lazy(() => import("./pages/legal/TermsOfService"));
 const PrivacyPolicy = lazy(() => import("./pages/legal/PrivacyPolicy"));
+const FacultyDirectory = lazy(() => import("./pages/FacultyDirectory"));
+const OutcomesDashboard = lazy(() => import("./pages/OutcomesDashboard"));
+const FoundingWall = lazy(() => import("./pages/FoundingWall"));
+const VerifyCredential = lazy(() => import("./pages/VerifyCredential"));
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -283,6 +287,18 @@ const App = () => (
             </Route>
             <Route path="/academic-integrity" element={<PublicLayout />}>
               <Route index element={<AcademicIntegrity />} />
+            </Route>
+            <Route path="/faculty-directory" element={<PublicLayout />}>
+              <Route index element={<FacultyDirectory />} />
+            </Route>
+            <Route path="/outcomes" element={<PublicLayout />}>
+              <Route index element={<OutcomesDashboard />} />
+            </Route>
+            <Route path="/founding-wall" element={<PublicLayout />}>
+              <Route index element={<FoundingWall />} />
+            </Route>
+            <Route path="/verify" element={<PublicLayout />}>
+              <Route index element={<VerifyCredential />} />
             </Route>
             
             {/* Legal Pages */}

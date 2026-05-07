@@ -1515,6 +1515,39 @@ export type Database = {
           },
         ]
       }
+      credential_verification_log: {
+        Row: {
+          credential_token: string
+          credential_type: string | null
+          id: string
+          outcome: string
+          verified_at: string
+          verified_subject: string | null
+          verifier_ip: string | null
+          verifier_org: string | null
+        }
+        Insert: {
+          credential_token: string
+          credential_type?: string | null
+          id?: string
+          outcome: string
+          verified_at?: string
+          verified_subject?: string | null
+          verifier_ip?: string | null
+          verifier_org?: string | null
+        }
+        Update: {
+          credential_token?: string
+          credential_type?: string | null
+          id?: string
+          outcome?: string
+          verified_at?: string
+          verified_subject?: string | null
+          verifier_ip?: string | null
+          verifier_org?: string | null
+        }
+        Relationships: []
+      }
       credential_verifications: {
         Row: {
           access_token: string | null
@@ -2814,6 +2847,54 @@ export type Database = {
           },
         ]
       }
+      founding_cohort_members: {
+        Row: {
+          cohort_label: string
+          consented_at: string | null
+          country: string | null
+          created_at: string
+          display_name: string
+          id: string
+          is_public: boolean
+          photo_url: string | null
+          position_number: number | null
+          pursuit: string
+          testimony: string | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          cohort_label?: string
+          consented_at?: string | null
+          country?: string | null
+          created_at?: string
+          display_name: string
+          id?: string
+          is_public?: boolean
+          photo_url?: string | null
+          position_number?: number | null
+          pursuit: string
+          testimony?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          cohort_label?: string
+          consented_at?: string | null
+          country?: string | null
+          created_at?: string
+          display_name?: string
+          id?: string
+          is_public?: boolean
+          photo_url?: string | null
+          position_number?: number | null
+          pursuit?: string
+          testimony?: string | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       generation_progress: {
         Row: {
           courses_created: number | null
@@ -3128,6 +3209,54 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      institutional_outcomes: {
+        Row: {
+          audit_notes: string | null
+          category: string
+          created_at: string
+          display_format: string | null
+          id: string
+          is_published: boolean
+          metric_key: string
+          metric_label: string
+          metric_unit: string | null
+          metric_value: number
+          reporting_period: string | null
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          audit_notes?: string | null
+          category: string
+          created_at?: string
+          display_format?: string | null
+          id?: string
+          is_published?: boolean
+          metric_key: string
+          metric_label: string
+          metric_unit?: string | null
+          metric_value: number
+          reporting_period?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          audit_notes?: string | null
+          category?: string
+          created_at?: string
+          display_format?: string | null
+          id?: string
+          is_published?: boolean
+          metric_key?: string
+          metric_label?: string
+          metric_unit?: string | null
+          metric_value?: number
+          reporting_period?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
       }
       institutions: {
         Row: {
@@ -4167,6 +4296,66 @@ export type Database = {
           id?: string
           module_id?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      named_faculty: {
+        Row: {
+          bio: string
+          created_at: string
+          email: string | null
+          faculty_chair: string | null
+          full_name: string
+          h_index: number | null
+          id: string
+          is_published: boolean
+          joined_at: string
+          notable_works: Json | null
+          orcid_id: string | null
+          photo_url: string | null
+          publications_count: number | null
+          supreme_faculty: string
+          title: string
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          bio: string
+          created_at?: string
+          email?: string | null
+          faculty_chair?: string | null
+          full_name: string
+          h_index?: number | null
+          id?: string
+          is_published?: boolean
+          joined_at?: string
+          notable_works?: Json | null
+          orcid_id?: string | null
+          photo_url?: string | null
+          publications_count?: number | null
+          supreme_faculty: string
+          title: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          bio?: string
+          created_at?: string
+          email?: string | null
+          faculty_chair?: string | null
+          full_name?: string
+          h_index?: number | null
+          id?: string
+          is_published?: boolean
+          joined_at?: string
+          notable_works?: Json | null
+          orcid_id?: string | null
+          photo_url?: string | null
+          publications_count?: number | null
+          supreme_faculty?: string
+          title?: string
+          updated_at?: string
+          website_url?: string | null
         }
         Relationships: []
       }
