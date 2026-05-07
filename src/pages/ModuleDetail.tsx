@@ -92,6 +92,9 @@ export default function ModuleDetail() {
           />
         )}
 
+        {/* Live Multi-Agent Classroom — Lecturer + Peer + TA */}
+        {moduleId && <MultiAgentClassroom moduleId={moduleId} />}
+
         <Card>
           <CardHeader>
             <CardTitle>Lesson Content</CardTitle>
