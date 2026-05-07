@@ -8,7 +8,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 
-const MIN_CHARS = 2000; // Curriculum standard: 2000+ chars per module
+const MIN_CHARS = 8000; // Elite curriculum standard: 8000+ chars (~1300 words) per module
 const BATCH_LIMIT_DEFAULT = 20;
 
 Deno.serve(async (req) => {
@@ -32,7 +32,7 @@ Deno.serve(async (req) => {
     const { data: thinModules, error: queryError } = await supabase
       .from("course_modules")
       .select("id, course_id, title, content_md, content_char_count, courses(title, faculty)")
-      .or("content_char_count.lt.2000,content_char_count.is.null")
+      .or("content_char_count.lt.8000,content_char_count.is.null")
       .limit(limit);
 
     if (queryError) throw queryError;
@@ -58,12 +58,12 @@ Deno.serve(async (req) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "google/gemini-2.5-flash",
+            model: "google/gemini-2.5-pro",
             messages: [
               {
                 role: "system",
                 content:
-                  "You are a senior curriculum designer for a faith-integrated university. Write rigorous, university-grade module content (2000-3000 words) in clean Markdown. Include: introduction, 4-6 themed sections with subheadings, scriptural and scholarly grounding, real-world applications, key terms, and a synthesis. No placeholders. No filler. No mentions of being an AI.",
+                  "You are a senior endowed-chair professor designing the definitive university-grade chapter for a faith-integrated, MIT/Harvard-tier institution. Write 2500-3500 words of rigorous, citation-grounded academic prose in clean Markdown. Include: an orientation, 6-8 themed sections with ## headings, primary-source quotations, named scholarly references (real authors, real works), worked examples or case studies, scripture engaged exegetically (not as decoration), key terms, discussion questions, further reading, and a synthesis. No placeholders. No filler. No mentions of being an AI. No first-person.",
               },
               { role: "user", content: prompt },
             ],
@@ -135,12 +135,14 @@ ${existing.slice(0, 1500)}
 """
 
 Requirements:
-- 2000-3000 words of substantive academic prose in Markdown.
-- Begin with a one-paragraph orientation, then 4-6 sections with ## headings.
-- Weave in scriptural references AND scholarly references naturally.
-- Include a "Key Terms" subsection and a "Synthesis & Reflection" closing section.
-- Tone: rigorous, reverent, accessible to undergraduates.
-- Output ONLY the Markdown body — no preamble, no commentary.`;
+- 2500-3500 words of substantive, rigorous academic prose in Markdown.
+- Open with a one-paragraph orientation framing the module's stakes and trajectory.
+- 6-8 sections using ## headings, each with depth (definitions, mechanisms, examples).
+- Engage scripture exegetically (cite chapter:verse) AND named scholarly works (real author + title).
+- Include at least one worked example, case study, or thought experiment.
+- Add "## Key Terms", "## Discussion Questions" (5 items), "## Further Reading" (4-6 real sources), and "## Synthesis & Reflection".
+- Tone: doctoral seminar, reverent, accessible to advanced undergraduates.
+- Output ONLY the Markdown body — no preamble, no meta-commentary.`;
 }
 
 function json(data: unknown, status = 200) {

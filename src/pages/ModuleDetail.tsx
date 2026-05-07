@@ -9,6 +9,7 @@ import { Loader2, Download, CheckCircle2, FileText, Video, Presentation } from '
 import ReactMarkdown from 'react-markdown';
 import { toast } from '@/hooks/use-toast';
 import { AITutorAvatar } from '@/components/AITutorAvatar';
+import { MultiAgentClassroom } from '@/components/learning/MultiAgentClassroom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -90,6 +91,9 @@ export default function ModuleDetail() {
             moduleContent={module.content_md}
           />
         )}
+
+        {/* Live Multi-Agent Classroom — Lecturer + Peer + TA */}
+        {moduleId && <MultiAgentClassroom moduleId={moduleId} />}
 
         <Card>
           <CardHeader>
