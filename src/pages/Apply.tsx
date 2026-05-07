@@ -104,6 +104,36 @@ export default function Apply() {
     );
   }
 
+  if (profile?.application_status === 'waitlisted') {
+    return (
+      <PageTemplate title="Waitlisted" description="You're on the cohort waitlist">
+        <Card>
+          <CardHeader>
+            <CardTitle>You're on the Waitlist</CardTitle>
+            <CardDescription>
+              We'll notify you the moment a seat opens. No further action is needed.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </PageTemplate>
+    );
+  }
+
+  if (profile?.application_status === 'rejected') {
+    return (
+      <PageTemplate title="Application Decision" description="Decision recorded">
+        <Card>
+          <CardHeader>
+            <CardTitle>Application Not Advanced</CardTitle>
+            <CardDescription>
+              {(profile as any)?.rejection_reason || 'Thank you for applying. You may apply again in a future cohort.'}
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </PageTemplate>
+    );
+  }
+
   // Cohort cap reached
   if (cohort && !cohort.is_open) {
     return (
