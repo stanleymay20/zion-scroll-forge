@@ -209,6 +209,25 @@ export default function Apply() {
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
             </div>
 
+            <div className="space-y-2">
+              <Label htmlFor="motivation">
+                Motivation Statement * <span className="text-xs text-muted-foreground">(min 80 chars)</span>
+              </Label>
+              <Textarea
+                id="motivation"
+                required
+                rows={5}
+                minLength={80}
+                maxLength={2000}
+                placeholder="Why this program? What do you bring? What do you hope to do?"
+                value={formData.motivation_statement}
+                onChange={(e) => setFormData({ ...formData, motivation_statement: e.target.value })}
+              />
+              <div className="text-xs text-muted-foreground text-right">
+                {formData.motivation_statement.length} / 2000
+              </div>
+            </div>
+
             <div className="space-y-4 border-t pt-4">
               <h3 className="font-semibold">Supporting Documents (optional)</h3>
               <div className="space-y-2">
