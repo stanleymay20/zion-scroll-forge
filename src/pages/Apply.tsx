@@ -74,7 +74,16 @@ export default function Apply() {
             </CardTitle>
             <CardDescription>Your dashboard is ready.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-3">
+            {(profile as any)?.student_id_code && (
+              <div className="rounded-md border bg-muted/30 p-3 text-sm space-y-1">
+                <div><span className="text-muted-foreground">Student ID:</span> <span className="font-mono font-semibold">{(profile as any).student_id_code}</span></div>
+                <div><span className="text-muted-foreground">Institutional Email:</span> <span className="font-mono">{(profile as any).institutional_email}</span></div>
+                {(profile as any).cohort_number && (
+                  <div><span className="text-muted-foreground">Cohort #:</span> {(profile as any).cohort_number}</div>
+                )}
+              </div>
+            )}
             <Button onClick={() => navigate('/dashboard')}>Go to Dashboard</Button>
           </CardContent>
         </Card>
