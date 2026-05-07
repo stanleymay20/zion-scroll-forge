@@ -50,7 +50,7 @@ Deno.serve(async (req) => {
     }
 
     const ip = req.headers.get("x-forwarded-for") ?? null;
-    await supabase.from("credential_verifications").insert({
+    await supabase.from("credential_verification_log").insert({
       credential_token: token,
       credential_type: cert ? "ScrollCourseCertificate" : null,
       verified_subject: (payload as any).verified_subject ?? null,
