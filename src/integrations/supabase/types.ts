@@ -6049,6 +6049,9 @@ export type Database = {
         Row: {
           address: string | null
           admission_letter_url: string | null
+          ai_review_score: number | null
+          ai_review_summary: string | null
+          ai_reviewed_at: string | null
           application_status: string | null
           cohort_number: number | null
           country: string | null
@@ -6059,13 +6062,21 @@ export type Database = {
           full_name: string | null
           gender: string | null
           id: string
+          institutional_email: string | null
+          motivation_statement: string | null
           phone: string | null
           photo_url: string | null
+          rejection_reason: string | null
+          student_id_code: string | null
           user_id: string | null
+          waitlisted_at: string | null
         }
         Insert: {
           address?: string | null
           admission_letter_url?: string | null
+          ai_review_score?: number | null
+          ai_review_summary?: string | null
+          ai_reviewed_at?: string | null
           application_status?: string | null
           cohort_number?: number | null
           country?: string | null
@@ -6076,13 +6087,21 @@ export type Database = {
           full_name?: string | null
           gender?: string | null
           id?: string
+          institutional_email?: string | null
+          motivation_statement?: string | null
           phone?: string | null
           photo_url?: string | null
+          rejection_reason?: string | null
+          student_id_code?: string | null
           user_id?: string | null
+          waitlisted_at?: string | null
         }
         Update: {
           address?: string | null
           admission_letter_url?: string | null
+          ai_review_score?: number | null
+          ai_review_summary?: string | null
+          ai_reviewed_at?: string | null
           application_status?: string | null
           cohort_number?: number | null
           country?: string | null
@@ -6093,9 +6112,14 @@ export type Database = {
           full_name?: string | null
           gender?: string | null
           id?: string
+          institutional_email?: string | null
+          motivation_statement?: string | null
           phone?: string | null
           photo_url?: string | null
+          rejection_reason?: string | null
+          student_id_code?: string | null
           user_id?: string | null
+          waitlisted_at?: string | null
         }
         Relationships: [
           {
@@ -7278,6 +7302,10 @@ export type Database = {
         Args: { p_amount: number; p_desc: string; p_user_id: string }
         Returns: undefined
       }
+      generate_student_identity: {
+        Args: { p_student_id: string }
+        Returns: Json
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -7339,6 +7367,7 @@ export type Database = {
         Args: { p_institution_id: string; p_user_id: string }
         Returns: boolean
       }
+      waitlist_position: { Args: { p_student_id: string }; Returns: number }
     }
     Enums: {
       app_role: "student" | "faculty" | "admin" | "superadmin"

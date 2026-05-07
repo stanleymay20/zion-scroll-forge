@@ -47,7 +47,29 @@ export const useApproveApplication = () => {
 export const useRejectApplication = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: api.rejectApplication,
+    mutationFn: ({ studentId, reason }: { studentId: string; reason?: string }) =>
+      api.rejectApplication(studentId, reason),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['pending-applications'] });
+    }
+  });
+};
+
+export const useWaitlistApplication = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ studentId, reason }: { studentId: string; reason?: string }) =>
+      api.waitlistApplication(studentId, reason),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['pending-applications'] });
+    }
+  });
+};
+
+export const useAIPrescreen = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: api.aiPrescreenApplication,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['pending-applications'] });
     }

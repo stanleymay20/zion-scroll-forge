@@ -32,6 +32,7 @@ export default function Apply() {
     country: '',
     address: '',
     degree_program_id: '',
+    motivation_statement: '',
   });
 
   const [files, setFiles] = useState<{ id?: File; transcript?: File }>({});
@@ -42,15 +43,12 @@ export default function Apply() {
       toast.error('Please select a program');
       return;
     }
+    if ((formData.motivation_statement?.trim().length ?? 0) < 80) {
+      toast.error('Motivation statement must be at least 80 characters');
+      return;
+    }
     try {
       const student: any = await createApplication.mutateAsync(formData as any);
-      // attach program selection
-      if (student?.id) {
-        await supabase
-          .from('students')
-          .update({ degree_program_id: formData.degree_program_id })
-          .eq('id', student.id);
-      }
       if (files.id) {
         await uploadDocument.mutateAsync({ studentId: student.id, docType: 'ID Card', file: files.id });
       }
@@ -76,7 +74,16 @@ export default function Apply() {
             </CardTitle>
             <CardDescription>Your dashboard is ready.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-3">
+            {(profile as any)?.student_id_code && (
+              <div className="rounded-md border bg-muted/30 p-3 text-sm space-y-1">
+                <div><span className="text-muted-foreground">Student ID:</span> <span className="font-mono font-semibold">{(profile as any).student_id_code}</span></div>
+                <div><span className="text-muted-foreground">Institutional Email:</span> <span className="font-mono">{(profile as any).institutional_email}</span></div>
+                {(profile as any).cohort_number && (
+                  <div><span className="text-muted-foreground">Cohort #:</span> {(profile as any).cohort_number}</div>
+                )}
+              </div>
+            )}
             <Button onClick={() => navigate('/dashboard')}>Go to Dashboard</Button>
           </CardContent>
         </Card>
@@ -91,6 +98,36 @@ export default function Apply() {
           <CardHeader>
             <CardTitle>Application Under Review</CardTitle>
             <CardDescription>You'll be notified by email once a decision is made.</CardDescription>
+          </CardHeader>
+        </Card>
+      </PageTemplate>
+    );
+  }
+
+  if (profile?.application_status === 'waitlisted') {
+    return (
+      <PageTemplate title="Waitlisted" description="You're on the cohort waitlist">
+        <Card>
+          <CardHeader>
+            <CardTitle>You're on the Waitlist</CardTitle>
+            <CardDescription>
+              We'll notify you the moment a seat opens. No further action is needed.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </PageTemplate>
+    );
+  }
+
+  if (profile?.application_status === 'rejected') {
+    return (
+      <PageTemplate title="Application Decision" description="Decision recorded">
+        <Card>
+          <CardHeader>
+            <CardTitle>Application Not Advanced</CardTitle>
+            <CardDescription>
+              {(profile as any)?.rejection_reason || 'Thank you for applying. You may apply again in a future cohort.'}
+            </CardDescription>
           </CardHeader>
         </Card>
       </PageTemplate>
@@ -209,6 +246,25 @@ export default function Apply() {
               <Label htmlFor="address">Address *</Label>
               <Textarea id="address" required value={formData.address}
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })} />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="motivation">
+                Motivation Statement * <span className="text-xs text-muted-foreground">(min 80 chars)</span>
+              </Label>
+              <Textarea
+                id="motivation"
+                required
+                rows={5}
+                minLength={80}
+                maxLength={2000}
+                placeholder="Why this program? What do you bring? What do you hope to do?"
+                value={formData.motivation_statement}
+                onChange={(e) => setFormData({ ...formData, motivation_statement: e.target.value })}
+              />
+              <div className="text-xs text-muted-foreground text-right">
+                {formData.motivation_statement.length} / 2000
+              </div>
             </div>
 
             <div className="space-y-4 border-t pt-4">

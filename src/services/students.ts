@@ -28,6 +28,8 @@ export const createStudentApplication = underChrist(async (formData: any) => {
       gender: formData.gender,
       country: formData.country,
       address: formData.address,
+      motivation_statement: formData.motivation_statement ?? null,
+      degree_program_id: formData.degree_program_id ?? null,
       application_status: 'submitted'
     })
     .select()
@@ -89,22 +91,35 @@ export const getPendingApplications = underChrist(async () => {
 });
 
 export const approveApplication = underChrist(async (studentId: string) => {
-  // Controlled launch: cohort-onboard handles cap, lifecycle, enrollment, letter, notification
   const { data, error } = await supabase.functions.invoke('cohort-onboard', {
-    body: { student_id: studentId }
+    body: { student_id: studentId, action: 'accept' }
   });
   if (error) throw error;
   return data;
 });
 
-export const rejectApplication = underChrist(async (studentId: string) => {
-  const { error } = await supabase
-    .from('students')
-    .update({ application_status: 'rejected' })
-    .eq('id', studentId);
-  
+export const waitlistApplication = underChrist(async (studentId: string, reason?: string) => {
+  const { data, error } = await supabase.functions.invoke('cohort-onboard', {
+    body: { student_id: studentId, action: 'waitlist', reason: reason ?? '' }
+  });
   if (error) throw error;
-  return { success: true };
+  return data;
+});
+
+export const rejectApplication = underChrist(async (studentId: string, reason?: string) => {
+  const { data, error } = await supabase.functions.invoke('cohort-onboard', {
+    body: { student_id: studentId, action: 'reject', reason: reason ?? '' }
+  });
+  if (error) throw error;
+  return data;
+});
+
+export const aiPrescreenApplication = underChrist(async (studentId: string) => {
+  const { data, error } = await supabase.functions.invoke('applicant-ai-prescreen', {
+    body: { student_id: studentId }
+  });
+  if (error) throw error;
+  return data as { score: number; summary: string; recommendation: 'accept' | 'waitlist' | 'reject' };
 });
 
 export const getStudentTranscript = underChrist(async () => {
