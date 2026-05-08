@@ -4076,6 +4076,145 @@ export type Database = {
         }
         Relationships: []
       }
+      lecture_questions: {
+        Row: {
+          answered_at: string | null
+          asker_name: string | null
+          created_at: string
+          id: string
+          position: number
+          question: string
+          session_id: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          answered_at?: string | null
+          asker_name?: string | null
+          created_at?: string
+          id?: string
+          position?: number
+          question: string
+          session_id: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          answered_at?: string | null
+          asker_name?: string | null
+          created_at?: string
+          id?: string
+          position?: number
+          question?: string
+          session_id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lecture_questions_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "lecture_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lecture_sessions: {
+        Row: {
+          cohost_tutor_id: string | null
+          cohost_tutor_name: string | null
+          created_at: string
+          duration_seconds: number | null
+          ended_at: string | null
+          host_tutor_id: string | null
+          host_tutor_name: string
+          id: string
+          module_id: string | null
+          module_title: string | null
+          recording_url: string | null
+          started_at: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cohost_tutor_id?: string | null
+          cohost_tutor_name?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          ended_at?: string | null
+          host_tutor_id?: string | null
+          host_tutor_name: string
+          id?: string
+          module_id?: string | null
+          module_title?: string | null
+          recording_url?: string | null
+          started_at?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cohost_tutor_id?: string | null
+          cohost_tutor_name?: string | null
+          created_at?: string
+          duration_seconds?: number | null
+          ended_at?: string | null
+          host_tutor_id?: string | null
+          host_tutor_name?: string
+          id?: string
+          module_id?: string | null
+          module_title?: string | null
+          recording_url?: string | null
+          started_at?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      lecture_transcripts: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          sequence_index: number
+          session_id: string
+          speaker_name: string | null
+          speaker_role: string
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          sequence_index?: number
+          session_id: string
+          speaker_name?: string | null
+          speaker_role: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          sequence_index?: number
+          session_id?: string
+          speaker_name?: string | null
+          speaker_role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lecture_transcripts_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "lecture_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       live_sessions: {
         Row: {
           course_id: string
