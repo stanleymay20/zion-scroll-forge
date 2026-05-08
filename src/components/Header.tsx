@@ -4,7 +4,7 @@ import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
 import { Menu, X, BookOpen, GraduationCap, Heart, Shield, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
+import { Logo } from "@/components/brand/Logo";
 
 export const Header = () => {
   const { user } = useAuth();
@@ -34,24 +34,8 @@ export const Header = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-          <div className="relative">
-            <div className={`absolute inset-0 rounded-full blur-md transition-opacity duration-300 ${scrolled ? "opacity-0" : "opacity-60 bg-accent/30"}`} />
-            <img
-              src={scrollLogo}
-              alt="ScrollUniversity"
-              className="relative h-10 w-10 transition-transform duration-300 group-hover:scale-105"
-            />
-          </div>
-          <div className="hidden xs:block">
-            <p className="text-lg font-serif font-bold text-primary leading-none tracking-tight">
-              ScrollUniversity
-            </p>
-            <p className="text-[9px] text-accent font-sans tracking-[0.25em] uppercase mt-1 font-semibold">
-              Veritas · Sapientia
-            </p>
-          </div>
-        </Link>
+        <Logo size="md" to="/" glow={!scrolled} />
+
 
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-1">

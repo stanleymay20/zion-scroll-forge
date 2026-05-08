@@ -39,7 +39,9 @@ export const HeroSection = () => {
             <img
               src={scrollLogo}
               alt="ScrollUniversity Crest"
-              className="relative h-20 w-20 sm:h-24 sm:w-24 drop-shadow-lg"
+              className="relative h-24 w-24 sm:h-28 sm:w-28 object-contain drop-shadow-2xl"
+              loading="eager"
+              decoding="async"
             />
           </div>
         </div>

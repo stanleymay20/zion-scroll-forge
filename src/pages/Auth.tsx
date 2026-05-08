@@ -10,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ArrowLeft, CheckCircle2 } from 'lucide-react';
-import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
+import { Logo } from "@/components/brand/Logo";
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
@@ -89,14 +89,8 @@ export default function Auth() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-background p-4">
       <div className="w-full max-w-md space-y-6 animate-fade-up">
         {/* Logo */}
-        <div className="text-center">
-          <Link to="/" className="inline-flex items-center gap-3 group">
-            <img src={scrollLogo} alt="ScrollUniversity" className="h-12 w-12 transition-transform group-hover:scale-105" />
-            <div className="text-left">
-              <h1 className="text-2xl font-serif font-bold text-primary">ScrollUniversity</h1>
-              <p className="text-[10px] text-muted-foreground tracking-widest uppercase">Veritas et Sapientia</p>
-            </div>
-          </Link>
+        <div className="flex justify-center">
+          <Logo size="lg" to="/" />
         </div>
 
         <Card className="elevation-2">

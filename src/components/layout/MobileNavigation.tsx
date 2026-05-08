@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { useUserRoles } from "@/hooks/useUserRoles";
 import { UserProfileDropdown } from "./UserProfileDropdown";
 import { NotificationBell } from "@/components/NotificationBell";
-import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
+import { Logo } from "@/components/brand/Logo";
 import { useState } from "react";
 
 const bottomNavItems = [
@@ -59,9 +59,9 @@ export const MobileNavigation = () => {
       {/* Top Header */}
       <div className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border/50 safe-top">
         <div className="flex items-center justify-between px-4 h-14">
-          <Link to="/dashboard" className="flex items-center gap-2">
-            <img src={scrollLogo} alt="ScrollUniversity" className="h-8 w-8" />
-            <span className="font-serif font-semibold text-primary text-sm">ScrollUniversity</span>
+          <Logo size="sm" to="/dashboard" showWordmark={false} />
+          <Link to="/dashboard" className="font-serif font-semibold text-primary text-sm -ml-1">
+            ScrollUniversity
           </Link>
           
           <div className="flex items-center gap-1">

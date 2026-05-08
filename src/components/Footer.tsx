@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
-import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
+import { Logo } from "@/components/brand/Logo";
 
 const footerLinks = [
   {
@@ -40,17 +40,9 @@ export const Footer = () => {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">
-            <Link to="/" className="flex items-center gap-2.5 mb-4 group">
-              <img src={scrollLogo} alt="ScrollUniversity" className="h-9 w-9 transition-transform group-hover:scale-105" />
-              <div>
-                <span className="font-serif font-bold text-primary text-base block leading-none">
-                  ScrollUniversity
-                </span>
-                <span className="text-[9px] text-accent font-sans tracking-[0.25em] uppercase font-semibold">
-                  Veritas · Sapientia
-                </span>
-              </div>
-            </Link>
+            <div className="mb-4">
+              <Logo size="md" to="/" />
+            </div>
             <p className="text-xs text-muted-foreground font-sans leading-relaxed max-w-[220px] mb-4">
               The Transcendent AI University. Kingdom-aligned education for global transformation.
             </p>
