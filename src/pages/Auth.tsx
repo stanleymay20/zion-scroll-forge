@@ -49,7 +49,26 @@ export default function Auth() {
     e.preventDefault();
     setLoading(true);
     try {
-      await signIn(email, password);
+      let loginEmail = email.trim();
+      // Resolve student ID code (e.g. SU2026001) to institutional email
+      if (!loginEmail.includes('@')) {
+        const { data, error } = await supabase
+          .from('students')
+          .select('institutional_email')
+          .ilike('student_id_code', loginEmail)
+          .maybeSingle();
+        if (error || !data?.institutional_email) {
+          toast({
+            title: 'Sign in failed',
+            description: 'No account found for that student ID.',
+            variant: 'destructive',
+          });
+          setLoading(false);
+          return;
+        }
+        loginEmail = data.institutional_email;
+      }
+      await signIn(loginEmail, password);
       navigate(redirect);
     } catch (error) {
       console.error('Sign in error:', error);
