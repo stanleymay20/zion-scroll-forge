@@ -1,0 +1,2 @@
+REVOKE EXECUTE ON FUNCTION public.issue_certificate(uuid, text, text, uuid, jsonb) FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.issue_certificate(uuid, text, text, uuid, jsonb) TO authenticated;
