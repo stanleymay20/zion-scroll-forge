@@ -242,7 +242,9 @@ const MobileViewportConfig = () => {
     document.head.appendChild(style);
 
     return () => {
-      document.head.removeChild(style);
+      if (style.parentNode) {
+        style.parentNode.removeChild(style);
+      }
     };
   }, []);
 
