@@ -12,7 +12,6 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Heart, Share2, Plus } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { toast } from "sonner";
 
 console.info("✝️ Testimonies — Christ governs testimony");
 

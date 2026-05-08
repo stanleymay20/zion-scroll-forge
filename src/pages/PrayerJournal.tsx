@@ -13,7 +13,6 @@ import { format, formatDistanceToNow } from "date-fns";
 import { VoiceClient } from "@/lib/voiceClient";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { toast } from "sonner";
 
 console.info("✝️ Prayer Journal — Christ hears every prayer");
 

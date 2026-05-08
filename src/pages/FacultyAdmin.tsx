@@ -10,7 +10,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { BookOpen, Users, FileText, BarChart, CheckCircle, Clock } from "lucide-react";
-import { toast } from "sonner";
 
 console.info("✝️ Faculty Admin — Christ governs teaching");
 

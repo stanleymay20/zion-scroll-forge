@@ -12,7 +12,6 @@ import { useState } from 'react';
 import { Loader2, Target, Trophy, Calendar, CheckCircle2, Plus } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { toast } from "sonner";
 
 console.info('✝️ Learning Goals — Christ is Lord over our aspirations');
 
