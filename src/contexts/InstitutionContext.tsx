@@ -116,15 +116,9 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
       setActiveInstitutionState(active);
       setActiveRole(role);
-    } catch (error) {
-      console.error('Error loading institution data:', error);
-    }
 
-    // Final fallback (runs even on errors): default ScrollUniversity institution
-    setActiveInstitutionState((prev) => {
-      if (prev) return prev;
-      // schedule async fetch
-      (async () => {
+      // Final fallback: default ScrollUniversity institution (awaited so guards don't fire prematurely)
+      if (!active) {
         const { data: defaultInst } = await supabase
           .from('institutions' as any)
           .select('id, name, slug, short_name, description, logo_url, primary_color, accent_color, plan, is_active')
@@ -138,10 +132,12 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
             .update({ current_institution_id: (defaultInst as any).id } as any)
             .eq('id', user.id);
         }
-      })();
-      return prev;
-    });
-    setLoading(false);
+      }
+    } catch (error) {
+      console.error('Error loading institution data:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const setActiveInstitution = async (institutionId: string) => {
