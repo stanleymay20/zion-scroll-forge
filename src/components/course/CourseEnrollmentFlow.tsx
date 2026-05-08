@@ -29,6 +29,7 @@ import {
   AlertCircle 
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useEnrollInCourse } from '@/hooks/useCourses';
 
 interface CourseEnrollmentFlowProps {
   course: {
@@ -53,6 +54,7 @@ export function CourseEnrollmentFlow({
 }: CourseEnrollmentFlowProps) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const enrollInCourse = useEnrollInCourse();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('scrollcoin');
   const [enrollmentStep, setEnrollmentStep] = useState<'payment' | 'processing' | 'success' | 'error'>('payment');
 
@@ -63,51 +65,7 @@ export function CourseEnrollmentFlow({
     mutationFn: async () => {
       setEnrollmentStep('processing');
 
-      // Get user's current institution
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('current_institution_id')
-        .eq('id', user!.id)
-        .single();
-
-      let institutionId = profile?.current_institution_id;
-
-      // If user has no institution, get the default ScrollUniversity institution
-      if (!institutionId) {
-        const { data: defaultInst } = await supabase
-          .from('institutions')
-          .select('id')
-          .eq('slug', 'scrolluniversity')
-          .single();
-        
-        institutionId = defaultInst?.id;
-
-        // Update profile with default institution
-        if (institutionId) {
-          await supabase
-            .from('profiles')
-            .update({ current_institution_id: institutionId })
-            .eq('id', user!.id);
-        }
-      }
-
-      if (!institutionId) {
-        throw new Error('No institution available. Please contact support.');
-      }
-
-      // Create enrollment
-      const { data: enrollment, error: enrollError } = await supabase
-        .from('enrollments')
-        .insert({
-          user_id: user!.id,
-          course_id: course.id,
-          progress: 0,
-          institution_id: institutionId,
-        })
-        .select()
-        .single();
-
-      if (enrollError) throw enrollError;
+      const enrollmentResult = await enrollInCourse.mutateAsync(course.id);
 
       // Handle payment based on method
       if (paymentMethod === 'scrollcoin') {
@@ -131,7 +89,7 @@ export function CourseEnrollmentFlow({
         console.log('Processing scholarship application...');
       }
 
-      return enrollment;
+      return enrollmentResult;
     },
     onSuccess: () => {
       setEnrollmentStep('success');
