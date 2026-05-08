@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PageTemplate } from '@/components/layout/PageTemplate';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,12 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
 import { useCreateApplication, useUploadDocument, useStudentProfile } from '@/hooks/useStudents';
 import { useDegreePrograms } from '@/hooks/useDegreePrograms';
 import { useCohortStatus } from '@/hooks/useLaunchOps';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Upload, Check, Lock } from 'lucide-react';
+import { Upload, Check, Lock, BookOpen } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 
 export default function Apply() {
@@ -23,6 +24,8 @@ export default function Apply() {
   const uploadDocument = useUploadDocument();
 
   const [enrollmentLevel, setEnrollmentLevel] = useState<string>('');
+  const [programCourses, setProgramCourses] = useState<any[]>([]);
+  const [loadingCourses, setLoadingCourses] = useState(false);
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -49,6 +52,32 @@ export default function Apply() {
   const filteredPrograms = enrollmentLevel
     ? (programs as any[]).filter((p) => p.level === enrollmentLevel)
     : (programs as any[]);
+
+  // Load courses mapped to the selected program so applicants can preview the
+  // catalog they're committing to before they submit the application.
+  useEffect(() => {
+    let cancelled = false;
+    if (!formData.degree_program_id) {
+      setProgramCourses([]);
+      return;
+    }
+    setLoadingCourses(true);
+    (async () => {
+      const { data, error } = await supabase
+        .from('degree_program_courses')
+        .select('sequence_order, is_required, courses(id, title, description, level, faculty, duration, credit_hours)')
+        .eq('degree_program_id', formData.degree_program_id)
+        .order('sequence_order', { ascending: true });
+      if (cancelled) return;
+      if (error) {
+        setProgramCourses([]);
+      } else {
+        setProgramCourses((data || []).map((r: any) => ({ ...r.courses, is_required: r.is_required })));
+      }
+      setLoadingCourses(false);
+    })();
+    return () => { cancelled = true; };
+  }, [formData.degree_program_id]);
 
   const [files, setFiles] = useState<{ id?: File; transcript?: File }>({});
 
@@ -245,6 +274,50 @@ export default function Apply() {
                 ))}
               </select>
             </div>
+
+            {formData.degree_program_id && (
+              <Card className="bg-muted/30 border-primary/20">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <BookOpen className="h-4 w-4 text-primary" />
+                    Courses in this program
+                    {!loadingCourses && (
+                      <Badge variant="secondary" className="ml-2">{programCourses.length}</Badge>
+                    )}
+                  </CardTitle>
+                  <CardDescription>
+                    Once accepted, you'll be enrolled into the courses below as part of this program.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {loadingCourses ? (
+                    <p className="text-sm text-muted-foreground">Loading curriculum…</p>
+                  ) : programCourses.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                      Curriculum is being finalised for this program. You can still apply.
+                    </p>
+                  ) : (
+                    <ol className="space-y-2 max-h-72 overflow-y-auto pr-2">
+                      {programCourses.map((c: any, idx: number) => (
+                        <li key={c.id} className="flex items-start gap-3 text-sm">
+                          <span className="text-xs font-mono text-muted-foreground mt-0.5 w-6 shrink-0">
+                            {String(idx + 1).padStart(2, '0')}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium truncate">{c.title}</div>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {c.faculty && <Badge variant="outline" className="text-[10px]">{c.faculty}</Badge>}
+                              {c.credit_hours && <Badge variant="outline" className="text-[10px]">{c.credit_hours} cr</Badge>}
+                              {c.is_required && <Badge variant="secondary" className="text-[10px]">Required</Badge>}
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </CardContent>
+              </Card>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
