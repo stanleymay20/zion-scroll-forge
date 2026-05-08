@@ -113,6 +113,18 @@ export const HeroSection = () => {
               Explore the Catalog
             </Button>
           </AuthAwareLink>
+          {!user && (
+            <Link to="/auth">
+              <Button
+                variant="ghost"
+                size="lg"
+                className="text-sm sm:text-base px-8 py-6 font-sans w-full sm:w-auto hover:bg-primary/5"
+              >
+                <LogIn className="w-5 h-5 mr-2" />
+                Accepted Student? Sign In
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Trust strip */}
