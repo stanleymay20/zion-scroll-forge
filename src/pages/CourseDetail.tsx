@@ -21,6 +21,7 @@ import { CoursePreviewVideo } from "@/components/course/CoursePreviewVideo";
 import { InstructorProfileCard } from "@/components/course/InstructorProfileCard";
 import { CourseEnrollmentFlow } from "@/components/course/CourseEnrollmentFlow";
 import { toast } from "sonner";
+import { BackButton } from "@/components/layout/BackButton";
 
 export default function CourseDetail() {
   const { courseId } = useParams();
@@ -86,6 +87,7 @@ export default function CourseDetail() {
   if (isLoading) {
     return (
       <PageTemplate title="Loading..." description="">
+      <div className="mb-2"><BackButton fallbackTo="/dashboard" /></div>
         <div className="flex justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>

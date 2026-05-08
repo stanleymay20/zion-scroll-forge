@@ -12,6 +12,7 @@ import { AITutorAvatar } from '@/components/AITutorAvatar';
 import { MultiAgentClassroom } from '@/components/learning/MultiAgentClassroom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { BackButton } from "@/components/layout/BackButton";
 
 console.info('✝️ Module Detail — Christ is Lord over learning');
 
@@ -31,6 +32,7 @@ export default function ModuleDetail() {
   if (!module) {
     return (
       <PageTemplate title="Module Not Found">
+      <div className="mb-2"><BackButton fallbackTo="/dashboard" /></div>
         <Card>
           <CardContent className="py-8 text-center text-muted-foreground">
             This module could not be found.

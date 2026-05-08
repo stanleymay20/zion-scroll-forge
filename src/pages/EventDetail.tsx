@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Loader2, Calendar, MapPin, Users, Video, ArrowLeft } from "lucide-react";
 import { useEvent, useRegisterForEvent, useUnregisterFromEvent, useDeleteEvent } from "@/hooks/useEvents";
 import { format } from "date-fns";
+import { BackButton } from "@/components/layout/BackButton";
 
 console.info("✝️ Event Detail — Community in Christ");
 
@@ -46,6 +47,7 @@ export default function EventDetail() {
   if (!event) {
     return (
       <PageTemplate title="Event Not Found">
+      <div className="mb-2"><BackButton fallbackTo="/dashboard" /></div>
         <Card>
           <CardContent className="py-12 text-center">
             <p className="text-muted-foreground">Event not found</p>
