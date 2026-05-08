@@ -11,7 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Logo } from "@/components/brand/Logo";
-import { lovable } from "@/integrations/lovable";
+
 
 // Whitelist internal redirects only — prevents open-redirect via ?redirect=https://evil.com
 const safeRedirect = (raw: string | null): string => {
