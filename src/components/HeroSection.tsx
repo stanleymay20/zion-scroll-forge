@@ -84,15 +84,28 @@ export const HeroSection = () => {
           </div>
         </div>
 
-        <p className="animate-fade-up animate-fade-up-delay-3 text-base sm:text-lg md:text-xl text-muted-foreground mb-10 font-sans max-w-2xl mx-auto leading-relaxed">
+        <p className="animate-fade-up animate-fade-up-delay-3 text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 font-sans max-w-2xl mx-auto leading-relaxed">
           Where divine revelation meets advanced AI. Earn{" "}
           <span className="text-primary font-semibold">verifiable credentials</span> across{" "}
           <span className="text-primary font-semibold">12 Supreme Scroll Faculties</span>—from
           Theology to Technology, Governance to the Arts.
         </p>
 
+        <div className="animate-fade-up animate-fade-up-delay-4 flex justify-center mb-4 sm:mb-8">
+          <Link to={user ? "/dashboard" : "/auth"} className="w-full sm:w-auto max-w-sm">
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 font-sans w-full bg-card/85 backdrop-blur-sm border-accent/50 text-primary hover:bg-accent/10 hover:border-accent shadow-md transition-all"
+            >
+              <LogIn className="w-5 h-5 mr-2" />
+              {user ? "Go to Dashboard" : "Accepted Student? Sign In"}
+            </Button>
+          </Link>
+        </div>
+
         {/* CTAs */}
-        <div className="animate-fade-up animate-fade-up-delay-4 flex flex-col sm:flex-row gap-3 justify-center mb-14">
+        <div className="animate-fade-up animate-fade-up-delay-4 flex flex-col sm:flex-row gap-3 justify-center mb-10 sm:mb-14">
           <Link to="/auth?tab=signup&redirect=/apply">
             <Button
               size="lg"
@@ -113,19 +126,6 @@ export const HeroSection = () => {
               Explore the Catalog
             </Button>
           </AuthAwareLink>
-        </div>
-
-        <div className="animate-fade-up animate-fade-up-delay-4 flex justify-center mb-10">
-          <Link to={user ? "/dashboard" : "/auth"}>
-            <Button
-              variant="outline"
-              size="lg"
-              className="text-sm sm:text-base px-8 py-6 font-sans w-full sm:w-auto bg-card/80 backdrop-blur-sm border-accent/50 text-primary hover:bg-accent/10 hover:border-accent shadow-md transition-all"
-            >
-              <LogIn className="w-5 h-5 mr-2" />
-              {user ? "Go to Dashboard" : "Accepted Student? Sign In"}
-            </Button>
-          </Link>
         </div>
 
         {/* Trust strip */}
