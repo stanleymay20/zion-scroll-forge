@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
   ].filter(Boolean),
   resolve: {
-    dedupe: ['react', 'react-dom'],
+    dedupe: ['react', 'react-dom', '@tanstack/react-query', 'react-router-dom'],
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
