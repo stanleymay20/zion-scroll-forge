@@ -84,6 +84,18 @@ export const useEnrollInCourse = () => {
         throw new Error('No institution available for enrollment');
       }
 
+      // Check existing enrollment to provide a friendly UX (avoids duplicate-key error)
+      const { data: existing } = await supabase
+        .from('enrollments' as any)
+        .select('id')
+        .eq('user_id', user!.id)
+        .eq('course_id', courseId)
+        .maybeSingle();
+
+      if (existing) {
+        return { success: true, alreadyEnrolled: true };
+      }
+
       const { error } = await supabase
         .from('enrollments' as any)
         .insert({
@@ -93,15 +105,23 @@ export const useEnrollInCourse = () => {
           institution_id: institutionId
         });
 
-      if (error) throw error;
+      if (error) {
+        // Postgres unique-violation – treat as already enrolled
+        if ((error as any).code === '23505') {
+          return { success: true, alreadyEnrolled: true };
+        }
+        throw error;
+      }
       return { success: true };
     },
-    onSuccess: () => {
+    onSuccess: (result: any) => {
       queryClient.invalidateQueries({ queryKey: ['enrollments'] });
       queryClient.invalidateQueries({ queryKey: ['dashboard'] });
       toast({
-        title: '✝️ Enrolled Successfully',
-        description: 'You have been enrolled in the course. Christ leads your learning journey.',
+        title: result?.alreadyEnrolled ? '✓ Already Enrolled' : '✝️ Enrolled Successfully',
+        description: result?.alreadyEnrolled
+          ? 'You are already enrolled in this course. Continue your journey from My Courses.'
+          : 'You have been enrolled in the course. Christ leads your learning journey.',
       });
     },
     onError: (error: any) => {
