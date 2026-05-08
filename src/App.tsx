@@ -199,18 +199,14 @@ const PublicAppShell = ({ children }: { children: React.ReactNode }) => (
 );
 
 const ProtectedAppProviders = ({ children }: { children: React.ReactNode }) => (
-  <ErrorHandlingProvider>
-    <AuthProvider>
-      <InstitutionProvider>
-        <RealtimeProvider>
-          <PWAInstallPrompt />
-          <PWAUpdatePrompt />
-          <MobileAppInstallPrompt />
-          {children}
-        </RealtimeProvider>
-      </InstitutionProvider>
-    </AuthProvider>
-  </ErrorHandlingProvider>
+  <InstitutionProvider>
+    <RealtimeProvider>
+      <PWAInstallPrompt />
+      <PWAUpdatePrompt />
+      <MobileAppInstallPrompt />
+      {children}
+    </RealtimeProvider>
+  </InstitutionProvider>
 );
 
 // Mobile viewport configuration
