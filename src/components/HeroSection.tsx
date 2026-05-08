@@ -9,7 +9,7 @@ import heroBackground from "@/assets/hero-background.jpg";
 export const HeroSection = () => {
   const { user } = useAuth();
   return (
-    <section className="relative min-h-[100dvh] flex items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
+    <section className="relative min-h-[100dvh] flex items-start sm:items-center justify-center px-4 pt-20 sm:pt-24 pb-16 overflow-hidden">
       {/* Cinematic background image */}
       <img
         src={heroBackground}
@@ -33,7 +33,7 @@ export const HeroSection = () => {
       />
       <div className="absolute -bottom-40 right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl pointer-events-none" />
 
-      <div className="container mx-auto text-center max-w-5xl relative z-10">
+      <div className="container mx-auto text-center max-w-5xl relative z-10 pt-2 sm:pt-0">
         {/* Crest */}
         <div className="animate-fade-up flex justify-center mb-6">
           <div className="relative">
@@ -71,7 +71,7 @@ export const HeroSection = () => {
         </div>
 
         {/* Christ Lordship line — refined */}
-        <div className="animate-fade-up animate-fade-up-delay-3 mb-8">
+        <div className="animate-fade-up animate-fade-up-delay-3 mb-6 sm:mb-8">
           <p className="text-base sm:text-lg font-serif italic text-primary/80 max-w-2xl mx-auto leading-relaxed">
             "Jesus Christ is Lord over every algorithm, decision, and interaction."
           </p>
@@ -84,25 +84,25 @@ export const HeroSection = () => {
           </div>
         </div>
 
-        <p className="animate-fade-up animate-fade-up-delay-3 text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 font-sans max-w-2xl mx-auto leading-relaxed">
-          Where divine revelation meets advanced AI. Earn{" "}
-          <span className="text-primary font-semibold">verifiable credentials</span> across{" "}
-          <span className="text-primary font-semibold">12 Supreme Scroll Faculties</span>—from
-          Theology to Technology, Governance to the Arts.
-        </p>
-
-        <div className="animate-fade-up animate-fade-up-delay-4 flex justify-center mb-4 sm:mb-8">
+        <div className="animate-fade-up animate-fade-up-delay-4 flex justify-center mb-5 sm:mb-8">
           <Link to={user ? "/dashboard" : "/auth"} className="w-full sm:w-auto max-w-sm">
             <Button
               variant="outline"
               size="lg"
-              className="text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 font-sans w-full bg-card/85 backdrop-blur-sm border-accent/50 text-primary hover:bg-accent/10 hover:border-accent shadow-md transition-all"
+              className="text-sm sm:text-base px-6 sm:px-8 py-4 sm:py-6 font-sans w-full bg-card/90 backdrop-blur-sm border-accent/50 text-primary hover:bg-accent/10 hover:border-accent shadow-md transition-all"
             >
               <LogIn className="w-5 h-5 mr-2" />
               {user ? "Go to Dashboard" : "Accepted Student? Sign In"}
             </Button>
           </Link>
         </div>
+
+        <p className="animate-fade-up animate-fade-up-delay-3 text-base sm:text-lg md:text-xl text-muted-foreground mb-8 sm:mb-10 font-sans max-w-2xl mx-auto leading-relaxed">
+          Where divine revelation meets advanced AI. Earn{" "}
+          <span className="text-primary font-semibold">verifiable credentials</span> across{" "}
+          <span className="text-primary font-semibold">12 Supreme Scroll Faculties</span>—from
+          Theology to Technology, Governance to the Arts.
+        </p>
 
         {/* CTAs */}
         <div className="animate-fade-up animate-fade-up-delay-4 flex flex-col sm:flex-row gap-3 justify-center mb-10 sm:mb-14">
