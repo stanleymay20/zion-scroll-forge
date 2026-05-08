@@ -10,10 +10,30 @@ export interface ServiceWorkerConfig {
   onOnline?: () => void;
 }
 
+export function isPreviewPWAContext(): boolean {
+  if (typeof window === 'undefined') return false;
+
+  const host = window.location.hostname;
+  const inIframe = (() => {
+    try {
+      return window.self !== window.top;
+    } catch {
+      return true;
+    }
+  })();
+
+  return inIframe || host.includes('lovableproject.com') || host.startsWith('id-preview--');
+}
+
 /**
  * Register service worker
  */
 export async function registerServiceWorker(config?: ServiceWorkerConfig): Promise<ServiceWorkerRegistration | null> {
+  if (isPreviewPWAContext()) {
+    console.info('Skipping service worker registration in preview context');
+    return null;
+  }
+
   if (!('serviceWorker' in navigator)) {
     console.warn('Service Worker not supported in this browser');
     return null;
