@@ -322,7 +322,7 @@ const App = () => (
             
             {/* Authentication Routes */}
             <Route path="/auth" element={<Auth />} />
-            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/login" element={<Navigate to="/auth" replace />} />
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/reset-password" element={<ResetPassword />} />
