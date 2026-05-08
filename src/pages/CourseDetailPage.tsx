@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEnrollInCourse } from "@/hooks/useCourses";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +16,8 @@ import { toast } from "@/hooks/use-toast";
 export default function CourseDetailPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const enrollInCourse = useEnrollInCourse();
 
   const { data: course, isLoading } = useQuery({
     queryKey: ["course", courseId],
@@ -29,14 +33,6 @@ export default function CourseDetailPage() {
         .single();
       if (error) throw error;
       return data;
-    },
-  });
-
-  const { data: user } = useQuery({
-    queryKey: ["user"],
-    queryFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      return user;
     },
   });
 
@@ -68,14 +64,7 @@ export default function CourseDetailPage() {
     }
 
     try {
-      const { error } = await supabase.from("enrollments").insert({
-        user_id: user.id,
-        course_id: courseId,
-        institution_id: course?.institution_id,
-        progress: 0,
-      });
-
-      if (error) throw error;
+      await enrollInCourse.mutateAsync(courseId!);
 
       toast({
         title: "Enrolled successfully!",
@@ -147,9 +136,9 @@ export default function CourseDetailPage() {
                   Continue Learning
                 </Button>
               ) : (
-                <Button size="lg" onClick={handleEnroll}>
+                <Button size="lg" onClick={handleEnroll} disabled={enrollInCourse.isPending}>
                   <BookOpen className="mr-2 h-5 w-5" />
-                  Enroll Now
+                  {enrollInCourse.isPending ? "Enrolling..." : "Enroll Now"}
                 </Button>
               )}
             </div>
