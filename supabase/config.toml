@@ -144,7 +144,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.billing-worker]
-verify_jwt = false
+verify_jwt = true
 
 [functions.assignment-notifier]
 verify_jwt = false
