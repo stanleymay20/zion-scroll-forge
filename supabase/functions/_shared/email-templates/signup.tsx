@@ -8,9 +8,11 @@ import {
   Container,
   Head,
   Heading,
+  Hr,
   Html,
   Link,
   Preview,
+  Section,
   Text,
 } from 'npm:@react-email/components@0.0.22'
 
@@ -29,29 +31,35 @@ export const SignupEmail = ({
 }: SignupEmailProps) => (
   <Html lang="en" dir="ltr">
     <Head />
-    <Preview>Confirm your email for {siteName}</Preview>
+    <Preview>Welcome to ScrollUniversity — confirm your email to begin</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={h1}>Confirm your email</Heading>
+        <Section style={header}>
+          <Text style={brand}>SCROLLUNIVERSITY</Text>
+          <Text style={tagline}>Where wisdom meets the scroll</Text>
+        </Section>
+        <Heading style={h1}>Welcome to {siteName}</Heading>
         <Text style={text}>
-          Thanks for signing up for{' '}
-          <Link href={siteUrl} style={link}>
-            <strong>{siteName}</strong>
-          </Link>
-          !
-        </Text>
-        <Text style={text}>
-          Please confirm your email address (
+          You've taken the first step into a kingdom education. Confirm your
+          email{' '}
           <Link href={`mailto:${recipient}`} style={link}>
             {recipient}
-          </Link>
-          ) by clicking the button below:
+          </Link>{' '}
+          to unlock your faculty enrollment, AI tutors, and the Scroll Library.
         </Text>
-        <Button style={button} href={confirmationUrl}>
-          Verify Email
-        </Button>
+        <Section style={buttonWrap}>
+          <Button style={button} href={confirmationUrl}>
+            Confirm & Begin
+          </Button>
+        </Section>
+        <Hr style={hr} />
+        <Text style={verse}>
+          “The fear of the Lord is the beginning of wisdom.” — Proverbs 9:10
+        </Text>
         <Text style={footer}>
-          If you didn't create an account, you can safely ignore this email.
+          Didn't create an account? You can safely ignore this message.
+          <br />
+          <Link href={siteUrl} style={footerLink}>{siteName}</Link>
         </Text>
       </Container>
     </Body>
@@ -60,27 +68,77 @@ export const SignupEmail = ({
 
 export default SignupEmail
 
-const main = { backgroundColor: '#ffffff', fontFamily: 'Arial, sans-serif' }
-const container = { padding: '20px 25px' }
+const main = {
+  backgroundColor: 'hsl(40, 60%, 98%)',
+  fontFamily: '"DM Sans", Helvetica, Arial, sans-serif',
+  color: 'hsl(350, 25%, 12%)',
+  margin: 0,
+  padding: '32px 0',
+}
+const container = {
+  backgroundColor: '#ffffff',
+  border: '1px solid hsl(38, 35%, 90%)',
+  borderRadius: '10px',
+  margin: '0 auto',
+  maxWidth: '560px',
+  padding: '36px 40px',
+}
+const header = { textAlign: 'center' as const, marginBottom: '24px' }
+const brand = {
+  fontFamily: '"Playfair Display", Georgia, serif',
+  fontSize: '20px',
+  fontWeight: 700 as const,
+  letterSpacing: '0.18em',
+  color: 'hsl(350, 45%, 22%)',
+  margin: 0,
+}
+const tagline = {
+  fontSize: '12px',
+  color: 'hsl(42, 80%, 35%)',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase' as const,
+  margin: '6px 0 0',
+}
 const h1 = {
-  fontSize: '22px',
-  fontWeight: 'bold' as const,
-  color: '#000000',
-  margin: '0 0 20px',
+  fontFamily: '"Playfair Display", Georgia, serif',
+  fontSize: '28px',
+  fontWeight: 700 as const,
+  color: 'hsl(350, 45%, 22%)',
+  margin: '0 0 16px',
+  textAlign: 'center' as const,
 }
 const text = {
-  fontSize: '14px',
-  color: '#55575d',
-  lineHeight: '1.5',
-  margin: '0 0 25px',
+  fontSize: '15px',
+  color: 'hsl(350, 12%, 35%)',
+  lineHeight: 1.6,
+  margin: '0 0 24px',
 }
-const link = { color: 'inherit', textDecoration: 'underline' }
+const link = { color: 'hsl(350, 45%, 22%)', textDecoration: 'underline' }
+const buttonWrap = { textAlign: 'center' as const, margin: '8px 0 16px' }
 const button = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontSize: '14px',
-  borderRadius: '8px',
-  padding: '12px 20px',
+  backgroundColor: 'hsl(350, 45%, 22%)',
+  color: 'hsl(40, 60%, 98%)',
+  fontSize: '15px',
+  fontWeight: 600 as const,
+  borderRadius: '10px',
+  padding: '14px 28px',
   textDecoration: 'none',
+  display: 'inline-block',
 }
-const footer = { fontSize: '12px', color: '#999999', margin: '30px 0 0' }
+const hr = { borderColor: 'hsl(38, 35%, 90%)', margin: '32px 0 20px' }
+const verse = {
+  fontFamily: '"Playfair Display", Georgia, serif',
+  fontStyle: 'italic' as const,
+  fontSize: '14px',
+  color: 'hsl(42, 80%, 30%)',
+  textAlign: 'center' as const,
+  margin: '0 0 20px',
+}
+const footer = {
+  fontSize: '12px',
+  color: 'hsl(350, 12%, 48%)',
+  textAlign: 'center' as const,
+  margin: 0,
+  lineHeight: 1.6,
+}
+const footerLink = { color: 'hsl(350, 45%, 22%)', textDecoration: 'none' }
