@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -24,9 +24,16 @@ export default function Auth() {
   const [loading, setLoading] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [showReset, setShowReset] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const { signIn, signUp, user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // If already signed in, send the user where they wanted to go
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate(redirect, { replace: true });
+    }
+  }, [authLoading, user, redirect, navigate]);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
