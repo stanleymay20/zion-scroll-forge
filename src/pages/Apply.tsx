@@ -26,6 +26,7 @@ export default function Apply() {
   const [enrollmentLevel, setEnrollmentLevel] = useState<string>('');
   const [programCourses, setProgramCourses] = useState<any[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(false);
+  const [formData, setFormData] = useState({
     full_name: '',
     email: '',
     phone: '',
