@@ -30,51 +30,7 @@ export default defineConfig(({ mode }) => ({
     },
     rollupOptions: {
       output: {
-        // Intelligent code splitting
-        manualChunks: (id) => {
-          // Vendor chunks
-          if (id.includes('node_modules')) {
-            // React ecosystem
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router')) {
-              return 'vendor-react';
-            }
-            // UI libraries
-            if (id.includes('@radix-ui') || id.includes('lucide-react')) {
-              return 'vendor-ui';
-            }
-            // Data fetching
-            if (id.includes('@tanstack') || id.includes('axios')) {
-              return 'vendor-data';
-            }
-            // Supabase
-            if (id.includes('@supabase')) {
-              return 'vendor-supabase';
-            }
-            // Other vendors
-            return 'vendor-other';
-          }
-          
-          // Feature-based chunks
-          if (id.includes('/pages/')) {
-            const pageName = id.split('/pages/')[1].split('.')[0];
-            return `page-${pageName}`;
-          }
-          
-          if (id.includes('/components/')) {
-            // Group related components
-            if (id.includes('/components/admin')) return 'chunk-admin';
-            if (id.includes('/components/faculty')) return 'chunk-faculty';
-            if (id.includes('/components/community')) return 'chunk-community';
-            if (id.includes('/components/spiritual')) return 'chunk-spiritual';
-            if (id.includes('/components/ai')) return 'chunk-ai';
-            if (id.includes('/components/course')) return 'chunk-course';
-          }
-        },
-        // Optimize chunk file names
-        chunkFileNames: (chunkInfo) => {
-          const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
-          return `assets/js/[name]-[hash].js`;
-        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: (assetInfo) => {
           if (!assetInfo.name) return 'assets/[name]-[hash][extname]';
