@@ -4,12 +4,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
-import { toast } from "sonner";
   FileText, Bot, Zap, TrendingUp, Clock, 
   Activity, Code, GitBranch, Monitor, Users,
   BarChart3, Target, Calendar, Bell, Plus,
   Cpu, Database, Settings, Play, Eye
 } from "lucide-react";
+import { toast } from "sonner";
 
 const ForgeDashboard = () => {
   return (

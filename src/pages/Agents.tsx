@@ -6,11 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { 
-import { toast } from "sonner";
   Bot, Plus, Search, Activity, Cpu, Zap,
   Settings, BarChart3, Play, Pause, Square,
   Brain, MessageSquare, Code
 } from "lucide-react";
+import { toast } from "sonner";
 
 const Agents = () => {
   const [searchQuery, setSearchQuery] = useState("");

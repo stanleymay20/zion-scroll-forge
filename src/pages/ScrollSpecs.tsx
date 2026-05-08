@@ -5,10 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
-import { toast } from "sonner";
   FileText, Plus, Search, GitBranch, Clock, 
   User, Star, Download, Eye, Edit3 
 } from "lucide-react";
+import { toast } from "sonner";
 
 const ScrollSpecs = () => {
   const [searchQuery, setSearchQuery] = useState("");

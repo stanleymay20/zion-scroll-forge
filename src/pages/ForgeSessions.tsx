@@ -6,11 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { 
-import { toast } from "sonner";
   Zap, Plus, Search, Clock, Users, Monitor,
   Play, Pause, Square, GitBranch, Code,
   MessageSquare, Share, Settings
 } from "lucide-react";
+import { toast } from "sonner";
 
 const ForgeSessions = () => {
   const [searchQuery, setSearchQuery] = useState("");
