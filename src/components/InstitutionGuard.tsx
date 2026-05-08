@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useInstitution } from '@/contexts/InstitutionContext';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,6 +10,7 @@ interface InstitutionGuardProps {
 
 export function InstitutionGuard({ children }: InstitutionGuardProps) {
   const { activeInstitution, loading } = useInstitution();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -22,6 +24,9 @@ export function InstitutionGuard({ children }: InstitutionGuardProps) {
   }
 
   if (!activeInstitution) {
+    const redirect = encodeURIComponent(location.pathname + location.search);
+    return <Navigate to={`/apply?redirect=${redirect}`} replace />;
+
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="max-w-md">
