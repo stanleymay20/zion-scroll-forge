@@ -151,6 +151,15 @@ export default function Auth() {
               </Alert>
             )}
 
+            {resetDone && (
+              <Alert className="mb-4 border-success/30 bg-success/10 text-success-foreground">
+                <CheckCircle2 className="h-4 w-4 text-success" />
+                <AlertDescription className="text-foreground">
+                  Password updated. Sign in with your new password.
+                </AlertDescription>
+              </Alert>
+            )}
+
             {showReset ? (
               <form onSubmit={handlePasswordReset} className="space-y-4">
                 <div className="space-y-2">
