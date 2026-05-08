@@ -57,7 +57,7 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
         .from('profiles' as any)
         .select('current_institution_id')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
       // Get all memberships (no JOIN to avoid RLS recursion)
       const { data: rawMemberships, error: membershipsError } = await supabase
