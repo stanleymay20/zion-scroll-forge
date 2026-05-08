@@ -143,6 +143,15 @@ const VerifyCredential = lazy(() => import("./pages/VerifyCredential"));
 const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
 const Orientation = lazy(() => import("./pages/Orientation"));
 const Matriculation = lazy(() => import("./pages/Matriculation"));
+const AcademicCatalog = lazy(() => import("./pages/AcademicCatalog"));
+const CoursePreview = lazy(() => import("./pages/CoursePreview"));
+
+// Route guards (eager — small, used everywhere)
+import {
+  RoleRoute,
+  CourseAccessRoute,
+  StudentStatusRoute,
+} from "./components/routing/Guards";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
