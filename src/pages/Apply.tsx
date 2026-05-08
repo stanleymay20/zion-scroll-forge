@@ -17,7 +17,7 @@ import { Progress } from '@/components/ui/progress';
 export default function Apply() {
   const navigate = useNavigate();
   const { data: profile } = useStudentProfile();
-  const { data: programs = [] } = useDegreePrograms();
+  const { data: programs = [], isLoading: programsLoading } = useDegreePrograms();
   const { data: cohort, isLoading: cohortLoading } = useCohortStatus();
   const createApplication = useCreateApplication();
   const uploadDocument = useUploadDocument();
