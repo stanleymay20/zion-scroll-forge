@@ -3,11 +3,25 @@ import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
 import { Link } from "react-router-dom";
 import { BookOpen, ArrowRight, GraduationCap, Sparkles } from "lucide-react";
 import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
+import heroBackground from "@/assets/hero-background.jpg";
 
 export const HeroSection = () => {
   return (
-    <section className="relative min-h-[100dvh] gradient-hero flex items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
-      {/* Ornamental background */}
+    <section className="relative min-h-[100dvh] flex items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
+      {/* Cinematic background image */}
+      <img
+        src={heroBackground}
+        alt=""
+        aria-hidden="true"
+        width={1920}
+        height={1080}
+        className="absolute inset-0 w-full h-full object-cover object-center"
+      />
+      {/* Legibility & brand-warmth overlays */}
+      <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background/95" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,hsl(var(--background)/0.55)_65%,hsl(var(--background))_100%)]" />
+
+      {/* Ornamental dots */}
       <div
         className="absolute inset-0 opacity-[0.04] pointer-events-none"
         style={{
@@ -15,7 +29,6 @@ export const HeroSection = () => {
           backgroundSize: "44px 44px",
         }}
       />
-      <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full bg-accent/10 blur-3xl pointer-events-none" />
       <div className="absolute -bottom-40 right-0 w-[500px] h-[500px] rounded-full bg-primary/5 blur-3xl pointer-events-none" />
 
       <div className="container mx-auto text-center max-w-5xl relative z-10">
