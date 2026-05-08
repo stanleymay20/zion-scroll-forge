@@ -755,6 +755,66 @@ export type Database = {
           },
         ]
       }
+      alumni_profiles: {
+        Row: {
+          available_for_mentorship: boolean
+          bio: string | null
+          cert_number: string | null
+          created_at: string
+          current_position: string | null
+          display_name: string
+          graduation_year: number | null
+          headline: string | null
+          id: string
+          linkedin_url: string | null
+          location: string | null
+          organization: string | null
+          primary_degree: string | null
+          public_visibility: boolean
+          updated_at: string
+          user_id: string
+          website_url: string | null
+        }
+        Insert: {
+          available_for_mentorship?: boolean
+          bio?: string | null
+          cert_number?: string | null
+          created_at?: string
+          current_position?: string | null
+          display_name: string
+          graduation_year?: number | null
+          headline?: string | null
+          id?: string
+          linkedin_url?: string | null
+          location?: string | null
+          organization?: string | null
+          primary_degree?: string | null
+          public_visibility?: boolean
+          updated_at?: string
+          user_id: string
+          website_url?: string | null
+        }
+        Update: {
+          available_for_mentorship?: boolean
+          bio?: string | null
+          cert_number?: string | null
+          created_at?: string
+          current_position?: string | null
+          display_name?: string
+          graduation_year?: number | null
+          headline?: string | null
+          id?: string
+          linkedin_url?: string | null
+          location?: string | null
+          organization?: string | null
+          primary_degree?: string | null
+          public_visibility?: boolean
+          updated_at?: string
+          user_id?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       assignments: {
         Row: {
           course_id: string | null
