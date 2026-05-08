@@ -33,17 +33,20 @@ export const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-          <img
-            src={scrollLogo}
-            alt="ScrollUniversity"
-            className="h-9 w-9 transition-transform duration-300 group-hover:scale-105"
-          />
+          <div className="relative">
+            <div className={`absolute inset-0 rounded-full blur-md transition-opacity duration-300 ${scrolled ? "opacity-0" : "opacity-60 bg-accent/30"}`} />
+            <img
+              src={scrollLogo}
+              alt="ScrollUniversity"
+              className="relative h-10 w-10 transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
           <div className="hidden xs:block">
-            <p className="text-lg font-serif font-bold text-primary leading-none">
+            <p className="text-lg font-serif font-bold text-primary leading-none tracking-tight">
               ScrollUniversity
             </p>
-            <p className="text-[10px] text-muted-foreground font-sans tracking-widest uppercase mt-0.5">
-              Veritas et Sapientia
+            <p className="text-[9px] text-accent font-sans tracking-[0.25em] uppercase mt-1 font-semibold">
+              Veritas · Sapientia
             </p>
           </div>
         </Link>
