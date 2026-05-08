@@ -6,9 +6,10 @@ import { Card, CardContent } from '@/components/ui/card';
 
 interface InstitutionGuardProps {
   children: ReactNode;
+  allowWithoutInstitution?: boolean;
 }
 
-export function InstitutionGuard({ children }: InstitutionGuardProps) {
+export function InstitutionGuard({ children, allowWithoutInstitution = false }: InstitutionGuardProps) {
   const { activeInstitution, loading } = useInstitution();
   const location = useLocation();
 
@@ -23,25 +24,13 @@ export function InstitutionGuard({ children }: InstitutionGuardProps) {
     );
   }
 
+  if (allowWithoutInstitution) {
+    return <>{children}</>;
+  }
+
   if (!activeInstitution) {
     const redirect = encodeURIComponent(location.pathname + location.search);
     return <Navigate to={`/apply?redirect=${redirect}`} replace />;
-
-    return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="max-w-md">
-          <CardContent className="pt-6 text-center space-y-4">
-            <AlertCircle className="h-12 w-12 text-destructive mx-auto" />
-            <div>
-              <h2 className="text-lg font-semibold mb-2">No Institution Found</h2>
-              <p className="text-sm text-muted-foreground">
-                You don't have access to any institution. Please contact your administrator.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
   }
 
   return <>{children}</>;
