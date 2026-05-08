@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
 import { Link } from "react-router-dom";
-import { BookOpen, ArrowRight, GraduationCap, Sparkles } from "lucide-react";
+import { BookOpen, ArrowRight, GraduationCap, Sparkles, LogIn } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 import heroBackground from "@/assets/hero-background.jpg";
 
 export const HeroSection = () => {
+  const { user } = useAuth();
   return (
     <section className="relative min-h-[100dvh] flex items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
       {/* Cinematic background image */}
@@ -111,6 +113,18 @@ export const HeroSection = () => {
               Explore the Catalog
             </Button>
           </AuthAwareLink>
+          {!user && (
+            <Link to="/auth">
+              <Button
+                variant="ghost"
+                size="lg"
+                className="text-sm sm:text-base px-8 py-6 font-sans w-full sm:w-auto hover:bg-primary/5"
+              >
+                <LogIn className="w-5 h-5 mr-2" />
+                Accepted Student? Sign In
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Trust strip */}
