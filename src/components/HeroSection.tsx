@@ -115,20 +115,18 @@ export const HeroSection = () => {
           </AuthAwareLink>
         </div>
 
-        {!user && (
-          <div className="animate-fade-up animate-fade-up-delay-4 flex justify-center mb-10">
-            <Link to="/auth">
-              <Button
-                variant="outline"
-                size="lg"
-                className="text-sm sm:text-base px-8 py-6 font-sans w-full sm:w-auto bg-card/70 backdrop-blur-sm border-accent/40 text-primary hover:bg-accent/10 hover:border-accent shadow-md transition-all"
-              >
-                <LogIn className="w-5 h-5 mr-2" />
-                Accepted Student? Sign In
-              </Button>
-            </Link>
-          </div>
-        )}
+        <div className="animate-fade-up animate-fade-up-delay-4 flex justify-center mb-10">
+          <Link to={user ? "/dashboard" : "/auth"}>
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-sm sm:text-base px-8 py-6 font-sans w-full sm:w-auto bg-card/80 backdrop-blur-sm border-accent/50 text-primary hover:bg-accent/10 hover:border-accent shadow-md transition-all"
+            >
+              <LogIn className="w-5 h-5 mr-2" />
+              {user ? "Go to Dashboard" : "Accepted Student? Sign In"}
+            </Button>
+          </Link>
+        </div>
 
         {/* Trust strip */}
         <div className="animate-fade-up animate-fade-up-delay-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[11px] sm:text-xs font-sans text-muted-foreground tracking-wide uppercase">
