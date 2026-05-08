@@ -45,43 +45,28 @@ Deno.serve(async (req) => {
       userId = created.user!.id;
     }
 
-    // 2. Ensure profile + active lifecycle (bypass transition state machine)
+    // 2. Reset profile to applicant lifecycle so the demo starts at /apply
     await supabase.from("profiles").upsert(
       {
         id: userId,
         email: TEST_EMAIL,
         full_name: "Demo Student",
-        lifecycle_status: "active",
-        admitted_at: new Date().toISOString(),
-        enrolled_at: new Date().toISOString(),
+        lifecycle_status: "applicant",
+        admitted_at: null,
+        enrolled_at: null,
       },
       { onConflict: "id" }
     );
 
-    // 3. Grant student role
+    // 3. Grant student role (catalog browsing + dashboard access)
     await supabase.from("user_roles").upsert(
       { user_id: userId, role: "student" },
       { onConflict: "user_id,role" }
     );
 
-    // 4. Auto-enroll in up to 3 published courses for full UX
-    const { data: courses } = await supabase
-      .from("courses")
-      .select("id")
-      .limit(3);
-
-    if (courses?.length) {
-      for (const c of courses) {
-        await supabase.from("enrollments").upsert(
-          {
-            user_id: userId,
-            course_id: c.id,
-            progress: 0,
-          },
-          { onConflict: "user_id,course_id" }
-        );
-      }
-    }
+    // 4. Clear any prior enrollments / applications so the flow restarts cleanly
+    await supabase.from("enrollments").delete().eq("user_id", userId);
+    await supabase.from("applications").delete().eq("user_id", userId);
 
     return new Response(
       JSON.stringify({
@@ -89,8 +74,8 @@ Deno.serve(async (req) => {
         email: TEST_EMAIL,
         password: TEST_PASSWORD,
         user_id: userId,
-        lifecycle: "active",
-        enrolled_courses: courses?.length ?? 0,
+        lifecycle: "applicant",
+        next_step: "/apply",
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
