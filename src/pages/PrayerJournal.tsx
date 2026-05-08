@@ -172,7 +172,7 @@ export default function PrayerJournal() {
           </Badge>
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
-              <Button onClick={() => toast.info("This action is launching with the next release.")}>
+              <Button onClick={() => toast({ title: "Coming soon", description: "This action is launching with the next release." })}>
                 <Plus className="h-4 w-4 mr-2" />
                 New Prayer
               </Button>
