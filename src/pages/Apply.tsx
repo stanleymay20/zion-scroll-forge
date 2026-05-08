@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useCreateApplication, useUploadDocument, useStudentProfile } from '@/hooks/useStudents';
-import { useDegreePrograms } from '@/hooks/useDegreePrograms';
+// useDegreePrograms intentionally not used here — we load ALL active programs across visibility tiers.
 import { useCohortStatus } from '@/hooks/useLaunchOps';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
