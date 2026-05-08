@@ -17,7 +17,7 @@ import { Progress } from '@/components/ui/progress';
 export default function Apply() {
   const navigate = useNavigate();
   const { data: profile } = useStudentProfile();
-  const { data: programs = [] } = useDegreePrograms();
+  const { data: programs = [], isLoading: programsLoading } = useDegreePrograms();
   const { data: cohort, isLoading: cohortLoading } = useCohortStatus();
   const createApplication = useCreateApplication();
   const uploadDocument = useUploadDocument();
@@ -189,12 +189,13 @@ export default function Apply() {
               <select
                 id="program"
                 required
+                disabled={programsLoading}
                 value={formData.degree_program_id}
                 onChange={(e) => setFormData({ ...formData, degree_program_id: e.target.value })}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <option value="" disabled>
-                  {programs.length > 0 ? 'Select a degree program' : 'No degree programs available'}
+                  {programsLoading ? 'Loading programs…' : programs.length > 0 ? 'Select a degree program' : 'No degree programs available'}
                 </option>
                 {programs.map((p: any) => (
                   <option key={p.id} value={p.id}>
