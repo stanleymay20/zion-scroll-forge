@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
-import { Menu, X, BookOpen, GraduationCap, Heart, Shield } from "lucide-react";
+import { Menu, X, BookOpen, GraduationCap, Heart, Shield, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 
 export const Header = () => {
+  const { user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -76,16 +78,27 @@ export const Header = () => {
 
         {/* Desktop Auth */}
         <div className="hidden sm:flex items-center gap-3">
-          <Link to="/auth">
-            <Button variant="ghost" size="sm" className="font-sans text-sm">
-              Sign In
-            </Button>
-          </Link>
-          <Link to="/auth?tab=signup&redirect=/apply">
-            <Button size="sm" className="font-sans text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
-              Get Started
-            </Button>
-          </Link>
+          {user ? (
+            <Link to="/dashboard">
+              <Button size="sm" className="font-sans text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
+                <LayoutDashboard className="h-4 w-4 mr-2" />
+                Go to Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/auth">
+                <Button variant="ghost" size="sm" className="font-sans text-sm">
+                  Sign In
+                </Button>
+              </Link>
+              <Link to="/auth?tab=signup&redirect=/apply">
+                <Button size="sm" className="font-sans text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -123,16 +136,27 @@ export const Header = () => {
               );
             })}
             <div className="flex gap-2 pt-3 mt-2 border-t border-border/50">
-              <Link to="/auth" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline" size="sm" className="w-full font-sans">
-                  Sign In
-                </Button>
-              </Link>
-              <Link to="/auth?tab=signup&redirect=/apply" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
-                <Button size="sm" className="w-full font-sans">
-                  Get Started
-                </Button>
-              </Link>
+              {user ? (
+                <Link to="/dashboard" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                  <Button size="sm" className="w-full font-sans">
+                    <LayoutDashboard className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Link to="/auth" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full font-sans">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/auth?tab=signup&redirect=/apply" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                    <Button size="sm" className="w-full font-sans">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>
