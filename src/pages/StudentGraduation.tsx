@@ -65,22 +65,32 @@ export default function StudentGraduation() {
 
   const generateCertificate = useMutation({
     mutationFn: async (degreeLevel: string) => {
+      // Issue a verifiable degree certificate (idempotent per user+degree)
+      const { data: issued, error: issueErr } = await supabase.rpc("issue_certificate", {
+        p_user_id: user!.id,
+        p_cert_type: "degree",
+        p_program_name: degreeLevel,
+        p_entity_id: null,
+        p_metadata: { degree_level: degreeLevel } as never,
+      });
+      if (issueErr) throw issueErr;
+
       const { data, error } = await supabase.functions.invoke('generate-certificate', {
-        body: { userId: user?.id, degreeLevel, type: 'graduation' },
+        body: { userId: user?.id, degreeLevel, type: 'graduation', certNumber: (issued as any)?.cert_number },
       });
       if (error) throw error;
-      return data;
+      return { ...data, cert_number: (issued as any)?.cert_number as string };
     },
     onSuccess: (data) => {
-      confetti({ particleCount: 150, spread: 100, origin: { y: 0.6 } });
+      confetti({ particleCount: 200, spread: 110, origin: { y: 0.6 } });
       if (data?.html) {
         const win = window.open();
         if (win) win.document.write(data.html);
       }
-      toast.success('🎓 Congratulations! Your degree certificate has been generated!');
+      toast.success(`🎓 Degree conferred. Certificate ${data?.cert_number ?? ""} is verifiable.`);
       queryClient.invalidateQueries({ queryKey: ['graduation-eligibility'] });
     },
-    onError: () => toast.error('Failed to generate certificate'),
+    onError: (e: any) => toast.error(e?.message ?? 'Failed to generate certificate'),
   });
 
   const viewCertificate = useMutation({
