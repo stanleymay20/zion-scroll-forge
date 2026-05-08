@@ -1522,10 +1522,13 @@ export type Database = {
       }
       courses: {
         Row: {
+          career_track: string[] | null
           created_at: string | null
           credit_hours: number | null
+          department_id: string | null
           description: string | null
           duration: string | null
+          estimated_duration_hours: number | null
           faculty: string | null
           faculty_id: string | null
           id: string
@@ -1547,13 +1550,17 @@ export type Database = {
           tags: string[] | null
           thumbnail_url: string | null
           title: string
+          visibility: string
           xr_enabled: boolean | null
         }
         Insert: {
+          career_track?: string[] | null
           created_at?: string | null
           credit_hours?: number | null
+          department_id?: string | null
           description?: string | null
           duration?: string | null
+          estimated_duration_hours?: number | null
           faculty?: string | null
           faculty_id?: string | null
           id?: string
@@ -1575,13 +1582,17 @@ export type Database = {
           tags?: string[] | null
           thumbnail_url?: string | null
           title: string
+          visibility?: string
           xr_enabled?: boolean | null
         }
         Update: {
+          career_track?: string[] | null
           created_at?: string | null
           credit_hours?: number | null
+          department_id?: string | null
           description?: string | null
           duration?: string | null
+          estimated_duration_hours?: number | null
           faculty?: string | null
           faculty_id?: string | null
           id?: string
@@ -1603,9 +1614,17 @@ export type Database = {
           tags?: string[] | null
           thumbnail_url?: string | null
           title?: string
+          visibility?: string
           xr_enabled?: boolean | null
         }
         Relationships: [
+          {
+            foreignKeyName: "courses_department_id_fkey"
+            columns: ["department_id"]
+            isOneToOne: false
+            referencedRelation: "departments"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "courses_faculty_id_fkey"
             columns: ["faculty_id"]
@@ -1961,6 +1980,61 @@ export type Database = {
         }
         Relationships: []
       }
+      degree_program_courses: {
+        Row: {
+          course_id: string
+          created_at: string
+          degree_program_id: string
+          id: string
+          is_required: boolean
+          recommended_term: string | null
+          recommended_year: number | null
+          sequence_order: number | null
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          degree_program_id: string
+          id?: string
+          is_required?: boolean
+          recommended_term?: string | null
+          recommended_year?: number | null
+          sequence_order?: number | null
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          degree_program_id?: string
+          id?: string
+          is_required?: boolean
+          recommended_term?: string | null
+          recommended_year?: number | null
+          sequence_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "degree_program_courses_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "degree_program_courses_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "v_course_gradebook"
+            referencedColumns: ["course_id"]
+          },
+          {
+            foreignKeyName: "degree_program_courses_degree_program_id_fkey"
+            columns: ["degree_program_id"]
+            isOneToOne: false
+            referencedRelation: "degree_programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       degree_programs: {
         Row: {
           career_paths: string[] | null
@@ -2122,6 +2196,54 @@ export type Database = {
           },
           {
             foreignKeyName: "degree_progress_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "v_faculty_analytics"
+            referencedColumns: ["faculty_id"]
+          },
+        ]
+      }
+      departments: {
+        Row: {
+          created_at: string
+          description: string | null
+          display_order: number | null
+          faculty_id: string
+          id: string
+          name: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          faculty_id: string
+          id?: string
+          name: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          display_order?: number | null
+          faculty_id?: string
+          id?: string
+          name?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "departments_faculty_id_fkey"
+            columns: ["faculty_id"]
+            isOneToOne: false
+            referencedRelation: "faculties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "departments_faculty_id_fkey"
             columns: ["faculty_id"]
             isOneToOne: false
             referencedRelation: "v_faculty_analytics"
@@ -7714,6 +7836,10 @@ export type Database = {
         Returns: undefined
       }
       beta_cohort_status: { Args: never; Returns: Json }
+      can_access_course: {
+        Args: { _course_id: string; _user_id: string }
+        Returns: Json
+      }
       check_diploma_seal_criteria: {
         Args: { p_course_id: string }
         Returns: Json

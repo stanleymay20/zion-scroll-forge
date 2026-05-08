@@ -143,6 +143,15 @@ const VerifyCredential = lazy(() => import("./pages/VerifyCredential"));
 const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
 const Orientation = lazy(() => import("./pages/Orientation"));
 const Matriculation = lazy(() => import("./pages/Matriculation"));
+const AcademicCatalog = lazy(() => import("./pages/AcademicCatalog"));
+const CoursePreview = lazy(() => import("./pages/CoursePreview"));
+
+// Route guards (eager — small, used everywhere)
+import {
+  RoleRoute,
+  CourseAccessRoute,
+  StudentStatusRoute,
+} from "./components/routing/Guards";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -263,6 +272,10 @@ const App = () => (
             <Route path="/courses-catalog" element={<PublicLayout />}>
               <Route index element={<CourseCatalog />} />
             </Route>
+            <Route path="/catalog" element={<PublicLayout />}>
+              <Route index element={<AcademicCatalog />} />
+            </Route>
+            <Route path="/course/:courseId/preview" element={<CoursePreview />} />
             <Route path="/faculties" element={<PublicLayout />}>
               <Route index element={<FacultyGallery />} />
             </Route>
@@ -351,8 +364,8 @@ const App = () => (
               <Route path="settings/integrations" element={<SettingsPage />} />
               <Route path="settings/users" element={<SettingsPage />} />
               <Route path="courses/:courseId" element={<CourseDetail />} />
-              <Route path="courses/:courseId/learn" element={<CourseLearningPage />} />
-              <Route path="courses/:courseId/learn-old" element={<CourseLearn />} />
+              <Route path="courses/:courseId/learn" element={<CourseAccessRoute accessLevel="enrolled"><CourseLearningPage /></CourseAccessRoute>} />
+              <Route path="courses/:courseId/learn-old" element={<CourseAccessRoute accessLevel="enrolled"><CourseLearn /></CourseAccessRoute>} />
               
               {/* Admissions Routes removed - not implemented */}
               <Route path="courses/:courseId/modules/:moduleId" element={<ModuleDetail />} />
@@ -375,21 +388,21 @@ const App = () => (
               <Route path="study-groups" element={<StudyGroups />} />
               <Route path="study-groups/:groupId" element={<StudyGroupChat />} />
               <Route path="achievements" element={<Achievements />} />
-              <Route path="admin" element={<AdminDashboard />} />
-              <Route path="admin/generation-history" element={<GenerationHistory />} />
-              <Route path="admin/content-generation" element={<ContentGenerationAdmin />} />
-              <Route path="admin/institutions" element={<InstitutionsAdmin />} />
-              <Route path="admin/super" element={<SuperAdmin />} />
-              <Route path="admin/launch-ops" element={<LaunchOps />} />
+              <Route path="admin" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AdminDashboard /></RoleRoute>} />
+              <Route path="admin/generation-history" element={<RoleRoute allowedRoles={["admin","superadmin"]}><GenerationHistory /></RoleRoute>} />
+              <Route path="admin/content-generation" element={<RoleRoute allowedRoles={["admin","superadmin"]}><ContentGenerationAdmin /></RoleRoute>} />
+              <Route path="admin/institutions" element={<RoleRoute allowedRoles={["admin","superadmin"]}><InstitutionsAdmin /></RoleRoute>} />
+              <Route path="admin/super" element={<RoleRoute allowedRoles={["superadmin"]}><SuperAdmin /></RoleRoute>} />
+              <Route path="admin/launch-ops" element={<RoleRoute allowedRoles={["admin","superadmin"]}><LaunchOps /></RoleRoute>} />
               <Route path="apply" element={<Apply />} />
               <Route path="courses-detail/:courseId" element={<CourseDetailPage />} />
               <Route path="my-courses" element={<MyCourses />} />
-              <Route path="quiz-taking/:quizId" element={<QuizTaking />} />
-              <Route path="faculty" element={<FacultyDashboard />} />
-              <Route path="faculty/admin" element={<FacultyAdmin />} />
-              <Route path="faculty/gradebook" element={<FacultyGradebookIndex />} />
-              <Route path="faculty/gradebook/:courseId" element={<Gradebook />} />
-              <Route path="admin/admissions" element={<AdmissionsReview />} />
+              <Route path="quiz-taking/:quizId" element={<CourseAccessRoute accessLevel="enrolled"><QuizTaking /></CourseAccessRoute>} />
+              <Route path="faculty" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyDashboard /></RoleRoute>} />
+              <Route path="faculty/admin" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyAdmin /></RoleRoute>} />
+              <Route path="faculty/gradebook" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyGradebookIndex /></RoleRoute>} />
+              <Route path="faculty/gradebook/:courseId" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><Gradebook /></RoleRoute>} />
+              <Route path="admin/admissions" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AdmissionsReview /></RoleRoute>} />
               <Route path="alumni" element={<AlumniPortal />} />
               
               {/* Community & Social */}
@@ -429,15 +442,15 @@ const App = () => (
             <Route path="ai-tutor-interface" element={<AITutorInterface />} />
             <Route path="ai-tutors/:id" element={<TutorSession />} />
             <Route path="tutor-session/:id" element={<TutorSession />} />
-            <Route path="admissions-review" element={<AdmissionsReview />} />
-            <Route path="analytics/dashboard" element={<AnalyticsDashboard />} />
-            <Route path="analytics/courses/:courseId" element={<CourseAnalyticsPage />} />
-            <Route path="generation-monitor" element={<GenerationMonitor />} />
+            <Route path="admissions-review" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AdmissionsReview /></RoleRoute>} />
+            <Route path="analytics/dashboard" element={<RoleRoute allowedRoles={["admin","superadmin","faculty"]}><AnalyticsDashboard /></RoleRoute>} />
+            <Route path="analytics/courses/:courseId" element={<RoleRoute allowedRoles={["admin","superadmin","faculty"]}><CourseAnalyticsPage /></RoleRoute>} />
+            <Route path="generation-monitor" element={<RoleRoute allowedRoles={["admin","superadmin"]}><GenerationMonitor /></RoleRoute>} />
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="notifications/settings" element={<NotificationSettings />} />
-            <Route path="system-status" element={<SystemStatus />} />
-            <Route path="institution-onboarding" element={<InstitutionOnboarding />} />
-            <Route path="faculty-analytics" element={<FacultyAnalytics />} />
+            <Route path="system-status" element={<RoleRoute allowedRoles={["admin","superadmin"]}><SystemStatus /></RoleRoute>} />
+            <Route path="institution-onboarding" element={<RoleRoute allowedRoles={["admin","superadmin"]}><InstitutionOnboarding /></RoleRoute>} />
+            <Route path="faculty-analytics" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyAnalytics /></RoleRoute>} />
             
             {/* All other routes use coming soon pages */}
             <Route path="assessments" element={<Assessments />} />
@@ -466,8 +479,8 @@ const App = () => (
               <Route path="graduation" element={<StudentGraduation />} />
               <Route path="orientation" element={<Orientation />} />
               <Route path="matriculation" element={<Matriculation />} />
-            <Route path="admin/academic-terms" element={<AcademicTermAdmin />} />
-            <Route path="admin/suyas" element={<SUYASAdmin />} />
+            <Route path="admin/academic-terms" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AcademicTermAdmin /></RoleRoute>} />
+            <Route path="admin/suyas" element={<RoleRoute allowedRoles={["admin","superadmin"]}><SUYASAdmin /></RoleRoute>} />
           </Route>
           
           {/* Catch-all route for 404 */}
