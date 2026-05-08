@@ -98,6 +98,9 @@ export default function ModuleDetail() {
         {/* Live Multi-Agent Classroom — Lecturer + Peer + TA */}
         {moduleId && <MultiAgentClassroom moduleId={moduleId} />}
 
+        {/* External research & library deep links */}
+        <CompanionResources topic={module.title} />
+
         <Card>
           <CardHeader>
             <CardTitle>Lesson Content</CardTitle>
