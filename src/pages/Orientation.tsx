@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PageTemplate } from "@/components/layout/PageTemplate";
+import { BackButton } from "@/components/layout/BackButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -79,8 +80,9 @@ export default function Orientation() {
   }
 
   return (
-    <PageTemplate title="Orientation" description="Become a ScrollUniversity student" backTo="/dashboard">
+    <PageTemplate title="Orientation" description="Become a ScrollUniversity student">
       <div className="max-w-2xl mx-auto space-y-5">
+        <BackButton fallbackTo="/dashboard" />
         <div>
           <div className="flex justify-between text-xs text-muted-foreground mb-1">
             <span>Step {current + 1} of {STEPS.length}</span>
