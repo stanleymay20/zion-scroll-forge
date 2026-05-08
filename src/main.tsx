@@ -10,6 +10,8 @@ import "./index.css";
 // Mark app initialization start
 performanceMonitor.mark('app-init-start');
 
+const PREVIEW_CACHE_RESET_KEY = '__lovable_preview_cache_reset__';
+
 // Guard: never register service workers in iframes or preview hosts
 const isInIframe = (() => {
   try { return window.self !== window.top; } catch { return true; }
@@ -20,10 +22,28 @@ const isPreviewHost =
   window.location.hostname.includes('lovable.app');
 
 if (isPreviewHost || isInIframe) {
-  // Unregister any existing service workers that may cause blank screens
-  navigator.serviceWorker?.getRegistrations().then((regs) => {
-    regs.forEach((r) => r.unregister());
-  });
+  // Aggressively clear preview caches so old broken bundles cannot keep the app blank
+  void (async () => {
+    const registrations = 'serviceWorker' in navigator
+      ? await navigator.serviceWorker.getRegistrations()
+      : [];
+
+    await Promise.all(registrations.map((registration) => registration.unregister()));
+
+    const cacheNames = 'caches' in window ? await caches.keys() : [];
+    await Promise.all(cacheNames.map((cacheName) => caches.delete(cacheName)));
+
+    const hadStalePreviewState = registrations.length > 0 || cacheNames.length > 0;
+    const hasReloadedAfterCleanup = sessionStorage.getItem(PREVIEW_CACHE_RESET_KEY) === '1';
+
+    if (hadStalePreviewState && !hasReloadedAfterCleanup) {
+      sessionStorage.setItem(PREVIEW_CACHE_RESET_KEY, '1');
+      window.location.reload();
+      return;
+    }
+
+    sessionStorage.removeItem(PREVIEW_CACHE_RESET_KEY);
+  })();
 } else if (import.meta.env.PROD) {
   registerServiceWorker({
     onSuccess: () => console.log('Service Worker registered successfully'),
