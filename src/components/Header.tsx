@@ -1,11 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
-import { Menu, X, BookOpen, GraduationCap, Heart, Shield } from "lucide-react";
+import { Menu, X, BookOpen, GraduationCap, Heart, Shield, LayoutDashboard } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 
 export const Header = () => {
+  const { user } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
