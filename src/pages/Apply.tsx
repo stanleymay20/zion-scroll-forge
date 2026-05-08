@@ -201,21 +201,46 @@ export default function Apply() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
+              <Label htmlFor="enrollment_level">Level of Enrollment *</Label>
+              <select
+                id="enrollment_level"
+                required
+                value={enrollmentLevel}
+                onChange={(e) => {
+                  setEnrollmentLevel(e.target.value);
+                  setFormData({ ...formData, degree_program_id: '' });
+                }}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+              >
+                <option value="" disabled>Select level (Certificate, Bachelor's, Masters, PhD, Exousia…)</option>
+                {LEVEL_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="space-y-2">
               <Label htmlFor="program">Program of Interest *</Label>
               <select
                 id="program"
                 required
-                disabled={programsLoading}
+                disabled={programsLoading || !enrollmentLevel}
                 value={formData.degree_program_id}
                 onChange={(e) => setFormData({ ...formData, degree_program_id: e.target.value })}
                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <option value="" disabled>
-                  {programsLoading ? 'Loading programs…' : programs.length > 0 ? 'Select a degree program' : 'No degree programs available'}
+                  {!enrollmentLevel
+                    ? 'Select a level first'
+                    : programsLoading
+                      ? 'Loading programs…'
+                      : filteredPrograms.length > 0
+                        ? 'Select a program'
+                        : 'No programs available at this level'}
                 </option>
-                {programs.map((p: any) => (
+                {filteredPrograms.map((p: any) => (
                   <option key={p.id} value={p.id}>
-                    {p.title}{p.level ? ` — ${p.level}` : ''}
+                    {p.title}{p.faculty ? ` — ${p.faculty}` : ''}
                   </option>
                 ))}
               </select>
