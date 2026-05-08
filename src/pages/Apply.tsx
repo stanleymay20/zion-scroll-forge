@@ -18,7 +18,26 @@ import { Progress } from '@/components/ui/progress';
 export default function Apply() {
   const navigate = useNavigate();
   const { data: profile } = useStudentProfile();
-  const { data: programs = [], isLoading: programsLoading } = useDegreePrograms();
+  // Load EVERY active program (all visibility tiers) so applicants can apply to
+  // pilot_private and internal_development programs too — admissions decides eligibility.
+  const [programs, setPrograms] = useState<any[]>([]);
+  const [programsLoading, setProgramsLoading] = useState(true);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from('degree_programs')
+        .select('id, title, level, faculty, description, duration, program_status')
+        .eq('is_active', true)
+        .order('level')
+        .order('title');
+      if (!cancelled) {
+        setPrograms(data || []);
+        setProgramsLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
   const { data: cohort, isLoading: cohortLoading } = useCohortStatus();
   const createApplication = useCreateApplication();
   const uploadDocument = useUploadDocument();
