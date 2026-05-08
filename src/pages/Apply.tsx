@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useCreateApplication, useUploadDocument, useStudentProfile } from '@/hooks/useStudents';
 import { useDegreePrograms } from '@/hooks/useDegreePrograms';
 import { useCohortStatus } from '@/hooks/useLaunchOps';
@@ -187,19 +186,22 @@ export default function Apply() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="program">Program of Interest *</Label>
-              <Select
+              <select
+                id="program"
+                required
                 value={formData.degree_program_id}
-                onValueChange={(v) => setFormData({ ...formData, degree_program_id: v })}
+                onChange={(e) => setFormData({ ...formData, degree_program_id: e.target.value })}
+                className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <SelectTrigger><SelectValue placeholder="Select a degree program" /></SelectTrigger>
-                <SelectContent>
-                  {programs.map((p: any) => (
-                    <SelectItem key={p.id} value={p.id}>
-                      {p.title}{p.level ? ` — ${p.level}` : ''}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <option value="" disabled>
+                  {programs.length > 0 ? 'Select a degree program' : 'No degree programs available'}
+                </option>
+                {programs.map((p: any) => (
+                  <option key={p.id} value={p.id}>
+                    {p.title}{p.level ? ` — ${p.level}` : ''}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -225,15 +227,18 @@ export default function Apply() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="gender">Gender *</Label>
-                <Select value={formData.gender}
-                  onValueChange={(v) => setFormData({ ...formData, gender: v })}>
-                  <SelectTrigger><SelectValue placeholder="Select" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="male">Male</SelectItem>
-                    <SelectItem value="female">Female</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                <select
+                  id="gender"
+                  required
+                  value={formData.gender}
+                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <option value="" disabled>Select</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="country">Country *</Label>
