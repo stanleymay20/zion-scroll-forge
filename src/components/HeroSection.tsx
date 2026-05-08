@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { AuthAwareLink } from "@/components/auth/AuthAwareLink";
 import { Link } from "react-router-dom";
-import { BookOpen, ArrowRight, GraduationCap, Sparkles } from "lucide-react";
+import { BookOpen, ArrowRight, GraduationCap, Sparkles, LogIn } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 import heroBackground from "@/assets/hero-background.jpg";
 
