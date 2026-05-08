@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
+import { toast } from "sonner";
   FileText, Plus, Search, GitBranch, Clock, 
   User, Star, Download, Eye, Edit3 
 } from "lucide-react";
@@ -76,7 +77,7 @@ const ScrollSpecs = () => {
             Create, manage, and version your system specifications
           </p>
         </div>
-        <Button className="flex items-center gap-2">
+        <Button className="flex items-center gap-2" onClick={() => toast.info("This action is launching with the next release.")}>
           <Plus className="h-4 w-4" />
           Create New Spec
         </Button>
@@ -93,7 +94,7 @@ const ScrollSpecs = () => {
             className="pl-9"
           />
         </div>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
           <GitBranch className="h-4 w-4 mr-2" />
           Version Control
         </Button>
@@ -148,13 +149,13 @@ const ScrollSpecs = () => {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                           <Eye className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                           <Edit3 className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                           <Download className="h-4 w-4" />
                         </Button>
                       </div>

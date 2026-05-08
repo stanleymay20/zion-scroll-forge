@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Heart, Share2, Plus } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { toast } from "sonner";
 
 console.info("✝️ Testimonies — Christ governs testimony");
 
@@ -74,7 +75,7 @@ export default function Testimonies() {
         <div className="flex justify-end">
           <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-              <Button>
+              <Button onClick={() => toast.info("This action is launching with the next release.")}>
                 <Plus className="mr-2 h-4 w-4" />
                 Share Your Testimony
               </Button>
@@ -145,11 +146,11 @@ export default function Testimonies() {
                   <p className="whitespace-pre-wrap leading-relaxed">{testimony.content}</p>
                   
                   <div className="flex items-center gap-4 pt-4 border-t">
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                       <Heart className="mr-1 h-4 w-4" />
                       Encourage
                     </Button>
-                    <Button variant="ghost" size="sm">
+                    <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                       <Share2 className="mr-1 h-4 w-4" />
                       Share
                     </Button>

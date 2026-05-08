@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { BookOpen, Users, FileText, BarChart, CheckCircle, Clock } from "lucide-react";
+import { toast } from "sonner";
 
 console.info("✝️ Faculty Admin — Christ governs teaching");
 
@@ -166,7 +167,7 @@ export default function FacultyAdmin() {
                       <h3 className="font-semibold">{course.title}</h3>
                       <p className="text-sm text-muted-foreground">{course.description}</p>
                     </div>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                       Manage Course
                     </Button>
                   </div>

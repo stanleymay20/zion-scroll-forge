@@ -12,6 +12,7 @@ import { useState } from 'react';
 import { Loader2, Target, Trophy, Calendar, CheckCircle2, Plus } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { toast } from "sonner";
 
 console.info('✝️ Learning Goals — Christ is Lord over our aspirations');
 
@@ -103,7 +104,7 @@ export default function LearningGoals() {
               </div>
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button>
+                  <Button onClick={() => toast.info("This action is launching with the next release.")}>
                     <Plus className="h-4 w-4 mr-2" />
                     New Goal
                   </Button>

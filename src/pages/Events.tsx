@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, Plus, Calendar, MapPin, Users, Video } from "lucide-react";
 import { useEvents, useCreateEvent, useRegisterForEvent, useUnregisterFromEvent } from "@/hooks/useEvents";
 import { format } from "date-fns";
+import { toast } from "sonner";
 
 console.info("✝️ Events — Christ gathers His people");
 
@@ -78,7 +79,7 @@ export default function Events() {
       actions={
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button onClick={() => toast.info("This action is launching with the next release.")}>
               <Plus className="h-4 w-4 mr-2" />
               Create Event
             </Button>

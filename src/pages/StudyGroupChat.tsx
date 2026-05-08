@@ -314,7 +314,7 @@ export default function StudyGroupChat() {
                 <CardHeader>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button size="sm">
+                      <Button size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                         <FileText className="h-4 w-4 mr-2" />
                         New Note
                       </Button>

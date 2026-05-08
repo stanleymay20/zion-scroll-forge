@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { 
+import { toast } from "sonner";
   FileText, Bot, Zap, TrendingUp, Clock, 
   Activity, Code, GitBranch, Monitor, Users,
   BarChart3, Target, Calendar, Bell, Plus,
@@ -22,11 +23,11 @@ const ForgeDashboard = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => toast.info("This action is launching with the next release.")}>
             <Settings className="h-4 w-4 mr-2" />
             Quick Setup
           </Button>
-          <Button>
+          <Button onClick={() => toast.info("This action is launching with the next release.")}>
             <Plus className="h-4 w-4 mr-2" />
             New Project
           </Button>
@@ -218,7 +219,7 @@ const ForgeDashboard = () => {
                       <Badge variant={spec.status === 'Updated' ? 'default' : 'outline'}>
                         {spec.status}
                       </Badge>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                         <Eye className="h-4 w-4" />
                       </Button>
                     </div>

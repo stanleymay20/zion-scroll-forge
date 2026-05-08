@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useWallet } from "@/hooks/useScrollGold";
+import { toast } from "sonner";
 
 console.info('✝️ ScrollGold Economy — Christ governs the kingdom economy');
 
@@ -322,7 +323,7 @@ export default function ScrollGold() {
                   </div>
                   <div className="text-lg font-bold text-primary">{opportunity.reward}</div>
                 </div>
-                <Button className="w-full">
+                <Button className="w-full" onClick={() => toast.info("This action is launching with the next release.")}>
                   Start Earning
                 </Button>
               </CardContent>

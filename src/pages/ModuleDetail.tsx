@@ -12,6 +12,7 @@ import { AITutorAvatar } from '@/components/AITutorAvatar';
 import { MultiAgentClassroom } from '@/components/learning/MultiAgentClassroom';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { toast } from "sonner";
 
 console.info('✝️ Module Detail — Christ is Lord over learning');
 
@@ -134,7 +135,7 @@ export default function ModuleDetail() {
                       </div>
                     </div>
                   </div>
-                  <Button size="sm" variant="ghost">
+                  <Button size="sm" variant="ghost" onClick={() => toast.info("This action is launching with the next release.")}>
                     <Download className="h-4 w-4" />
                   </Button>
                 </a>

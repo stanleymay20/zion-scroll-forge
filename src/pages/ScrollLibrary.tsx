@@ -13,6 +13,7 @@ import {
   Layers, ChevronRight, Filter, BookText
 } from "lucide-react";
 import { useScrollBooks, useStudyPacks, useLibrarySearch, ScrollBook, StudyPack } from "@/hooks/useScrollLibrary";
+import { toast } from "sonner";
 
 console.info("✝️ ScrollLibrary — Christ governs all knowledge and wisdom");
 
@@ -116,7 +117,7 @@ function BookCard({ book, onRead }: { book: ScrollBook; onRead: (id: string) => 
           </div>
         )}
         
-        <Button variant="ghost" className="w-full justify-between group-hover:bg-primary/5">
+        <Button variant="ghost" className="w-full justify-between group-hover:bg-primary/5" onClick={() => toast.info("This action is launching with the next release.")}>
           Read Book
           <ChevronRight className="h-4 w-4" />
         </Button>
@@ -158,11 +159,11 @@ function StudyPackCard({ pack }: { pack: StudyPack }) {
         </div>
         
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="flex-1">
+          <Button variant="outline" size="sm" className="flex-1" onClick={() => toast.info("This action is launching with the next release.")}>
             <Download className="h-4 w-4 mr-1" />
             Download
           </Button>
-          <Button size="sm" className="flex-1">
+          <Button size="sm" className="flex-1" onClick={() => toast.info("This action is launching with the next release.")}>
             Study Now
           </Button>
         </div>
@@ -423,7 +424,7 @@ export default function ScrollLibrary() {
                       <p className="text-sm text-muted-foreground">Essential reading for new students</p>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="w-full">
+                  <Button size="sm" variant="outline" className="w-full" onClick={() => toast.info("This action is launching with the next release.")}>
                     Start Reading
                   </Button>
                 </div>
@@ -435,7 +436,7 @@ export default function ScrollLibrary() {
                       <p className="text-sm text-muted-foreground">Christ-centered technology</p>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="w-full">
+                  <Button size="sm" variant="outline" className="w-full" onClick={() => toast.info("This action is launching with the next release.")}>
                     View Guide
                   </Button>
                 </div>
@@ -447,7 +448,7 @@ export default function ScrollLibrary() {
                       <p className="text-sm text-muted-foreground">Biblical wealth principles</p>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="w-full">
+                  <Button size="sm" variant="outline" className="w-full" onClick={() => toast.info("This action is launching with the next release.")}>
                     Explore
                   </Button>
                 </div>
@@ -459,7 +460,7 @@ export default function ScrollLibrary() {
                       <p className="text-sm text-muted-foreground">Leading like Christ</p>
                     </div>
                   </div>
-                  <Button size="sm" variant="outline" className="w-full">
+                  <Button size="sm" variant="outline" className="w-full" onClick={() => toast.info("This action is launching with the next release.")}>
                     Learn More
                   </Button>
                 </div>

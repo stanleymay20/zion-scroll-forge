@@ -13,6 +13,7 @@ import { format, formatDistanceToNow } from "date-fns";
 import { VoiceClient } from "@/lib/voiceClient";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 console.info("✝️ Prayer Journal — Christ hears every prayer");
 
@@ -172,7 +173,7 @@ export default function PrayerJournal() {
           </Badge>
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
-              <Button>
+              <Button onClick={() => toast.info("This action is launching with the next release.")}>
                 <Plus className="h-4 w-4 mr-2" />
                 New Prayer
               </Button>

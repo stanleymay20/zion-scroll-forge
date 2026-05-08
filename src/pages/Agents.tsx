@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { 
+import { toast } from "sonner";
   Bot, Plus, Search, Activity, Cpu, Zap,
   Settings, BarChart3, Play, Pause, Square,
   Brain, MessageSquare, Code
@@ -90,11 +91,11 @@ const Agents = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => toast.info("This action is launching with the next release.")}>
             <Settings className="h-4 w-4 mr-2" />
             Fleet Settings
           </Button>
-          <Button className="flex items-center gap-2">
+          <Button className="flex items-center gap-2" onClick={() => toast.info("This action is launching with the next release.")}>
             <Plus className="h-4 w-4" />
             Deploy New Agent
           </Button>
@@ -152,7 +153,7 @@ const Agents = () => {
             className="pl-9"
           />
         </div>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
           <BarChart3 className="h-4 w-4 mr-2" />
           Performance Report
         </Button>
@@ -202,10 +203,10 @@ const Agents = () => {
                           {getStatusIcon(agent.status)}
                           {agent.status}
                         </Badge>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                           <MessageSquare className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                           <Settings className="h-4 w-4" />
                         </Button>
                       </div>

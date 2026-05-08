@@ -20,6 +20,7 @@ import { CourseReviews } from "@/components/course/CourseReviews";
 import { CoursePreviewVideo } from "@/components/course/CoursePreviewVideo";
 import { InstructorProfileCard } from "@/components/course/InstructorProfileCard";
 import { CourseEnrollmentFlow } from "@/components/course/CourseEnrollmentFlow";
+import { toast } from "sonner";
 
 export default function CourseDetail() {
   const { courseId } = useParams();
@@ -275,7 +276,7 @@ export default function CourseDetail() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                       >
-                                        <Button variant="ghost" size="sm">
+                                        <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                                           Open
                                         </Button>
                                       </a>
@@ -289,7 +290,7 @@ export default function CourseDetail() {
                           {/* Action Buttons */}
                           <div className="flex gap-2 pt-2">
                             {enrollment ? (
-                              <Button className="flex-1" size="sm" variant="default">
+                              <Button className="flex-1" size="sm" variant="default" onClick={() => toast.info("This action is launching with the next release.")}>
                                 <Play className="h-4 w-4 mr-2" />
                                 Start Module
                               </Button>

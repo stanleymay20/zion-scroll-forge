@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { 
+import { toast } from "sonner";
   Zap, Plus, Search, Clock, Users, Monitor,
   Play, Pause, Square, GitBranch, Code,
   MessageSquare, Share, Settings
@@ -95,11 +96,11 @@ const ForgeSessions = () => {
           </p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
+          <Button variant="outline" onClick={() => toast.info("This action is launching with the next release.")}>
             <Monitor className="h-4 w-4 mr-2" />
             Session Monitor
           </Button>
-          <Button className="flex items-center gap-2">
+          <Button className="flex items-center gap-2" onClick={() => toast.info("This action is launching with the next release.")}>
             <Plus className="h-4 w-4" />
             Start New Session
           </Button>
@@ -157,7 +158,7 @@ const ForgeSessions = () => {
             className="pl-9"
           />
         </div>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
           <GitBranch className="h-4 w-4 mr-2" />
           Session History
         </Button>
@@ -207,13 +208,13 @@ const ForgeSessions = () => {
                           {getStatusIcon(session.status)}
                           {session.status}
                         </Badge>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                           <MessageSquare className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                           <Share className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                           <Settings className="h-4 w-4" />
                         </Button>
                       </div>

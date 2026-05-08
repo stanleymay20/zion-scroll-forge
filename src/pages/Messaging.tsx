@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Search, Send, MoreVertical } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { toast } from "sonner";
 
 console.info("✝️ Messaging — Christ governs communication");
 
@@ -149,7 +150,7 @@ export default function Messaging() {
                     </p>
                   </div>
                 </div>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" onClick={() => toast.info("This action is launching with the next release.")}>
                   <MoreVertical className="h-4 w-4" />
                 </Button>
               </div>

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useNavigate } from "react-router-dom";
 import { Search, BookOpen, Clock, Users, Star } from "lucide-react";
+import { toast } from "sonner";
 
 export default function CourseCatalog() {
   const navigate = useNavigate();
@@ -146,7 +147,7 @@ export default function CourseCatalog() {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <Button className="w-full">
+                  <Button className="w-full" onClick={() => toast.info("This action is launching with the next release.")}>
                     <BookOpen className="mr-2 h-4 w-4" />
                     View Course
                   </Button>

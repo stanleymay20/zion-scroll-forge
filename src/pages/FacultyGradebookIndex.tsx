@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { BookOpen, Users, ChevronRight, Loader2 } from 'lucide-react';
+import { toast } from "sonner";
 
 export default function FacultyGradebookIndex() {
   const navigate = useNavigate();
@@ -65,7 +66,7 @@ export default function FacultyGradebookIndex() {
                     <Users className="h-4 w-4" />
                     <span>{course.students || 0} students</span>
                   </div>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                     View Grades <ChevronRight className="h-4 w-4 ml-1" />
                   </Button>
                 </div>

@@ -8,6 +8,7 @@ import {
   Clock, Star, Gift, Zap, ArrowUpRight, ArrowDownRight
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 const walletStats = [
   { label: "Current Balance", value: "1,247", change: "+89 this week", icon: Coins },
@@ -226,7 +227,7 @@ export default function ScrollCoin() {
                   </div>
                 ))}
               </div>
-              <Button variant="outline" className="w-full mt-4">
+              <Button variant="outline" className="w-full mt-4" onClick={() => toast.info("This action is launching with the next release.")}>
                 <Clock className="h-4 w-4 mr-2" />
                 View Full Transaction History
               </Button>
@@ -250,11 +251,11 @@ export default function ScrollCoin() {
                 Equivalent to $623.50 USD
               </p>
               <div className="mt-4 space-y-2">
-                <Button className="w-full">
+                <Button className="w-full" onClick={() => toast.info("This action is launching with the next release.")}>
                   <TrendingUp className="h-4 w-4 mr-2" />
                   Earn More ScrollCoins
                 </Button>
-                <Button variant="outline" className="w-full">
+                <Button variant="outline" className="w-full" onClick={() => toast.info("This action is launching with the next release.")}>
                   <Send className="h-4 w-4 mr-2" />
                   Send to Friend
                 </Button>
@@ -358,7 +359,7 @@ export default function ScrollCoin() {
                   </div>
                   <div className="text-lg font-bold text-primary">{opportunity.reward}</div>
                 </div>
-                <Button className="w-full">
+                <Button className="w-full" onClick={() => toast.info("This action is launching with the next release.")}>
                   Start Earning
                 </Button>
               </CardContent>
