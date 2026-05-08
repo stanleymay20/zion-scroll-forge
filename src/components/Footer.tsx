@@ -34,32 +34,43 @@ const footerLinks = [
 
 export const Footer = () => {
   return (
-    <footer className="bg-card border-t border-border/60">
-      <div className="container mx-auto px-4 sm:px-6 py-12 sm:py-16 max-w-6xl">
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
+    <footer className="bg-card border-t border-border/60 relative overflow-hidden">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 h-px w-3/4 bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+      <div className="container mx-auto px-4 sm:px-6 py-14 sm:py-20 max-w-6xl">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 mb-12">
           {/* Brand */}
           <div className="col-span-2 sm:col-span-1">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <img src={scrollLogo} alt="ScrollUniversity" className="h-8 w-8" />
-              <span className="font-serif font-bold text-primary text-sm">ScrollUniversity</span>
+            <Link to="/" className="flex items-center gap-2.5 mb-4 group">
+              <img src={scrollLogo} alt="ScrollUniversity" className="h-9 w-9 transition-transform group-hover:scale-105" />
+              <div>
+                <span className="font-serif font-bold text-primary text-base block leading-none">
+                  ScrollUniversity
+                </span>
+                <span className="text-[9px] text-accent font-sans tracking-[0.25em] uppercase font-semibold">
+                  Veritas · Sapientia
+                </span>
+              </div>
             </Link>
-            <p className="text-xs text-muted-foreground font-sans leading-relaxed max-w-[200px]">
+            <p className="text-xs text-muted-foreground font-sans leading-relaxed max-w-[220px] mb-4">
               The Transcendent AI University. Kingdom-aligned education for global transformation.
+            </p>
+            <p className="text-[10px] text-muted-foreground/70 font-sans italic leading-relaxed max-w-[220px]">
+              "Jesus Christ is Lord over every algorithm."
             </p>
           </div>
 
           {/* Links */}
           {footerLinks.map((section) => (
             <div key={section.title}>
-              <h4 className="text-xs font-sans font-semibold tracking-wider uppercase text-primary mb-3">
+              <h4 className="text-[10px] font-sans font-bold tracking-[0.2em] uppercase text-accent mb-4">
                 {section.title}
               </h4>
-              <ul className="space-y-2">
+              <ul className="space-y-2.5">
                 {section.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       to={link.href}
-                      className="text-xs text-muted-foreground hover:text-primary transition-colors font-sans"
+                      className="text-xs text-muted-foreground hover:text-primary transition-colors font-sans story-link"
                     >
                       {link.label}
                     </Link>
@@ -75,8 +86,11 @@ export const Footer = () => {
           <p className="text-[11px] text-muted-foreground font-sans">
             © {new Date().getFullYear()} ScrollUniversity. All rights reserved.
           </p>
+          <p className="text-[10px] text-muted-foreground font-sans tracking-[0.3em] uppercase">
+            Soli Deo Gloria
+          </p>
           <p className="text-[11px] text-muted-foreground font-sans flex items-center gap-1">
-            Built with <Heart className="w-3 h-3 text-accent inline" /> for the Kingdom
+            Built with <Heart className="w-3 h-3 text-accent inline fill-accent" /> for the Kingdom
           </p>
         </div>
       </div>
