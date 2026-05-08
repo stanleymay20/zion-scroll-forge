@@ -11,17 +11,27 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Logo } from "@/components/brand/Logo";
+import { lovable } from "@/integrations/lovable";
+
+// Whitelist internal redirects only — prevents open-redirect via ?redirect=https://evil.com
+const safeRedirect = (raw: string | null): string => {
+  if (!raw) return '/dashboard';
+  if (raw.startsWith('/') && !raw.startsWith('//')) return raw;
+  return '/dashboard';
+};
 
 export default function Auth() {
   const [searchParams] = useSearchParams();
   const verified = searchParams.get('verified') === 'true';
+  const resetDone = searchParams.get('reset') === 'true';
   const initialTab = (verified || searchParams.get('tab') !== 'signup' ? 'signin' : 'signup') as 'signin' | 'signup';
-  const redirect = searchParams.get('redirect') || '/dashboard';
-  
+  const redirect = safeRedirect(searchParams.get('redirect'));
+
   const [tab, setTab] = useState<'signin' | 'signup'>(initialTab);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [showReset, setShowReset] = useState(false);
   const { signIn, signUp, user, loading: authLoading } = useAuth();
