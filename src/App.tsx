@@ -140,6 +140,9 @@ const FacultyDirectory = lazy(() => import("./pages/FacultyDirectory"));
 const OutcomesDashboard = lazy(() => import("./pages/OutcomesDashboard"));
 const FoundingWall = lazy(() => import("./pages/FoundingWall"));
 const VerifyCredential = lazy(() => import("./pages/VerifyCredential"));
+const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
+const Orientation = lazy(() => import("./pages/Orientation"));
+const Matriculation = lazy(() => import("./pages/Matriculation"));
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -300,6 +303,7 @@ const App = () => (
             <Route path="/verify" element={<PublicLayout />}>
               <Route index element={<VerifyCredential />} />
             </Route>
+            <Route path="/verify/:certNumber" element={<CertificateVerify />} />
             
             {/* Legal Pages */}
             <Route path="/terms" element={<TermsOfService />} />
@@ -463,7 +467,9 @@ const App = () => (
             <Route path="academic-calendar" element={<AcademicCalendar />} />
             <Route path="scroll-library" element={<ScrollLibrary />} />
             <Route path="scroll-library/book/:bookId" element={<ScrollLibraryBookReader />} />
-            <Route path="graduation" element={<StudentGraduation />} />
+              <Route path="graduation" element={<StudentGraduation />} />
+              <Route path="orientation" element={<Orientation />} />
+              <Route path="matriculation" element={<Matriculation />} />
             <Route path="admin/academic-terms" element={<AcademicTermAdmin />} />
             <Route path="admin/suyas" element={<SUYASAdmin />} />
           </Route>

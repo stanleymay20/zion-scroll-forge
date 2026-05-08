@@ -829,6 +829,60 @@ export type Database = {
           },
         ]
       }
+      certificate_verifications: {
+        Row: {
+          cert_number: string
+          cert_type: string
+          created_at: string
+          entity_id: string | null
+          id: string
+          issued_at: string
+          metadata: Json
+          program_name: string
+          revoked: boolean
+          revoked_at: string | null
+          revoked_reason: string | null
+          seal_hash: string
+          student_id_code: string | null
+          student_name: string
+          user_id: string
+        }
+        Insert: {
+          cert_number: string
+          cert_type: string
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          issued_at?: string
+          metadata?: Json
+          program_name: string
+          revoked?: boolean
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          seal_hash: string
+          student_id_code?: string | null
+          student_name: string
+          user_id: string
+        }
+        Update: {
+          cert_number?: string
+          cert_type?: string
+          created_at?: string
+          entity_id?: string | null
+          id?: string
+          issued_at?: string
+          metadata?: Json
+          program_name?: string
+          revoked?: boolean
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          seal_hash?: string
+          student_id_code?: string | null
+          student_name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       class_sessions: {
         Row: {
           attendance_count: number | null
@@ -4052,6 +4106,33 @@ export type Database = {
           },
         ]
       }
+      matriculation_records: {
+        Row: {
+          cert_number: string | null
+          cohort_label: string | null
+          created_at: string
+          oath_signed_at: string
+          signature_text: string
+          user_id: string
+        }
+        Insert: {
+          cert_number?: string | null
+          cohort_label?: string | null
+          created_at?: string
+          oath_signed_at?: string
+          signature_text: string
+          user_id: string
+        }
+        Update: {
+          cert_number?: string | null
+          cohort_label?: string | null
+          created_at?: string
+          oath_signed_at?: string
+          signature_text?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       mentorship_relationships: {
         Row: {
           actual_end_date: string | null
@@ -4600,6 +4681,30 @@ export type Database = {
           start_time?: string
           tutor_name?: string
           tutor_specialty?: string
+        }
+        Relationships: []
+      }
+      orientation_progress: {
+        Row: {
+          completed_at: string
+          id: string
+          payload: Json
+          step: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          id?: string
+          payload?: Json
+          step: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          id?: string
+          payload?: Json
+          step?: string
+          user_id?: string
         }
         Relationships: []
       }
@@ -7625,6 +7730,16 @@ export type Database = {
       is_registration_open: {
         Args: { p_term_id: string; p_user_id: string }
         Returns: boolean
+      }
+      issue_certificate: {
+        Args: {
+          p_cert_type: string
+          p_entity_id?: string
+          p_metadata?: Json
+          p_program_name: string
+          p_user_id: string
+        }
+        Returns: Json
       }
       launch_ops_metrics: { Args: never; Returns: Json }
       log_quality_action: {

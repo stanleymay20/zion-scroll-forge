@@ -15,6 +15,7 @@ import { QuickActions } from "@/components/dashboard/QuickActions";
 import { PersonalizedContent } from "@/components/dashboard/PersonalizedContent";
 import { JourneyProgress } from "@/components/dashboard/JourneyProgress";
 import { StudentOnboarding } from "@/components/onboarding/StudentOnboarding";
+import { LifecycleBanner } from "@/components/lifecycle/LifecycleBanner";
 
 export default function EnhancedDashboard() {
   const { user } = useAuth();
@@ -100,6 +101,9 @@ export default function EnhancedDashboard() {
         </div>
       }
     >
+      {/* Institutional lifecycle: orientation → matriculation → graduation */}
+      <LifecycleBanner />
+
       {/* Christ Lordship Acknowledgment */}
       <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-secondary/5">
         <CardHeader>
