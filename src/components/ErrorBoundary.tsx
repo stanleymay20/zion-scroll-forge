@@ -25,6 +25,26 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('✝️ ScrollUniversity Error Boundary caught:', error, errorInfo);
+
+    // Auto-recover from stale chunk / dynamic-import failures (common after a redeploy
+    // when cached HTML references JS chunks that no longer exist). Reload once.
+    const msg = String(error?.message || '');
+    const isChunkError =
+      error?.name === 'ChunkLoadError' ||
+      /Importing a module script failed/i.test(msg) ||
+      /Failed to fetch dynamically imported module/i.test(msg) ||
+      /Loading chunk [\d]+ failed/i.test(msg) ||
+      /Loading CSS chunk/i.test(msg);
+
+    if (isChunkError && typeof window !== 'undefined') {
+      const KEY = '__su_chunk_reload_at';
+      const last = Number(sessionStorage.getItem(KEY) || '0');
+      // Only auto-reload once per minute to avoid loops
+      if (Date.now() - last > 60_000) {
+        sessionStorage.setItem(KEY, String(Date.now()));
+        window.location.reload();
+      }
+    }
   }
 
   private handleReset = () => {
