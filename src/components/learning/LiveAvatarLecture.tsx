@@ -21,6 +21,7 @@ import {
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
+import { CompanionResources } from './CompanionResources';
 
 type SpeakerRole = 'user' | 'host' | 'cohost' | 'system';
 
@@ -741,6 +742,9 @@ export function LiveAvatarLecture({
             <Download className="h-3.5 w-3.5" /> Download last recording
           </a>
         )}
+
+        {/* Companion external research & library */}
+        <CompanionResources topic={moduleTitle} variant="inline" />
 
         {/* Chat Messages */}
         <ScrollArea className="h-[250px]" ref={scrollRef}>

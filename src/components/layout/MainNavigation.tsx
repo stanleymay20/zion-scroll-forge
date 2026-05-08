@@ -16,7 +16,7 @@ import { Logo } from "@/components/brand/Logo";
 
 interface NavSection {
   title: string;
-  items: { label: string; href: string; icon?: LucideIcon; badge?: string; roles?: string[] }[];
+  items: { label: string; href: string; icon?: LucideIcon; badge?: string; roles?: string[]; external?: boolean }[];
   icon?: LucideIcon;
   roles?: string[];
 }
@@ -38,6 +38,8 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       items: [
         { label: "Course Catalog", href: "/courses", icon: BookOpen },
         { label: "ScrollLibrary", href: "/scroll-library", icon: Library },
+        { label: "ScrollLibrary.org", href: "https://scrolllibrary.org", icon: Library, external: true },
+        { label: "AtlasResearch", href: "https://atlasresearch.info", icon: FileText, external: true },
         { label: "AI Tutors", href: "/ai-tutors", icon: Bot },
         { label: "XR Classrooms", href: "/xr-classrooms", icon: Video },
         { label: "Virtual Labs", href: "/virtual-labs", icon: Monitor },
@@ -179,26 +181,34 @@ export const MainNavigation = () => {
 
               {expandedSections.includes(section.title) && (
                 <div className="space-y-0.5 mt-0.5 mb-2">
-                  {section.items.map((item) => (
-                    <Link key={item.href} to={item.href}>
+                  {section.items.map((item) => {
+                    const inner = (
                       <div
                         className={cn(
                           "flex items-center gap-2.5 px-3 py-2 text-sm font-sans rounded-lg transition-all duration-150",
-                          isActive(item.href)
+                          !item.external && isActive(item.href)
                             ? "bg-sidebar-accent text-sidebar-primary font-medium"
                             : "text-sidebar-foreground/70 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                         )}
                       >
                         {item.icon && <item.icon className="h-4 w-4 flex-shrink-0" />}
                         <span className="truncate">{item.label}</span>
+                        {item.external && (
+                          <span className="ml-auto text-[9px] uppercase tracking-wider text-sidebar-foreground/40">↗</span>
+                        )}
                         {item.badge && (
                           <span className="ml-auto text-[10px] bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">
                             {item.badge}
                           </span>
                         )}
                       </div>
-                    </Link>
-                  ))}
+                    );
+                    return item.external ? (
+                      <a key={item.href} href={item.href} target="_blank" rel="noreferrer">{inner}</a>
+                    ) : (
+                      <Link key={item.href} to={item.href}>{inner}</Link>
+                    );
+                  })}
                 </div>
               )}
             </div>

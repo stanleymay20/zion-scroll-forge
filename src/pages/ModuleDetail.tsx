@@ -10,6 +10,7 @@ import ReactMarkdown from 'react-markdown';
 import { toast } from '@/hooks/use-toast';
 import { AITutorAvatar } from '@/components/AITutorAvatar';
 import { MultiAgentClassroom } from '@/components/learning/MultiAgentClassroom';
+import { CompanionResources } from '@/components/learning/CompanionResources';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { BackButton } from "@/components/layout/BackButton";
@@ -96,6 +97,9 @@ export default function ModuleDetail() {
 
         {/* Live Multi-Agent Classroom — Lecturer + Peer + TA */}
         {moduleId && <MultiAgentClassroom moduleId={moduleId} />}
+
+        {/* External research & library deep links */}
+        <CompanionResources topic={module.title} />
 
         <Card>
           <CardHeader>
