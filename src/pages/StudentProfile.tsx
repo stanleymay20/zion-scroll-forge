@@ -25,6 +25,7 @@ import AchievementShowcase from '@/components/profile/AchievementShowcase';
 import SkillEndorsements from '@/components/profile/SkillEndorsements';
 import ResumeGenerator from '@/components/profile/ResumeGenerator';
 import type { StudentProfile } from '@/types/student-profile';
+import { toast } from "sonner";
 
 const StudentProfilePage: React.FC = () => {
   const { userId } = useParams<{ userId?: string }>();
@@ -204,7 +205,7 @@ const StudentProfilePage: React.FC = () => {
                       </Button>
                     </>
                   ) : (
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => toast.info("This action is launching with the next release.")}>
                       Connect
                     </Button>
                   )}

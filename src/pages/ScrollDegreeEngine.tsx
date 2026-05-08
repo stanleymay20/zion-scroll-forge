@@ -28,6 +28,7 @@ import MentorshipPanel from '@/components/degree-engine/MentorshipPanel';
 import AssessmentsPanel from '@/components/degree-engine/AssessmentsPanel';
 import SupremeDegreesPanel from '@/components/degree-engine/SupremeDegreesPanel';
 import ScrollTranscriptPanel from '@/components/degree-engine/ScrollTranscriptPanel';
+import { toast } from "sonner";
 
 const ScrollDegreeEngine = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -162,7 +163,7 @@ const ScrollDegreeEngine = () => {
                       <p className="text-muted-foreground text-center mb-4">
                         Start your divine academic journey by enrolling in a degree program.
                       </p>
-                      <Button className="bg-gradient-to-r from-amber-500 to-amber-600">
+                      <Button className="bg-gradient-to-r from-amber-500 to-amber-600" onClick={() => toast.info("This action is launching with the next release.")}>
                         Browse Programs
                       </Button>
                     </CardContent>

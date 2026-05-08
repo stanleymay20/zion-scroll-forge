@@ -16,6 +16,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Wallet, TrendingUp, ShoppingBag, Shield, History, Coins, RefreshCw, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ScrollCoinWallet as WalletType } from '@/types/scrollcoin';
+import { toast } from "sonner";
 
 const ScrollCoinWallet: React.FC = () => {
   const { user } = useAuth();
@@ -206,11 +207,11 @@ const ScrollCoinWallet: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <Button className="h-20 flex-col gap-2" variant="outline">
+                  <Button className="h-20 flex-col gap-2" variant="outline" onClick={() => toast.info("This action is launching with the next release.")}>
                     <ArrowUpRight className="h-6 w-6" />
                     Send SC
                   </Button>
-                  <Button variant="outline" className="h-20 flex-col gap-2">
+                  <Button variant="outline" className="h-20 flex-col gap-2" onClick={() => toast.info("This action is launching with the next release.")}>
                     <ArrowDownRight className="h-6 w-6" />
                     Receive SC
                   </Button>

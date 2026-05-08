@@ -13,6 +13,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, BookOpen, Heart, Brain, TrendingUp, Users, Flame, Calendar, CheckCircle2, Plus } from 'lucide-react';
+import { toast } from "sonner";
 
 export default function SpiritualFormation(): JSX.Element {
   const { user } = useAuth();
@@ -308,7 +309,7 @@ export default function SpiritualFormation(): JSX.Element {
                 <div className="prose prose-sm max-w-none">
                   {data.todaysDevotion.content}
                 </div>
-                <Button>Mark as Complete</Button>
+                <Button onClick={() => toast.info("This action is launching with the next release.")}>Mark as Complete</Button>
               </CardContent>
             </Card>
           ) : (
@@ -330,7 +331,7 @@ export default function SpiritualFormation(): JSX.Element {
                   <CardTitle>Prayer Journal</CardTitle>
                   <CardDescription>Your prayer requests and answered prayers</CardDescription>
                 </div>
-                <Button>
+                <Button onClick={() => toast.info("This action is launching with the next release.")}>
                   <Plus className="h-4 w-4 mr-2" />
                   New Prayer
                 </Button>
@@ -382,7 +383,7 @@ export default function SpiritualFormation(): JSX.Element {
                   <CardTitle>Scripture Memory</CardTitle>
                   <CardDescription>Hide God's Word in your heart</CardDescription>
                 </div>
-                <Button>
+                <Button onClick={() => toast.info("This action is launching with the next release.")}>
                   <Plus className="h-4 w-4 mr-2" />
                   Add Verse
                 </Button>
@@ -408,8 +409,8 @@ export default function SpiritualFormation(): JSX.Element {
                         </Badge>
                       </div>
                       <div className="mt-3 flex gap-2">
-                        <Button size="sm" variant="outline">Practice</Button>
-                        <Button size="sm" variant="outline">Review</Button>
+                        <Button size="sm" variant="outline" onClick={() => toast.info("This action is launching with the next release.")}>Practice</Button>
+                        <Button size="sm" variant="outline" onClick={() => toast.info("This action is launching with the next release.")}>Review</Button>
                       </div>
                     </div>
                   ))}
@@ -435,7 +436,7 @@ export default function SpiritualFormation(): JSX.Element {
             <CardContent className="text-center py-8">
               <Users className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <p className="text-muted-foreground mb-4">Find a mentor to guide your spiritual growth</p>
-              <Button>Request a Mentor</Button>
+              <Button onClick={() => toast.info("This action is launching with the next release.")}>Request a Mentor</Button>
             </CardContent>
           </Card>
         </TabsContent>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useGraduations } from '@/hooks/useStudents';
 import { Award, Download, ExternalLink } from 'lucide-react';
+import { toast } from "sonner";
 
 export default function AlumniPortal() {
   const { data: graduations } = useGraduations();
@@ -63,7 +64,7 @@ export default function AlumniPortal() {
                   </div>
                   <div className="flex gap-2">
                     {grad.certificate_url && (
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" onClick={() => toast.info("This action is launching with the next release.")}>
                         <ExternalLink className="h-4 w-4 mr-2" />
                         Verify
                       </Button>
@@ -94,7 +95,7 @@ export default function AlumniPortal() {
             Join our alumni network to stay connected, access exclusive resources, 
             and continue your professional development.
           </p>
-          <Button>
+          <Button onClick={() => toast.info("This action is launching with the next release.")}>
             Join Alumni Network
           </Button>
         </CardContent>

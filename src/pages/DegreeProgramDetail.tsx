@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Loader2, GraduationCap, BookOpen, Clock, ArrowLeft, CheckCircle } from "lucide-react";
 import { useDegreeProgram, useEnrollInDegree, useDegreeProgress } from "@/hooks/useDegreePrograms";
+import { BackButton } from "@/components/layout/BackButton";
 
 console.info("✝️ Degree Program Detail — Christ-centered path");
 
@@ -32,6 +33,7 @@ export default function DegreeProgramDetail() {
   if (!program) {
     return (
       <PageTemplate title="Program Not Found">
+      <div className="mb-2"><BackButton fallbackTo="/dashboard" /></div>
         <Card>
           <CardContent className="py-12 text-center">
             <p className="text-muted-foreground">Degree program not found</p>
