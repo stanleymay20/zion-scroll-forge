@@ -110,7 +110,7 @@ export default function ResetPassword() {
       // Sign out and redirect to login
       setTimeout(async () => {
         await supabase.auth.signOut();
-        navigate('/auth?verified=true');
+        navigate('/auth?reset=true');
       }, 3000);
     } catch (err: any) {
       setError(err.message || 'Failed to reset password. Please try again or request a new reset link.');
