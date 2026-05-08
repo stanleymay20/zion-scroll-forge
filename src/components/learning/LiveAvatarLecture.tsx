@@ -743,6 +743,9 @@ export function LiveAvatarLecture({
           </a>
         )}
 
+        {/* Companion external research & library */}
+        <CompanionResources topic={moduleTitle} variant="inline" />
+
         {/* Chat Messages */}
         <ScrollArea className="h-[250px]" ref={scrollRef}>
           <div className="space-y-3 pr-3">
