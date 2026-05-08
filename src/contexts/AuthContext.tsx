@@ -1,13 +1,20 @@
-import { createContext, useContext, useEffect, useState, ReactNode, useCallback, useRef } from 'react';
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+
+interface SignUpMetadata {
+  first_name?: string;
+  last_name?: string;
+  username?: string;
+  full_name?: string;
+}
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, metadata?: SignUpMetadata) => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   refreshSession: () => Promise<void>;
@@ -16,62 +23,20 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Token refresh interval (45 minutes - tokens typically expire in 1 hour)
-const REFRESH_INTERVAL = 45 * 60 * 1000;
-
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Automatic token refresh
-  const setupTokenRefresh = useCallback((session: Session | null) => {
-    // Clear existing timer
-    if (refreshTimerRef.current) {
-      clearTimeout(refreshTimerRef.current);
-      refreshTimerRef.current = null;
-    }
-
-    if (session) {
-      // Calculate time until token expires
-      const expiresAt = session.expires_at ? session.expires_at * 1000 : Date.now() + 3600000;
-      const timeUntilExpiry = expiresAt - Date.now();
-      
-      // Refresh 5 minutes before expiry or use default interval
-      const refreshTime = Math.min(timeUntilExpiry - 5 * 60 * 1000, REFRESH_INTERVAL);
-      
-      if (refreshTime > 0) {
-        refreshTimerRef.current = setTimeout(async () => {
-          try {
-            const { data, error } = await supabase.auth.refreshSession();
-            if (error) throw error;
-            
-            if (data.session) {
-              setSession(data.session);
-              setUser(data.session.user);
-              setupTokenRefresh(data.session);
-            }
-          } catch (error) {
-            console.error('Token refresh failed:', error);
-            // Don't show toast for silent refresh failures
-          }
-        }, refreshTime);
-      }
-    }
-  }, []);
-
-  // Manual session refresh
-  const refreshSession = useCallback(async () => {
+  // Manual session refresh (Supabase SDK already auto-refreshes; this is an escape hatch)
+  const refreshSession = async () => {
     try {
       const { data, error } = await supabase.auth.refreshSession();
       if (error) throw error;
-      
       if (data.session) {
         setSession(data.session);
         setUser(data.session.user);
-        setupTokenRefresh(data.session);
       }
     } catch (error: any) {
       console.error('Session refresh failed:', error);
@@ -82,28 +47,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       throw error;
     }
-  }, [setupTokenRefresh, toast]);
+  };
 
   useEffect(() => {
-    // Set up auth state listener FIRST
+    // Set up auth state listener FIRST (synchronous handler — no async work inside)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        console.log('✝️ Auth state changed:', event);
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
-        
-        // Set up automatic token refresh
-        setupTokenRefresh(session);
-        
-        // Handle specific auth events
-        if (event === 'SIGNED_OUT') {
-          // Clear any stored tokens
-          localStorage.removeItem('access_token');
-          localStorage.removeItem('refresh_token');
-        } else if (event === 'TOKEN_REFRESHED') {
-          console.log('✝️ Token refreshed successfully');
-        }
       }
     );
 
@@ -112,24 +64,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
-      setupTokenRefresh(session);
     });
 
     return () => {
       subscription.unsubscribe();
-      if (refreshTimerRef.current) {
-        clearTimeout(refreshTimerRef.current);
-      }
     };
-  }, [setupTokenRefresh]);
+  }, []);
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, metadata?: SignUpMetadata) => {
     try {
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/verify-email`,
+          data: metadata,
         },
       });
 
@@ -151,12 +100,23 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const signIn = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) throw error;
+
+      // Gate unverified emails — surface a friendly redirect path
+      if (data.user && !data.user.email_confirmed_at && !data.user.confirmed_at) {
+        toast({
+          title: 'Email not verified',
+          description: 'Please check your inbox to verify your email before signing in.',
+          variant: 'destructive',
+        });
+        await supabase.auth.signOut();
+        throw new Error('Email not verified');
+      }
 
       toast({
         title: 'Signed in successfully',
@@ -194,15 +154,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isAuthenticated = !!user && !!session;
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      session, 
-      loading, 
-      signUp, 
-      signIn, 
-      signOut, 
+    <AuthContext.Provider value={{
+      user,
+      session,
+      loading,
+      signUp,
+      signIn,
+      signOut,
       refreshSession,
-      isAuthenticated 
+      isAuthenticated,
     }}>
       {children}
     </AuthContext.Provider>
