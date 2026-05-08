@@ -22,6 +22,7 @@ export default function Apply() {
   const createApplication = useCreateApplication();
   const uploadDocument = useUploadDocument();
 
+  const [enrollmentLevel, setEnrollmentLevel] = useState<string>('');
   const [formData, setFormData] = useState({
     full_name: '',
     email: '',
@@ -33,6 +34,21 @@ export default function Apply() {
     degree_program_id: '',
     motivation_statement: '',
   });
+
+  // Level options shown in the application form. Maps friendly labels to the
+  // `level` column values used on degree_programs.
+  const LEVEL_OPTIONS: { label: string; value: string }[] = [
+    { label: 'Certificate', value: 'Certificate' },
+    { label: 'Diploma', value: 'Diploma' },
+    { label: "Bachelor's Degree (BSc / BA)", value: 'Undergraduate' },
+    { label: "Master's (MSc / MA / MDiv)", value: 'Graduate' },
+    { label: 'Doctorate (PhD)', value: 'Doctoral' },
+    { label: 'Exousia Fellowship', value: 'Exousia' },
+  ];
+
+  const filteredPrograms = enrollmentLevel
+    ? (programs as any[]).filter((p) => p.level === enrollmentLevel)
+    : (programs as any[]);
 
   const [files, setFiles] = useState<{ id?: File; transcript?: File }>({});
 
