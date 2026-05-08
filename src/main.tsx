@@ -32,13 +32,11 @@ if (isPreviewHost || isInIframe) {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <ErrorBoundary>
-      <PerformanceOptimizer>
-        <App />
-      </PerformanceOptimizer>
-    </ErrorBoundary>
-  </React.StrictMode>
+  <ErrorBoundary>
+    <PerformanceOptimizer>
+      <App />
+    </PerformanceOptimizer>
+  </ErrorBoundary>
 );
 
 // Mark app initialization complete
