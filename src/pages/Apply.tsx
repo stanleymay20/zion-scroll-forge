@@ -53,6 +53,32 @@ export default function Apply() {
     ? (programs as any[]).filter((p) => p.level === enrollmentLevel)
     : (programs as any[]);
 
+  // Load courses mapped to the selected program so applicants can preview the
+  // catalog they're committing to before they submit the application.
+  useEffect(() => {
+    let cancelled = false;
+    if (!formData.degree_program_id) {
+      setProgramCourses([]);
+      return;
+    }
+    setLoadingCourses(true);
+    (async () => {
+      const { data, error } = await supabase
+        .from('degree_program_courses')
+        .select('sequence_order, is_required, courses(id, title, description, level, faculty, duration, credit_hours)')
+        .eq('degree_program_id', formData.degree_program_id)
+        .order('sequence_order', { ascending: true });
+      if (cancelled) return;
+      if (error) {
+        setProgramCourses([]);
+      } else {
+        setProgramCourses((data || []).map((r: any) => ({ ...r.courses, is_required: r.is_required })));
+      }
+      setLoadingCourses(false);
+    })();
+    return () => { cancelled = true; };
+  }, [formData.degree_program_id]);
+
   const [files, setFiles] = useState<{ id?: File; transcript?: File }>({});
 
   const handleSubmit = async (e: React.FormEvent) => {
