@@ -186,14 +186,15 @@ export default function Auth() {
                 <TabsContent value="signin">
                   <form onSubmit={handleSignIn} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="signin-email">Email</Label>
+                      <Label htmlFor="signin-email">Institutional Email or Student ID</Label>
                       <Input
                         id="signin-email"
-                        type="email"
-                        placeholder="your@email.com"
+                        type="text"
+                        placeholder="you@scrolluniversity.org or SU2026001"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
+                        autoComplete="username"
                       />
                     </div>
                     <div className="space-y-2">
