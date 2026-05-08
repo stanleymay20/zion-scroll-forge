@@ -18,7 +18,7 @@ import { PWAInstallPrompt, OfflineIndicator, PWAUpdatePrompt } from "@/component
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Login from "./pages/auth/Login";
+
 import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
