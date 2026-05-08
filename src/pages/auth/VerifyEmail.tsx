@@ -26,9 +26,12 @@ export default function VerifyEmail() {
   const token = searchParams.get('token') || searchParams.get('token_hash');
   const type = searchParams.get('type') || 'signup';
 
+  const verifyAttempted = useRef(false);
+
   useEffect(() => {
-    // If token is present in URL, automatically verify
-    if (token) {
+    // Guard against React StrictMode double-invocation consuming the OTP twice
+    if (token && !verifyAttempted.current) {
+      verifyAttempted.current = true;
       verifyEmail();
     }
   }, [token]);
