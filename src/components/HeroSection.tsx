@@ -7,6 +7,7 @@ import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
 import heroBackground from "@/assets/hero-background.jpg";
 
 export const HeroSection = () => {
+  const { user } = useAuth();
   return (
     <section className="relative min-h-[100dvh] flex items-center justify-center px-4 pt-24 pb-16 overflow-hidden">
       {/* Cinematic background image */}
