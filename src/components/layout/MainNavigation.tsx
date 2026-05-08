@@ -16,7 +16,7 @@ import { Logo } from "@/components/brand/Logo";
 
 interface NavSection {
   title: string;
-  items: { label: string; href: string; icon?: LucideIcon; badge?: string; roles?: string[] }[];
+  items: { label: string; href: string; icon?: LucideIcon; badge?: string; roles?: string[]; external?: boolean }[];
   icon?: LucideIcon;
   roles?: string[];
 }
