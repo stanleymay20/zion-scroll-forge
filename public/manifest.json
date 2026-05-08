@@ -4,8 +4,9 @@
   "description": "The most advanced AI-powered Christian educational platform ever conceived. Training scroll sons to govern nations through kingdom-aligned education.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#8B5CF6",
+  
+  "theme_color": "#5C1F2A",
+  "background_color": "#FAF6EC",
   "orientation": "portrait-primary",
   "scope": "/",
   "icons": [
