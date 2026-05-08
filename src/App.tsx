@@ -272,6 +272,10 @@ const App = () => (
             <Route path="/courses-catalog" element={<PublicLayout />}>
               <Route index element={<CourseCatalog />} />
             </Route>
+            <Route path="/catalog" element={<PublicLayout />}>
+              <Route index element={<AcademicCatalog />} />
+            </Route>
+            <Route path="/course/:courseId/preview" element={<CoursePreview />} />
             <Route path="/faculties" element={<PublicLayout />}>
               <Route index element={<FacultyGallery />} />
             </Route>
