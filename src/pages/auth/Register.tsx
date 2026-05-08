@@ -13,7 +13,6 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Mail, Lock, User, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { supabase } from '@/integrations/supabase/client';
 
 interface FormData {
   firstName: string;
@@ -98,6 +97,8 @@ export default function Register() {
       errors.password = 'Password is required';
     } else if (formData.password.length < 8) {
       errors.password = 'Password must be at least 8 characters';
+    } else if (validatePassword(formData.password) === 'weak') {
+      errors.password = 'Please choose a stronger password (mix upper/lowercase, numbers, symbols)';
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -121,21 +122,12 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const { error: signUpError } = await supabase.auth.signUp({
-        email: formData.email,
-        password: formData.password,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/verify-email`,
-          data: {
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            username: formData.username,
-            full_name: `${formData.firstName} ${formData.lastName}`,
-          }
-        }
+      await signUp(formData.email, formData.password, {
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        username: formData.username,
+        full_name: `${formData.firstName} ${formData.lastName}`,
       });
-
-      if (signUpError) throw signUpError;
 
       navigate('/auth/verify-email', {
         state: { email: formData.email }

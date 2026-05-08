@@ -18,7 +18,7 @@ import { PWAInstallPrompt, OfflineIndicator, PWAUpdatePrompt } from "@/component
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Login from "./pages/auth/Login";
+
 import Register from "./pages/auth/Register";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
@@ -155,7 +155,7 @@ import {
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
     return (
@@ -168,7 +168,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return <Navigate to="/auth" replace />;
   }
 
@@ -322,7 +322,7 @@ const App = () => (
             
             {/* Authentication Routes */}
             <Route path="/auth" element={<Auth />} />
-            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/login" element={<Navigate to="/auth" replace />} />
             <Route path="/auth/register" element={<Register />} />
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/reset-password" element={<ResetPassword />} />
