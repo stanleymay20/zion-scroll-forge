@@ -8,7 +8,7 @@ import { InstitutionGuard } from "@/components/InstitutionGuard";
 export const MainLayout = () => {
   const { pathname } = useLocation();
   const showBack = pathname !== "/dashboard" && pathname !== "/";
-  const bypassInstitutionGuard = ["/apply", "/orientation", "/matriculation"].some(
+  const allowWithoutInstitution = ["/apply", "/orientation", "/matriculation"].some(
     (route) => pathname === route || pathname.startsWith(`${route}/`)
   );
 
@@ -31,12 +31,8 @@ export const MainLayout = () => {
     </div>
   );
 
-  if (bypassInstitutionGuard) {
-    return content;
-  }
-
   return (
-    <InstitutionGuard>
+    <InstitutionGuard allowWithoutInstitution={allowWithoutInstitution}>
       {content}
     </InstitutionGuard>
   );
