@@ -78,16 +78,27 @@ export const Header = () => {
 
         {/* Desktop Auth */}
         <div className="hidden sm:flex items-center gap-3">
-          <Link to="/auth">
-            <Button variant="ghost" size="sm" className="font-sans text-sm">
-              Sign In
-            </Button>
-          </Link>
-          <Link to="/auth?tab=signup&redirect=/apply">
-            <Button size="sm" className="font-sans text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
-              Get Started
-            </Button>
-          </Link>
+          {user ? (
+            <Link to="/dashboard">
+              <Button size="sm" className="font-sans text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
+                <LayoutDashboard className="h-4 w-4 mr-2" />
+                Go to Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link to="/auth">
+                <Button variant="ghost" size="sm" className="font-sans text-sm">
+                  Sign In
+                </Button>
+              </Link>
+              <Link to="/auth?tab=signup&redirect=/apply">
+                <Button size="sm" className="font-sans text-sm bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
