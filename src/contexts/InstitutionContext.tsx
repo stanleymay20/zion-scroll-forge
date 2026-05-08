@@ -114,35 +114,34 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
           .eq('id', user.id);
       }
 
-      // Final fallback: default ScrollUniversity institution (public browsing / new students)
-      if (!active) {
+      setActiveInstitutionState(active);
+      setActiveRole(role);
+    } catch (error) {
+      console.error('Error loading institution data:', error);
+    }
+
+    // Final fallback (runs even on errors): default ScrollUniversity institution
+    setActiveInstitutionState((prev) => {
+      if (prev) return prev;
+      // schedule async fetch
+      (async () => {
         const { data: defaultInst } = await supabase
           .from('institutions' as any)
           .select('id, name, slug, short_name, description, logo_url, primary_color, accent_color, plan, is_active')
           .eq('slug', 'scrolluniversity')
           .maybeSingle();
         if (defaultInst) {
-          active = defaultInst as unknown as Institution;
-          role = 'student';
+          setActiveInstitutionState(defaultInst as unknown as Institution);
+          setActiveRole((r) => r || 'student');
           await supabase
             .from('profiles' as any)
-            .update({ current_institution_id: (active as Institution).id } as any)
+            .update({ current_institution_id: (defaultInst as any).id } as any)
             .eq('id', user.id);
         }
-      }
-
-      setActiveInstitutionState(active);
-      setActiveRole(role);
-    } catch (error) {
-      console.error('Error loading institution data:', error);
-      toast({
-        title: 'Failed to load institution data',
-        description: 'Please refresh the page',
-        variant: 'destructive'
-      });
-    } finally {
-      setLoading(false);
-    }
+      })();
+      return prev;
+    });
+    setLoading(false);
   };
 
   const setActiveInstitution = async (institutionId: string) => {
