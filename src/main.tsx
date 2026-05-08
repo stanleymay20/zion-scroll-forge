@@ -4,6 +4,7 @@ import App from "./App.tsx";
 import { ErrorBoundary } from "./components/layout/ErrorBoundary";
 import { PerformanceOptimizer } from "./components/performance/PerformanceOptimizer";
 import { performanceMonitor } from "./lib/performance-monitor";
+import { isPreviewPWAContext } from "./lib/pwa-utils";
 import "./index.css";
 
 // Auto-recover from stale dynamic-import chunks (e.g. after a redeploy on mobile Safari)
@@ -35,6 +36,11 @@ performanceMonitor.mark('app-init-start');
 const PREVIEW_CACHE_RESET_KEY = '__lovable_preview_cache_reset__';
 
 void (async () => {
+  if (!isPreviewPWAContext()) {
+    sessionStorage.removeItem(PREVIEW_CACHE_RESET_KEY);
+    return;
+  }
+
   const registrations = 'serviceWorker' in navigator
     ? await navigator.serviceWorker.getRegistrations()
     : [];
