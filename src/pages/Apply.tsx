@@ -275,6 +275,50 @@ export default function Apply() {
               </select>
             </div>
 
+            {formData.degree_program_id && (
+              <Card className="bg-muted/30 border-primary/20">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <BookOpen className="h-4 w-4 text-primary" />
+                    Courses in this program
+                    {!loadingCourses && (
+                      <Badge variant="secondary" className="ml-2">{programCourses.length}</Badge>
+                    )}
+                  </CardTitle>
+                  <CardDescription>
+                    Once accepted, you'll be enrolled into the courses below as part of this program.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {loadingCourses ? (
+                    <p className="text-sm text-muted-foreground">Loading curriculum…</p>
+                  ) : programCourses.length === 0 ? (
+                    <p className="text-sm text-muted-foreground">
+                      Curriculum is being finalised for this program. You can still apply.
+                    </p>
+                  ) : (
+                    <ol className="space-y-2 max-h-72 overflow-y-auto pr-2">
+                      {programCourses.map((c: any, idx: number) => (
+                        <li key={c.id} className="flex items-start gap-3 text-sm">
+                          <span className="text-xs font-mono text-muted-foreground mt-0.5 w-6 shrink-0">
+                            {String(idx + 1).padStart(2, '0')}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium truncate">{c.title}</div>
+                            <div className="flex flex-wrap gap-1 mt-1">
+                              {c.faculty && <Badge variant="outline" className="text-[10px]">{c.faculty}</Badge>}
+                              {c.credit_hours && <Badge variant="outline" className="text-[10px]">{c.credit_hours} cr</Badge>}
+                              {c.is_required && <Badge variant="secondary" className="text-[10px]">Required</Badge>}
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="full_name">Full Name *</Label>
