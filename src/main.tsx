@@ -6,6 +6,29 @@ import { PerformanceOptimizer } from "./components/performance/PerformanceOptimi
 import { performanceMonitor } from "./lib/performance-monitor";
 import "./index.css";
 
+// Auto-recover from stale dynamic-import chunks (e.g. after a redeploy on mobile Safari)
+const CHUNK_RELOAD_KEY = '__su_chunk_reload_at';
+const isChunkLoadError = (reason: unknown): boolean => {
+  const msg = String((reason as any)?.message || reason || '');
+  return (
+    (reason as any)?.name === 'ChunkLoadError' ||
+    /Importing a module script failed/i.test(msg) ||
+    /Failed to fetch dynamically imported module/i.test(msg) ||
+    /Loading chunk [\d]+ failed/i.test(msg) ||
+    /Loading CSS chunk/i.test(msg)
+  );
+};
+const maybeReloadForChunk = (reason: unknown) => {
+  if (!isChunkLoadError(reason)) return;
+  const last = Number(sessionStorage.getItem(CHUNK_RELOAD_KEY) || '0');
+  if (Date.now() - last > 60_000) {
+    sessionStorage.setItem(CHUNK_RELOAD_KEY, String(Date.now()));
+    window.location.reload();
+  }
+};
+window.addEventListener('unhandledrejection', (e) => maybeReloadForChunk(e.reason));
+window.addEventListener('error', (e) => maybeReloadForChunk(e.error));
+
 // Mark app initialization start
 performanceMonitor.mark('app-init-start');
 
