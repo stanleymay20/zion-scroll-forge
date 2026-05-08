@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { useUserRoles } from "@/hooks/useUserRoles";
 import { UserProfileDropdown } from "./UserProfileDropdown";
 import { NotificationBell } from "@/components/NotificationBell";
-import scrollLogo from "@/assets/scroll-university-logo-optimized.png";
+import { Logo } from "@/components/brand/Logo";
 
 interface NavSection {
   title: string;
@@ -152,13 +152,7 @@ export const MainNavigation = () => {
     <div className="hidden lg:flex fixed left-0 top-0 h-full w-64 bg-sidebar border-r border-sidebar-border flex-col z-40">
       {/* Logo */}
       <div className="p-4 border-b border-sidebar-border">
-        <Link to="/dashboard" className="flex items-center gap-2.5 group">
-          <img src={scrollLogo} alt="ScrollUniversity" className="h-9 w-9 transition-transform group-hover:scale-105" />
-          <div>
-            <h1 className="text-base font-serif font-bold text-sidebar-primary leading-none">ScrollUniversity</h1>
-            <p className="text-[10px] text-sidebar-foreground/50 font-sans tracking-widest uppercase mt-0.5">Veritas et Sapientia</p>
-          </div>
-        </Link>
+        <Logo size="md" to="/dashboard" />
       </div>
 
       {/* User & Notifications */}
