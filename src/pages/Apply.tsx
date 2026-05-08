@@ -24,7 +24,8 @@ export default function Apply() {
   const uploadDocument = useUploadDocument();
 
   const [enrollmentLevel, setEnrollmentLevel] = useState<string>('');
-  const [formData, setFormData] = useState({
+  const [programCourses, setProgramCourses] = useState<any[]>([]);
+  const [loadingCourses, setLoadingCourses] = useState(false);
     full_name: '',
     email: '',
     phone: '',
