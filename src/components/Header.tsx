@@ -136,16 +136,27 @@ export const Header = () => {
               );
             })}
             <div className="flex gap-2 pt-3 mt-2 border-t border-border/50">
-              <Link to="/auth" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
-                <Button variant="outline" size="sm" className="w-full font-sans">
-                  Sign In
-                </Button>
-              </Link>
-              <Link to="/auth?tab=signup&redirect=/apply" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
-                <Button size="sm" className="w-full font-sans">
-                  Get Started
-                </Button>
-              </Link>
+              {user ? (
+                <Link to="/dashboard" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                  <Button size="sm" className="w-full font-sans">
+                    <LayoutDashboard className="h-4 w-4 mr-2" />
+                    Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Link to="/auth" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                    <Button variant="outline" size="sm" className="w-full font-sans">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/auth?tab=signup&redirect=/apply" className="flex-1" onClick={() => setMobileMenuOpen(false)}>
+                    <Button size="sm" className="w-full font-sans">
+                      Get Started
+                    </Button>
+                  </Link>
+                </>
+              )}
             </div>
           </nav>
         </div>
