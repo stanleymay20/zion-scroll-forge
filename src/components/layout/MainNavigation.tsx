@@ -38,6 +38,8 @@ const getNavigationSections = (userRoles: string[]): NavSection[] => {
       items: [
         { label: "Course Catalog", href: "/courses", icon: BookOpen },
         { label: "ScrollLibrary", href: "/scroll-library", icon: Library },
+        { label: "ScrollLibrary.org", href: "https://scrolllibrary.org", icon: Library, external: true },
+        { label: "AtlasResearch", href: "https://atlasresearch.info", icon: FileText, external: true },
         { label: "AI Tutors", href: "/ai-tutors", icon: Bot },
         { label: "XR Classrooms", href: "/xr-classrooms", icon: Video },
         { label: "Virtual Labs", href: "/virtual-labs", icon: Monitor },
