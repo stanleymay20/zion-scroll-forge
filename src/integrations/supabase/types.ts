@@ -5221,6 +5221,51 @@ export type Database = {
           },
         ]
       }
+      program_requirements: {
+        Row: {
+          additional_requirements: Json
+          created_at: string
+          display_label: string
+          id: string
+          level: string
+          min_academic: string | null
+          notes: string | null
+          optional_documents: Json
+          reference_letters_required: number | null
+          required_documents: Json
+          statement_min_words: number | null
+          updated_at: string
+        }
+        Insert: {
+          additional_requirements?: Json
+          created_at?: string
+          display_label: string
+          id?: string
+          level: string
+          min_academic?: string | null
+          notes?: string | null
+          optional_documents?: Json
+          reference_letters_required?: number | null
+          required_documents?: Json
+          statement_min_words?: number | null
+          updated_at?: string
+        }
+        Update: {
+          additional_requirements?: Json
+          created_at?: string
+          display_label?: string
+          id?: string
+          level?: string
+          min_academic?: string | null
+          notes?: string | null
+          optional_documents?: Json
+          reference_letters_required?: number | null
+          required_documents?: Json
+          statement_min_words?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       prophetic_assessments: {
         Row: {
           assessed_by: string | null
