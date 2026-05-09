@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useInstitution } from '@/contexts/InstitutionContext';
 import { useToast } from '@/hooks/use-toast';
 import { underChrist } from '@/lib/lordship';
+import { logError } from '@/lib/errors';
 
 const useOptionalInstitution = () => {
   try {
