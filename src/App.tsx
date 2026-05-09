@@ -264,16 +264,11 @@ const App = () => (
             {/* Public Badge Profile */}
             <Route path="/badges/public/:userId" element={<PublicBadgeProfile />} />
             
-            {/* Public Browsing Routes (no auth required) */}
-            <Route path="/courses" element={<PublicLayout />}>
-              <Route index element={<Courses />} />
-            </Route>
-            <Route path="/course-catalog" element={<PublicLayout />}>
-              <Route index element={<CourseCatalog />} />
-            </Route>
-            <Route path="/courses-catalog" element={<PublicLayout />}>
-              <Route index element={<CourseCatalog />} />
-            </Route>
+            {/* Public Browsing Routes (no auth required) — all catalog aliases redirect to /catalog */}
+            <Route path="/courses" element={<Navigate to="/catalog" replace />} />
+            <Route path="/course-catalog" element={<Navigate to="/catalog" replace />} />
+            <Route path="/courses-catalog" element={<Navigate to="/catalog" replace />} />
+            <Route path="/comprehensive-courses" element={<Navigate to="/catalog" replace />} />
             <Route path="/catalog" element={<PublicLayout />}>
               <Route index element={<AcademicCatalog />} />
             </Route>
@@ -370,8 +365,8 @@ const App = () => (
               <Route path="courses/:courseId/learn-old" element={<CourseAccessRoute accessLevel="enrolled"><CourseLearn /></CourseAccessRoute>} />
               
               {/* Admissions Routes removed - not implemented */}
-              <Route path="courses/:courseId/modules/:moduleId" element={<ModuleDetail />} />
-              <Route path="quiz/:quizId" element={<QuizPage />} />
+              <Route path="courses/:courseId/modules/:moduleId" element={<CourseAccessRoute accessLevel="enrolled"><ModuleDetail /></CourseAccessRoute>} />
+              <Route path="quiz/:quizId" element={<CourseAccessRoute accessLevel="enrolled"><QuizPage /></CourseAccessRoute>} />
               <Route path="ai-tutors" element={<AITutors />} />
               <Route path="ai-tutors/:tutorId" element={<AITutorChat />} />
               <Route path="ai-tutors/:tutorId/profile" element={<TutorProfile />} />
@@ -386,7 +381,7 @@ const App = () => (
               <Route path="spiritual-formation" element={<SpiritualFormation />} />
               <Route path="prayer-requests" element={<PrayerRequests />} />
               <Route path="analytics" element={<Analytics />} />
-              <Route path="transcript" element={<Transcript />} />
+              <Route path="transcript" element={<StudentStatusRoute allowedStatuses={["enrolled","active","graduated","alumni"]}><Transcript /></StudentStatusRoute>} />
               <Route path="study-groups" element={<StudyGroups />} />
               <Route path="study-groups/:groupId" element={<StudyGroupChat />} />
               <Route path="achievements" element={<Achievements />} />
@@ -398,7 +393,7 @@ const App = () => (
               <Route path="admin/launch-ops" element={<RoleRoute allowedRoles={["admin","superadmin"]}><LaunchOps /></RoleRoute>} />
               <Route path="apply" element={<Apply />} />
               <Route path="courses-detail/:courseId" element={<CourseDetailPage />} />
-              <Route path="my-courses" element={<MyCourses />} />
+              <Route path="my-courses" element={<StudentStatusRoute allowedStatuses={["enrolled","active","graduated","alumni"]}><MyCourses /></StudentStatusRoute>} />
               <Route path="quiz-taking/:quizId" element={<CourseAccessRoute accessLevel="enrolled"><QuizTaking /></CourseAccessRoute>} />
               <Route path="faculty" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyDashboard /></RoleRoute>} />
               <Route path="faculty/admin" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyAdmin /></RoleRoute>} />
@@ -419,8 +414,8 @@ const App = () => (
               <Route path="testimonies" element={<Testimonies />} />
               
               {/* Learning */}
-              <Route path="assignment-upload" element={<AssignmentUpload />} />
-              <Route path="degree-audit" element={<DegreeAudit />} />
+              <Route path="assignment-upload" element={<StudentStatusRoute allowedStatuses={["enrolled","active"]}><AssignmentUpload /></StudentStatusRoute>} />
+              <Route path="degree-audit" element={<StudentStatusRoute allowedStatuses={["enrolled","active","graduated","alumni"]}><DegreeAudit /></StudentStatusRoute>} />
               <Route path="scholarships" element={<ScholarshipsPage />} />
               
               {/* ScrollCoin Economy */}
@@ -478,9 +473,9 @@ const App = () => (
             <Route path="academic-calendar" element={<AcademicCalendar />} />
             <Route path="scroll-library" element={<ScrollLibrary />} />
             <Route path="scroll-library/book/:bookId" element={<ScrollLibraryBookReader />} />
-              <Route path="graduation" element={<StudentGraduation />} />
-              <Route path="orientation" element={<Orientation />} />
-              <Route path="matriculation" element={<Matriculation />} />
+              <Route path="graduation" element={<StudentStatusRoute allowedStatuses={["active","graduated","alumni"]}><StudentGraduation /></StudentStatusRoute>} />
+              <Route path="orientation" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active"]}><Orientation /></StudentStatusRoute>} />
+              <Route path="matriculation" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active"]}><Matriculation /></StudentStatusRoute>} />
             <Route path="admin/academic-terms" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AcademicTermAdmin /></RoleRoute>} />
             <Route path="admin/suyas" element={<RoleRoute allowedRoles={["admin","superadmin"]}><SUYASAdmin /></RoleRoute>} />
           </Route>
