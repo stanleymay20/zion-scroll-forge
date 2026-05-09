@@ -51,10 +51,10 @@ export default function StudentIdentity() {
       if (studentRes.data?.degree_program_id) {
         const { data: prog } = await supabase
           .from("degree_programs")
-          .select("name")
+          .select("title")
           .eq("id", studentRes.data.degree_program_id)
           .maybeSingle();
-        programName = prog?.name ?? null;
+        programName = prog?.title ?? null;
       }
 
       setIdentity({
