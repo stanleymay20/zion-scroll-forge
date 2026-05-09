@@ -154,6 +154,7 @@ export default function ActivationProgress() {
                         <Badge variant={r.enrolled_count > 0 ? "default" : "outline"}>
                           {r.enrolled_count} enrolled
                         </Badge>
+                        <ReassignButton userId={r.user_id} />
                       </div>
                     </li>
                   );
