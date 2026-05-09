@@ -107,8 +107,9 @@ const SendReceiveInterface: React.FC<SendReceiveInterfaceProps> = ({
   };
 
   const generateQRCode = () => {
-    // In production, this would generate an actual QR code
-    alert('QR Code generation coming soon!');
+    toast.info('QR code generation is coming soon', {
+      description: 'In the meantime, copy your address using the button above.',
+    });
   };
 
   return (
