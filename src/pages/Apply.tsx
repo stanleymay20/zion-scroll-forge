@@ -307,12 +307,49 @@ export default function Apply() {
         </Card>
       )}
 
+      {!cohortLoading && cohort && (
+        <Card className="mb-4 border-primary/30">
+          <CardContent className="py-4 space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="font-medium">{cohort.cohort_label}</span>
+              <span className="text-muted-foreground">
+                {filled} / {cap} admitted • {cohort.seats_remaining} seats left
+              </span>
+            </div>
+            <Progress value={pct} />
+            <p className="text-xs text-muted-foreground">
+              Admissions are reviewed on a rolling basis. Qualified applicants beyond capacity may be placed on a waitlist for the next cohort.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle>Student Application</CardTitle>
           <CardDescription>
             Submit your application to join ScrollUniversity's community of faith-driven scholars
           </CardDescription>
+          {/* Step progress indicator */}
+          <div className="pt-3 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-medium text-foreground">Step {Math.min(completedSteps + 1, 4)} of 4</span>
+              <span className="text-muted-foreground">{completedSteps}/4 complete</span>
+            </div>
+            <Progress value={(completedSteps / 4) * 100} />
+            <div className="flex flex-wrap gap-1.5">
+              {stepLabels.map((s, i) => (
+                <Badge
+                  key={s.key}
+                  variant={stepDone[s.key] ? 'default' : 'outline'}
+                  className="text-[10px]"
+                >
+                  {stepDone[s.key] ? <Check className="h-2.5 w-2.5 mr-1" /> : <span className="mr-1">{i + 1}.</span>}
+                  {s.label}
+                </Badge>
+              ))}
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
