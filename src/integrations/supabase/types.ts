@@ -3490,6 +3490,13 @@ export type Database = {
             foreignKeyName: "graduations_student_id_fkey"
             columns: ["student_id"]
             isOneToOne: false
+            referencedRelation: "student_academic_profiles"
+            referencedColumns: ["student_record_id"]
+          },
+          {
+            foreignKeyName: "graduations_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
             referencedRelation: "students"
             referencedColumns: ["id"]
           },
@@ -6529,6 +6536,13 @@ export type Database = {
             foreignKeyName: "student_documents_student_id_fkey"
             columns: ["student_id"]
             isOneToOne: false
+            referencedRelation: "student_academic_profiles"
+            referencedColumns: ["student_record_id"]
+          },
+          {
+            foreignKeyName: "student_documents_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
             referencedRelation: "students"
             referencedColumns: ["id"]
           },
@@ -7542,6 +7556,13 @@ export type Database = {
             foreignKeyName: "transcripts_student_id_fkey"
             columns: ["student_id"]
             isOneToOne: false
+            referencedRelation: "student_academic_profiles"
+            referencedColumns: ["student_record_id"]
+          },
+          {
+            foreignKeyName: "transcripts_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
             referencedRelation: "students"
             referencedColumns: ["id"]
           },
@@ -7851,6 +7872,39 @@ export type Database = {
         }
         Relationships: []
       }
+      student_academic_profiles: {
+        Row: {
+          academic_level: string | null
+          academic_status: string | null
+          admitted_at: string | null
+          application_status: string | null
+          cohort_label: string | null
+          cohort_number: number | null
+          created_at: string | null
+          degree_program_id: string | null
+          enrolled_at: string | null
+          faculty_name: string | null
+          full_name: string | null
+          graduated_at: string | null
+          institutional_email: string | null
+          matriculated: boolean | null
+          program_name: string | null
+          student_id_code: string | null
+          student_record_id: string | null
+          suyas_track: string | null
+          updated_at: string | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "students_degree_program_id_fkey"
+            columns: ["degree_program_id"]
+            isOneToOne: false
+            referencedRelation: "degree_programs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       student_gpa: {
         Row: {
           courses_taken: number | null
@@ -8000,6 +8054,10 @@ export type Database = {
       }
     }
     Functions: {
+      admin_reassign_program: {
+        Args: { p_new_program_id: string; p_reason?: string; p_user_id: string }
+        Returns: Json
+      }
       archive_academic_year: { Args: { p_year_id: string }; Returns: boolean }
       award_by_rule: {
         Args: {
@@ -8088,6 +8146,19 @@ export type Database = {
       generate_student_identity: {
         Args: { p_student_id: string }
         Returns: Json
+      }
+      get_assigned_next_course: {
+        Args: { p_user_id: string }
+        Returns: {
+          already_enrolled: boolean
+          course_id: string
+          course_title: string
+          is_required: boolean
+          progress: number
+          recommended_term: string
+          recommended_year: number
+          sequence_order: number
+        }[]
       }
       has_role: {
         Args: {
