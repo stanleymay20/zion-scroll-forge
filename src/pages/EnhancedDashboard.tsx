@@ -16,6 +16,7 @@ import { PersonalizedContent } from "@/components/dashboard/PersonalizedContent"
 import { JourneyProgress } from "@/components/dashboard/JourneyProgress";
 import { StudentOnboarding } from "@/components/onboarding/StudentOnboarding";
 import { LifecycleBanner } from "@/components/lifecycle/LifecycleBanner";
+import { AcademicAssignmentCard } from "@/components/lifecycle/AcademicAssignmentCard";
 
 export default function EnhancedDashboard() {
   const { user } = useAuth();
