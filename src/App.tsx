@@ -145,6 +145,8 @@ const Orientation = lazy(() => import("./pages/Orientation"));
 const Matriculation = lazy(() => import("./pages/Matriculation"));
 const AcademicCatalog = lazy(() => import("./pages/AcademicCatalog"));
 const CoursePreview = lazy(() => import("./pages/CoursePreview"));
+const StudentIdentity = lazy(() => import("./pages/StudentIdentity"));
+const ActivationProgress = lazy(() => import("./pages/admin/ActivationProgress"));
 
 // Route guards (eager — small, used everywhere)
 import {
