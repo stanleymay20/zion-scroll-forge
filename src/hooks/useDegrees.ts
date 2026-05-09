@@ -56,7 +56,17 @@ export async function getUserDegreeEnrollments() {
 export async function enrollInDegree(degreeId: string) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
-  
+
+  // Idempotent: skip insert if enrollment already exists.
+  const { data: existing } = await (supabase as any)
+    .from("degree_enrollments")
+    .select("*")
+    .eq("user_id", user.id)
+    .eq("degree_id", degreeId)
+    .maybeSingle();
+
+  if (existing) return { ...existing, alreadyEnrolled: true };
+
   const { data, error } = await (supabase as any)
     .from("degree_enrollments")
     .insert({
@@ -66,7 +76,7 @@ export async function enrollInDegree(degreeId: string) {
     })
     .select()
     .single();
-  
+
   if (error) throw error;
   return data;
 }
@@ -92,10 +102,21 @@ export const useEnrollInDegree = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: enrollInDegree,
-    onSuccess: () => {
+    onSuccess: (result: any) => {
       qc.invalidateQueries({ queryKey: ["user-degree-enrollments"] });
-      toast({ title: "✅ Enrolled in degree program" });
+      toast({
+        title: result?.alreadyEnrolled
+          ? "You are already enrolled in this program."
+          : "✅ Enrolled in degree program",
+      });
     },
-    onError: (e: any) => toast({ title: "Enrollment failed", description: e.message, variant: "destructive" })
+    onError: (e: unknown) => {
+      const parsed = logError(e, { context: "enroll_degree", action: "enrollInDegree" });
+      toast({
+        title: parsed.severity === "info" ? "Already enrolled" : "Couldn't enroll",
+        description: parsed.userMessage,
+        variant: parsed.severity === "info" ? "default" : "destructive",
+      });
+    },
   });
 };
