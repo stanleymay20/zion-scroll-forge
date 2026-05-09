@@ -109,10 +109,13 @@ export const useUpdateApplicationStatus = () => {
       });
       qc.invalidateQueries({ queryKey: ["applications"] });
     },
-    onError: (e: any) => toast({
-      title: "Failed to update application",
-      description: e.message,
-      variant: "destructive"
-    })
+    onError: (e: unknown) => {
+      const parsed = logError(e, { context: "apply_program", action: "updateApplicationStatus" });
+      toast({
+        title: "Failed to update application",
+        description: parsed.userMessage,
+        variant: "destructive",
+      });
+    },
   });
 };
