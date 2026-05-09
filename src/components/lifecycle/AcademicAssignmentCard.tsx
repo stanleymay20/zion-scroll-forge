@@ -43,7 +43,7 @@ export function AcademicAssignmentCard() {
           .maybeSingle(),
         supabase.rpc("get_assigned_next_course", { p_user_id: user.id }),
       ]);
-      setProfile((sap as SAP | null) ?? null);
+      setProfile((sap as unknown as SAP | null) ?? null);
       setNext(((nc as any[]) ?? []) as NextCourse[]);
       setLoading(false);
     })();
