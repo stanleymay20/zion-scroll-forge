@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { logSpiritualEvent } from "@/lib/scrollGovernance";
+import { logError } from "@/lib/errors";
 
 console.info("✝️ Admissions — Opening doors to Kingdom education");
 
