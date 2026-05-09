@@ -676,6 +676,63 @@ export default function Apply() {
           </form>
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <ListChecks className="h-4 w-4 text-primary" /> Admissions Process
+            </CardTitle>
+            <CardDescription>How your application is reviewed</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ol className="space-y-2 text-sm">
+              {[
+                'Application submission',
+                'AI-assisted review',
+                'Human admissions review',
+                'Cohort assignment',
+                'Orientation & matriculation',
+                'Dashboard activation',
+              ].map((step, i) => (
+                <li key={step} className="flex items-start gap-2">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-[11px] font-semibold">
+                    {i + 1}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-primary" /> What happens after acceptance
+            </CardTitle>
+            <CardDescription>Your starter kit as an admitted student</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2 text-sm">
+              {[
+                'Official Student ID',
+                'Institutional email alias (@scrolluniversity.org)',
+                'Signed admission letter',
+                'Orientation access & welcome cohort',
+                'Personal degree dashboard',
+                'AI tutor access across all enrolled courses',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+
     </PageTemplate>
   );
 }
