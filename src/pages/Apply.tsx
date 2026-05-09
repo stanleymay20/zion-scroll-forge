@@ -447,6 +447,44 @@ export default function Apply() {
               </select>
             </div>
 
+            {selectedProgram && (
+              <Card className="bg-primary/5 border-primary/30">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <GraduationCap className="h-4 w-4 text-primary" />
+                    You are applying for
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  <div className="font-serif text-lg font-semibold leading-tight">
+                    {selectedProgram.title}
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+                    {selectedProgram.faculty && (
+                      <div><span className="text-muted-foreground">Faculty:</span> <span className="font-medium">{selectedProgram.faculty}</span></div>
+                    )}
+                    {selectedProgram.level && (
+                      <div><span className="text-muted-foreground">Entry path:</span> <span className="font-medium">{selectedProgram.level}</span></div>
+                    )}
+                    {selectedProgram.duration && (
+                      <div><span className="text-muted-foreground">Duration:</span> <span className="font-medium">{selectedProgram.duration}</span></div>
+                    )}
+                    <div><span className="text-muted-foreground">Mode:</span> <span className="font-medium">Hybrid AI-Assisted</span></div>
+                  </div>
+                  {selectedProgram.description && (
+                    <p className="text-xs text-muted-foreground line-clamp-3">{selectedProgram.description}</p>
+                  )}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <Button asChild type="button" variant="outline" size="sm">
+                      <Link to={`/degree-programs/${selectedProgram.id}`} target="_blank" rel="noopener">
+                        <ExternalLink className="h-3 w-3 mr-1" /> Preview Program
+                      </Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             {formData.degree_program_id && (
               <Card className="bg-muted/30 border-primary/20">
                 <CardHeader className="pb-3">
