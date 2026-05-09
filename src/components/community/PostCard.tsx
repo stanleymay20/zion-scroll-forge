@@ -72,21 +72,24 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onUpdate, onDelete }) 
   };
 
   const handleShare = async () => {
+    const shareUrl = `${window.location.origin}/community/posts/${post.id}`;
+    const shareData = {
+      title: 'ScrollUniversity Community',
+      text: 'Check out this post on ScrollUniversity',
+      url: shareUrl,
+    };
     try {
-      const response = await fetch(`/api/community/posts/${post.id}/share`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) throw new Error('Failed to share post');
-
-      // Show success message
-      alert('Post shared successfully!');
+      if (typeof navigator !== 'undefined' && (navigator as any).share) {
+        await (navigator as any).share(shareData);
+        return;
+      }
+      await navigator.clipboard.writeText(shareUrl);
+      const { toast } = await import('sonner');
+      toast.success('Link copied to clipboard');
     } catch (error) {
       console.error('Error sharing post:', error);
+      const { toast } = await import('sonner');
+      toast.error('Could not share', { description: 'Please try copying the link manually.' });
     }
   };
 

@@ -20,6 +20,7 @@ import {
   AlertCircle,
   QrCode
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { ScrollCoinWallet } from '@/types/scrollcoin';
 
 interface SendReceiveInterfaceProps {
@@ -106,8 +107,9 @@ const SendReceiveInterface: React.FC<SendReceiveInterfaceProps> = ({
   };
 
   const generateQRCode = () => {
-    // In production, this would generate an actual QR code
-    alert('QR Code generation coming soon!');
+    toast.info('QR code generation is coming soon', {
+      description: 'In the meantime, copy your address using the button above.',
+    });
   };
 
   return (

@@ -267,7 +267,7 @@ const FacultyDashboard: React.FC = () => {
               <Button
                 variant="outline"
                 className="w-full mt-4"
-                onClick={() => navigate('/faculty/office-hours')}
+                onClick={() => navigate('/faculty/admin')}
               >
                 Manage Office Hours
               </Button>
@@ -283,7 +283,7 @@ const FacultyDashboard: React.FC = () => {
               <Button
                 variant="outline"
                 className="w-full justify-start"
-                onClick={() => navigate('/faculty/resources')}
+                onClick={() => navigate('/faculty/admin')}
               >
                 <FileText className="h-4 w-4 mr-2" />
                 Faculty Resources
@@ -291,7 +291,7 @@ const FacultyDashboard: React.FC = () => {
               <Button
                 variant="outline"
                 className="w-full justify-start"
-                onClick={() => navigate('/faculty/courses')}
+                onClick={() => navigate('/faculty')}
               >
                 <BookOpen className="h-4 w-4 mr-2" />
                 All Courses
@@ -299,7 +299,7 @@ const FacultyDashboard: React.FC = () => {
               <Button
                 variant="outline"
                 className="w-full justify-start"
-                onClick={() => navigate('/faculty/analytics')}
+                onClick={() => navigate('/faculty-analytics')}
               >
                 <TrendingUp className="h-4 w-4 mr-2" />
                 View Analytics
