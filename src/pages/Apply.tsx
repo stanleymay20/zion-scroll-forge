@@ -12,8 +12,9 @@ import { useCreateApplication, useUploadDocument, useStudentProfile } from '@/ho
 import { useCohortStatus } from '@/hooks/useLaunchOps';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Upload, Check, Lock, BookOpen, FileCheck, AlertCircle } from 'lucide-react';
+import { Upload, Check, Lock, BookOpen, FileCheck, AlertCircle, ExternalLink, GraduationCap, ListChecks, Sparkles } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { Link } from 'react-router-dom';
 
 type ProgramRequirement = {
   id: string;
