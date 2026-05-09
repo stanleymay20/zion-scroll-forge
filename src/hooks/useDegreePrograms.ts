@@ -122,12 +122,28 @@ export async function enrollInDegree(degreeId: string) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
+  // Idempotent: if already enrolled, return existing record instead of erroring.
+  const { data: existing } = await supabase
+    .from("student_degree_enrollments")
+    .select(`*, degree_programs(id, title, faculty, level)`)
+    .eq("user_id", user.id)
+    .eq("degree_id", degreeId)
+    .maybeSingle();
+
+  if (existing) {
+    return {
+      ...existing,
+      degree: (existing as any).degree_programs,
+      alreadyEnrolled: true,
+    } as DegreeEnrollment & { alreadyEnrolled?: boolean };
+  }
+
   // Get degree details to calculate expected completion
   const { data: degree } = await supabase
     .from("degree_programs")
     .select("duration")
     .eq("id", degreeId)
-    .single();
+    .maybeSingle();
 
   // Parse duration (e.g., "2 years" -> 24 months)
   const durationStr = degree?.duration || '2 years';
