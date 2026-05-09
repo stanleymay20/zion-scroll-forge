@@ -12,8 +12,21 @@ import { useCreateApplication, useUploadDocument, useStudentProfile } from '@/ho
 import { useCohortStatus } from '@/hooks/useLaunchOps';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Upload, Check, Lock, BookOpen } from 'lucide-react';
+import { Upload, Check, Lock, BookOpen, FileCheck, AlertCircle } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+
+type ProgramRequirement = {
+  id: string;
+  level: string;
+  display_label: string;
+  min_academic: string | null;
+  required_documents: string[];
+  optional_documents: string[];
+  additional_requirements: string[];
+  statement_min_words: number | null;
+  reference_letters_required: number | null;
+  notes: string | null;
+};
 
 export default function Apply() {
   const navigate = useNavigate();
@@ -98,7 +111,39 @@ export default function Apply() {
     return () => { cancelled = true; };
   }, [formData.degree_program_id]);
 
-  const [files, setFiles] = useState<{ id?: File; transcript?: File }>({});
+  // Per-level admission requirements (driven by `program_requirements` table).
+  const [requirements, setRequirements] = useState<ProgramRequirement | null>(null);
+  const [loadingRequirements, setLoadingRequirements] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    if (!enrollmentLevel) {
+      setRequirements(null);
+      return;
+    }
+    setLoadingRequirements(true);
+    (async () => {
+      const { data } = await supabase
+        .from('program_requirements')
+        .select('*')
+        .eq('level', enrollmentLevel)
+        .maybeSingle();
+      if (!cancelled) {
+        setRequirements(data as any);
+        setLoadingRequirements(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [enrollmentLevel]);
+
+  // Dynamic per-document upload state keyed by document label.
+  const [docFiles, setDocFiles] = useState<Record<string, File>>({});
+
+  const requiredDocs: string[] = requirements?.required_documents ?? [];
+  const optionalDocs: string[] = requirements?.optional_documents ?? [];
+  const additionalReqs: string[] = requirements?.additional_requirements ?? [];
+  const statementMinWords = requirements?.statement_min_words ?? 80;
+  const wordCount = (formData.motivation_statement.trim().match(/\S+/g) || []).length;
+  const missingDocs = requiredDocs.filter((d) => !docFiles[d]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,17 +151,21 @@ export default function Apply() {
       toast.error('Please select a program');
       return;
     }
-    if ((formData.motivation_statement?.trim().length ?? 0) < 80) {
-      toast.error('Motivation statement must be at least 80 characters');
+    if (wordCount < statementMinWords) {
+      toast.error(`Motivation statement must be at least ${statementMinWords} words (currently ${wordCount}).`);
+      return;
+    }
+    if (missingDocs.length > 0) {
+      toast.error(`Missing required documents: ${missingDocs.join(', ')}`);
       return;
     }
     try {
       const student: any = await createApplication.mutateAsync(formData as any);
-      if (files.id) {
-        await uploadDocument.mutateAsync({ studentId: student.id, docType: 'ID Card', file: files.id });
-      }
-      if (files.transcript) {
-        await uploadDocument.mutateAsync({ studentId: student.id, docType: 'Transcript', file: files.transcript });
+      // Upload every supplied document (required + optional)
+      for (const [docType, file] of Object.entries(docFiles)) {
+        if (file) {
+          await uploadDocument.mutateAsync({ studentId: student.id, docType, file });
+        }
       }
       toast.success('Application submitted — review in progress');
       navigate('/dashboard');
@@ -267,6 +316,68 @@ export default function Apply() {
               </select>
             </div>
 
+            {enrollmentLevel && (
+              <Card className="bg-muted/30 border-primary/20">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <FileCheck className="h-4 w-4 text-primary" />
+                    Admission Requirements
+                    {requirements?.display_label && (
+                      <Badge variant="secondary" className="ml-2">{requirements.display_label}</Badge>
+                    )}
+                  </CardTitle>
+                  <CardDescription>
+                    Please ensure you can provide the following before submitting.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 text-sm">
+                  {loadingRequirements ? (
+                    <p className="text-muted-foreground">Loading requirements…</p>
+                  ) : !requirements ? (
+                    <p className="text-muted-foreground">
+                      Standard requirements apply. Admissions will contact you with any specific items.
+                    </p>
+                  ) : (
+                    <>
+                      {requirements.min_academic && (
+                        <div>
+                          <div className="font-semibold mb-1">Minimum academic background</div>
+                          <p className="text-muted-foreground">{requirements.min_academic}</p>
+                        </div>
+                      )}
+                      {requiredDocs.length > 0 && (
+                        <div>
+                          <div className="font-semibold mb-1">Mandatory documents</div>
+                          <ul className="list-disc list-inside space-y-0.5 text-muted-foreground">
+                            {requiredDocs.map((d) => <li key={d}>{d}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {optionalDocs.length > 0 && (
+                        <div>
+                          <div className="font-semibold mb-1">Recommended (optional)</div>
+                          <ul className="list-disc list-inside space-y-0.5 text-muted-foreground">
+                            {optionalDocs.map((d) => <li key={d}>{d}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {additionalReqs.length > 0 && (
+                        <div>
+                          <div className="font-semibold mb-1">Additional requirements</div>
+                          <ul className="list-disc list-inside space-y-0.5 text-muted-foreground">
+                            {additionalReqs.map((r) => <li key={r}>{r}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {requirements.notes && (
+                        <p className="text-xs text-muted-foreground italic border-t pt-2">{requirements.notes}</p>
+                      )}
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="program">Program of Interest *</Label>
               <select
@@ -389,42 +500,95 @@ export default function Apply() {
 
             <div className="space-y-2">
               <Label htmlFor="motivation">
-                Motivation Statement * <span className="text-xs text-muted-foreground">(min 80 chars)</span>
+                Motivation Statement * <span className="text-xs text-muted-foreground">(min {statementMinWords} words)</span>
               </Label>
               <Textarea
                 id="motivation"
                 required
-                rows={5}
-                minLength={80}
-                maxLength={2000}
+                rows={6}
+                maxLength={8000}
                 placeholder="Why this program? What do you bring? What do you hope to do?"
                 value={formData.motivation_statement}
                 onChange={(e) => setFormData({ ...formData, motivation_statement: e.target.value })}
               />
               <div className="text-xs text-muted-foreground text-right">
-                {formData.motivation_statement.length} / 2000
+                {wordCount} / {statementMinWords} words
+                {wordCount < statementMinWords && (
+                  <span className="text-destructive ml-2">• {statementMinWords - wordCount} more needed</span>
+                )}
               </div>
             </div>
 
-            <div className="space-y-4 border-t pt-4">
-              <h3 className="font-semibold">Supporting Documents (optional)</h3>
-              <div className="space-y-2">
-                <Label htmlFor="id-upload">ID / Passport</Label>
-                <div className="flex items-center gap-2">
-                  <Input id="id-upload" type="file" accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => setFiles({ ...files, id: e.target.files?.[0] })} />
-                  <Upload className="h-4 w-4 text-muted-foreground" />
+            {enrollmentLevel && (
+              <div className="space-y-4 border-t pt-4">
+                <div>
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <Upload className="h-4 w-4" />
+                    Supporting Documents
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Upload each item below. Required items must be supplied to submit.
+                  </p>
                 </div>
+
+                {requiredDocs.map((doc) => {
+                  const has = !!docFiles[doc];
+                  return (
+                    <div key={doc} className="space-y-2">
+                      <Label className="flex items-center gap-2">
+                        {doc}
+                        <Badge variant="destructive" className="text-[10px]">Required</Badge>
+                        {has && <Check className="h-3 w-3 text-green-600" />}
+                      </Label>
+                      <Input
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          setDocFiles((prev) => {
+                            const next = { ...prev };
+                            if (f) next[doc] = f; else delete next[doc];
+                            return next;
+                          });
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+
+                {optionalDocs.map((doc) => {
+                  const has = !!docFiles[doc];
+                  return (
+                    <div key={doc} className="space-y-2">
+                      <Label className="flex items-center gap-2">
+                        {doc}
+                        <Badge variant="secondary" className="text-[10px]">Optional</Badge>
+                        {has && <Check className="h-3 w-3 text-green-600" />}
+                      </Label>
+                      <Input
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          setDocFiles((prev) => {
+                            const next = { ...prev };
+                            if (f) next[doc] = f; else delete next[doc];
+                            return next;
+                          });
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+
+                {missingDocs.length > 0 && (
+                  <div className="flex items-start gap-2 text-xs text-destructive bg-destructive/5 border border-destructive/20 rounded p-2">
+                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                    <span>Still required: {missingDocs.join(', ')}</span>
+                  </div>
+                )}
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="transcript-upload">Academic Transcript</Label>
-                <div className="flex items-center gap-2">
-                  <Input id="transcript-upload" type="file" accept=".pdf"
-                    onChange={(e) => setFiles({ ...files, transcript: e.target.files?.[0] })} />
-                  <Upload className="h-4 w-4 text-muted-foreground" />
-                </div>
-              </div>
-            </div>
+            )}
 
             <Button type="submit" className="w-full" disabled={createApplication.isPending}>
               {createApplication.isPending ? 'Submitting...' : 'Submit Application'}
