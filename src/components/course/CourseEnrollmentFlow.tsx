@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useEnrollInCourse } from '@/hooks/useCourses';
+import { getUserFriendlyError } from '@/lib/errors';
 
 interface CourseEnrollmentFlowProps {
   course: {
@@ -103,10 +104,10 @@ export function CourseEnrollmentFlow({
         setEnrollmentStep('payment');
       }, 2000);
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       setEnrollmentStep('error');
       toast.error('Enrollment Failed', {
-        description: error.message || 'Failed to enroll in course',
+        description: getUserFriendlyError(error, 'enroll_course'),
       });
     },
   });

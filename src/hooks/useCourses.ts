@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useInstitution } from '@/contexts/InstitutionContext';
 import { useToast } from '@/hooks/use-toast';
 import { underChrist } from '@/lib/lordship';
+import { logError } from '@/lib/errors';
 
 const useOptionalInstitution = () => {
   try {
@@ -124,11 +125,12 @@ export const useEnrollInCourse = () => {
           : 'You have been enrolled in the course. Christ leads your learning journey.',
       });
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
+      const parsed = logError(error, { context: "enroll_course", action: "enrollInCourse" });
       toast({
-        title: 'Enrollment Failed',
-        description: error.message || 'Failed to enroll in course. Christ remains Lord.',
-        variant: 'destructive',
+        title: parsed.severity === "info" ? "Already enrolled" : "Enrollment Failed",
+        description: parsed.userMessage,
+        variant: parsed.severity === "info" ? "default" : "destructive",
       });
     },
   });

@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { logSpiritualEvent } from "@/lib/scrollGovernance";
+import { logError } from "@/lib/errors";
 
 console.info("✝️ Admissions — Opening doors to Kingdom education");
 
@@ -108,10 +109,13 @@ export const useUpdateApplicationStatus = () => {
       });
       qc.invalidateQueries({ queryKey: ["applications"] });
     },
-    onError: (e: any) => toast({
-      title: "Failed to update application",
-      description: e.message,
-      variant: "destructive"
-    })
+    onError: (e: unknown) => {
+      const parsed = logError(e, { context: "apply_program", action: "updateApplicationStatus" });
+      toast({
+        title: "Failed to update application",
+        description: parsed.userMessage,
+        variant: "destructive",
+      });
+    },
   });
 };
