@@ -152,8 +152,10 @@ export const CourseAccessRoute = ({
   const courseId = params.courseId || params.id || "";
   const { access, loading } = useCourseAccess(courseId);
 
+  // No courseId in URL (e.g. quiz/:quizId) — defer to underlying RLS + page-level checks.
+  if (!courseId) return <>{children}</>;
   if (loading) return <FullPageSpinner label="Checking course access…" />;
-  if (!access) return <FullPageSpinner />;
+  if (!access) return <FullPageSpinner label="Checking course access…" />;
 
   const tierRank: Record<string, number> = {
     none: 0,
