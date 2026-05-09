@@ -12,8 +12,9 @@ import { useCreateApplication, useUploadDocument, useStudentProfile } from '@/ho
 import { useCohortStatus } from '@/hooks/useLaunchOps';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Upload, Check, Lock, BookOpen, FileCheck, AlertCircle } from 'lucide-react';
+import { Upload, Check, Lock, BookOpen, FileCheck, AlertCircle, ExternalLink, GraduationCap, ListChecks, Sparkles } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { Link } from 'react-router-dom';
 
 type ProgramRequirement = {
   id: string;
@@ -144,6 +145,24 @@ export default function Apply() {
   const statementMinWords = requirements?.statement_min_words ?? 80;
   const wordCount = (formData.motivation_statement.trim().match(/\S+/g) || []).length;
   const missingDocs = requiredDocs.filter((d) => !docFiles[d]);
+
+  const selectedProgram = (programs as any[]).find((p) => p.id === formData.degree_program_id);
+
+  // Derive a 4-step completion indicator for the application form.
+  const personalFilled = !!(formData.full_name && formData.email && formData.phone && formData.dob && formData.gender && formData.country && formData.address);
+  const stepDone = {
+    program: !!(enrollmentLevel && formData.degree_program_id),
+    personal: personalFilled,
+    motivation: wordCount >= statementMinWords,
+    documents: requiredDocs.length === 0 || missingDocs.length === 0,
+  };
+  const completedSteps = Object.values(stepDone).filter(Boolean).length;
+  const stepLabels: Array<{ key: keyof typeof stepDone; label: string }> = [
+    { key: 'program', label: 'Program' },
+    { key: 'personal', label: 'Personal' },
+    { key: 'motivation', label: 'Motivation' },
+    { key: 'documents', label: 'Documents' },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -276,14 +295,17 @@ export default function Apply() {
     <PageTemplate title="Apply to ScrollUniversity" description="Begin your transformative learning journey">
       {!cohortLoading && cohort && (
         <Card className="mb-4 border-primary/30">
-          <CardContent className="py-4">
-            <div className="flex justify-between text-sm mb-2">
+          <CardContent className="py-4 space-y-2">
+            <div className="flex justify-between text-sm">
               <span className="font-medium">{cohort.cohort_label}</span>
               <span className="text-muted-foreground">
                 {filled} / {cap} admitted • {cohort.seats_remaining} seats left
               </span>
             </div>
             <Progress value={pct} />
+            <p className="text-xs text-muted-foreground">
+              Admissions are reviewed on a rolling basis. Qualified applicants beyond capacity may be placed on a waitlist for the next cohort.
+            </p>
           </CardContent>
         </Card>
       )}
@@ -294,6 +316,26 @@ export default function Apply() {
           <CardDescription>
             Submit your application to join ScrollUniversity's community of faith-driven scholars
           </CardDescription>
+          {/* Step progress indicator */}
+          <div className="pt-3 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-medium text-foreground">Step {Math.min(completedSteps + 1, 4)} of 4</span>
+              <span className="text-muted-foreground">{completedSteps}/4 complete</span>
+            </div>
+            <Progress value={(completedSteps / 4) * 100} />
+            <div className="flex flex-wrap gap-1.5">
+              {stepLabels.map((s, i) => (
+                <Badge
+                  key={s.key}
+                  variant={stepDone[s.key] ? 'default' : 'outline'}
+                  className="text-[10px]"
+                >
+                  {stepDone[s.key] ? <Check className="h-2.5 w-2.5 mr-1" /> : <span className="mr-1">{i + 1}.</span>}
+                  {s.label}
+                </Badge>
+              ))}
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -404,6 +446,44 @@ export default function Apply() {
                 ))}
               </select>
             </div>
+
+            {selectedProgram && (
+              <Card className="bg-primary/5 border-primary/30">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <GraduationCap className="h-4 w-4 text-primary" />
+                    You are applying for
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm">
+                  <div className="font-serif text-lg font-semibold leading-tight">
+                    {selectedProgram.title}
+                  </div>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
+                    {selectedProgram.faculty && (
+                      <div><span className="text-muted-foreground">Faculty:</span> <span className="font-medium">{selectedProgram.faculty}</span></div>
+                    )}
+                    {selectedProgram.level && (
+                      <div><span className="text-muted-foreground">Entry path:</span> <span className="font-medium">{selectedProgram.level}</span></div>
+                    )}
+                    {selectedProgram.duration && (
+                      <div><span className="text-muted-foreground">Duration:</span> <span className="font-medium">{selectedProgram.duration}</span></div>
+                    )}
+                    <div><span className="text-muted-foreground">Mode:</span> <span className="font-medium">Hybrid AI-Assisted</span></div>
+                  </div>
+                  {selectedProgram.description && (
+                    <p className="text-xs text-muted-foreground line-clamp-3">{selectedProgram.description}</p>
+                  )}
+                  <div className="flex flex-wrap gap-2 pt-1">
+                    <Button asChild type="button" variant="outline" size="sm">
+                      <Link to={`/degree-programs/${selectedProgram.id}`} target="_blank" rel="noopener">
+                        <ExternalLink className="h-3 w-3 mr-1" /> Preview Program
+                      </Link>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
 
             {formData.degree_program_id && (
               <Card className="bg-muted/30 border-primary/20">
@@ -596,6 +676,63 @@ export default function Apply() {
           </form>
         </CardContent>
       </Card>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <ListChecks className="h-4 w-4 text-primary" /> Admissions Process
+            </CardTitle>
+            <CardDescription>How your application is reviewed</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ol className="space-y-2 text-sm">
+              {[
+                'Application submission',
+                'AI-assisted review',
+                'Human admissions review',
+                'Cohort assignment',
+                'Orientation & matriculation',
+                'Dashboard activation',
+              ].map((step, i) => (
+                <li key={step} className="flex items-start gap-2">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-[11px] font-semibold">
+                    {i + 1}
+                  </span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-primary" /> What happens after acceptance
+            </CardTitle>
+            <CardDescription>Your starter kit as an admitted student</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2 text-sm">
+              {[
+                'Official Student ID',
+                'Institutional email alias (@scrolluniversity.org)',
+                'Signed admission letter',
+                'Orientation access & welcome cohort',
+                'Personal degree dashboard',
+                'AI tutor access across all enrolled courses',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2">
+                  <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+
     </PageTemplate>
   );
 }
