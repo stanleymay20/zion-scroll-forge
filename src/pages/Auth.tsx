@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { Logo } from "@/components/brand/Logo";
+import { getUserFriendlyError } from "@/lib/errors";
 
 
 // Whitelist internal redirects only — prevents open-redirect via ?redirect=https://evil.com
@@ -106,7 +107,7 @@ export default function Auth() {
     } catch (error: any) {
       toast({
         title: 'Reset failed',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
     } finally {

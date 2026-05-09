@@ -15,6 +15,7 @@ import { issueCertificate } from "@/lib/issueCertificate";
 import { CertificateView } from "@/components/certificates/CertificateView";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
+import { getUserFriendlyError } from "@/lib/errors";
 
 const OATH = `I commit to learning with integrity, serving with wisdom, and pursuing truth responsibly through ScrollUniversity.`;
 
@@ -97,7 +98,7 @@ export default function Matriculation() {
       toast.success("You are now matriculated. Welcome, scholar.");
       setExisting({ cert_number: cert.cert_number, oath_signed_at: new Date().toISOString() });
     } catch (e: any) {
-      toast.error(e?.message ?? "Could not complete matriculation");
+      toast.error("Could not complete matriculation", { description: getUserFriendlyError(e) });
     } finally {
       setSubmitting(false);
     }

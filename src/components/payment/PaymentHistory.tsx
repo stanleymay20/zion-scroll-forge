@@ -26,6 +26,7 @@ import {
 import { Loader2, Receipt, Download, Search, Filter, DollarSign } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface PaymentHistoryItem {
   id: string;
@@ -70,7 +71,7 @@ export function PaymentHistory({ userId }: PaymentHistoryProps) {
     } catch (err: any) {
       toast({
         title: 'Error Loading Payment History',
-        description: err.message,
+        description: getUserFriendlyError(err),
         variant: 'destructive',
       });
     } finally {
@@ -130,7 +131,7 @@ export function PaymentHistory({ userId }: PaymentHistoryProps) {
     } catch (err: any) {
       toast({
         title: 'Error Downloading Receipt',
-        description: err.message,
+        description: getUserFriendlyError(err),
         variant: 'destructive',
       });
     }

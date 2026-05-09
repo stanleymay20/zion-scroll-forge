@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { earnScrollGold, spendScrollGold } from '@/services/scrollgold';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info('✝️ ScrollGold Hooks — Christ governs all rewards');
 
@@ -74,7 +75,7 @@ export const useSpendScrollGold = () => {
     onError: (error: any) => {
       toast({
         title: 'Transaction failed',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
     },

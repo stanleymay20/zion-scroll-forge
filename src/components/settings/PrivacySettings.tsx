@@ -16,6 +16,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getPrivacySettings, updatePrivacySettings } from "@/services/settingsService";
 import { toast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import { getUserFriendlyError } from "@/lib/errors";
 
 const privacySchema = z.object({
   profileVisibility: z.enum(["public", "private", "friends_only"]),
@@ -55,7 +56,7 @@ export function PrivacySettings() {
     onError: (error: Error) => {
       toast({
         title: "Failed to update privacy settings",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },

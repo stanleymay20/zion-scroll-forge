@@ -9,6 +9,7 @@ import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { User, Upload, Sparkles, Save, RefreshCw } from 'lucide-react';
 import { ReadyPlayerMeAvatar } from '@/components/ReadyPlayerMeAvatar';
+import { getUserFriendlyError } from "@/lib/errors";
 
 const PRESET_AVATARS: string[] = [];
 
@@ -137,7 +138,7 @@ export default function AvatarCustomization() {
       console.error('Save error:', error);
       toast({
         title: 'Error',
-        description: error.message || 'Failed to save avatar',
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
     } finally {

@@ -8,6 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getUserFriendlyError } from "@/lib/errors";
 
 const schema = z.object({
   enableEnrollmentApproval: z.boolean(),
@@ -59,7 +60,7 @@ export const AdminConfiguration = ({ onComplete, onBack, institutionId }: Props)
       onComplete(data);
       navigate('/');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to save configuration');
+      toast.error("Failed to save configuration", { description: getUserFriendlyError(error) });
     }
   };
 

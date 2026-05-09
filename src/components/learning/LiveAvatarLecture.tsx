@@ -22,6 +22,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import ReactMarkdown from 'react-markdown';
 import { CompanionResources } from './CompanionResources';
+import { getUserFriendlyError } from "@/lib/errors";
 
 type SpeakerRole = 'user' | 'host' | 'cohost' | 'system';
 
@@ -332,7 +333,7 @@ export function LiveAvatarLecture({
         }
       } catch (err: any) {
         console.error('Avatar talk error:', err);
-        toast.error(err.message || 'Failed to get avatar response');
+        toast.error("Failed to get avatar response", { description: getUserFriendlyError(err) });
       } finally {
         setIsLoading(false);
       }

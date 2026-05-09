@@ -13,6 +13,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { getUserFriendlyError } from "@/lib/errors";
 
 const STEPS = [
   { key: "welcome",       title: "Welcome to ScrollUniversity",        icon: PlayCircle,   body: "A short founder welcome. ScrollUniversity is a true digital institution — not a course store. Take a breath. You're stepping into a community." },
@@ -73,7 +74,7 @@ export default function Orientation() {
         setCurrent(current + 1);
       }
     } catch (e: any) {
-      toast.error(e?.message ?? "Could not save progress");
+      toast.error("Could not save progress", { description: getUserFriendlyError(e) });
     } finally {
       setSubmitting(false);
     }

@@ -43,6 +43,7 @@ import { format, parseISO } from "date-fns";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ SUYAS Course Scheduling — Orchestrating the curriculum");
 
@@ -168,7 +169,7 @@ const useCreateSession = () => {
       toast.success('Session scheduled successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to schedule session: ${error.message}`);
+      toast.error("Failed to schedule session", { description: getUserFriendlyError(error) });
     }
   });
 };

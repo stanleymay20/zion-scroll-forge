@@ -15,6 +15,7 @@ import {
 import { useCohortStatus } from '@/hooks/useLaunchOps';
 import { CheckCircle, XCircle, Clock, User, Sparkles, Mail, IdCard } from 'lucide-react';
 import { toast } from 'sonner';
+import { getUserFriendlyError } from "@/lib/errors";
 
 export default function AdmissionsReview() {
   const { data: applications } = usePendingApplications();
@@ -33,7 +34,7 @@ export default function AdmissionsReview() {
       const res = await prescreen.mutateAsync(id);
       toast.success(`AI score: ${res.score}/100 — recommends ${res.recommendation}`);
     } catch (e: any) {
-      toast.error(e?.message || 'AI pre-screen failed');
+      toast.error("AI pre-screen failed", { description: getUserFriendlyError(e) });
     }
   };
 

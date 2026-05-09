@@ -42,6 +42,7 @@ import { format, parseISO, differenceInDays } from "date-fns";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ SUYAS Academic Year Builder — Structuring the seasons of education");
 
@@ -102,7 +103,7 @@ const useCreateAcademicYear = () => {
       toast.success('Academic year created successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to create academic year: ${error.message}`);
+      toast.error("Failed to create academic year", { description: getUserFriendlyError(error) });
     }
   });
 };
@@ -128,7 +129,7 @@ const useUpdateAcademicYear = () => {
       toast.success('Academic year updated successfully');
     },
     onError: (error: Error) => {
-      toast.error(`Failed to update academic year: ${error.message}`);
+      toast.error("Failed to update academic year", { description: getUserFriendlyError(error) });
     }
   });
 };

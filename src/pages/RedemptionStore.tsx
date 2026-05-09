@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Coins, Gift, BookOpen, Trophy, Sparkles } from "lucide-react";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ Redemption Store — Christ governs rewards");
 
@@ -122,7 +123,7 @@ export default function RedemptionStore() {
     onError: (error: any) => {
       toast({
         title: "Redemption Failed",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },

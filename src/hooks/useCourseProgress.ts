@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { underChrist } from '@/lib/lordship';
 import { toast } from 'sonner';
+import { getUserFriendlyError } from "@/lib/errors";
 
 export interface ModuleProgress {
   module_id: string;
@@ -165,7 +166,7 @@ export const useCompleteModule = (courseId: string) => {
     },
     onError: (error: Error) => {
       toast.error('Failed to complete module', {
-        description: error.message
+        description: getUserFriendlyError(error)
       });
     }
   });

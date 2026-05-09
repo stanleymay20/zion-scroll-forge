@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface StudyGroup {
   id: string;
@@ -142,7 +143,7 @@ export const StudyGroupList: React.FC<StudyGroupListProps> = ({
       console.error('Error joining group:', error);
       toast({
         title: 'Error',
-        description: error.message || 'Failed to join study group',
+        description: getUserFriendlyError(error),
         variant: 'destructive'
       });
     }

@@ -16,6 +16,7 @@ import {
   Heart, Brain, Clock, Award, ChevronRight, Coins, CheckCircle2 
 } from 'lucide-react';
 import { useState } from 'react';
+import { getUserFriendlyError } from "@/lib/errors";
 
 const FacultyDetail = () => {
   const { facultyId } = useParams<{ facultyId: string }>();
@@ -117,7 +118,7 @@ const FacultyDetail = () => {
     } catch (error: any) {
       toast({
         title: 'Enrollment Failed',
-        description: error.message || 'Unable to complete enrollment',
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
     } finally {

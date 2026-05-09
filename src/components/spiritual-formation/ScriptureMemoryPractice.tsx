@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { Brain, Play, CheckCircle2, XCircle, Trophy, Target, Plus, Loader2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface MemoryVerse {
   id: string;
@@ -103,7 +104,7 @@ export function ScriptureMemoryPractice({
     onError: (error: any) => {
       toast({
         title: 'Error saving review',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
     },

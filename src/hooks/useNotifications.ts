@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 export const useNotifications = () => {
   return useQuery({
@@ -61,7 +62,7 @@ export const useMarkNotificationRead = () => {
     onError: (error: Error) => {
       toast({
         title: 'Error',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
     },
@@ -96,7 +97,7 @@ export const useMarkAllNotificationsRead = () => {
     onError: (error: Error) => {
       toast({
         title: 'Error',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
     },
@@ -150,7 +151,7 @@ export const useUpdateNotificationPreferences = () => {
     onError: (error: Error) => {
       toast({
         title: 'Error',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
     },

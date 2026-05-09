@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity Events — Christ gathers His people");
 
@@ -177,7 +178,7 @@ export const useCreateEvent = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to create event",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -195,7 +196,7 @@ export const useUpdateEvent = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to update event",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -211,7 +212,7 @@ export const useDeleteEvent = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to delete event",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -228,7 +229,7 @@ export const useRegisterForEvent = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to register",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -245,7 +246,7 @@ export const useUnregisterFromEvent = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to unregister",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });

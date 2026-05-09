@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface LectureDiscussionProps {
   lectureId: string;
@@ -98,7 +99,7 @@ export function LectureDiscussion({ lectureId, courseId, userId }: LectureDiscus
     },
     onError: (error: any) => {
       toast.error('Post Failed', {
-        description: error.message || 'Failed to post message'
+        description: getUserFriendlyError(error)
       });
     }
   });

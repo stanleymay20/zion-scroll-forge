@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Star, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface CourseReviewsProps {
   courseId: string;
@@ -62,7 +63,7 @@ export function CourseReviews({ courseId }: CourseReviewsProps) {
       toast.success('Review submitted!');
     },
     onError: (error) => {
-      toast.error('Failed to submit review', { description: error.message });
+      toast.error('Failed to submit review', { description: getUserFriendlyError(error) });
     },
   });
 

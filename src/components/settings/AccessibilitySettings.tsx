@@ -16,6 +16,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getUserSettings, updateUserSettings } from "@/services/settingsService";
 import { toast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import { getUserFriendlyError } from "@/lib/errors";
 
 const accessibilitySchema = z.object({
   screenReaderEnabled: z.boolean(),
@@ -69,7 +70,7 @@ export function AccessibilitySettings() {
     onError: (error: Error) => {
       toast({
         title: "Failed to update accessibility settings",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },

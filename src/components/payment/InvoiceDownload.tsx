@@ -18,6 +18,7 @@ import {
 import { Loader2, FileText, Download, ExternalLink } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface Invoice {
   id: string;
@@ -60,7 +61,7 @@ export function InvoiceDownload({ userId }: InvoiceDownloadProps) {
     } catch (err: any) {
       toast({
         title: 'Error Loading Invoices',
-        description: err.message,
+        description: getUserFriendlyError(err),
         variant: 'destructive',
       });
     } finally {
@@ -110,7 +111,7 @@ export function InvoiceDownload({ userId }: InvoiceDownloadProps) {
     } catch (err: any) {
       toast({
         title: 'Error Downloading Invoice',
-        description: err.message,
+        description: getUserFriendlyError(err),
         variant: 'destructive',
       });
     } finally {

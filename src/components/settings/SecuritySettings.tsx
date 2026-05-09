@@ -40,6 +40,7 @@ import {
 } from "@/services/settingsService";
 import { toast } from "@/hooks/use-toast";
 import type { ActiveSession } from "@/types/settings";
+import { getUserFriendlyError } from "@/lib/errors";
 
 export function SecuritySettings() {
   const queryClient = useQueryClient();
@@ -71,7 +72,7 @@ export function SecuritySettings() {
     onError: (error: Error) => {
       toast({
         title: "Failed to setup 2FA",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },
@@ -89,7 +90,7 @@ export function SecuritySettings() {
     onError: (error: Error) => {
       toast({
         title: "Verification failed",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },
@@ -105,7 +106,7 @@ export function SecuritySettings() {
     onError: (error: Error) => {
       toast({
         title: "Failed to disable 2FA",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },
@@ -121,7 +122,7 @@ export function SecuritySettings() {
     onError: (error: Error) => {
       toast({
         title: "Failed to terminate session",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },
@@ -140,7 +141,7 @@ export function SecuritySettings() {
     onError: (error: Error) => {
       toast({
         title: "Failed to change password",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },

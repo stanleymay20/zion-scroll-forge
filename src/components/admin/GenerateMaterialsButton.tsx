@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { FileText, Volume2, Video, Loader2 } from "lucide-react";
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface GenerateMaterialsButtonProps {
   moduleId?: string;
@@ -48,7 +49,7 @@ export function GenerateMaterialsButton({
       console.error('Generation error:', error);
       toast({
         title: "Generation Failed",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     } finally {

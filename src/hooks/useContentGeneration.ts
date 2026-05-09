@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ Content Generation Hooks — Christ governs creation");
 
@@ -70,7 +71,7 @@ export const useGenerateContent = () => {
     onError: (error: any) => {
       toast({
         title: "Generation failed",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive"
       });
     }

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Loader2, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 export const ExpandContentButton = () => {
   const [running, setRunning] = useState(false);
@@ -19,7 +20,7 @@ export const ExpandContentButton = () => {
         description: `${data?.queued ?? 0} modules being rewritten in the background. Re-run in ~10 min for the next batch.`,
       });
     } catch (e: any) {
-      toast({ title: 'Failed', description: e.message, variant: 'destructive' });
+      toast({ title: 'Failed', description: getUserFriendlyError(e), variant: 'destructive' });
     } finally {
       setRunning(false);
     }

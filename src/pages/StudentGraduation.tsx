@@ -16,6 +16,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
+import { getUserFriendlyError } from "@/lib/errors";
 
 export default function StudentGraduation() {
   const { user } = useAuth();
@@ -90,7 +91,7 @@ export default function StudentGraduation() {
       toast.success(`🎓 Degree conferred. Certificate ${data?.cert_number ?? ""} is verifiable.`);
       queryClient.invalidateQueries({ queryKey: ['graduation-eligibility'] });
     },
-    onError: (e: any) => toast.error(e?.message ?? 'Failed to generate certificate'),
+    onError: (e: any) => toast.error("Failed to generate certificate", { description: getUserFriendlyError(e) }),
   });
 
   const viewCertificate = useMutation({

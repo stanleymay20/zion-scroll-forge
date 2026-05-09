@@ -30,6 +30,7 @@ import { Heart, Plus, CheckCircle2, Clock, TrendingUp } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 type PrayerCategory = 'personal' | 'family' | 'ministry' | 'healing' | 'guidance' | 'provision' | 'salvation' | 'thanksgiving';
 
@@ -153,7 +154,7 @@ export function PrayerJournal({
       console.error('Error creating prayer entry:', error);
       toast({
         title: 'Error',
-        description: error.message || 'Failed to save prayer',
+        description: getUserFriendlyError(error),
         variant: 'destructive'
       });
     } finally {

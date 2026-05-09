@@ -6,6 +6,7 @@ import { Video, Loader2, CheckCircle, AlertCircle, Play } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface GenerateVideosButtonProps {
   courseId?: string;
@@ -120,7 +121,7 @@ export const GenerateVideosButton = ({ courseId }: GenerateVideosButtonProps) =>
     } catch (err: any) {
       toast({
         title: 'Generation Failed',
-        description: err.message,
+        description: getUserFriendlyError(err),
         variant: 'destructive'
       });
     } finally {

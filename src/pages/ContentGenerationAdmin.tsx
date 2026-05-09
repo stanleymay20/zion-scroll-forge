@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { GenerateVideosButton } from "@/components/admin/GenerateVideosButton";
 import { ExpandContentButton } from "@/components/admin/ExpandContentButton";
 import { BulkContentSeeding } from "@/components/admin/BulkContentSeeding";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ Content Generation Admin — Christ governs all creation");
 
@@ -110,7 +111,7 @@ export default function ContentGenerationAdmin() {
     } catch (error: any) {
       toast({
         title: "Generation Failed",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive"
       });
     } finally {

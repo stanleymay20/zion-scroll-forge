@@ -7,6 +7,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity ScrollGold Hooks — Christ governs rewards");
 
@@ -33,7 +34,7 @@ export const useAddScrollGold = () => {
       toast({ title: `🪙 +${data.amount} ScrollGold earned!`, description: "Keep building the Kingdom" });
       qc.invalidateQueries({ queryKey: ["profile"] });
     },
-    onError: (e: any) => toast({ title: "Reward failed", description: e.message, variant: "destructive" })
+    onError: (e: any) => toast({ title: "Reward failed", description: getUserFriendlyError(e), variant: "destructive" })
   });
 };
 

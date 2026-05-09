@@ -16,6 +16,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface AlumniRow {
   id: string;
@@ -161,7 +162,7 @@ export default function AlumniPortal() {
       setEditing(false);
       await refresh();
     } catch (e: any) {
-      toast.error(e?.message ?? "Could not save profile");
+      toast.error("Could not save profile", { description: getUserFriendlyError(e) });
     } finally {
       setSaving(false);
     }
