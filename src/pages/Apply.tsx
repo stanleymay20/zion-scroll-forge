@@ -146,6 +146,24 @@ export default function Apply() {
   const wordCount = (formData.motivation_statement.trim().match(/\S+/g) || []).length;
   const missingDocs = requiredDocs.filter((d) => !docFiles[d]);
 
+  const selectedProgram = (programs as any[]).find((p) => p.id === formData.degree_program_id);
+
+  // Derive a 4-step completion indicator for the application form.
+  const personalFilled = !!(formData.full_name && formData.email && formData.phone && formData.dob && formData.gender && formData.country && formData.address);
+  const stepDone = {
+    program: !!(enrollmentLevel && formData.degree_program_id),
+    personal: personalFilled,
+    motivation: wordCount >= statementMinWords,
+    documents: requiredDocs.length === 0 || missingDocs.length === 0,
+  };
+  const completedSteps = Object.values(stepDone).filter(Boolean).length;
+  const stepLabels: Array<{ key: keyof typeof stepDone; label: string }> = [
+    { key: 'program', label: 'Program' },
+    { key: 'personal', label: 'Personal' },
+    { key: 'motivation', label: 'Motivation' },
+    { key: 'documents', label: 'Documents' },
+  ];
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.degree_program_id) {
