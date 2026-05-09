@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Building2, GraduationCap, Users, Sparkles, BookMarked, ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { LockedCourseCard } from "./LockedCourseCard";
 
 interface SAP {
   faculty_name: string | null;
