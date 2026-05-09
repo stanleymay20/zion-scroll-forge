@@ -264,16 +264,11 @@ const App = () => (
             {/* Public Badge Profile */}
             <Route path="/badges/public/:userId" element={<PublicBadgeProfile />} />
             
-            {/* Public Browsing Routes (no auth required) */}
-            <Route path="/courses" element={<PublicLayout />}>
-              <Route index element={<Courses />} />
-            </Route>
-            <Route path="/course-catalog" element={<PublicLayout />}>
-              <Route index element={<CourseCatalog />} />
-            </Route>
-            <Route path="/courses-catalog" element={<PublicLayout />}>
-              <Route index element={<CourseCatalog />} />
-            </Route>
+            {/* Public Browsing Routes (no auth required) — all catalog aliases redirect to /catalog */}
+            <Route path="/courses" element={<Navigate to="/catalog" replace />} />
+            <Route path="/course-catalog" element={<Navigate to="/catalog" replace />} />
+            <Route path="/courses-catalog" element={<Navigate to="/catalog" replace />} />
+            <Route path="/comprehensive-courses" element={<Navigate to="/catalog" replace />} />
             <Route path="/catalog" element={<PublicLayout />}>
               <Route index element={<AcademicCatalog />} />
             </Route>
