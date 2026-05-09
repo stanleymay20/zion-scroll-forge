@@ -111,7 +111,39 @@ export default function Apply() {
     return () => { cancelled = true; };
   }, [formData.degree_program_id]);
 
-  const [files, setFiles] = useState<{ id?: File; transcript?: File }>({});
+  // Per-level admission requirements (driven by `program_requirements` table).
+  const [requirements, setRequirements] = useState<ProgramRequirement | null>(null);
+  const [loadingRequirements, setLoadingRequirements] = useState(false);
+  useEffect(() => {
+    let cancelled = false;
+    if (!enrollmentLevel) {
+      setRequirements(null);
+      return;
+    }
+    setLoadingRequirements(true);
+    (async () => {
+      const { data } = await supabase
+        .from('program_requirements')
+        .select('*')
+        .eq('level', enrollmentLevel)
+        .maybeSingle();
+      if (!cancelled) {
+        setRequirements(data as any);
+        setLoadingRequirements(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [enrollmentLevel]);
+
+  // Dynamic per-document upload state keyed by document label.
+  const [docFiles, setDocFiles] = useState<Record<string, File>>({});
+
+  const requiredDocs: string[] = requirements?.required_documents ?? [];
+  const optionalDocs: string[] = requirements?.optional_documents ?? [];
+  const additionalReqs: string[] = requirements?.additional_requirements ?? [];
+  const statementMinWords = requirements?.statement_min_words ?? 80;
+  const wordCount = (formData.motivation_statement.trim().match(/\S+/g) || []).length;
+  const missingDocs = requiredDocs.filter((d) => !docFiles[d]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -119,17 +151,21 @@ export default function Apply() {
       toast.error('Please select a program');
       return;
     }
-    if ((formData.motivation_statement?.trim().length ?? 0) < 80) {
-      toast.error('Motivation statement must be at least 80 characters');
+    if (wordCount < statementMinWords) {
+      toast.error(`Motivation statement must be at least ${statementMinWords} words (currently ${wordCount}).`);
+      return;
+    }
+    if (missingDocs.length > 0) {
+      toast.error(`Missing required documents: ${missingDocs.join(', ')}`);
       return;
     }
     try {
       const student: any = await createApplication.mutateAsync(formData as any);
-      if (files.id) {
-        await uploadDocument.mutateAsync({ studentId: student.id, docType: 'ID Card', file: files.id });
-      }
-      if (files.transcript) {
-        await uploadDocument.mutateAsync({ studentId: student.id, docType: 'Transcript', file: files.transcript });
+      // Upload every supplied document (required + optional)
+      for (const [docType, file] of Object.entries(docFiles)) {
+        if (file) {
+          await uploadDocument.mutateAsync({ studentId: student.id, docType, file });
+        }
       }
       toast.success('Application submitted — review in progress');
       navigate('/dashboard');
