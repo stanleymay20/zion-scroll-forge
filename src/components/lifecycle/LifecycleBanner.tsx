@@ -15,20 +15,24 @@ export function LifecycleBanner() {
   const [orientationDone, setOrientationDone] = useState<number>(0);
   const [matriculated, setMatriculated] = useState<boolean>(false);
   const [enrollmentCount, setEnrollmentCount] = useState<number>(0);
+  const [firstCourse, setFirstCourse] = useState<{ id: string; title: string } | null>(null);
 
   useEffect(() => {
     if (!user?.id) return;
     (async () => {
-      const [profileRes, orientRes, matricRes, enrollRes] = await Promise.all([
+      const [profileRes, orientRes, matricRes, enrollRes, nextCourseRes] = await Promise.all([
         supabase.from("profiles").select("lifecycle_status").eq("id", user.id).maybeSingle(),
         supabase.from("orientation_progress").select("step", { count: "exact", head: true }).eq("user_id", user.id),
         supabase.from("matriculation_records").select("user_id").eq("user_id", user.id).maybeSingle(),
         supabase.from("enrollments").select("id", { count: "exact", head: true }).eq("user_id", user.id),
+        supabase.rpc("get_assigned_next_course", { p_user_id: user.id }),
       ]);
       setStatus(profileRes.data?.lifecycle_status ?? "applicant");
       setOrientationDone(orientRes.count ?? 0);
       setMatriculated(!!matricRes.data);
       setEnrollmentCount(enrollRes.count ?? 0);
+      const nc = (nextCourseRes.data as any[] | null)?.[0];
+      if (nc?.course_id) setFirstCourse({ id: nc.course_id, title: nc.course_title });
     })();
   }, [user?.id]);
 
@@ -36,7 +40,7 @@ export function LifecycleBanner() {
 
   const orientationComplete = orientationDone >= TOTAL_ORIENTATION_STEPS;
 
-  // CTA priority: orientation → matriculation → first course → none
+  // CTA priority: orientation → matriculation → assigned first course → none
   let cta: { to: string; icon: any; label: string; sub: string } | null = null;
   if (status === "applicant") {
     // applicants handled by Apply flow; no activation CTA
@@ -44,8 +48,10 @@ export function LifecycleBanner() {
     cta = { to: "/orientation", icon: Compass, label: "Begin Orientation", sub: `${orientationDone}/${TOTAL_ORIENTATION_STEPS} steps complete — become a true ScrollUniversity student` };
   } else if (!matriculated) {
     cta = { to: "/matriculation", icon: ScrollText, label: "Sign the Student Oath", sub: "You've finished orientation — complete matriculation to become an official scholar" };
+  } else if (enrollmentCount === 0 && firstCourse) {
+    cta = { to: `/courses/${firstCourse.id}`, icon: BookOpen, label: "Start your first assigned course", sub: `Your degree program begins with: ${firstCourse.title}` };
   } else if (enrollmentCount === 0) {
-    cta = { to: "/catalog", icon: BookOpen, label: "Enroll in your first course", sub: "You're matriculated — activate your scholarship by enrolling in a course from your program" };
+    cta = { to: "/catalog", icon: BookOpen, label: "Browse your assigned program", sub: "Your degree program courses are listed in the catalog" };
   }
 
   if (!cta) {

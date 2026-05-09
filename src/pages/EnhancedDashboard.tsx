@@ -16,6 +16,7 @@ import { PersonalizedContent } from "@/components/dashboard/PersonalizedContent"
 import { JourneyProgress } from "@/components/dashboard/JourneyProgress";
 import { StudentOnboarding } from "@/components/onboarding/StudentOnboarding";
 import { LifecycleBanner } from "@/components/lifecycle/LifecycleBanner";
+import { AcademicAssignmentCard } from "@/components/lifecycle/AcademicAssignmentCard";
 
 export default function EnhancedDashboard() {
   const { user } = useAuth();
@@ -103,6 +104,7 @@ export default function EnhancedDashboard() {
     >
       {/* Institutional lifecycle: orientation → matriculation → graduation */}
       <LifecycleBanner />
+      <AcademicAssignmentCard />
 
       {/* Christ Lordship Acknowledgment */}
       <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-secondary/5">
