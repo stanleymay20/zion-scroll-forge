@@ -2562,6 +2562,76 @@ export type Database = {
           },
         ]
       }
+      elective_approvals: {
+        Row: {
+          approved_at: string
+          approved_by: string
+          course_id: string
+          id: string
+          reason: string | null
+          user_id: string
+        }
+        Insert: {
+          approved_at?: string
+          approved_by: string
+          course_id: string
+          id?: string
+          reason?: string | null
+          user_id: string
+        }
+        Update: {
+          approved_at?: string
+          approved_by?: string
+          course_id?: string
+          id?: string
+          reason?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "elective_approvals_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "elective_approvals_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "v_course_gradebook"
+            referencedColumns: ["course_id"]
+          },
+          {
+            foreignKeyName: "elective_approvals_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "leaderboard"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "elective_approvals_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "elective_approvals_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_student_analytics"
+            referencedColumns: ["user_id"]
+          },
+          {
+            foreignKeyName: "elective_approvals_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "v_user_dashboard"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
       email_send_log: {
         Row: {
           created_at: string
@@ -6817,6 +6887,8 @@ export type Database = {
           cohort_number: number | null
           country: string | null
           created_at: string | null
+          current_term: string | null
+          current_year: number
           degree_program_id: string | null
           dob: string | null
           email: string | null
@@ -6842,6 +6914,8 @@ export type Database = {
           cohort_number?: number | null
           country?: string | null
           created_at?: string | null
+          current_term?: string | null
+          current_year?: number
           degree_program_id?: string | null
           dob?: string | null
           email?: string | null
@@ -6867,6 +6941,8 @@ export type Database = {
           cohort_number?: number | null
           country?: string | null
           created_at?: string | null
+          current_term?: string | null
+          current_year?: number
           degree_program_id?: string | null
           dob?: string | null
           email?: string | null
@@ -8054,6 +8130,10 @@ export type Database = {
       }
     }
     Functions: {
+      admin_override_enrollment: {
+        Args: { p_course_id: string; p_reason?: string; p_user_id: string }
+        Returns: Json
+      }
       admin_reassign_program: {
         Args: { p_new_program_id: string; p_reason?: string; p_user_id: string }
         Returns: Json
@@ -8154,6 +8234,9 @@ export type Database = {
           course_id: string
           course_title: string
           is_required: boolean
+          is_unlocked: boolean
+          lock_reason: string
+          missing_prereqs: string[]
           progress: number
           recommended_term: string
           recommended_year: number
