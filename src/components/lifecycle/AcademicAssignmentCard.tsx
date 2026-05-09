@@ -24,6 +24,9 @@ interface NextCourse {
   recommended_year: number | null;
   already_enrolled: boolean;
   progress: number;
+  is_unlocked: boolean;
+  lock_reason: string | null;
+  missing_prereqs: string[] | null;
 }
 
 export function AcademicAssignmentCard() {
@@ -51,7 +54,9 @@ export function AcademicAssignmentCard() {
 
   if (loading || !profile?.program_name) return null;
 
-  const first = next[0];
+  const unlocked = next.filter(c => c.is_unlocked && c.progress < 100);
+  const locked = next.filter(c => !c.is_unlocked).slice(0, 4);
+  const first = unlocked[0];
 
   return (
     <Card className="border-primary/20">
@@ -66,7 +71,7 @@ export function AcademicAssignmentCard() {
           <Field icon={Building2} label="Faculty" value={profile.faculty_name ?? "—"} />
           <Field icon={GraduationCap} label="Degree Program" value={profile.program_name} />
           <Field icon={Users} label="Cohort" value={profile.cohort_label ?? "—"} />
-          <Field icon={Sparkles} label="SUYAS Track" value={profile.suyas_track ?? profile.academic_level ?? "—"} />
+          <Field icon={Sparkles} label="SUYAS Stage" value={profile.suyas_track ?? profile.academic_level ?? "—"} />
         </div>
         {profile.student_id_code && (
           <div className="flex items-center gap-2 pt-1 border-t">
@@ -77,7 +82,7 @@ export function AcademicAssignmentCard() {
         {first && (
           <div className="rounded-md bg-primary/5 border border-primary/20 p-3 mt-2">
             <p className="text-xs uppercase tracking-wider text-muted-foreground mb-1">
-              {first.already_enrolled ? "Continue program" : "Recommended next course"}
+              Next unlocked course
             </p>
             <p className="font-medium text-primary flex items-center gap-2">
               <BookMarked className="h-4 w-4" /> {first.course_title}
@@ -91,8 +96,16 @@ export function AcademicAssignmentCard() {
         )}
         {!first && profile.matriculated && (
           <p className="text-xs text-muted-foreground pt-2">
-            All assigned program courses are completed or none are mapped yet.
+            No unlocked program courses right now. Complete current work or contact an advisor.
           </p>
+        )}
+        {locked.length > 0 && (
+          <div className="space-y-2 pt-2 border-t">
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">Locked upcoming</p>
+            {locked.map(c => (
+              <LockedCourseCard key={c.course_id} course={c} />
+            ))}
+          </div>
         )}
       </CardContent>
     </Card>
