@@ -316,6 +316,68 @@ export default function Apply() {
               </select>
             </div>
 
+            {enrollmentLevel && (
+              <Card className="bg-muted/30 border-primary/20">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base flex items-center gap-2">
+                    <FileCheck className="h-4 w-4 text-primary" />
+                    Admission Requirements
+                    {requirements?.display_label && (
+                      <Badge variant="secondary" className="ml-2">{requirements.display_label}</Badge>
+                    )}
+                  </CardTitle>
+                  <CardDescription>
+                    Please ensure you can provide the following before submitting.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4 text-sm">
+                  {loadingRequirements ? (
+                    <p className="text-muted-foreground">Loading requirements…</p>
+                  ) : !requirements ? (
+                    <p className="text-muted-foreground">
+                      Standard requirements apply. Admissions will contact you with any specific items.
+                    </p>
+                  ) : (
+                    <>
+                      {requirements.min_academic && (
+                        <div>
+                          <div className="font-semibold mb-1">Minimum academic background</div>
+                          <p className="text-muted-foreground">{requirements.min_academic}</p>
+                        </div>
+                      )}
+                      {requiredDocs.length > 0 && (
+                        <div>
+                          <div className="font-semibold mb-1">Mandatory documents</div>
+                          <ul className="list-disc list-inside space-y-0.5 text-muted-foreground">
+                            {requiredDocs.map((d) => <li key={d}>{d}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {optionalDocs.length > 0 && (
+                        <div>
+                          <div className="font-semibold mb-1">Recommended (optional)</div>
+                          <ul className="list-disc list-inside space-y-0.5 text-muted-foreground">
+                            {optionalDocs.map((d) => <li key={d}>{d}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {additionalReqs.length > 0 && (
+                        <div>
+                          <div className="font-semibold mb-1">Additional requirements</div>
+                          <ul className="list-disc list-inside space-y-0.5 text-muted-foreground">
+                            {additionalReqs.map((r) => <li key={r}>{r}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {requirements.notes && (
+                        <p className="text-xs text-muted-foreground italic border-t pt-2">{requirements.notes}</p>
+                      )}
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="program">Program of Interest *</Label>
               <select
