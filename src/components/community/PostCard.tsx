@@ -52,23 +52,10 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onUpdate, onDelete }) 
   const isOwnPost = user?.id === post.authorId;
 
   const handleLike = async () => {
-    try {
-      const response = await fetch(`/api/community/posts/${post.id}/like`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) throw new Error('Failed to like post');
-
-      const data = await response.json();
-      setIsLiked(data.liked);
-      setLikesCount(data.likesCount);
-    } catch (error) {
-      console.error('Error liking post:', error);
-    }
+    const { toast } = await import('sonner');
+    toast.info('Likes are coming soon', {
+      description: 'Community reactions will be enabled in an upcoming release.',
+    });
   };
 
   const handleShare = async () => {
@@ -94,40 +81,30 @@ export const PostCard: React.FC<PostCardProps> = ({ post, onUpdate, onDelete }) 
   };
 
   const handleFollow = async () => {
-    try {
-      const response = await fetch(`/api/community/users/${post.authorId}/follow`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (!response.ok) throw new Error('Failed to follow user');
-
-      const data = await response.json();
-      setIsFollowing(data.following);
-    } catch (error) {
-      console.error('Error following user:', error);
-    }
+    const { toast } = await import('sonner');
+    toast.info('Follow is coming soon', {
+      description: 'Following authors will be available in an upcoming release.',
+    });
   };
 
   const handleDelete = async () => {
     if (!confirm('Are you sure you want to delete this post?')) return;
-
     try {
-      const response = await fetch(`/api/community/posts/${post.id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
-      if (!response.ok) throw new Error('Failed to delete post');
-
+      const { supabase } = await import('@/integrations/supabase/client');
+      const { error } = await supabase
+        .from('community_posts')
+        .delete()
+        .eq('id', post.id);
+      if (error) throw error;
+      const { toast } = await import('sonner');
+      toast.success('Post deleted');
       onDelete(post.id);
     } catch (error) {
       console.error('Error deleting post:', error);
+      const { toast } = await import('sonner');
+      toast.error('Could not delete post', {
+        description: 'You may not have permission, or the post no longer exists.',
+      });
     }
   };
 

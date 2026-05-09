@@ -45,59 +45,11 @@ const SendReceiveInterface: React.FC<SendReceiveInterfaceProps> = ({
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!recipientId || !amount) {
-      setSendError('Please fill in all required fields');
-      return;
-    }
-
-    const amountNum = parseFloat(amount);
-    if (isNaN(amountNum) || amountNum <= 0) {
-      setSendError('Please enter a valid amount');
-      return;
-    }
-
-    if (amountNum > wallet.balance) {
-      setSendError('Insufficient balance');
-      return;
-    }
-
-    try {
-      setSending(true);
-      setSendError(null);
-      setSendSuccess(false);
-
-      const response = await fetch('/api/scrollcoin/transfer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({
-          toUserId: recipientId,
-          amount: amountNum,
-          reason: reason || 'Peer-to-peer transfer'
-        })
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Transfer failed');
-      }
-
-      setSendSuccess(true);
-      setRecipientId('');
-      setAmount('');
-      setReason('');
-      onTransactionComplete();
-
-      // Reset success message after 5 seconds
-      setTimeout(() => setSendSuccess(false), 5000);
-    } catch (error) {
-      setSendError(error instanceof Error ? error.message : 'Transfer failed');
-    } finally {
-      setSending(false);
-    }
+    setSendSuccess(false);
+    setSendError('ScrollGold transfers are not active yet. Peer-to-peer transfers will be enabled once the secure transfer service is live.');
+    toast.info('ScrollGold transfers are not active yet', {
+      description: 'Peer-to-peer transfers will be enabled in an upcoming release.',
+    });
   };
 
   const copyAddress = () => {
