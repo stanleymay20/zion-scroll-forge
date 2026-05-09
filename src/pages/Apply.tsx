@@ -500,42 +500,95 @@ export default function Apply() {
 
             <div className="space-y-2">
               <Label htmlFor="motivation">
-                Motivation Statement * <span className="text-xs text-muted-foreground">(min 80 chars)</span>
+                Motivation Statement * <span className="text-xs text-muted-foreground">(min {statementMinWords} words)</span>
               </Label>
               <Textarea
                 id="motivation"
                 required
-                rows={5}
-                minLength={80}
-                maxLength={2000}
+                rows={6}
+                maxLength={8000}
                 placeholder="Why this program? What do you bring? What do you hope to do?"
                 value={formData.motivation_statement}
                 onChange={(e) => setFormData({ ...formData, motivation_statement: e.target.value })}
               />
               <div className="text-xs text-muted-foreground text-right">
-                {formData.motivation_statement.length} / 2000
+                {wordCount} / {statementMinWords} words
+                {wordCount < statementMinWords && (
+                  <span className="text-destructive ml-2">• {statementMinWords - wordCount} more needed</span>
+                )}
               </div>
             </div>
 
-            <div className="space-y-4 border-t pt-4">
-              <h3 className="font-semibold">Supporting Documents (optional)</h3>
-              <div className="space-y-2">
-                <Label htmlFor="id-upload">ID / Passport</Label>
-                <div className="flex items-center gap-2">
-                  <Input id="id-upload" type="file" accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={(e) => setFiles({ ...files, id: e.target.files?.[0] })} />
-                  <Upload className="h-4 w-4 text-muted-foreground" />
+            {enrollmentLevel && (
+              <div className="space-y-4 border-t pt-4">
+                <div>
+                  <h3 className="font-semibold flex items-center gap-2">
+                    <Upload className="h-4 w-4" />
+                    Supporting Documents
+                  </h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Upload each item below. Required items must be supplied to submit.
+                  </p>
                 </div>
+
+                {requiredDocs.map((doc) => {
+                  const has = !!docFiles[doc];
+                  return (
+                    <div key={doc} className="space-y-2">
+                      <Label className="flex items-center gap-2">
+                        {doc}
+                        <Badge variant="destructive" className="text-[10px]">Required</Badge>
+                        {has && <Check className="h-3 w-3 text-green-600" />}
+                      </Label>
+                      <Input
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          setDocFiles((prev) => {
+                            const next = { ...prev };
+                            if (f) next[doc] = f; else delete next[doc];
+                            return next;
+                          });
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+
+                {optionalDocs.map((doc) => {
+                  const has = !!docFiles[doc];
+                  return (
+                    <div key={doc} className="space-y-2">
+                      <Label className="flex items-center gap-2">
+                        {doc}
+                        <Badge variant="secondary" className="text-[10px]">Optional</Badge>
+                        {has && <Check className="h-3 w-3 text-green-600" />}
+                      </Label>
+                      <Input
+                        type="file"
+                        accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                        onChange={(e) => {
+                          const f = e.target.files?.[0];
+                          setDocFiles((prev) => {
+                            const next = { ...prev };
+                            if (f) next[doc] = f; else delete next[doc];
+                            return next;
+                          });
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+
+                {missingDocs.length > 0 && (
+                  <div className="flex items-start gap-2 text-xs text-destructive bg-destructive/5 border border-destructive/20 rounded p-2">
+                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                    <span>Still required: {missingDocs.join(', ')}</span>
+                  </div>
+                )}
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="transcript-upload">Academic Transcript</Label>
-                <div className="flex items-center gap-2">
-                  <Input id="transcript-upload" type="file" accept=".pdf"
-                    onChange={(e) => setFiles({ ...files, transcript: e.target.files?.[0] })} />
-                  <Upload className="h-4 w-4 text-muted-foreground" />
-                </div>
-              </div>
-            </div>
+            )}
 
             <Button type="submit" className="w-full" disabled={createApplication.isPending}>
               {createApplication.isPending ? 'Submitting...' : 'Submit Application'}
