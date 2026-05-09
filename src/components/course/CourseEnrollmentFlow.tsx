@@ -103,10 +103,10 @@ export function CourseEnrollmentFlow({
         setEnrollmentStep('payment');
       }, 2000);
     },
-    onError: (error: any) => {
+    onError: (error: unknown) => {
       setEnrollmentStep('error');
       toast.error('Enrollment Failed', {
-        description: error.message || 'Failed to enroll in course',
+        description: getUserFriendlyError(error, 'enroll_course'),
       });
     },
   });
