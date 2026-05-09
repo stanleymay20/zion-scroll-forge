@@ -65,7 +65,7 @@ export async function getDegreeProgram(id: string) {
         is_required,
         credits,
         semester_recommended,
-        courses(id, title, description, level, duration, faculty, course_modules(id))
+        courses!degree_course_requirements_course_id_fkey(id, title, description, level, duration, faculty, course_modules(id))
       )
     `)
     .eq("id", id)
