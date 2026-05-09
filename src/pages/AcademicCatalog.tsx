@@ -223,7 +223,7 @@ export default function AcademicCatalog() {
         supabase
           .from("courses")
           .select(
-            "id,title,description,faculty,faculty_id,level,visibility,credit_hours,estimated_duration_hours,duration,career_track,thumbnail_url,credential_type"
+            "id,title,description,faculty,faculty_id,level,visibility,credit_hours,estimated_duration_hours,duration,career_track,thumbnail_url"
           )
           .order("title"),
         supabase.from("degree_programs").select("id,title,faculty"),
