@@ -254,15 +254,22 @@ export const useEnrollInDegree = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: enrollInDegree,
-    onSuccess: () => {
-      toast({ title: "✝️ Enrolled in degree program — May Christ guide your studies" });
+    onSuccess: (result: any) => {
+      if (result?.alreadyEnrolled) {
+        toast({ title: "You are already enrolled in this program." });
+      } else {
+        toast({ title: "✝️ Enrolled in degree program — May Christ guide your studies" });
+      }
       qc.invalidateQueries({ queryKey: ["user-degree-enrollments"] });
     },
-    onError: (e: any) => toast({
-      title: "Failed to enroll",
-      description: e.message,
-      variant: "destructive"
-    })
+    onError: (e: unknown) => {
+      const parsed = logError(e, { context: "enroll_degree", action: "enrollInDegree" });
+      toast({
+        title: parsed.severity === "info" ? "Already enrolled" : "Couldn't enroll",
+        description: parsed.userMessage,
+        variant: parsed.severity === "info" ? "default" : "destructive",
+      });
+    },
   });
 };
 
