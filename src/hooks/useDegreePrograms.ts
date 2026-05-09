@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { logError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity Degrees — Christ forms scholars for His Kingdom");
 
@@ -122,12 +123,28 @@ export async function enrollInDegree(degreeId: string) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
+  // Idempotent: if already enrolled, return existing record instead of erroring.
+  const { data: existing } = await supabase
+    .from("student_degree_enrollments")
+    .select(`*, degree_programs(id, title, faculty, level)`)
+    .eq("user_id", user.id)
+    .eq("degree_id", degreeId)
+    .maybeSingle();
+
+  if (existing) {
+    return {
+      ...existing,
+      degree: (existing as any).degree_programs,
+      alreadyEnrolled: true,
+    } as DegreeEnrollment & { alreadyEnrolled?: boolean };
+  }
+
   // Get degree details to calculate expected completion
   const { data: degree } = await supabase
     .from("degree_programs")
     .select("duration")
     .eq("id", degreeId)
-    .single();
+    .maybeSingle();
 
   // Parse duration (e.g., "2 years" -> 24 months)
   const durationStr = degree?.duration || '2 years';
@@ -238,15 +255,22 @@ export const useEnrollInDegree = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: enrollInDegree,
-    onSuccess: () => {
-      toast({ title: "✝️ Enrolled in degree program — May Christ guide your studies" });
+    onSuccess: (result: any) => {
+      if (result?.alreadyEnrolled) {
+        toast({ title: "You are already enrolled in this program." });
+      } else {
+        toast({ title: "✝️ Enrolled in degree program — May Christ guide your studies" });
+      }
       qc.invalidateQueries({ queryKey: ["user-degree-enrollments"] });
     },
-    onError: (e: any) => toast({
-      title: "Failed to enroll",
-      description: e.message,
-      variant: "destructive"
-    })
+    onError: (e: unknown) => {
+      const parsed = logError(e, { context: "enroll_degree", action: "enrollInDegree" });
+      toast({
+        title: parsed.severity === "info" ? "Already enrolled" : "Couldn't enroll",
+        description: parsed.userMessage,
+        variant: parsed.severity === "info" ? "default" : "destructive",
+      });
+    },
   });
 };
 
