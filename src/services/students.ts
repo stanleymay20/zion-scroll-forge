@@ -44,12 +44,17 @@ export const uploadStudentDocument = underChrist(async (
   docType: string,
   file: File
 ) => {
-  const path = `applications/${studentId}/${file.name}`;
-  
+  const { data: userRes } = await supabase.auth.getUser();
+  const uid = userRes.user?.id;
+  if (!uid) throw new Error('Not authenticated');
+  // Storage RLS requires the first folder segment to equal auth.uid().
+  const safeName = `${Date.now()}-${file.name.replace(/[^\w.\-]+/g, '_')}`;
+  const path = `${uid}/applications/${studentId}/${docType}/${safeName}`;
+
   const { data: upload, error: uploadError } = await supabase.storage
     .from('materials')
     .upload(path, file, { upsert: true });
-  
+
   if (uploadError) throw uploadError;
 
   const { data, error } = await supabase
