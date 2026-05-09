@@ -19,6 +19,7 @@ import {
 import { Loader2, Calendar, CreditCard, AlertCircle, CheckCircle2, XCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface Subscription {
   id: string;
@@ -83,7 +84,7 @@ export function SubscriptionManagement({ subscription, onUpdate }: SubscriptionM
     } catch (err: any) {
       toast({
         title: 'Cancellation Failed',
-        description: err.message,
+        description: getUserFriendlyError(err),
         variant: 'destructive',
       });
     } finally {
@@ -121,7 +122,7 @@ export function SubscriptionManagement({ subscription, onUpdate }: SubscriptionM
     } catch (err: any) {
       toast({
         title: 'Reactivation Failed',
-        description: err.message,
+        description: getUserFriendlyError(err),
         variant: 'destructive',
       });
     } finally {

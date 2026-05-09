@@ -6,6 +6,7 @@ import { useInstitution } from "@/contexts/InstitutionContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { getUserFriendlyError } from "@/lib/errors";
 
 export function InstitutionSwitch() {
   const { activeInstitution, memberships, loading, setActiveInstitution } = useInstitution();
@@ -26,7 +27,7 @@ export function InstitutionSwitch() {
       queryClient.invalidateQueries();
       toast({ title: "✅ Institution switched successfully" });
     } catch (error: any) {
-      toast({ title: "Failed to switch institution", description: error.message, variant: "destructive" });
+      toast({ title: "Failed to switch institution", description: getUserFriendlyError(error), variant: "destructive" });
     }
   };
 

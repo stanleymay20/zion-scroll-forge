@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity Billing — Christ provides for His people");
 
@@ -186,7 +187,7 @@ export const useCreateCheckoutSession = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to create checkout session",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -202,7 +203,7 @@ export const useCreateSubscription = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to create subscription",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -219,7 +220,7 @@ export const useCancelSubscription = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to cancel subscription",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });

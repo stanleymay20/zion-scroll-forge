@@ -10,6 +10,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Loader2, Plus, Trash2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getUserFriendlyError } from "@/lib/errors";
 
 const schema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -49,7 +50,7 @@ export const FacultyCreation = ({ onComplete, onBack, institutionId }: Props) =>
       toast.success(`Faculty "${data.name}" added`);
       form.reset();
     } catch (error: any) {
-      toast.error(error.message || 'Failed to create faculty');
+      toast.error("Failed to create faculty", { description: getUserFriendlyError(error) });
     }
   };
 
@@ -65,7 +66,7 @@ export const FacultyCreation = ({ onComplete, onBack, institutionId }: Props) =>
       setFaculties(faculties.filter(f => f.id !== id));
       toast.success('Faculty removed');
     } catch (error: any) {
-      toast.error(error.message || 'Failed to remove faculty');
+      toast.error("Failed to remove faculty", { description: getUserFriendlyError(error) });
     }
   };
 

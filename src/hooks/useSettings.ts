@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity Settings Hooks — Christ governs preferences");
 
@@ -45,6 +46,6 @@ export const useUpdateSettings = () => {
       toast({ title: "✅ Settings saved" });
       qc.invalidateQueries({ queryKey: ["settings"] });
     },
-    onError: (e: any) => toast({ title: "Save failed", description: e.message, variant: "destructive" })
+    onError: (e: any) => toast({ title: "Save failed", description: getUserFriendlyError(e), variant: "destructive" })
   });
 };

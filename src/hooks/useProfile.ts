@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity Profile Hooks — Christ governs identity");
 
@@ -46,6 +47,6 @@ export const useUpdateProfile = () => {
       toast({ title: "✅ Profile updated successfully" });
       qc.invalidateQueries({ queryKey: ["profile"] });
     },
-    onError: (e: any) => toast({ title: "Update failed", description: e.message, variant: "destructive" })
+    onError: (e: any) => toast({ title: "Update failed", description: getUserFriendlyError(e), variant: "destructive" })
   });
 };

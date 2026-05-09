@@ -25,6 +25,7 @@ import {
 } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info('✝️ Institutions Admin — Christ governs platform administration');
 
@@ -130,7 +131,7 @@ export const InstitutionsAdmin: React.FC = () => {
       handleCloseDialog();
     },
     onError: (error: any) => {
-      toast({ title: 'Failed to save institution', description: error.message, variant: 'destructive' });
+      toast({ title: 'Failed to save institution', description: getUserFriendlyError(error), variant: 'destructive' });
     },
   });
 

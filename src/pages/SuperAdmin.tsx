@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Building2, Users, BookOpen, Settings, DollarSign, BarChart } from "lucide-react";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ SuperAdmin — Christ governs authority");
 
@@ -65,7 +66,7 @@ export default function SuperAdmin() {
       toast({ title: "✅ Institution created!" });
     },
     onError: (error: any) => {
-      toast({ title: "Creation failed", description: error.message, variant: "destructive" });
+      toast({ title: "Creation failed", description: getUserFriendlyError(error), variant: "destructive" });
     },
   });
 

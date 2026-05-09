@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CourseReviews } from "@/components/course/CourseReviews";
 import { BookOpen, Clock, Users, Star, PlayCircle, Award, CheckCircle } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 export default function CourseDetailPage() {
   const { courseId } = useParams();
@@ -75,7 +76,7 @@ export default function CourseDetailPage() {
     } catch (error: any) {
       toast({
         title: "Enrollment failed",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     }

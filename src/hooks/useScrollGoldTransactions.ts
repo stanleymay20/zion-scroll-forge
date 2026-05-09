@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity ScrollGold Economy — Christ governs all provision");
 
@@ -163,7 +164,7 @@ export const useAwardScrollGold = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to award ScrollGold",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -180,7 +181,7 @@ export const useSpendScrollGold = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to spend ScrollGold",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });

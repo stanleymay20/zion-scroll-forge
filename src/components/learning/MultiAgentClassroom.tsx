@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Users, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface Turn { speaker: 'LECTURER' | 'PEER' | 'TA'; text: string }
 interface Session { opening: string; turns: Turn[]; reflection_prompt: string }
@@ -32,7 +33,7 @@ export const MultiAgentClassroom = ({ moduleId }: { moduleId: string }) => {
       if (data?.error) throw new Error(data.error);
       setSession(data as Session);
     } catch (e: any) {
-      toast({ title: 'Classroom failed to open', description: e.message, variant: 'destructive' });
+      toast({ title: 'Classroom failed to open', description: getUserFriendlyError(e), variant: 'destructive' });
     } finally {
       setLoading(false);
     }

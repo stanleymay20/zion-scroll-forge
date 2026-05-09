@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ Avatar Hooks — Christ governs our image");
 
@@ -65,6 +66,6 @@ export const useUploadAvatar = () => {
       toast({ title: "✅ Avatar uploaded" });
       qc.invalidateQueries({ queryKey: ["avatar"] });
     },
-    onError: (e: any) => toast({ title: "Upload failed", description: e.message, variant: "destructive" })
+    onError: (e: any) => toast({ title: "Upload failed", description: getUserFriendlyError(e), variant: "destructive" })
   });
 };

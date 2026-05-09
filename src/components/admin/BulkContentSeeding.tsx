@@ -9,6 +9,7 @@ import { Loader2, Database, CheckCircle2, AlertCircle, BookOpen } from "lucide-r
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
+import { getUserFriendlyError } from "@/lib/errors";
 
 export function BulkContentSeeding() {
   const [isSeeding, setIsSeeding] = useState(false);
@@ -59,7 +60,7 @@ export function BulkContentSeeding() {
       refetch();
     } catch (error: any) {
       console.error('Seeding error:', error);
-      toast.error(error.message || 'Failed to seed content');
+      toast.error("Failed to seed content", { description: getUserFriendlyError(error) });
       setResult({ error: error.message });
     } finally {
       setIsSeeding(false);

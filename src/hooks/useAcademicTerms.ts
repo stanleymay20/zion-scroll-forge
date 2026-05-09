@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ Academic Terms — Christ governs all seasons of learning");
 
@@ -171,7 +172,7 @@ export const useCreateTerm = () => {
     onError: (error: Error) => {
       toast({
         title: "Error",
-        description: error.message || "Failed to create academic term.",
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },
@@ -195,7 +196,7 @@ export const useUpdateTerm = () => {
     onError: (error: Error) => {
       toast({
         title: "Error",
-        description: error.message || "Failed to update academic term.",
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },
@@ -218,7 +219,7 @@ export const useDeleteTerm = () => {
     onError: (error: Error) => {
       toast({
         title: "Error",
-        description: error.message || "Failed to delete academic term.",
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },
@@ -241,7 +242,7 @@ export const useSetActiveTerm = () => {
     onError: (error: Error) => {
       toast({
         title: "Error",
-        description: error.message || "Failed to set active term.",
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },

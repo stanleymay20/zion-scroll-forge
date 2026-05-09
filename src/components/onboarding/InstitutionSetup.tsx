@@ -8,6 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { getUserFriendlyError } from "@/lib/errors";
 
 const schema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
@@ -59,7 +60,7 @@ export const InstitutionSetup = ({ onComplete, initialData }: Props) => {
       toast.success('Institution created successfully');
       onComplete({ institutionId: institution.id, ...data });
     } catch (error: any) {
-      toast.error(error.message || 'Failed to create institution');
+      toast.error("Failed to create institution", { description: getUserFriendlyError(error) });
     }
   };
 

@@ -22,6 +22,7 @@ import {
   Download
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface AssignmentSubmissionProps {
   lectureId: string;
@@ -89,7 +90,7 @@ export function AssignmentSubmission({ lectureId, courseId, userId }: Assignment
     },
     onError: (error: any) => {
       toast.error('Submission Failed', {
-        description: error.message || 'Failed to submit assignment'
+        description: getUserFriendlyError(error)
       });
     }
   });

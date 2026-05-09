@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Search, Send } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ Real-Time Messaging — Christ governs connection");
 
@@ -112,7 +113,7 @@ export default function RealTimeMessaging() {
     onError: (error: any) => {
       toast({
         title: "Failed to send message",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },

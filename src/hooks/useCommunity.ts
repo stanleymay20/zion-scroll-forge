@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity Community Hooks — Christ governs fellowship");
 
@@ -84,7 +85,7 @@ export const useCreatePost = () => {
       toast({ title: "✅ Post created" });
       qc.invalidateQueries({ queryKey: ["community-posts"] });
     },
-    onError: (e: any) => toast({ title: "Failed to create post", description: e.message, variant: "destructive" })
+    onError: (e: any) => toast({ title: "Failed to create post", description: getUserFriendlyError(e), variant: "destructive" })
   });
 };
 
@@ -97,6 +98,6 @@ export const useCreateComment = () => {
       qc.invalidateQueries({ queryKey: ["community-post"] });
       qc.invalidateQueries({ queryKey: ["community-posts"] });
     },
-    onError: (e: any) => toast({ title: "Failed to comment", description: e.message, variant: "destructive" })
+    onError: (e: any) => toast({ title: "Failed to comment", description: getUserFriendlyError(e), variant: "destructive" })
   });
 };

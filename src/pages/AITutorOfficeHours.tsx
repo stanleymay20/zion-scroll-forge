@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Calendar as CalendarIcon, Clock, Video, BookOpen, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface Tutor {
   id: string;
@@ -141,7 +142,7 @@ export default function AITutorOfficeHours() {
     if (error) {
       toast({
         title: 'Booking Failed',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive'
       });
     } else {

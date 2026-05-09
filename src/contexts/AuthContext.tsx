@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from 'react
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface SignUpMetadata {
   first_name?: string;
@@ -91,7 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error: any) {
       toast({
         title: 'Sign up failed',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
       throw error;
@@ -125,7 +126,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error: any) {
       toast({
         title: 'Sign in failed',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
       throw error;
@@ -144,7 +145,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } catch (error: any) {
       toast({
         title: 'Sign out failed',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive',
       });
       throw error;

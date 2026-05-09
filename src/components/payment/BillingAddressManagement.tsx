@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/select';
 import { Loader2, MapPin, Save, Edit } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface BillingAddress {
   line1: string;
@@ -66,7 +67,7 @@ export function BillingAddressManagement({ userId, onUpdate }: BillingAddressMan
     } catch (err: any) {
       toast({
         title: 'Error Loading Billing Address',
-        description: err.message,
+        description: getUserFriendlyError(err),
         variant: 'destructive',
       });
     } finally {
@@ -102,7 +103,7 @@ export function BillingAddressManagement({ userId, onUpdate }: BillingAddressMan
     } catch (err: any) {
       toast({
         title: 'Error Saving Billing Address',
-        description: err.message,
+        description: getUserFriendlyError(err),
         variant: 'destructive',
       });
     } finally {

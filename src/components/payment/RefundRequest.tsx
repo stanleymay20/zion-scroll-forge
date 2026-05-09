@@ -26,6 +26,7 @@ import {
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, RefreshCw, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface RefundRequestProps {
   paymentIntentId: string;
@@ -101,7 +102,7 @@ export function RefundRequest({
     } catch (err: any) {
       toast({
         title: 'Error Submitting Refund Request',
-        description: err.message,
+        description: getUserFriendlyError(err),
         variant: 'destructive',
       });
     } finally {

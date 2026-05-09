@@ -285,7 +285,7 @@ export const useUpdateDegreeEnrollment = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to update enrollment",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });

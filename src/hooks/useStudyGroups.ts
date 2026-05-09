@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity Study Groups — Christ governs collaborative learning");
 
@@ -94,7 +95,7 @@ export const useCreateStudyGroup = () => {
       toast({ title: "✅ Study group created" });
       qc.invalidateQueries({ queryKey: ["study-groups"] });
     },
-    onError: (e: any) => toast({ title: "Failed to create group", description: e.message, variant: "destructive" })
+    onError: (e: any) => toast({ title: "Failed to create group", description: getUserFriendlyError(e), variant: "destructive" })
   });
 };
 
@@ -107,7 +108,7 @@ export const useJoinStudyGroup = () => {
       qc.invalidateQueries({ queryKey: ["study-groups"] });
       qc.invalidateQueries({ queryKey: ["study-group"] });
     },
-    onError: (e: any) => toast({ title: "Failed to join group", description: e.message, variant: "destructive" })
+    onError: (e: any) => toast({ title: "Failed to join group", description: getUserFriendlyError(e), variant: "destructive" })
   });
 };
 
@@ -120,6 +121,6 @@ export const useLeaveStudyGroup = () => {
       qc.invalidateQueries({ queryKey: ["study-groups"] });
       qc.invalidateQueries({ queryKey: ["study-group"] });
     },
-    onError: (e: any) => toast({ title: "Failed to leave group", description: e.message, variant: "destructive" })
+    onError: (e: any) => toast({ title: "Failed to leave group", description: getUserFriendlyError(e), variant: "destructive" })
   });
 };

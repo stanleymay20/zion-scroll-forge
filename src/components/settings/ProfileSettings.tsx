@@ -12,6 +12,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { getUserFriendlyError } from "@/lib/errors";
 
 const profileSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -90,7 +91,7 @@ export function ProfileSettings({ userEmail, userId }: ProfileSettingsProps) {
       queryClient.invalidateQueries({ queryKey: ["avatar"] });
       toast({ title: "✅ Avatar uploaded successfully" });
     } catch (error: any) {
-      toast({ title: "Upload failed", description: error.message, variant: "destructive" });
+      toast({ title: "Upload failed", description: getUserFriendlyError(error), variant: "destructive" });
     } finally {
       setUploading(false);
     }
@@ -101,7 +102,7 @@ export function ProfileSettings({ userEmail, userId }: ProfileSettingsProps) {
       // Update profile logic here
       toast({ title: "✅ Profile updated successfully" });
     } catch (error: any) {
-      toast({ title: "Update failed", description: error.message, variant: "destructive" });
+      toast({ title: "Update failed", description: getUserFriendlyError(error), variant: "destructive" });
     }
   };
 

@@ -15,6 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Label } from '@/components/ui/label';
 import { ArrowLeft, Send, Users, FileText, Upload, Download, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getUserFriendlyError } from "@/lib/errors";
 
 export default function StudyGroupChat() {
   const { groupId } = useParams();
@@ -149,7 +150,7 @@ export default function StudyGroupChat() {
       queryClient.invalidateQueries({ queryKey: ['study-group-messages', groupId] });
     },
     onError: (error) => {
-      toast.error('Failed to send message', { description: error.message });
+      toast.error('Failed to send message', { description: getUserFriendlyError(error) });
     },
   });
 
@@ -173,7 +174,7 @@ export default function StudyGroupChat() {
       toast.success('Note created!');
     },
     onError: (error) => {
-      toast.error('Failed to create note', { description: error.message });
+      toast.error('Failed to create note', { description: getUserFriendlyError(error) });
     },
   });
 
@@ -209,7 +210,7 @@ export default function StudyGroupChat() {
       queryClient.invalidateQueries({ queryKey: ['study-group-files', groupId] });
       toast.success('File uploaded!');
     } catch (error: any) {
-      toast.error('Failed to upload file', { description: error.message });
+      toast.error('Failed to upload file', { description: getUserFriendlyError(error) });
     } finally {
       setUploadingFile(false);
     }

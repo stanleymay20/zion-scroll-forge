@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity Prayer Journal — Christ hears every prayer");
 
@@ -133,7 +134,7 @@ export const useCreatePrayerEntry = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to save prayer",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -151,7 +152,7 @@ export const useUpdatePrayerEntry = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to update prayer",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -167,7 +168,7 @@ export const useDeletePrayerEntry = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to delete prayer",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -185,7 +186,7 @@ export const useMarkPrayerAnswered = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to update prayer",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });

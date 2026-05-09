@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ ScrollUniversity Spiritual Hooks — Christ governs formation");
 
@@ -45,6 +46,6 @@ export const useUpdateSpiritualMetrics = () => {
       toast({ title: "✅ Spiritual metrics updated" });
       qc.invalidateQueries({ queryKey: ["spiritual-metrics"] });
     },
-    onError: (e: any) => toast({ title: "Update failed", description: e.message, variant: "destructive" })
+    onError: (e: any) => toast({ title: "Update failed", description: getUserFriendlyError(e), variant: "destructive" })
   });
 };

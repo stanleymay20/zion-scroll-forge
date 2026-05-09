@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './AuthContext';
 import { toast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info('✝️ ScrollUniversity Institution Context — Christ governs all institutions');
 
@@ -171,7 +172,7 @@ export const InstitutionProvider: React.FC<{ children: React.ReactNode }> = ({ c
       console.error('Error switching institution:', error);
       toast({
         title: 'Failed to switch institution',
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: 'destructive'
       });
     }

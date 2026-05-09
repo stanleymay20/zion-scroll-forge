@@ -22,6 +22,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getUserSettings, updateUserSettings, getSupportedLanguages, getTimeZones } from "@/services/settingsService";
 import { toast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
+import { getUserFriendlyError } from "@/lib/errors";
 
 const languageSchema = z.object({
   language: z.string(),
@@ -51,7 +52,7 @@ export function LanguageSettings() {
     onError: (error: Error) => {
       toast({
         title: "Failed to update language settings",
-        description: error.message,
+        description: getUserFriendlyError(error),
         variant: "destructive",
       });
     },

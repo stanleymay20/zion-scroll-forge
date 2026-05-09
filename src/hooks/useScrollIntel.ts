@@ -12,6 +12,7 @@ import {
 } from '@/services/scrollintel';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
+import { getUserFriendlyError } from "@/lib/errors";
 
 export const useAIChat = () => {
   const { user } = useAuth();
@@ -54,7 +55,7 @@ export const useAIChat = () => {
       } else {
         toast({
           title: '❌ Error',
-          description: error.message || 'Failed to communicate with AI tutor. Please try again.',
+          description: getUserFriendlyError(error),
           variant: 'destructive',
           duration: 5000,
         });

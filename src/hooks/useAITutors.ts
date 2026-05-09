@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { logSpiritualEvent } from "@/lib/scrollGovernance";
+import { getUserFriendlyError } from "@/lib/errors";
 
 console.info("✝️ AI Tutors — Christ-guided learning");
 
@@ -206,7 +207,7 @@ export const useCreateTutorSession = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to start session",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -221,7 +222,7 @@ export const useSendTutorMessage = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to send message",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });
@@ -237,7 +238,7 @@ export const useCloseTutorSession = () => {
     },
     onError: (e: any) => toast({
       title: "Failed to close session",
-      description: e.message,
+      description: getUserFriendlyError(e),
       variant: "destructive"
     })
   });

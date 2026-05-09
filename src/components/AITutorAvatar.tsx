@@ -12,6 +12,7 @@ import { Slider } from '@/components/ui/slider';
 import { ReadyPlayerMeAvatar } from '@/components/ReadyPlayerMeAvatar';
 import { CollaborativeWhiteboard } from '@/components/CollaborativeWhiteboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { getUserFriendlyError } from "@/lib/errors";
 
 interface Message {
   role: 'user' | 'assistant';
@@ -114,7 +115,7 @@ export const AITutorAvatar = ({
       console.error('Chat error:', error);
       toast({
         title: 'Error',
-        description: error.message || 'Failed to communicate with AI tutor',
+        description: getUserFriendlyError(error),
         variant: 'destructive'
       });
     } finally {
