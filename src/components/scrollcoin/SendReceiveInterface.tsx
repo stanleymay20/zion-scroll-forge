@@ -20,6 +20,7 @@ import {
   AlertCircle,
   QrCode
 } from 'lucide-react';
+import { toast } from 'sonner';
 import { ScrollCoinWallet } from '@/types/scrollcoin';
 
 interface SendReceiveInterfaceProps {
