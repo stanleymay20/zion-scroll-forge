@@ -183,3 +183,50 @@ function Stat({ icon: Icon, label, value }: { icon: any; label: string; value: n
     </Card>
   );
 }
+
+function ReassignButton({ userId }: { userId: string }) {
+  const [open, setOpen] = useState(false);
+  const [programs, setPrograms] = useState<{ id: string; title: string }[]>([]);
+  const [target, setTarget] = useState<string>("");
+  const [busy, setBusy] = useState(false);
+
+  useEffect(() => {
+    if (!open || programs.length) return;
+    supabase
+      .from("degree_programs")
+      .select("id,title")
+      .eq("is_active", true)
+      .order("title")
+      .then(({ data }) => setPrograms((data ?? []) as any));
+  }, [open, programs.length]);
+
+  if (!open) {
+    return (
+      <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setOpen(true)}>
+        <Replace className="h-3.5 w-3.5 mr-1" /> Reassign
+      </Button>
+    );
+  }
+  return (
+    <div className="flex items-center gap-1.5 w-full sm:w-auto">
+      <Select value={target} onValueChange={setTarget}>
+        <SelectTrigger className="h-8 text-xs min-w-[180px]"><SelectValue placeholder="New program" /></SelectTrigger>
+        <SelectContent>
+          {programs.map((p) => <SelectItem key={p.id} value={p.id}>{p.title}</SelectItem>)}
+        </SelectContent>
+      </Select>
+      <Button
+        size="sm" className="h-8 text-xs" disabled={!target || busy}
+        onClick={async () => {
+          setBusy(true);
+          const { error } = await supabase.rpc("admin_reassign_program", { p_user_id: userId, p_new_program_id: target, p_reason: "Admin override" });
+          setBusy(false);
+          if (error) { toast.error("Reassignment failed", { description: error.message.replace(/.*?: /,'') }); return; }
+          toast.success("Program reassigned");
+          setOpen(false); setTarget("");
+        }}
+      >Apply</Button>
+      <Button size="sm" variant="ghost" className="h-8 text-xs" onClick={() => setOpen(false)}>Cancel</Button>
+    </div>
+  );
+}
