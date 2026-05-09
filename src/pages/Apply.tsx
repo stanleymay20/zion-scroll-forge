@@ -295,20 +295,6 @@ export default function Apply() {
     <PageTemplate title="Apply to ScrollUniversity" description="Begin your transformative learning journey">
       {!cohortLoading && cohort && (
         <Card className="mb-4 border-primary/30">
-          <CardContent className="py-4">
-            <div className="flex justify-between text-sm mb-2">
-              <span className="font-medium">{cohort.cohort_label}</span>
-              <span className="text-muted-foreground">
-                {filled} / {cap} admitted • {cohort.seats_remaining} seats left
-              </span>
-            </div>
-            <Progress value={pct} />
-          </CardContent>
-        </Card>
-      )}
-
-      {!cohortLoading && cohort && (
-        <Card className="mb-4 border-primary/30">
           <CardContent className="py-4 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="font-medium">{cohort.cohort_label}</span>
