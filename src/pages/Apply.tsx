@@ -12,8 +12,21 @@ import { useCreateApplication, useUploadDocument, useStudentProfile } from '@/ho
 import { useCohortStatus } from '@/hooks/useLaunchOps';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Upload, Check, Lock, BookOpen } from 'lucide-react';
+import { Upload, Check, Lock, BookOpen, FileCheck, AlertCircle } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+
+type ProgramRequirement = {
+  id: string;
+  level: string;
+  display_label: string;
+  min_academic: string | null;
+  required_documents: string[];
+  optional_documents: string[];
+  additional_requirements: string[];
+  statement_min_words: number | null;
+  reference_letters_required: number | null;
+  notes: string | null;
+};
 
 export default function Apply() {
   const navigate = useNavigate();
