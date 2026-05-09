@@ -478,8 +478,10 @@ const App = () => (
               <Route path="graduation" element={<StudentStatusRoute allowedStatuses={["active","graduated","alumni"]}><StudentGraduation /></StudentStatusRoute>} />
               <Route path="orientation" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active"]}><Orientation /></StudentStatusRoute>} />
               <Route path="matriculation" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active"]}><Matriculation /></StudentStatusRoute>} />
+              <Route path="student-identity" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active","graduated","alumni"]}><StudentIdentity /></StudentStatusRoute>} />
             <Route path="admin/academic-terms" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AcademicTermAdmin /></RoleRoute>} />
             <Route path="admin/suyas" element={<RoleRoute allowedRoles={["admin","superadmin"]}><SUYASAdmin /></RoleRoute>} />
+            <Route path="admin/activation" element={<RoleRoute allowedRoles={["admin","superadmin"]}><ActivationProgress /></RoleRoute>} />
           </Route>
           
           {/* Catch-all route for 404 */}
