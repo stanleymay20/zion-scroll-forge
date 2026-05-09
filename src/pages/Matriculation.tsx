@@ -144,7 +144,11 @@ export default function Matriculation() {
               <CardContent className="text-sm space-y-2">
                 <p>You signed the ScrollUniversity oath on <strong>{new Date(existing.oath_signed_at).toLocaleDateString()}</strong>.</p>
                 <p>Certificate number: <span className="font-mono">{existing.cert_number}</span></p>
-                <Button onClick={() => navigate("/dashboard")}>Continue to Dashboard</Button>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <Button onClick={() => navigate("/student-identity")} variant="default">View Student Identity</Button>
+                  <Button onClick={() => navigate("/catalog")} variant="outline">Enroll in your first course</Button>
+                  <Button onClick={() => navigate("/dashboard")} variant="ghost">Continue to Dashboard</Button>
+                </div>
               </CardContent>
             </Card>
 
