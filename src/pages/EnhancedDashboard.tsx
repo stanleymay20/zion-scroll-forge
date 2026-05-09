@@ -104,6 +104,7 @@ export default function EnhancedDashboard() {
     >
       {/* Institutional lifecycle: orientation → matriculation → graduation */}
       <LifecycleBanner />
+      <AcademicAssignmentCard />
 
       {/* Christ Lordship Acknowledgment */}
       <Card className="border-primary/20 bg-gradient-to-r from-primary/5 to-secondary/5">
