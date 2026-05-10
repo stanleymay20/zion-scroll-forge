@@ -14,6 +14,8 @@ const IGNORE_PARTS = [
   '.git',
 ];
 
+const truthfulCapabilityQualifier = /\b(not\s+live|not\s+implemented|not\s+yet|coming\s+soon|planned|roadmap|experimental|future|disabled|unavailable)\b/i;
+
 const checks = [
   {
     key: 'legacy-api-call',
@@ -26,6 +28,7 @@ const checks = [
     severity: 'error',
     description: 'Do not claim live avatar/voice/classroom AI tutors unless WebRTC/avatar/TTS/STT production services are wired and feature-gated.',
     pattern: /\b(live\s+avatar|avatar\s+classroom|voice\s+tutor|speaking\s+avatar|lip[-\s]?sync|web\s?rtc|real[-\s]?time\s+avatar)\b/i,
+    allowIf: (line) => truthfulCapabilityQualifier.test(line),
   },
   {
     key: 'unsupported-superiority-claim',
@@ -92,7 +95,7 @@ for (const dir of SRC_DIRS) {
     const lines = text.split(/\r?\n/);
     lines.forEach((line, idx) => {
       for (const check of checks) {
-        if (check.pattern.test(line)) {
+        if (check.pattern.test(line) && !check.allowIf?.(line)) {
           findings.push({
             check: check.key,
             severity: check.severity,
