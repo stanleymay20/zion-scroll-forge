@@ -22,6 +22,18 @@ const checks = [
     pattern: /(['"`])\/api\//,
   },
   {
+    key: 'unsupported-avatar-claim',
+    severity: 'error',
+    description: 'Do not claim live avatar/voice/classroom AI tutors unless WebRTC/avatar/TTS/STT production services are wired and feature-gated.',
+    pattern: /\b(live\s+avatar|avatar\s+classroom|voice\s+tutor|speaking\s+avatar|lip[-\s]?sync|web\s?rtc|real[-\s]?time\s+avatar)\b/i,
+  },
+  {
+    key: 'unsupported-superiority-claim',
+    severity: 'error',
+    description: 'Do not make unverifiable AI superiority/accuracy claims in production UI.',
+    pattern: /\b(quantum\s+consciousness|superior\s+to\s+gpt|\d+%\+?\s+accuracy|prophetic\s+accuracy|200%\+?\s+superior)\b/i,
+  },
+  {
     key: 'blocking-alert',
     severity: 'warning',
     description: 'Use toast or inline UI instead of blocking alert().',
