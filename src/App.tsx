@@ -14,7 +14,7 @@ import { useRealtimeSubscriptions } from "@/hooks/useRealtime";
 import { MainLayout } from "./components/layout/MainLayout";
 import { PublicLayout } from "./components/layout/PublicLayout";
 import { MobileAppInstallPrompt } from "@/components/mobile";
-import { PWAInstallPrompt, OfflineIndicator, PWAUpdatePrompt } from "@/components/pwa";
+import { PWAInstallPrompt, PWAUpdatePrompt } from "@/components/pwa";
 import { Loader2 } from "lucide-react";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
@@ -24,7 +24,6 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import VerifyEmail from "./pages/auth/VerifyEmail";
 import OAuthCallback from "./pages/auth/OAuthCallback";
-import { ComingSoonPage } from "./components/layout/PageTemplate";
 
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
 const EnhancedDashboard = lazy(() => import("@/pages/EnhancedDashboard"));
@@ -32,7 +31,6 @@ const ForgeDashboard = lazy(() => import("@/pages/ForgeDashboard"));
 const ScrollSpecs = lazy(() => import("@/pages/ScrollSpecs"));
 const Agents = lazy(() => import("@/pages/Agents"));
 const ForgeSessions = lazy(() => import("@/pages/ForgeSessions"));
-const Courses = lazy(() => import("./pages/Courses"));
 const CourseDetail = lazy(() => import("./pages/CourseDetail"));
 const CourseLearn = lazy(() => import("./pages/CourseLearn"));
 const CourseLearningPage = lazy(() => import("./pages/CourseLearningPage"));
@@ -46,9 +44,7 @@ const TutorProfile = lazy(() => import("./pages/TutorProfile"));
 const AvatarCustomization = lazy(() => import("./pages/AvatarCustomization"));
 const ContentGeneration = lazy(() => import("./pages/ContentGeneration"));
 const Community = lazy(() => import("./pages/Community"));
-const UserProfilePage = lazy(async () => ({
-  default: (await import("./components/community")).UserProfilePage,
-}));
+const UserProfilePage = lazy(async () => ({ default: (await import("./components/community")).UserProfilePage }));
 const Assessments = lazy(() => import("./pages/Assessments"));
 const ScrollCoin = lazy(() => import("./pages/ScrollCoin"));
 const Wallet = lazy(() => import("./pages/Wallet"));
@@ -114,15 +110,10 @@ const AssignmentUpload = lazy(() => import("./pages/AssignmentUpload"));
 const DegreeAudit = lazy(() => import("./pages/DegreeAudit"));
 const ScholarshipsPage = lazy(() => import("./pages/ScholarshipsPage"));
 const RealTimeMessaging = lazy(() => import("./pages/RealTimeMessaging"));
-const ScrollBadgeGallery = lazy(async () => ({
-  default: (await import("./pages/ScrollBadgeGallery")).ScrollBadgeGallery,
-}));
-const PublicBadgeProfile = lazy(async () => ({
-  default: (await import("./pages/PublicBadgeProfile")).PublicBadgeProfile,
-}));
+const ScrollBadgeGallery = lazy(async () => ({ default: (await import("./pages/ScrollBadgeGallery")).ScrollBadgeGallery }));
+const PublicBadgeProfile = lazy(async () => ({ default: (await import("./pages/PublicBadgeProfile")).PublicBadgeProfile }));
 const StudentProfile = lazy(() => import("./pages/StudentProfile"));
 const MobileFeaturesDemo = lazy(() => import("./pages/MobileFeaturesDemo"));
-const CourseCatalog = lazy(() => import("./pages/CourseCatalog"));
 const CourseDetailPage = lazy(() => import("./pages/CourseDetailPage"));
 const MyCourses = lazy(() => import("./pages/MyCourses"));
 const QuizTaking = lazy(() => import("./pages/QuizTaking"));
@@ -147,37 +138,17 @@ const AcademicCatalog = lazy(() => import("./pages/AcademicCatalog"));
 const CoursePreview = lazy(() => import("./pages/CoursePreview"));
 const StudentIdentity = lazy(() => import("./pages/StudentIdentity"));
 const ActivationProgress = lazy(() => import("./pages/admin/ActivationProgress"));
+const InstitutionalResourcePage = lazy(() => import("./pages/InstitutionalResourcePage"));
 
-// Route guards (eager — small, used everywhere)
-import {
-  RoleRoute,
-  CourseAccessRoute,
-  StudentStatusRoute,
-} from "./components/routing/Guards";
+import { RoleRoute, CourseAccessRoute, StudentStatusRoute } from "./components/routing/Guards";
 
-// Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, loading } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-4 text-primary">Loading ScrollUniversity...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return <Navigate to="/auth" replace />;
-  }
-
+  if (loading) return <LoadingFallback />;
+  if (!isAuthenticated) return <Navigate to="/auth" replace />;
   return <>{children}</>;
 };
 
-// Loading fallback component
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen">
     <div className="text-center">
@@ -188,7 +159,6 @@ const LoadingFallback = () => (
   </div>
 );
 
-// Realtime subscriptions wrapper
 const RealtimeProvider = ({ children }: { children: React.ReactNode }) => {
   useRealtimeSubscriptions();
   return <>{children}</>;
@@ -220,36 +190,17 @@ const ProtectedAppProviders = ({ children }: { children: React.ReactNode }) => (
   </InstitutionProvider>
 );
 
-// Mobile viewport configuration
 const MobileViewportConfig = () => {
   useEffect(() => {
-    // Set viewport meta tag for mobile devices
     const viewport = document.querySelector('meta[name="viewport"]');
     if (viewport) {
-      viewport.setAttribute(
-        'content',
-        'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover'
-      );
+      viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover');
     }
-
-    // Prevent zoom on input focus (iOS)
     const style = document.createElement('style');
-    style.textContent = `
-      @media screen and (max-width: 768px) {
-        input, textarea, select {
-          font-size: 16px !important;
-        }
-      }
-    `;
+    style.textContent = `@media screen and (max-width: 768px) { input, textarea, select { font-size: 16px !important; } }`;
     document.head.appendChild(style);
-
-    return () => {
-      if (style.parentNode) {
-        style.parentNode.removeChild(style);
-      }
-    };
+    return () => { if (style.parentNode) style.parentNode.remove(); };
   }, []);
-
   return null;
 };
 
@@ -258,172 +209,115 @@ const App = () => (
     <QueryClientProvider client={queryClient}>
       <PublicAppShell>
         <Routes>
-            {/* Public Landing Page */}
-            <Route path="/" element={<Index />} />
-            <Route path="/index" element={<Navigate to="/" replace />} />
-            <Route path="/index.html" element={<Navigate to="/" replace />} />
-            
-            {/* Public Badge Profile */}
-            <Route path="/badges/public/:userId" element={<PublicBadgeProfile />} />
-            
-            {/* Public Browsing Routes (no auth required) — all catalog aliases redirect to /catalog */}
-            <Route path="/courses" element={<Navigate to="/catalog" replace />} />
-            <Route path="/course-catalog" element={<Navigate to="/catalog" replace />} />
-            <Route path="/courses-catalog" element={<Navigate to="/catalog" replace />} />
-            <Route path="/comprehensive-courses" element={<Navigate to="/catalog" replace />} />
-            <Route path="/catalog" element={<PublicLayout />}>
-              <Route index element={<AcademicCatalog />} />
-            </Route>
-            <Route path="/course/:courseId/preview" element={<CoursePreview />} />
-            <Route path="/faculties" element={<PublicLayout />}>
-              <Route index element={<FacultyGallery />} />
-            </Route>
-            <Route path="/faculties/:facultyId" element={<PublicLayout />}>
-              <Route index element={<FacultyDetail />} />
-            </Route>
-            <Route path="/degrees" element={<PublicLayout />}>
-              <Route index element={<DegreePrograms />} />
-            </Route>
-            <Route path="/degree-programs" element={<PublicLayout />}>
-              <Route index element={<DegreePrograms />} />
-            </Route>
-            <Route path="/degrees/:id" element={<PublicLayout />}>
-              <Route index element={<DegreeProgramDetail />} />
-            </Route>
-            <Route path="/degree-programs/:id" element={<PublicLayout />}>
-              <Route index element={<DegreeProgramDetail />} />
-            </Route>
-            <Route path="/trust" element={<PublicLayout />}>
-              <Route index element={<TrustCenter />} />
-            </Route>
-            <Route path="/academic-integrity" element={<PublicLayout />}>
-              <Route index element={<AcademicIntegrity />} />
-            </Route>
-            <Route path="/faculty-directory" element={<PublicLayout />}>
-              <Route index element={<FacultyDirectory />} />
-            </Route>
-            <Route path="/outcomes" element={<PublicLayout />}>
-              <Route index element={<OutcomesDashboard />} />
-            </Route>
-            <Route path="/founding-wall" element={<PublicLayout />}>
-              <Route index element={<FoundingWall />} />
-            </Route>
-            <Route path="/verify" element={<PublicLayout />}>
-              <Route index element={<VerifyCredential />} />
-            </Route>
-            <Route path="/verify/:certNumber" element={<CertificateVerify />} />
-            
-            {/* Legal Pages */}
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            
-            {/* Authentication Routes */}
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/auth/login" element={<Navigate to="/auth" replace />} />
-            <Route path="/auth/register" element={<Register />} />
-            <Route path="/auth/forgot-password" element={<ForgotPassword />} />
-            <Route path="/auth/reset-password" element={<ResetPassword />} />
-            <Route path="/auth/verify-email" element={<VerifyEmail />} />
-            <Route path="/auth/callback" element={<OAuthCallback />} />
+          <Route path="/" element={<Index />} />
+          <Route path="/index" element={<Navigate to="/" replace />} />
+          <Route path="/index.html" element={<Navigate to="/" replace />} />
+          <Route path="/badges/public/:userId" element={<PublicBadgeProfile />} />
+          <Route path="/courses" element={<Navigate to="/catalog" replace />} />
+          <Route path="/course-catalog" element={<Navigate to="/catalog" replace />} />
+          <Route path="/courses-catalog" element={<Navigate to="/catalog" replace />} />
+          <Route path="/comprehensive-courses" element={<Navigate to="/catalog" replace />} />
+          <Route path="/catalog" element={<PublicLayout />}><Route index element={<AcademicCatalog />} /></Route>
+          <Route path="/course/:courseId/preview" element={<CoursePreview />} />
+          <Route path="/faculties" element={<PublicLayout />}><Route index element={<FacultyGallery />} /></Route>
+          <Route path="/faculties/:facultyId" element={<PublicLayout />}><Route index element={<FacultyDetail />} /></Route>
+          <Route path="/degrees" element={<PublicLayout />}><Route index element={<DegreePrograms />} /></Route>
+          <Route path="/degree-programs" element={<PublicLayout />}><Route index element={<DegreePrograms />} /></Route>
+          <Route path="/degrees/:id" element={<PublicLayout />}><Route index element={<DegreeProgramDetail />} /></Route>
+          <Route path="/degree-programs/:id" element={<PublicLayout />}><Route index element={<DegreeProgramDetail />} /></Route>
+          <Route path="/trust" element={<PublicLayout />}><Route index element={<TrustCenter />} /></Route>
+          <Route path="/academic-integrity" element={<PublicLayout />}><Route index element={<AcademicIntegrity />} /></Route>
+          <Route path="/faculty-directory" element={<PublicLayout />}><Route index element={<FacultyDirectory />} /></Route>
+          <Route path="/outcomes" element={<PublicLayout />}><Route index element={<OutcomesDashboard />} /></Route>
+          <Route path="/founding-wall" element={<PublicLayout />}><Route index element={<FoundingWall />} /></Route>
+          <Route path="/verify" element={<PublicLayout />}><Route index element={<VerifyCredential />} /></Route>
+          <Route path="/verify/:certNumber" element={<CertificateVerify />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/auth/login" element={<Navigate to="/auth" replace />} />
+          <Route path="/auth/register" element={<Register />} />
+          <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+          <Route path="/auth/reset-password" element={<ResetPassword />} />
+          <Route path="/auth/verify-email" element={<VerifyEmail />} />
+          <Route path="/auth/callback" element={<OAuthCallback />} />
 
-            {/* Protected Routes with Main Layout */}
-            <Route
-              path="/"
-              element={
-                <ProtectedAppProviders>
-                  <ProtectedRoute>
-                    <MainLayout />
-                  </ProtectedRoute>
-                </ProtectedAppProviders>
-              }
-            >
-              <Route path="dashboard" element={<EnhancedDashboard />} />
-              <Route path="specs" element={<ScrollSpecs />} />
-              <Route path="specs/new" element={<ScrollSpecs />} />
-              <Route path="specs/templates" element={<ScrollSpecs />} />
-              <Route path="specs/versions" element={<ScrollSpecs />} />
-              <Route path="specs/dependencies" element={<ScrollSpecs />} />
-              <Route path="agents" element={<Agents />} />
-              <Route path="agents/new" element={<Agents />} />
-              <Route path="agents/training" element={<Agents />} />
-              <Route path="agents/performance" element={<Agents />} />
-              <Route path="agents/deployment" element={<Agents />} />
-              <Route path="sessions" element={<ForgeSessions />} />
-              <Route path="sessions/new" element={<ForgeSessions />} />
-              <Route path="sessions/collab" element={<ForgeSessions />} />
-              <Route path="sessions/history" element={<ForgeSessions />} />
-              <Route path="workspace" element={<ForgeSessions />} />
-              <Route path="activity" element={<ForgeDashboard />} />
-              <Route path="status" element={<ForgeDashboard />} />
-              <Route path="university/courses" element={<Dashboard />} />
-              <Route path="university/faculty" element={<Dashboard />} />
-              <Route path="university/students" element={<Dashboard />} />
-              <Route path="university/curriculum" element={<Dashboard />} />
-              <Route path="settings/api" element={<SettingsPage />} />
-              <Route path="settings/integrations" element={<SettingsPage />} />
-              <Route path="settings/users" element={<SettingsPage />} />
-              <Route path="courses/:courseId" element={<CourseDetail />} />
-              <Route path="courses/:courseId/learn" element={<CourseAccessRoute accessLevel="enrolled"><CourseLearningPage /></CourseAccessRoute>} />
-              <Route path="courses/:courseId/learn-old" element={<CourseAccessRoute accessLevel="enrolled"><CourseLearn /></CourseAccessRoute>} />
-              
-              {/* Admissions Routes removed - not implemented */}
-              <Route path="courses/:courseId/modules/:moduleId" element={<CourseAccessRoute accessLevel="enrolled"><ModuleDetail /></CourseAccessRoute>} />
-              <Route path="quiz/:quizId" element={<CourseAccessRoute accessLevel="enrolled"><QuizPage /></CourseAccessRoute>} />
-              <Route path="ai-tutors" element={<AITutors />} />
-              <Route path="ai-tutors/:tutorId" element={<AITutorChat />} />
-              <Route path="ai-tutors/:tutorId/profile" element={<TutorProfile />} />
-              <Route path="ai-tutors/office-hours" element={<AITutorOfficeHours />} />
-              <Route path="ai-tutors/analytics" element={<AITutorAnalytics />} />
-              <Route path="avatar-customization" element={<AvatarCustomization />} />
-              <Route path="content-generation" element={<ContentGeneration />} />
-              <Route path="community" element={<Community />} />
-              <Route path="community/users/:userId" element={<UserProfilePage />} />
-              <Route path="scrollcoin" element={<ScrollCoin />} />
-              <Route path="wallet" element={<Wallet />} />
-              <Route path="spiritual-formation" element={<SpiritualFormation />} />
-              <Route path="prayer-requests" element={<PrayerRequests />} />
-              <Route path="analytics" element={<Analytics />} />
-              <Route path="transcript" element={<StudentStatusRoute allowedStatuses={["enrolled","active","graduated","alumni"]}><Transcript /></StudentStatusRoute>} />
-              <Route path="study-groups" element={<StudyGroups />} />
-              <Route path="study-groups/:groupId" element={<StudyGroupChat />} />
-              <Route path="achievements" element={<Achievements />} />
-              <Route path="admin" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AdminDashboard /></RoleRoute>} />
-              <Route path="admin/generation-history" element={<RoleRoute allowedRoles={["admin","superadmin"]}><GenerationHistory /></RoleRoute>} />
-              <Route path="admin/content-generation" element={<RoleRoute allowedRoles={["admin","superadmin"]}><ContentGenerationAdmin /></RoleRoute>} />
-              <Route path="admin/institutions" element={<RoleRoute allowedRoles={["admin","superadmin"]}><InstitutionsAdmin /></RoleRoute>} />
-              <Route path="admin/super" element={<RoleRoute allowedRoles={["superadmin"]}><SuperAdmin /></RoleRoute>} />
-              <Route path="admin/launch-ops" element={<RoleRoute allowedRoles={["admin","superadmin"]}><LaunchOps /></RoleRoute>} />
-              <Route path="apply" element={<Apply />} />
-              <Route path="courses-detail/:courseId" element={<CourseDetailPage />} />
-              <Route path="my-courses" element={<StudentStatusRoute allowedStatuses={["enrolled","active","graduated","alumni"]}><MyCourses /></StudentStatusRoute>} />
-              <Route path="quiz-taking/:quizId" element={<CourseAccessRoute accessLevel="enrolled"><QuizTaking /></CourseAccessRoute>} />
-              <Route path="faculty" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyDashboard /></RoleRoute>} />
-              <Route path="faculty/admin" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyAdmin /></RoleRoute>} />
-              <Route path="faculty/gradebook" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyGradebookIndex /></RoleRoute>} />
-              <Route path="faculty/gradebook/:courseId" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><Gradebook /></RoleRoute>} />
-              <Route path="admin/admissions" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AdmissionsReview /></RoleRoute>} />
-              <Route path="alumni" element={<AlumniPortal />} />
-              
-              {/* Community & Social */}
-              <Route path="community-feed" element={<CommunityFeed />} />
-              <Route path="messaging" element={<RealTimeMessaging />} />
-              <Route path="fellowship-rooms" element={<FellowshipRooms />} />
-              <Route path="spiritual-mentor" element={<SpiritualMentor />} />
-              
-              {/* Spiritual Formation */}
-              <Route path="daily-devotion" element={<DailyDevotion />} />
-              <Route path="scripture-memory" element={<ScriptureMemory />} />
-              <Route path="testimonies" element={<Testimonies />} />
-              
-              {/* Learning */}
-              <Route path="assignment-upload" element={<StudentStatusRoute allowedStatuses={["enrolled","active"]}><AssignmentUpload /></StudentStatusRoute>} />
-              <Route path="degree-audit" element={<StudentStatusRoute allowedStatuses={["enrolled","active","graduated","alumni"]}><DegreeAudit /></StudentStatusRoute>} />
-              <Route path="scholarships" element={<ScholarshipsPage />} />
-              
-              {/* ScrollCoin Economy */}
-              <Route path="redemption-store" element={<RedemptionStore />} />
-            
-            {/* Dynamic pages */}
+          <Route path="/" element={<ProtectedAppProviders><ProtectedRoute><MainLayout /></ProtectedRoute></ProtectedAppProviders>}>
+            <Route path="dashboard" element={<EnhancedDashboard />} />
+            <Route path="specs" element={<ScrollSpecs />} />
+            <Route path="specs/new" element={<ScrollSpecs />} />
+            <Route path="specs/templates" element={<ScrollSpecs />} />
+            <Route path="specs/versions" element={<ScrollSpecs />} />
+            <Route path="specs/dependencies" element={<ScrollSpecs />} />
+            <Route path="agents" element={<Agents />} />
+            <Route path="agents/new" element={<Agents />} />
+            <Route path="agents/training" element={<Agents />} />
+            <Route path="agents/performance" element={<Agents />} />
+            <Route path="agents/deployment" element={<Agents />} />
+            <Route path="sessions" element={<ForgeSessions />} />
+            <Route path="sessions/new" element={<ForgeSessions />} />
+            <Route path="sessions/collab" element={<ForgeSessions />} />
+            <Route path="sessions/history" element={<ForgeSessions />} />
+            <Route path="workspace" element={<ForgeSessions />} />
+            <Route path="activity" element={<ForgeDashboard />} />
+            <Route path="status" element={<ForgeDashboard />} />
+            <Route path="university/courses" element={<Dashboard />} />
+            <Route path="university/faculty" element={<Dashboard />} />
+            <Route path="university/students" element={<Dashboard />} />
+            <Route path="university/curriculum" element={<Dashboard />} />
+            <Route path="settings/api" element={<SettingsPage />} />
+            <Route path="settings/integrations" element={<SettingsPage />} />
+            <Route path="settings/users" element={<SettingsPage />} />
+            <Route path="courses/:courseId" element={<CourseDetail />} />
+            <Route path="courses/:courseId/learn" element={<CourseAccessRoute accessLevel="enrolled"><CourseLearningPage /></CourseAccessRoute>} />
+            <Route path="courses/:courseId/learn-old" element={<CourseAccessRoute accessLevel="enrolled"><CourseLearn /></CourseAccessRoute>} />
+            <Route path="courses/:courseId/modules/:moduleId" element={<CourseAccessRoute accessLevel="enrolled"><ModuleDetail /></CourseAccessRoute>} />
+            <Route path="quiz/:quizId" element={<CourseAccessRoute accessLevel="enrolled"><QuizPage /></CourseAccessRoute>} />
+            <Route path="ai-tutors" element={<AITutors />} />
+            <Route path="ai-tutors/:tutorId" element={<AITutorChat />} />
+            <Route path="ai-tutors/:tutorId/profile" element={<TutorProfile />} />
+            <Route path="ai-tutors/office-hours" element={<AITutorOfficeHours />} />
+            <Route path="ai-tutors/analytics" element={<AITutorAnalytics />} />
+            <Route path="avatar-customization" element={<AvatarCustomization />} />
+            <Route path="content-generation" element={<ContentGeneration />} />
+            <Route path="community" element={<Community />} />
+            <Route path="community/users/:userId" element={<UserProfilePage />} />
+            <Route path="scrollcoin" element={<ScrollCoin />} />
+            <Route path="wallet" element={<Wallet />} />
+            <Route path="spiritual-formation" element={<SpiritualFormation />} />
+            <Route path="prayer-requests" element={<PrayerRequests />} />
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="transcript" element={<StudentStatusRoute allowedStatuses={["enrolled","active","graduated","alumni"]}><Transcript /></StudentStatusRoute>} />
+            <Route path="study-groups" element={<StudyGroups />} />
+            <Route path="study-groups/:groupId" element={<StudyGroupChat />} />
+            <Route path="achievements" element={<Achievements />} />
+            <Route path="admin" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AdminDashboard /></RoleRoute>} />
+            <Route path="admin/generation-history" element={<RoleRoute allowedRoles={["admin","superadmin"]}><GenerationHistory /></RoleRoute>} />
+            <Route path="admin/content-generation" element={<RoleRoute allowedRoles={["admin","superadmin"]}><ContentGenerationAdmin /></RoleRoute>} />
+            <Route path="admin/institutions" element={<RoleRoute allowedRoles={["admin","superadmin"]}><InstitutionsAdmin /></RoleRoute>} />
+            <Route path="admin/super" element={<RoleRoute allowedRoles={["superadmin"]}><SuperAdmin /></RoleRoute>} />
+            <Route path="admin/launch-ops" element={<RoleRoute allowedRoles={["admin","superadmin"]}><LaunchOps /></RoleRoute>} />
+            <Route path="apply" element={<Apply />} />
+            <Route path="courses-detail/:courseId" element={<CourseDetailPage />} />
+            <Route path="my-courses" element={<StudentStatusRoute allowedStatuses={["enrolled","active","graduated","alumni"]}><MyCourses /></StudentStatusRoute>} />
+            <Route path="quiz-taking/:quizId" element={<CourseAccessRoute accessLevel="enrolled"><QuizTaking /></CourseAccessRoute>} />
+            <Route path="faculty" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyDashboard /></RoleRoute>} />
+            <Route path="faculty/admin" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyAdmin /></RoleRoute>} />
+            <Route path="faculty/gradebook" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyGradebookIndex /></RoleRoute>} />
+            <Route path="faculty/gradebook/:courseId" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><Gradebook /></RoleRoute>} />
+            <Route path="admin/admissions" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AdmissionsReview /></RoleRoute>} />
+            <Route path="alumni" element={<AlumniPortal />} />
+            <Route path="community-feed" element={<CommunityFeed />} />
+            <Route path="messaging" element={<RealTimeMessaging />} />
+            <Route path="fellowship-rooms" element={<FellowshipRooms />} />
+            <Route path="spiritual-mentor" element={<SpiritualMentor />} />
+            <Route path="daily-devotion" element={<DailyDevotion />} />
+            <Route path="scripture-memory" element={<ScriptureMemory />} />
+            <Route path="testimonies" element={<Testimonies />} />
+            <Route path="assignment-upload" element={<StudentStatusRoute allowedStatuses={["enrolled","active"]}><AssignmentUpload /></StudentStatusRoute>} />
+            <Route path="degree-audit" element={<StudentStatusRoute allowedStatuses={["enrolled","active","graduated","alumni"]}><DegreeAudit /></StudentStatusRoute>} />
+            <Route path="scholarships" element={<ScholarshipsPage />} />
+            <Route path="redemption-store" element={<RedemptionStore />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="profile/:userId" element={<StudentProfile />} />
             <Route path="xr-classrooms" element={<XRClassroomsPage />} />
@@ -450,41 +344,37 @@ const App = () => (
             <Route path="system-status" element={<RoleRoute allowedRoles={["admin","superadmin"]}><SystemStatus /></RoleRoute>} />
             <Route path="institution-onboarding" element={<RoleRoute allowedRoles={["admin","superadmin"]}><InstitutionOnboarding /></RoleRoute>} />
             <Route path="faculty-analytics" element={<RoleRoute allowedRoles={["faculty","admin","superadmin"]}><FacultyAnalytics /></RoleRoute>} />
-            
-            {/* All other routes use coming soon pages */}
             <Route path="assessments" element={<Assessments />} />
-            <Route path="divine-scorecard" element={<ComingSoonPage title="Divine Scorecard" />} />
-            <Route path="prophetic-checkins" element={<ComingSoonPage title="Prophetic Check-ins" />} />
-            <Route path="calling-discernment" element={<ComingSoonPage title="Calling Discernment" />} />
-            <Route path="forums" element={<ComingSoonPage title="Discussion Forums" />} />
-            <Route path="mentorship" element={<ComingSoonPage title="Mentorship" />} />
-            <Route path="projects" element={<ComingSoonPage title="Collaborative Projects" />} />
-            <Route path="marketplace" element={<ComingSoonPage title="Marketplace" />} />
+            <Route path="divine-scorecard" element={<InstitutionalResourcePage kind="divine-scorecard" />} />
+            <Route path="prophetic-checkins" element={<InstitutionalResourcePage kind="prophetic-checkins" />} />
+            <Route path="calling-discernment" element={<InstitutionalResourcePage kind="calling-discernment" />} />
+            <Route path="forums" element={<InstitutionalResourcePage kind="forums" />} />
+            <Route path="mentorship" element={<InstitutionalResourcePage kind="mentorship" />} />
+            <Route path="projects" element={<InstitutionalResourcePage kind="projects" />} />
+            <Route path="marketplace" element={<InstitutionalResourcePage kind="marketplace" />} />
             <Route path="badges" element={<ScrollBadgeGallery />} />
             <Route path="my-badges" element={<ScrollBadgeGallery />} />
-              <Route path="faculties/compare" element={<FacultyComparison />} />
-              <Route path="learning-profile" element={<LearningProfileOnboarding />} />
-              <Route path="personalized-dashboard" element={<PersonalizedDashboard />} />
-              <Route path="learning-goals" element={<LearningGoals />} />
-              <Route path="skills-assessment" element={<SkillsAssessment />} />
-              <Route path="career-pathways" element={<ComingSoonPage title="Career Pathways" />} />
-            <Route path="job-board" element={<ComingSoonPage title="Job Board" />} />
-            <Route path="research" element={<ComingSoonPage title="Research Hub" />} />
-            <Route path="help" element={<ComingSoonPage title="Help Center" />} />
+            <Route path="faculties/compare" element={<FacultyComparison />} />
+            <Route path="learning-profile" element={<LearningProfileOnboarding />} />
+            <Route path="personalized-dashboard" element={<PersonalizedDashboard />} />
+            <Route path="learning-goals" element={<LearningGoals />} />
+            <Route path="skills-assessment" element={<SkillsAssessment />} />
+            <Route path="career-pathways" element={<InstitutionalResourcePage kind="career-pathways" />} />
+            <Route path="job-board" element={<InstitutionalResourcePage kind="job-board" />} />
+            <Route path="research" element={<InstitutionalResourcePage kind="research" />} />
+            <Route path="help" element={<InstitutionalResourcePage kind="help" />} />
             <Route path="mobile-demo" element={<MobileFeaturesDemo />} />
             <Route path="academic-calendar" element={<AcademicCalendar />} />
             <Route path="scroll-library" element={<ScrollLibrary />} />
             <Route path="scroll-library/book/:bookId" element={<ScrollLibraryBookReader />} />
-              <Route path="graduation" element={<StudentStatusRoute allowedStatuses={["active","graduated","alumni"]}><StudentGraduation /></StudentStatusRoute>} />
-              <Route path="orientation" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active"]}><Orientation /></StudentStatusRoute>} />
-              <Route path="matriculation" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active"]}><Matriculation /></StudentStatusRoute>} />
-              <Route path="student-identity" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active","graduated","alumni"]}><StudentIdentity /></StudentStatusRoute>} />
+            <Route path="graduation" element={<StudentStatusRoute allowedStatuses={["active","graduated","alumni"]}><StudentGraduation /></StudentStatusRoute>} />
+            <Route path="orientation" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active"]}><Orientation /></StudentStatusRoute>} />
+            <Route path="matriculation" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active"]}><Matriculation /></StudentStatusRoute>} />
+            <Route path="student-identity" element={<StudentStatusRoute allowedStatuses={["admitted","enrolled","active","graduated","alumni"]}><StudentIdentity /></StudentStatusRoute>} />
             <Route path="admin/academic-terms" element={<RoleRoute allowedRoles={["admin","superadmin"]}><AcademicTermAdmin /></RoleRoute>} />
             <Route path="admin/suyas" element={<RoleRoute allowedRoles={["admin","superadmin"]}><SUYASAdmin /></RoleRoute>} />
             <Route path="admin/activation" element={<RoleRoute allowedRoles={["admin","superadmin"]}><ActivationProgress /></RoleRoute>} />
           </Route>
-          
-          {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </PublicAppShell>
