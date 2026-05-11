@@ -6,10 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Brain,
   MessageSquare,
-  Clock,
-  Heart,
   BookOpenCheck,
-  Users,
   Loader2,
   CheckCircle2,
   VideoOff,
@@ -39,10 +36,10 @@ const capabilityRows = [
     description: "Speech-to-text and text-to-speech are not implemented in the production tutor flow.",
   },
   {
-    label: "Live avatar classroom",
+    label: "Avatar classroom",
     status: "Not live yet",
     icon: VideoOff,
-    description: "No WebRTC, lip-sync, streaming avatar, or live video classroom is currently wired here.",
+    description: "No streaming avatar or live video classroom is currently wired here.",
   },
 ];
 
@@ -67,13 +64,9 @@ export default function AITutors() {
   return (
     <PageTemplate
       title="ScrollIntel AI Tutors"
-      description="Christ-centered text tutoring with faculty-aware AI guidance. Voice and live avatar classroom modes are clearly marked as not live yet."
+      description="Christ-centered text tutoring with faculty-aware AI guidance. Voice and avatar classroom modes are marked truthfully until their production services are wired."
       actions={
         <div className="flex space-x-2">
-          <Button variant="outline" disabled>
-            <Clock className="h-4 w-4 mr-2" />
-            Session History (Coming Soon)
-          </Button>
           <Link to="/ai-tutors/scrollmentor-gpt">
             <Button>
               <MessageSquare className="h-4 w-4 mr-2" />
@@ -90,7 +83,7 @@ export default function AITutors() {
             Tutor Capability Truth Layer
           </CardTitle>
           <CardDescription>
-            This page only markets what is implemented in code. Live voice and avatar classrooms remain planned/experimental until their production services are wired.
+            This page only markets what is implemented in code. Voice and avatar classroom modes remain disabled until their production services are wired.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -153,7 +146,7 @@ export default function AITutors() {
           <CardContent className="pt-4 md:pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-lg sm:text-2xl font-bold">Planned</p>
+                <p className="text-lg sm:text-2xl font-bold">Disabled</p>
                 <p className="text-xs sm:text-sm text-muted-foreground">Avatar Mode</p>
               </div>
               <VideoOff className="h-6 w-6 sm:h-8 sm:w-8 text-muted-foreground flex-shrink-0" />
@@ -190,7 +183,7 @@ export default function AITutors() {
               <CardContent>
                 <p className="text-muted-foreground mb-4">{tutor.description}</p>
                 <p className="text-xs text-muted-foreground mb-4">
-                  Current mode: chat-based tutoring. This is not a live video/avatar classroom session.
+                  Current mode: chat-based tutoring. This is not a video/avatar classroom session.
                 </p>
                 <Link to={`/ai-tutors/${tutor.specialty?.replace(/\s+/g, '-')}`}>
                   <Button className="w-full">
@@ -280,9 +273,9 @@ export default function AITutors() {
               </p>
             </div>
             <div className="space-y-2">
-              <h4 className="font-semibold">Avatar Roadmap Protected</h4>
+              <h4 className="font-semibold">Avatar Claims Protected</h4>
               <p className="text-sm text-muted-foreground">
-                Avatar, voice, and live classroom modes are not presented as live until those integrations exist.
+                Avatar, voice, and classroom modes are not presented as active until those integrations exist.
               </p>
             </div>
           </div>
